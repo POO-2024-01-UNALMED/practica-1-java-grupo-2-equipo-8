@@ -3,6 +3,6 @@ package gestionAplicacion.usuario;
 public class TarjetaCinemar {
 	
 	private int saldo;
-	private Cliente propietario;
+	private String prestador;
 	private int numCuenta;
 }

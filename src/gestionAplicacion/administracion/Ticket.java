@@ -1,10 +1,10 @@
 package gestionAplicacion.administracion;
-import gestionAplicacion.usuario.Cliente;
 import java.util.Date;
 import gestionAplicacion.proyecciones.*;
 public class Ticket {
 
-	private Cliente dueno;
+	private String nombre;
+	private int edad;
 	private SalaCine salaDeCine;
 	private Asiento asiento;
 	private double precio;

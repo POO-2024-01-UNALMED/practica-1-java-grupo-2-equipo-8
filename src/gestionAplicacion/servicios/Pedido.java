@@ -1,4 +1,4 @@
-package gestionAplicacion.alimentacion;
+package gestionAplicacion.servicios;
 
 public class Pedido {
 	
