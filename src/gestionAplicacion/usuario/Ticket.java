@@ -1,4 +1,4 @@
-package gestionAplicacion.administracion;
+package gestionAplicacion.usuario;
 import java.util.Date;
 import gestionAplicacion.proyecciones.*;
 public class Ticket {
