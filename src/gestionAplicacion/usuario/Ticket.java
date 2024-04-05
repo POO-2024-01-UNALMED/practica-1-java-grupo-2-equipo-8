@@ -1,15 +1,32 @@
 package gestionAplicacion.usuario;
-import java.util.Date;
 import gestionAplicacion.proyecciones.*;
+
 public class Ticket {
 
-	private String nombre;
-	private int edad;
+	private Cliente dueno;
 	private SalaCine salaDeCine;
 	private Asiento asiento;
 	private double precio;
 	private Pelicula pelicula;
-	private Date horario;
-	private static int idTaquilla;
+	private String horario;
+	private int idPelicula;
+	
+	public Ticket(){}
+	
+	public Ticket(Cliente dueno, SalaCine salaDeCine, Asiento asiento, double precio, Pelicula pelicula, String horario,
+			int idPelicula) {
+		super();
+		this.dueno = dueno;
+		this.salaDeCine = salaDeCine;
+		this.asiento = asiento;
+		this.precio = precio;
+		this.pelicula = pelicula;
+		this.horario = horario;
+		this.idPelicula = idPelicula;
+	}
+	private boolean peliculaMitadPrecio() {return true;}
+	private void asignarTicket() {}
+	private void descuentoDia() {}
+	private void clienteSuertudo() {}
 	
 }

@@ -1,18 +1,28 @@
 package gestionAplicacion.servicios;
 import java.util.ArrayList;
+import gestionAplicacion.usuario.Cliente;
 
-public class ServicioComida {
+public class ServicioComida extends Servicio{
 	
-	private int idComida;
-	private Carta carta;
-	private static int valorVentasTotales;
+	private Cliente cliente;
 	private ArrayList<Pedido> ordenComida;
-	private double valorPedidos;
+	private double valorPedido;
 	
+	public ServicioComida(){}
+	
+	public ServicioComida(String nombre, String horario, Cliente cliente, ArrayList<Pedido> ordenComida,
+			double valorPedido) {
+		super(nombre, horario);
+		this.cliente = cliente;
+		this.ordenComida = ordenComida;
+		this.valorPedido = valorPedido;
+	}
 	public Pedido generarPedido() {return new Pedido();}
-	public void editarPedido(Pedido pedido) {}
+	public void editarPedido() {}
 	public void mostarPedido() {}
 	public boolean procesarPago() {return true;}
-	public void mostrarCarta() {}
+	public String mostrarCarta() {return "Carta";}
+	public String factura() {return "factura";}
+	public boolean verificarBono() {return true;}
 	
 }
