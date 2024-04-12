@@ -14,9 +14,7 @@ public class Administrador {
 		return sc.nextLine();
 	}
 	
-	static TipoDeDocumento cedula = TipoDeDocumento.CC;
-	static TipoDeDocumento tarjetaIdentidad = TipoDeDocumento.TI;
-	static TipoDeDocumento cedulaExtranjeria = TipoDeDocumento.CE;
+	
 	static TarjetaCinemar cuenta1 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta2 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta3 = new TarjetaCinemar();
@@ -74,12 +72,12 @@ public class Administrador {
 		TipoDeDocumento documentoCliente=null;
 		boolean casoValido = true;
 		do{
-			System.out.println("Seleccione el tipo de documento:\n1."+cedula+"-"+cedula.getNombre()+"\n2."+tarjetaIdentidad+"-"+tarjetaIdentidad.getNombre()+"\n3."+cedulaExtranjeria+"-"+cedulaExtranjeria.getNombre()+"\n4.Volver");
+			System.out.println("Seleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Volver");
 			int opcion1 = (int)readLong();
 			switch (opcion1) {
-				case 1: documentoCliente = cedula;casoValido=false;break;
-				case 2: documentoCliente = tarjetaIdentidad;casoValido=false;break;
-				case 3: documentoCliente = cedulaExtranjeria;casoValido=false;break;
+				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
+				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
+				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
 				case 4: ingresoZonaJuegos();casoValido=false;break;
 				default: System.out.println("Opcion invalida");break;
 			}
