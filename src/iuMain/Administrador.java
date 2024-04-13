@@ -19,7 +19,7 @@ public class Administrador {
 	static TarjetaCinemar cuenta2 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta3 = new TarjetaCinemar();
 	
-	static Cliente cliente1 = new Cliente("Andy", 18, 13434132, TipoDeDocumento.CC);
+	static Cliente cliente5 = new Cliente("Andy", 18, 13434132, TipoDeDocumento.CC);
 	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 	
@@ -155,7 +155,7 @@ public class Administrador {
 			
 		}
 		else if (eleccion1==2) {
-			System.out.println("Recuerde que debe tener saldo para acceder a los diferentes juegos\nSu saldo en Tarjeta Cinemar: ");
+			System.out.println("Recuerde que debe tener saldo para acceder a los diferentes juegos\nSu saldo en Tarjeta Cinemar: "+Cliente.getClientes().get(Cliente.getClientes().size()-1).getCuenta().getSaldo());
 			
 		}
 		
