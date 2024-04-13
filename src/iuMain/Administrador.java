@@ -23,11 +23,10 @@ public class Administrador {
 	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 	
-	static Pelicula pelicula1 = new Pelicula();
+	static Pelicula pelicula1 = new Pelicula("KNJ temparada 4 movie", 18000, "Acción", "1 hora", "+18", "4D"); 
 	static SalaCine salaDeCine1 = new SalaCine();
+	static Pelicula pelicula2 = new Pelicula("Kong vs Godzilla Turbo Remix", 7000, "Acción", "2 horas", "+18","2D"); 
 	
-	
-
 	
 	
 	public static void main(String[] args) {
@@ -37,12 +36,17 @@ public class Administrador {
 			pelicula1.crearSalaVirtual("3PM");
 			pelicula1.crearSalaVirtual("8PM");
 			
+			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
+			
 			salaDeCine1.crearAsientosSalaDeCine();
+			
+			System.out.println();
+			
 		}
 		
 		
 		
-		
+
 		
 		System.out.println("Bienvenido al cine de marinilla");
 		inicio();
@@ -166,6 +170,8 @@ public class Administrador {
 	static void salirDelSistema() {
 		System.out.println("¡Adios, vuelva pronto!");
 		System.exit(0);
+		
+
 		
 	}
 }

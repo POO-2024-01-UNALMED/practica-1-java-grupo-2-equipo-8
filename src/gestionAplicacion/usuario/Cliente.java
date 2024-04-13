@@ -53,15 +53,21 @@ public class Cliente {
 	}
 	
 	//Methods
-	public static String obtenerClientePorCedula(Long Documento) {
-		boolean verificacion;
+	/**
+	 * Description : Este método genera un String que se imprimirá en pantalla, con el fin de que el usuario
+	 * pueda visualizar la información relevante a su perfil.
+	 * @param documento : Solicita un Long que corresponde al documento del usuario.
+	 * @return String : Retorna la información del cliente, obtenida por el toString() de este.
+	 * */
+	public static String obtenerClientePorCedula(Long documento) {
+		boolean verificacion = false;
 		for (Cliente cliente : clientes) {
-			verificacion = (cliente.getDocumento() == Documento);
+			verificacion = (cliente.getDocumento() == documento);
 			if (verificacion) {
 				return cliente.toString();
 			}
 		}
-		return "El cliente no ha sido encontrado";
+		return "El usuario no ha sido encontrado";
 	}
 	
 	
