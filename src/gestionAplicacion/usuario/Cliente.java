@@ -40,7 +40,7 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 		this.cuenta = cuenta;
 		this.metodosDePago = metodosDePago;
-		this.bonosCliente = bonosCliente;
+		this.setBonosCliente(bonosCliente);
 		clientes.add(this);
 	}
 	
@@ -93,6 +93,14 @@ public class Cliente {
 
 	public static void setClientes(ArrayList<Cliente> clientes) {
 		Cliente.clientes = clientes;
+	}
+
+	public ArrayList<Bono> getBonosCliente() {
+		return bonosCliente;
+	}
+
+	public void setBonosCliente(ArrayList<Bono> bonosCliente) {
+		this.bonosCliente = bonosCliente;
 	}
 	
 	

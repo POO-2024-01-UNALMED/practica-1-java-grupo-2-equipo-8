@@ -59,7 +59,80 @@ public class Administrador {
 	
 	static void comprarComida() {System.out.println("Comprando comida");}
 	
-	static void comprarSouvenirs() {System.out.println("Comprando souvenirs");}
+	static void comprarSouvenirs() {
+		System.out.print("Estas seguro de acceder al servicio de souvenir:\n1.SI.\n2.NO.\nSeleccina una opcion:");
+		int eleccion = (int)readLong();
+		if (eleccion==2) {inicio();}
+		else if (eleccion==1){}
+		else {
+			System.out.println("Opcion Invalida");
+			comprarSouvenirs();
+		}
+		ServicioSouvenirs servicioSouvenirs = new ServicioSouvenirs();
+		TipoDeDocumento documentoCliente = null;
+		boolean casoValido = true;
+		do{
+			System.out.println("Seleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Volver");
+			int opcion1 = (int)readLong();
+			switch (opcion1) {
+				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
+				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
+				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
+				case 4: ingresoZonaJuegos();casoValido=false;break;
+				default: System.out.println("Opcion invalida");break;
+			}
+		}while(casoValido);
+		Cliente cliente1;
+		do {
+			System.out.print("Ingrese el numero de documento: ");
+			long numeroDocumentoCliente = readLong();
+			cliente1=Cliente.revisarDatosCliente(numeroDocumentoCliente);
+			if (cliente1==null) {
+				System.out.print("Ingrese su edad: ");
+				int edadCliente = (int)readLong();
+				System.out.print("Ingrese su nombre: ");
+				String nombreCliente = readLn();
+				cliente1 = new Cliente(nombreCliente,null,null,null,edadCliente,null,numeroDocumentoCliente,0,documentoCliente,null,null,null);
+				servicioSouvenirs.setCliente(cliente1);
+				casoValido=true;
+			}
+			else {
+				System.out.println("¿Eres "+cliente1.getNombre()+"?");
+				System.out.println("1. SI\n2. NO");
+				int eleccion1 = (int)readLong();
+				if (eleccion1==1) {
+					servicioSouvenirs.setCliente(cliente1);
+					casoValido=true;
+					}
+				else if(eleccion1==2){
+					System.out.println("Verifica el numero de documento\n");
+				}
+				else {
+					System.out.println("Opcion invalida\n");
+				}
+			}
+		}while(!casoValido);
+		
+		do {
+			System.out.print("Que deseas hacer:\n1.Reclamar un Bono.\n2.Hacer un pedido.\nSeleccione una opcion:");
+			int eleccion2 = (int)readLong();
+			if(eleccion2 == 1) {
+				System.out.print("Ingresa el codigo del bono: ");
+				long codigo = readLong();
+				Bono bono = servicioSouvenirs.verificarBono(codigo, cliente1);
+				if (null!= bono) {
+					System.out.print("El bono que tienes asociado es de un:"+bono.getProducto());
+				}
+				
+			}
+		}while(casoValido);
+		
+		
+		
+		
+		
+		
+		}
 	
 	static void ingresoZonaJuegos() {
 
@@ -82,7 +155,7 @@ public class Administrador {
 				default: System.out.println("Opcion invalida");break;
 			}
 		}while(casoValido);	
-		
+			
 		do {
 			System.out.print("Ingrese el numero de documento: ");
 			long numeroDocumentoCliente = readLong();
