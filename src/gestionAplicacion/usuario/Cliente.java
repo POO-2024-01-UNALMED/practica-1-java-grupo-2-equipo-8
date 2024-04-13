@@ -24,6 +24,14 @@ public class Cliente {
 	//Constructores
 	public Cliente(){}
 	
+	public Cliente(String nombre, int edad, long documento, TipoDeDocumento tipoDocumento) {
+		this.nombre = nombre;
+		this.edad = edad;
+		this.documento = documento;
+		this.tipoDocumento = tipoDocumento;
+		clientes.add(this);
+	}
+
 	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, Ticket ticket, ArrayList<String> factura,
 			int edad, Membresia membresia, long documento, int duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
@@ -44,9 +52,17 @@ public class Cliente {
 		clientes.add(this);
 	}
 	
-	//Metodos
-	public void obtenerclientePorCedula() {}
-	
+	//Methods
+	public static String obtenerClientePorCedula(Long Documento) {
+		boolean verificacion;
+		for (Cliente cliente : clientes) {
+			verificacion = (cliente.getDocumento() == Documento);
+			if (verificacion) {
+				return cliente.toString();
+			}
+		}
+		return "El cliente no ha sido encontrado";
+	}
 	
 	public static Cliente revisarDatosCliente(long numero) {
 		Cliente cliente1=null;
@@ -94,7 +110,86 @@ public class Cliente {
 	public static void setClientes(ArrayList<Cliente> clientes) {
 		Cliente.clientes = clientes;
 	}
-	
+
+	public ArrayList<Pelicula> getHistorialDePeliculas() {
+		return historialDePeliculas;
+	}
+
+	public void setHistorialDePeliculas(ArrayList<Pelicula> historialDePeliculas) {
+		this.historialDePeliculas = historialDePeliculas;
+	}
+
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
+	}
+
+	public ArrayList<String> getFactura() {
+		return factura;
+	}
+
+	public void setFactura(ArrayList<String> factura) {
+		this.factura = factura;
+	}
+
+	public int getEdad() {
+		return edad;
+	}
+
+	public void setEdad(int edad) {
+		this.edad = edad;
+	}
+
+	public Membresia getMembresia() {
+		return membresia;
+	}
+
+	public void setMembresia(Membresia membresia) {
+		this.membresia = membresia;
+	}
+
+	public long getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(long documento) {
+		this.documento = documento;
+	}
+
+	public int getDuracionMembresiaDias() {
+		return duracionMembresiaDias;
+	}
+
+	public void setDuracionMembresiaDias(int duracionMembresiaDias) {
+		this.duracionMembresiaDias = duracionMembresiaDias;
+	}
+
+	public TipoDeDocumento getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(TipoDeDocumento tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public ArrayList<MetodoPago> getMetodosDePago() {
+		return metodosDePago;
+	}
+
+	public void setMetodosDePago(ArrayList<MetodoPago> metodosDePago) {
+		this.metodosDePago = metodosDePago;
+	}
+
+	public ArrayList<Bono> getBonosCliente() {
+		return bonosCliente;
+	}
+
+	public void setBonosCliente(ArrayList<Bono> bonosCliente) {
+		this.bonosCliente = bonosCliente;
+	}
 	
 	
 	

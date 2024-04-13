@@ -18,10 +18,31 @@ public class Administrador {
 	static TarjetaCinemar cuenta1 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta2 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta3 = new TarjetaCinemar();
+	
+	static Cliente cliente1 = new Cliente("Andy", 18, 13434132, TipoDeDocumento.CC);
+	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
+	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
+	
+	static Pelicula pelicula1 = new Pelicula();
+	static SalaCine salaDeCine1 = new SalaCine();
+	
+	
 
 	
 	
 	public static void main(String[] args) {
+		//Llamados métodos de instancias para hacer pruebas
+		{
+			pelicula1.crearSalaVirtual("10AM");
+			pelicula1.crearSalaVirtual("3PM");
+			pelicula1.crearSalaVirtual("8PM");
+			
+			salaDeCine1.crearAsientosSalaDeCine();
+		}
+		
+		
+		
+		
 		
 		System.out.println("Bienvenido al cine de marinilla");
 		inicio();
