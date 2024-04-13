@@ -1,8 +1,11 @@
 package iuMain;
+import java.util.ArrayList;
 import java.util.Scanner;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.usuario.*;
+import gestionAplicacion.usuario.Membresia;
+
 public class Administrador {
 	
 	static Scanner sc = new Scanner(System.in);
@@ -18,10 +21,38 @@ public class Administrador {
 	static TarjetaCinemar cuenta1 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta2 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta3 = new TarjetaCinemar();
+	
+	static Cliente cliente1 = new Cliente("Andy", 18, 13434132, TipoDeDocumento.CC);
+	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
+	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
+	
+	static Pelicula pelicula1 = new Pelicula("KNJ temparada 4 movie", 18000, "Acción", "1 hora", "+18", "4D"); 
+	static SalaCine salaDeCine1 = new SalaCine();
+	static Pelicula pelicula2 = new Pelicula("Kong vs Godzilla Turbo Remix", 7000, "Acción", "2 horas", "+18","2D"); 
 
+	static Membresia membresia1 = new Membresia("Radiante", 5, 30000, 30, 2);
+	static Membresia membresia2 = new Membresia("Challenger", 4, 25000, 30, 2);
+	static Membresia membresia3 = new Membresia("Global", 3, 15000, 20, 1);
+	static Membresia membresia4 = new Membresia("Heroico", 2, 10000, 15, 1);
+	
+	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 100000);
+	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 60000);
+	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 150000);
+	
 	
 	
 	public static void main(String[] args) {
+		//Llamados métodos de instancias para hacer pruebas
+		{
+			pelicula1.crearSalaVirtual("10AM");
+			pelicula1.crearSalaVirtual("3PM");
+			pelicula1.crearSalaVirtual("8PM");
+			
+			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
+			
+			salaDeCine1.crearAsientosSalaDeCine();
+			/*cliente1.setMembresia(membresia1)*/;
+		}
 		
 		System.out.println("Bienvenido al cine de marinilla");
 		inicio();
@@ -201,15 +232,35 @@ public class Administrador {
 			}
 		}while(!casoValido);
 		System.out.println("¿Deseas recargar la tarjeta?");
-		//System.out.println(Cliente.getClientes().size());
+		System.out.println("1. SI\n2. NO");
+		int eleccion1 = (int)readLong();
+		if (eleccion1==1) {
+			
+		}
+		else if (eleccion1==2) {
+			System.out.println("Recuerde que debe tener saldo para acceder a los diferentes juegos\nSu saldo en Tarjeta Cinemar: "+Cliente.getClientes().get(Cliente.getClientes().size()-1).getCuenta().getSaldo());
+			
+		}
 		
 	}
 	
-	static void adquirirMembresia() {System.out.println("Obteniendo membresia");}
+	static void adquirirMembresia() {
+		
+		System.out.println("Obteniendo membresia");
+		System.out.println(Membresia.mostrarCategoria());
+		System.out.println("Escoga la categoria de su membresia o escriba 5 para volver");
+		int opcion = (int)readLong();
+		if (opcion==5) {inicio();}
+		else if (opcion < 5 && opcion > 0) {
+			System.out.println(Membresia.verificarRestriccionMembresia(cliente1, opcion));
+		}
+	} 
 	
 	static void salirDelSistema() {
 		System.out.println("¡Adios, vuelva pronto!");
 		System.exit(0);
+		
+
 		
 	}
 }

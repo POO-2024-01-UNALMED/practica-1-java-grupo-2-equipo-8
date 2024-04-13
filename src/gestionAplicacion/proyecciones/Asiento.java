@@ -8,12 +8,29 @@ public class Asiento {
 	public Asiento(){}
 	
 	public Asiento(int numeroAsiento, boolean disponibilidad) {
-		super();
 		this.numeroAsiento = numeroAsiento;
 		this.disponibilidad = disponibilidad;
 	}
 
+	public int getNumeroAsiento() {
+		return numeroAsiento;
+	}
 
+	public void setNumeroAsiento(int numeroAsiento) {
+		this.numeroAsiento = numeroAsiento;
+	}
 
-	private void cambiarDisponibilidad() {this.disponibilidad=false;}
-}
+	public boolean isDisponibilidad() {
+		return disponibilidad;
+	}
+
+	public void setDisponibilidad(boolean disponibilidad) {
+		this.disponibilidad = disponibilidad;
+	}
+
+	
+	
+	
+	}
+
+	
