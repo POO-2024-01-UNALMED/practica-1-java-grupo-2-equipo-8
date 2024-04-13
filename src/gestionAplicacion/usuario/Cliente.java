@@ -64,6 +64,15 @@ public class Cliente {
 		return "El cliente no ha sido encontrado";
 	}
 	
+	
+	/**
+	*Description: se recibe un parametro long con el numero de cedula de el cliente y se busca en el array
+	*de clientes si hay alguno que tiene ese mismo documento asociado, en caso de que si se retorna ese cliente
+	*del array y de lo contrario se retorna nulo.
+	*@param numero :  sirve para verificar si el usuario ya esta registrado
+	*@return <b>Cliente</b> :  se retorna nulo en caso de que no exista el cliente o se retorna el cliente existente.
+	*/
+	
 	public static Cliente revisarDatosCliente(long numero) {
 		Cliente cliente1=null;
 		for(Cliente cliente : clientes) {
@@ -78,6 +87,11 @@ public class Cliente {
 	public void editarCuenta() {}
 	public void modificarMetodosDePago() {}
 	
+	/**
+	*Description: se verifica si el usuario tiene asociada una cuenta de tarjeta cinemar 
+	*@return <b>boolean</b> :  retorna true o false dependiendo si cumple o no la condicion
+	*/
+
 	public boolean verificarCuenta() {
 		boolean value = false;
 		if (this.cuenta!=null) {

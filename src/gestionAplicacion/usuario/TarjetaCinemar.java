@@ -5,7 +5,7 @@ import gestionAplicacion.servicios.ServicioEntretenimiento;
 public class TarjetaCinemar {
 	
 	//Atributos
-	private int saldo;
+	private double saldo;
 	private boolean estado;
 	private Cliente dueno;
 	
@@ -24,13 +24,18 @@ public class TarjetaCinemar {
 	//metodos
 	private void ingresarSaldo() {}
 	private void mostarSaldo() {}
-	public void hacerPago(int saldo) {
+	
+	/**
+	*Description: se le descuenta a la tarjeta cinemar el monto pasado en el parametro
+	*@param saldo : se le pasa el monto a ser descontado
+	*/
+	public void hacerPago(double saldo) {
 		this.saldo-=saldo;
 	}
 	private static TarjetaCinemar crearTarjeta() {return new TarjetaCinemar();}
 
 	//getters y setters
-	public int getSaldo() {
+	public double getSaldo() {
 		return saldo;
 	}
 

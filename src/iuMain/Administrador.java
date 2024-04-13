@@ -149,7 +149,15 @@ public class Administrador {
 			}
 		}while(!casoValido);
 		System.out.println("¿Deseas recargar la tarjeta?");
-		//System.out.println(Cliente.getClientes().size());
+		System.out.println("1. SI\n2. NO");
+		int eleccion1 = (int)readLong();
+		if (eleccion1==1) {
+			
+		}
+		else if (eleccion1==2) {
+			System.out.println("Recuerde que debe tener saldo para acceder a los diferentes juegos\nSu saldo en Tarjeta Cinemar: ");
+			
+		}
 		
 	}
 	
