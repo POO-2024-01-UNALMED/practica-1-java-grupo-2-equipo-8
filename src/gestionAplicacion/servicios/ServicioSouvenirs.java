@@ -11,7 +11,7 @@ public class ServicioSouvenirs extends Servicio{
 	
 	public Bono verificarBono(long codigo, Cliente cliente) {
 		for (int i=0;i<Bono.getBonosCreados().size(); i++) {
-			if((codigo == (Bono.getBonosCreados()).get(i).getCodigo())) {
+			if((codigo == (Bono.getBonosCreados()).get(i).getCodigo()) && (cliente.getBonosCliente().size()>0)) {
 				for (int j=0;j<cliente.getBonosCliente().size();j++) {
 					if((Bono.getBonosCreados()).get(i) == cliente.getBonosCliente().get(j)) {
 						return Bono.getBonosCreados().get(i);
