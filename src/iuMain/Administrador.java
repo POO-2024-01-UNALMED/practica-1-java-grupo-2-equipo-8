@@ -30,14 +30,15 @@ public class Administrador {
 	static SalaCine salaDeCine1 = new SalaCine();
 	static Pelicula pelicula2 = new Pelicula("Kong vs Godzilla Turbo Remix", 7000, "Acción", "2 horas", "+18","2D"); 
 
-	static Membresia membresia1 = new Membresia("Radiante", 5, 30000, 30, 2);
-	static Membresia membresia2 = new Membresia("Challenger", 4, 25000, 30, 2);
-	static Membresia membresia3 = new Membresia("Global", 3, 15000, 20, 1);
-	static Membresia membresia4 = new Membresia("Heroico", 2, 10000, 15, 1);
+	static Membresia membresia1 = new Membresia("Basico", 1, 5000, 10);
+	static Membresia membresia2 = new Membresia("Heroico", 2, 10000, 15);
+	static Membresia membresia3 = new Membresia("Global", 3, 15000, 20);
+	static Membresia membresia4 = new Membresia("Challenger", 4, 25000, 25);
+	static Membresia membresia5 = new Membresia("Radiante", 5, 30000, 30);
 	
-	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 100000);
-	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 60000);
-	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 150000);
+	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 100000, 0.10);
+	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 60000, 0.05);
+	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 150000, 0.15);
 	
 	
 	
@@ -51,7 +52,12 @@ public class Administrador {
 			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
 			
 			salaDeCine1.crearAsientosSalaDeCine();
-			/*cliente1.setMembresia(membresia1)*/;
+			Membresia.asignarTipoMembresia();
+			MetodoPago.metodoPagoPorTipo(metodoPago1);
+			MetodoPago.metodoPagoPorTipo(metodoPago2);
+			MetodoPago.metodoPagoPorTipo(metodoPago3);
+			cliente1.setMembresia(membresia2);
+			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
 		}
 		
 		System.out.println("Bienvenido al cine de marinilla");
@@ -144,7 +150,7 @@ public class Administrador {
 			}
 		}while(!casoValido);
 		
-		do {
+		/*do {
 			System.out.print("Que deseas hacer:\n1.Reclamar un Bono.\n2.Hacer un pedido.\nSeleccione una opcion:");
 			int eleccion2 = (int)readLong();
 			if(eleccion2 == 1) {
@@ -157,7 +163,7 @@ public class Administrador {
 				
 			}
 		}while(casoValido);
-		
+		*/
 		
 		
 		
@@ -245,8 +251,6 @@ public class Administrador {
 	}
 	
 	static void adquirirMembresia() {
-		
-		System.out.println("Obteniendo membresia");
 		System.out.println(Membresia.mostrarCategoria());
 		System.out.println("Escoga la categoria de su membresia o escriba 5 para volver");
 		int opcion = (int)readLong();

@@ -14,15 +14,14 @@ public class Membresia {
 	private int valorSuscripcionMensual;
 	private int valorDescuentoAplicado;
 	private int duracionMembresiaDias;
-	private int tipo;
+	private int tipoMembresia;
 	
-	public Membresia(String nombre, int categoria, int valorSuscripcionMensual, int duracionMembresiaDias, int tipo) {
+	public Membresia(String nombre, int categoria, int valorSuscripcionMensual, int duracionMembresiaDias) {
 		this();
 		this.nombre = nombre;
 		this.categoria = categoria;
 		this.valorSuscripcionMensual = valorSuscripcionMensual;
 		this.duracionMembresiaDias = duracionMembresiaDias;
-		this.tipo = tipo;
 	}
 
 	public Membresia(){
@@ -38,7 +37,7 @@ public class Membresia {
 		this.valorSuscripcionMensual = valorSuscripcionMensual;
 		this.valorDescuentoAplicado = valorDescuentoAplicado;
 		this.duracionMembresiaDias = duracionMembresiaDias;
-		this.tipo = tipo;
+		this.tipoMembresia = tipo;
 		tiposDeMembresia.add(this);
 	}
 	
@@ -48,7 +47,7 @@ public class Membresia {
 	}
 	
 	/**
-	*<b>Description</b>: Este método se encarga de verificar si el cliente tiene memebresia activa
+	*<b>Description</b>: Este método se encarga de verificar si el cliente tiene membresia activa
 	*@param cliente : Se pide al cliente para revisar su atributo de tipo Membresia
 	*@return <b>string con switch</b> : Se retorna un texto indicando si tiene membresia o no y da
 	*las opciones para seguir con la funcionalidad o no.
@@ -73,40 +72,53 @@ public class Membresia {
 		}
 		
 		
-	
-	public double asignarDescuento() {
+	/**
+	*<b>Description</b>: Este método se encarga de asignar los descuentos dependiendo de la
+	* categoria de la membresia.
+	*@param none : No se necesitan parametros.
+	*@return <b>void</b> : No realiza retorno. El sistema asigna el correspondiente descuento
+	*dependiendo de la categoria recorrida en el array.
+	*/
+	public static void asignarDescuento() {
 		
-		
-		
-		
-		return 2.73;} 
+		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
+			
+	 		int categoria = membresia.getCategoria();
+	 		double descuento = 0.05;
+	 		descuento+=0.05 * categoria;
+	 		switch (categoria) {
+	 		
+	 		case 1: membresia.setDescuentoAsociado(descuento); break;
+	 		case 2: membresia.setDescuentoAsociado(descuento); break;
+	 		case 3: membresia.setDescuentoAsociado(descuento); break;
+	 		case 4: membresia.setDescuentoAsociado(descuento); break;
+	 		case 5: membresia.setDescuentoAsociado(descuento); break;
+	 		}
+		}	
+ 	}
+
 	
 	
 	public boolean actualizarSuscripcion() {
-		
-		
 		
 		return true;}
 	
 	
 	public void adquirirSuscripcion() {
 		
-		
 	}
+	
 	public ArrayList<Pelicula> recomendacionPeliculas(){
 		
-		
-		return new ArrayList<>();}
-	
+		return new ArrayList<>();
+		}
 	
 	public double aumentaLimiteDePago() {
-		
 		
 		return 2.73;}
 	
 	
 	public void recargarRegaloTarjetaCinemar() {
-		
 		
 	}
 	
@@ -126,14 +138,14 @@ public class Membresia {
 			}
 			i++;
 		}
-		/*System.out.println(resultado)*/;
+		/*System.out.println(resultado)*/
 		return resultado;
 	}
 
 	/**
 	*<b>Description</b>: Este método verifica a que categorias puede acceder el cliente.
 	*@param cliente : Se pide al cliente para revisar su historial de peliculas para la 
-	*verificación.
+	*verificación. Si tiene X peliculas vistas en el cine, tiene acceso a ciertas categorias.
 	*@param categoriaSeleccionada : Se pide el número de la categoria que quiera adquirir.
 	*@return <b>boolean</b> : Se retorna un dato booleano que indica si el cliente puede 
 	*adquirir la categoria de membresia seleccionada.
@@ -159,10 +171,10 @@ public class Membresia {
 	*/
 	public static void asignarTipoMembresia () {
 		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
-			if (1>= membresia.getCategoria() && membresia.getCategoria() <=3) {
-				membresia.setTipo(1);
+			if (membresia.getCategoria() > 0 && membresia.getCategoria() < 4) {
+				membresia.setTipoMembresia(1);
 			} else {
-				membresia.setTipo(2);
+				membresia.setTipoMembresia(2);
 			}
 		}
 	}
@@ -200,14 +212,21 @@ public class Membresia {
 		Membresia.tiposDeMembresia = tiposDeMembresia;
 	}
 
-	public int getTipo() {
-		return tipo;
+	public int getTipoMembresia() {
+		return tipoMembresia;
 	}
 
-	public void setTipo(int tipo) {
-		this.tipo = tipo;
+	public void setTipoMembresia(int tipo) {
+		this.tipoMembresia = tipo;
 	}
-	
+
+	public double getDescuentoAsociado() {
+		return descuentoAsociado;
+	}
+
+	public void setDescuentoAsociado(double descuentoAsociado) {
+		this.descuentoAsociado = descuentoAsociado;
+	}
 	
 	
 }
