@@ -173,7 +173,7 @@ public class Administrador {
 	
 	static void ingresoZonaJuegos() {
 
-		System.out.println("\nPara entrar a los juegos es necesario tener la tarjeta cinemar\n¿Desea ingresar o volver?\n1.Ingresar\n2.Volver\n3.Salir");
+		System.out.println("\nPara entrar a los juegos es necesario tener la tarjeta cinemar\n¿Desea ingresar o volver?\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
 		int opcion = (int)readLong();
 		if (opcion==2) {inicio();}
 		else if (opcion==1) {}
@@ -182,13 +182,15 @@ public class Administrador {
 		TipoDeDocumento documentoCliente=null;
 		boolean casoValido = true;
 		do{
-			System.out.println("Seleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Volver");
+			System.out.println("Seleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Regresar\n5.Volver al menú principal\n6.Salir");
 			int opcion1 = (int)readLong();
 			switch (opcion1) {
 				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
 				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
 				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
 				case 4: ingresoZonaJuegos();casoValido=false;break;
+				case 5: inicio();casoValido=false;break;
+				case 6: salirDelSistema();
 				default: System.out.println("Opcion invalida");break;
 			}
 		}while(casoValido);	
@@ -196,38 +198,38 @@ public class Administrador {
 		do {
 			System.out.print("Ingrese el numero de documento: ");
 			long numeroDocumentoCliente = readLong();
-			Cliente cliente1=Cliente.revisarDatosCliente(numeroDocumentoCliente);
-			if (cliente1==null) {
+			Cliente cliente=Cliente.revisarDatosCliente(numeroDocumentoCliente);
+			if (cliente==null) {
 				System.out.print("Ingrese su edad: ");
 				int edadCliente = (int)readLong();
 				System.out.print("Ingrese su nombre: ");
 				String nombreCliente = readLn();
-				cliente1 = new Cliente(nombreCliente,null,null,null,edadCliente,null,numeroDocumentoCliente,0,documentoCliente,null,null,null);
+				cliente = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
 				if (ServicioEntretenimiento.verificarTarjetasEnInventario()) {
 					System.out.println("\nEl precio de la tarjeta Cinemar es de 5000 pesos\nEste valor sera descontado al saldo de su tarjeta");
-					ServicioEntretenimiento.asociarTarjetaCliente(cliente1);
-					cliente1.getCuenta().hacerPago(5000);
-					System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente1.getCuenta().getDueno().getNombre()+"\nSaldo: "+cliente1.getCuenta().getSaldo());
+					ServicioEntretenimiento.asociarTarjetaCliente(cliente);
+					cliente.getCuenta().hacerPago(5000);
+					System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
 				}
 				else {System.out.println("\nLo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); inicio();}
 				casoValido=true;
 			}
 			else {
-				System.out.println("¿Eres "+cliente1.getNombre()+"?");
+				System.out.println("¿Eres "+cliente.getNombre()+"?");
 				System.out.println("1. SI\n2. NO");
 				int eleccion = (int)readLong();
 				if (eleccion==1) {
-					if (!cliente1.verificarCuenta()) {
+					if (!cliente.verificarCuenta()) {
 						if (ServicioEntretenimiento.verificarTarjetasEnInventario()) {
-							System.out.println("\nEl precio de la tarjeta Cinemar es de 5000 pesos\nEste valor sera descontado al saldo de su tarjeta");
-							ServicioEntretenimiento.asociarTarjetaCliente(cliente1);
-							cliente1.getCuenta().hacerPago(5000);
-							System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente1.getCuenta().getDueno().getNombre()+"\nSaldo: "+cliente1.getCuenta().getSaldo());
+							System.out.println("\nEl precio de la tarjeta Cinemar es de $5000 pesos\nEste valor sera descontado al saldo de su tarjeta");
+							ServicioEntretenimiento.asociarTarjetaCliente(cliente);
+							cliente.getCuenta().hacerPago(5000);
+							System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
 						}
 						else {System.out.println("Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); inicio();}
 					}
 					else {
-						System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente1.getCuenta().getDueno().getNombre()+"\nSaldo: "+cliente1.getCuenta().getSaldo());
+						System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
 					}
 					casoValido=true;
 				}
@@ -237,17 +239,49 @@ public class Administrador {
 				else {System.out.println("Opcion invalida\n");}
 			}
 		}while(!casoValido);
-		System.out.println("¿Deseas recargar la tarjeta?");
-		System.out.println("1. SI\n2. NO");
-		int eleccion1 = (int)readLong();
-		if (eleccion1==1) {
-			
-		}
-		else if (eleccion1==2) {
-			System.out.println("Recuerde que debe tener saldo para acceder a los diferentes juegos\nSu saldo en Tarjeta Cinemar: "+Cliente.getClientes().get(Cliente.getClientes().size()-1).getCuenta().getSaldo());
-			
-		}
-		
+		Cliente clienteActual = Cliente.getClientes().get(Cliente.getClientes().size()-1);
+		do {
+			System.out.println("¿Deseas recargar la tarjeta?");
+			System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir");
+			int eleccion1 = (int)readLong();
+			if (eleccion1==1) {
+				
+				System.out.println("Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago");
+				System.out.println("1."+metodoPago1.getNombre()+"-Recarga maxima: $"+metodoPago1.getLimiteMaximoPago()+
+						"\n2."+metodoPago2.getNombre()+"Recarga maxima: $"+metodoPago2.getLimiteMaximoPago()+
+						"\n3."+metodoPago3.getNombre()+"Recarga maxima: $"+metodoPago3.getLimiteMaximoPago()+
+						"\n4.Efectivo");
+				int eleccion2 = (int)readLong();
+				System.out.println("¿Cuanto desea recargar?\n");
+				double eleccion3 = (double)readLong();
+				switch (eleccion2) {
+				
+				case 1:
+					System.out.print("Ingrese contraseña (4 digitos): ");
+					int clave = (int) readLong();
+					clienteActual.getMetodosDePago().add(metodoPago1);
+					
+					if (eleccion3>metodoPago1.getLimiteMaximoPago()) {
+						clienteActual.getCuenta().ingresarSaldo(metodoPago1.getLimiteMaximoPago());
+						System.out.println("El valor a recargar ha superado el limite permitido por "+metodoPago1.getNombre()+
+								"\nPor favor escoja otro metodo de pago para pagar los $"+(eleccion3-metodoPago1.getLimiteMaximoPago())+
+								" restantes");
+					}
+				}
+				casoValido= false;
+			}
+			else if (eleccion1==2) {
+				System.out.println("Recuerde que debe tener saldo para acceder a los diferentes juegos\nSu saldo en Tarjeta Cinemar: "+clienteActual.getCuenta().getSaldo());
+				casoValido = false;
+			}
+			else if (eleccion1==3) {
+				inicio();
+			}
+			else if (eleccion1==4) {
+				salirDelSistema();
+			}
+			else {System.out.println("Opcion invalida");}
+		}while(casoValido);
 	}
 	
 	static void adquirirMembresia() {

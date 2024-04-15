@@ -22,7 +22,12 @@ public class TarjetaCinemar {
 	}
 	
 	//metodos
-	private void ingresarSaldo() {}
+	/**
+	*Description: suma al saldo de la tarjeta Cinemar
+	*@param saldo :  Es el valor a sumar en la tarjeta
+	*/
+	public void ingresarSaldo(double saldo) {this.saldo+=saldo;}
+	
 	private void mostarSaldo() {}
 	
 	/**
