@@ -2,12 +2,10 @@ package gestionAplicacion.servicios;
 import java.util.ArrayList;
 import java.util.Date;
 
-import gestionAplicacion.usuario.Cliente;
-import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.*;
 
 
-public class ServicioEntretenimiento extends Servicio{
+public class ServicioEntretenimiento extends Servicio implements IBuyable{
 	
 	//Atributos
 	private String nombreServicio;
@@ -81,6 +79,24 @@ public class ServicioEntretenimiento extends Servicio{
 
 	public static void setTarjetasEnInventario(ArrayList<TarjetaCinemar> tarjetasEnInventario) {
 		ServicioEntretenimiento.tarjetasEnInventario = tarjetasEnInventario;
+	}
+
+	@Override
+	public double realizarPago(MetodoPago metodoDePago) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void procesarPagoRealizado(Cliente cliente) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String factura(Cliente cliente) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

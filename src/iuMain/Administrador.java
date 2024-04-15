@@ -49,52 +49,54 @@ public class Administrador {
 	
 	
 	
+	
+	
 	public static void main(String[] args) {
 		//Llamados métodos de instancias para hacer pruebas
 		{
 			
-			salaDeCine1.crearAsientosSalaDeCine();
-			salaDeCine1.setNumeroSala(1);
-			
-			pelicula1.crearSalaVirtual("10AM");
-			pelicula1.crearSalaVirtual("3PM");
-			pelicula1.crearSalaVirtual("8PM");
-			pelicula1.setNumeroDeSala(1);
-			
-			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
-			
-			ticket1.setPelicula(pelicula1);
-			ticket1.asignarPrecio();
-			ticket1.setSalaDeCine(salaDeCine1);
-			ticket1.setDueno(cliente1);
-			ticket1.setNumeroAsiento("4-4");
-			ticket1.procesarPagoRealizado(cliente2);
-			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
-			ticket1.realizarPago(metodoPago1);
-			
-			ticket2.setPelicula(pelicula1);
-			ticket2.asignarPrecio();
-			ticket2.setSalaDeCine(salaDeCine1);
-			ticket2.setDueno(cliente2);
-			ticket2.setNumeroAsiento("4-4");
-			ticket2.procesarPagoRealizado(cliente1);
-			pelicula1.modificarSalaVirtual("3PM",4, 4);
-			
-			ticket3.setPelicula(pelicula2);
-			ticket3.asignarPrecio();
-			
-			ticket4.setPelicula(pelicula1);
-			ticket4.asignarPrecio();
-
+//			salaDeCine1.crearAsientosSalaDeCine();
+//			salaDeCine1.setNumeroSala(1);
+//			
+//			pelicula1.crearSalaVirtual("10AM");
+//			pelicula1.crearSalaVirtual("3PM");
+//			pelicula1.crearSalaVirtual("8PM");
+//			pelicula1.setNumeroDeSala(1);
+//			
+//			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
+//			
+//			ticket1.setPelicula(pelicula1);
+//			ticket1.asignarPrecio();
+//			ticket1.setSalaDeCine(salaDeCine1);
+//			ticket1.setDueno(cliente1);
+//			ticket1.setNumeroAsiento("4-4");
+//			ticket1.procesarPagoRealizado(cliente2);
+//			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
+//			ticket1.realizarPago(metodoPago1);
+//			
+//			ticket2.setPelicula(pelicula1);
+//			ticket2.asignarPrecio();
+//			ticket2.setSalaDeCine(salaDeCine1);
+//			ticket2.setDueno(cliente2);
+//			ticket2.setNumeroAsiento("4-4");
+//			ticket2.procesarPagoRealizado(cliente1);
+//			pelicula1.modificarSalaVirtual("3PM",4, 4);
+//			
+//			ticket3.setPelicula(pelicula2);
+//			ticket3.asignarPrecio();
+//			
+//			ticket4.setPelicula(pelicula1);
+//			ticket4.asignarPrecio();
+//
 			Membresia.asignarTipoMembresia();
 			MetodoPago.metodoPagoPorTipo(metodoPago1);
 			MetodoPago.metodoPagoPorTipo(metodoPago2);
 			MetodoPago.metodoPagoPorTipo(metodoPago3);
-			cliente1.setMembresia(membresia1);
-			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
-			/*cliente1.setMembresia(membresia1)*/
-			
-			System.out.println();
+//			cliente1.setMembresia(membresia1);
+//			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
+//			/*cliente1.setMembresia(membresia1)*/
+//			
+//			System.out.println(MetodoPago.getMetodosDePagoDisponibles().size());
 					
 		}
 		
@@ -285,10 +287,7 @@ public class Administrador {
 			if (eleccion1==1) {
 				
 				System.out.println("Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago");
-				System.out.println("1."+metodoPago1.getNombre()+"-Recarga maxima: $"+metodoPago1.getLimiteMaximoPago()+
-						"\n2."+metodoPago2.getNombre()+"Recarga maxima: $"+metodoPago2.getLimiteMaximoPago()+
-						"\n3."+metodoPago3.getNombre()+"Recarga maxima: $"+metodoPago3.getLimiteMaximoPago()+
-						"\n4.Efectivo");
+				System.out.println(MetodoPago.mostrarMetodosDePago(clienteActual));
 				int eleccion2 = (int)readLong();
 				System.out.println("¿Cuanto desea recargar?\n");
 				double eleccion3 = (double)readLong();
@@ -297,14 +296,13 @@ public class Administrador {
 				case 1:
 					System.out.print("Ingrese contraseña (4 digitos): ");
 					int clave = (int) readLong();
-					clienteActual.getMetodosDePago().add(metodoPago1);
 					
-					if (eleccion3>metodoPago1.getLimiteMaximoPago()) {
-						clienteActual.getCuenta().ingresarSaldo(metodoPago1.getLimiteMaximoPago());
-						System.out.println("El valor a recargar ha superado el limite permitido por "+metodoPago1.getNombre()+
-								"\nPor favor escoja otro metodo de pago para pagar los $"+(eleccion3-metodoPago1.getLimiteMaximoPago())+
-								" restantes");
-					}
+//					if (eleccion3>metodoPago1.getLimiteMaximoPago()) {
+//						clienteActual.getCuenta().ingresarSaldo(metodoPago1.getLimiteMaximoPago());
+//						System.out.println("El valor a recargar ha superado el limite permitido por "+metodoPago1.getNombre()+
+//								"\nPor favor escoja otro metodo de pago para pagar los $"+(eleccion3-metodoPago1.getLimiteMaximoPago())+
+//								" restantes");
+//					}
 				}
 				casoValido= false;
 			}
