@@ -2,12 +2,10 @@ package gestionAplicacion.servicios;
 import java.util.ArrayList;
 import java.util.Date;
 
-import gestionAplicacion.usuario.Cliente;
-import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.*;
 
 
-public class ServicioEntretenimiento extends Servicio{
+public class ServicioEntretenimiento extends Servicio implements IBuyable{
 	
 	//Atributos
 	private String nombreServicio;
@@ -45,6 +43,12 @@ public class ServicioEntretenimiento extends Servicio{
 	public String asignarPremio() {return "premio";}
 	public Bono crearBono() {return new Bono();}
 	
+	
+	/**
+	*Description: Se verifica si almenos hay alguna tarjeta disponible en el array de tarjetas en inventario.
+	*@return <b>boolean</b> :  retorna true o false si hay o no tarjetas en inventario.
+	*/
+	
 	public static boolean verificarTarjetasEnInventario() {
 		boolean value= false;
 		if (tarjetasEnInventario.size()>0) {
@@ -53,6 +57,12 @@ public class ServicioEntretenimiento extends Servicio{
 		return value;
 	}
 	
+	/**
+	*Description: Toma la primera tarjeta cinemar disponible y le asocia el cliente, se le cambia el estado, y se le asigna saldo 0,
+	*ademas, al Cliente se le asocia la tajeta cinemar y se elimina esa tarjeta del ArrayList de tarjetas en inventario
+	*@param cliente :  se pasa el cliente a asociar la tarjeta Cinemar.
+	
+	*/
 	public static void asociarTarjetaCliente(Cliente cliente) {
 		tarjetasEnInventario.get(0).setDueno(cliente);
 		tarjetasEnInventario.get(0).setEstado(false);
@@ -69,6 +79,24 @@ public class ServicioEntretenimiento extends Servicio{
 
 	public static void setTarjetasEnInventario(ArrayList<TarjetaCinemar> tarjetasEnInventario) {
 		ServicioEntretenimiento.tarjetasEnInventario = tarjetasEnInventario;
+	}
+
+	@Override
+	public double realizarPago(MetodoPago metodoDePago) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void procesarPagoRealizado(Cliente cliente) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String factura(Cliente cliente) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

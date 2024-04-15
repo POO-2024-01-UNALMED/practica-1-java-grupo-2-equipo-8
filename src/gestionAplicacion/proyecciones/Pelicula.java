@@ -109,11 +109,24 @@ public class Pelicula{
 	}
 
 	// Constructor
-	public Pelicula(){}
+	public Pelicula(){
+		Pelicula.getCartelera().add(this);
+	}
+
+	public Pelicula(String nombre, int precio, String genero, String duracion, String clasificacion,
+			String tipoDeFormato) {
+		this();
+		this.nombre = nombre;
+		this.precio = precio;
+		this.genero = genero;
+		this.duracion = duracion;
+		this.clasificacion = clasificacion;
+		this.tipoDeFormato = tipoDeFormato;
+	}
 
 	public Pelicula(String nombre, int precio, String genero, String duracion, String clasificacion,
 			Map<String, int[][]> horarios, String tipoDeFormato, int numeroDeSala, int idPelicula) {
-		super();
+		this();
 		this.nombre = nombre;
 		this.precio = precio;
 		this.genero = genero;
@@ -126,7 +139,11 @@ public class Pelicula{
 	}
 
 	//Methods
-	
+	/**
+	 * Description : Este método genera una lista filtrada según el nombre de la película seleccionada por el usuario
+	 * @param nombrePelicula : Recibe el nombre de una de las películas disponibles en cartelera
+	 * @return filtroPeliculas : Retorna una lista de las películas cuyo nombre coincida con el parámetro.
+	 * */
 	public ArrayList<Pelicula> filtrarNombrePeliculas(String nombrePelicula){
 		ArrayList<Pelicula> filtroPeliculas = new ArrayList<Pelicula>();
 		for (Pelicula pelicula : cartelera){
@@ -137,15 +154,24 @@ public class Pelicula{
 		return filtroPeliculas;
 	}
 	
-	public Pelicula filtrarTipoFormatoPeliculas(ArrayList<Pelicula> peliculas, String TipoDeFormato){
+	/**
+	 * Description : Este método obtiene la película de lista filtrada por nombre que coincide 
+	 * con el formato dado por el cliente 
+	 * @param peliculas : Lista de películas filtradas por nombre
+	 * @param tipoDeFormato : String que contiene el formato seleccionado por el cliente
+	 * @return <b>pelicula</b> : Retorna el objeto película que cumple los criterios anteriores
+	 * */
+	public Pelicula filtrarTipoFormatoPeliculas(ArrayList<Pelicula> peliculas, String tipoDeFormato){
 		for (Pelicula pelicula : peliculas){
-			if (pelicula.getTipoDeFormato().equals(TipoDeFormato)) {
+			if (pelicula.getTipoDeFormato().equals(tipoDeFormato)) {
 				return pelicula;
 			}
 		}
 		return null;
 	}
 	
+	//Este método es una versión resumida de los dos anteriores
+	/*
 	public Pelicula seleccionarPeliculaSolicitada(String nombrePelicula, String TipoDeFormato) {
 		for (Pelicula pelicula : cartelera){
 			if (pelicula.getNombre().equals(nombrePelicula) & pelicula.getTipoDeFormato().equals(TipoDeFormato)) {
@@ -154,11 +180,12 @@ public class Pelicula{
 		}
 		return null;
 	}
+	*/
 	
 	/**
-	 * @Descripcion : dfhasdjfjkajfajflksdjfksajflksajflksj
-	 * @params: dklajflkfjdlkaj aksdjflkasdjlkfj jañdjflksadj
-	 * @return: akjsdfklasjdfkl aksdjfsajflkajsfkj asdlkfjdsafl
+	 * Description : Este método se encarga de mostrar un listado con los horarios disponibles de la pelicula 
+	 * solicitada cabe destacar que la pelicula es quien se ejecuta su método.
+	 * @return <b>String</b> : Retorna un string con las llaves del diccionario enumeradas de 1 a N.
 	 * */
 	public String mostrarHorarioPelicula() {
 		String horarios = null;
@@ -173,35 +200,71 @@ public class Pelicula{
 		return horarios;
 	}
 	
+	/**
+	 * Description : Este método se encarga de verificar si la pelicula seleccionada se encuentra en presentación
+	 * y en caso de que sí, retorna el objeto salaCine que la esta presentando
+	 * @return <b>SalaDeCine</b> : Retorna el objeto de sala de cine que coincide con la pelicula
+	 * */
 	public SalaCine obtenerSalaDePeliculaEnPresentacion() {
 		for (SalaCine SalaDecine : getSalasDeCine()) {
-			if (this.getNombre().equals(SalaDecine.getPeliculaEnPresentacion().getNombre())) {
+			if (this.equals(SalaDecine.getPeliculaEnPresentacion())){
 				return SalaDecine;
 			}
 		}
 		return null;
 	}
 	
+	/**
+	 * Description : Este método se encarga de generar un String que se imprimirá en pantalla con el fin de visualizar
+	 * el estado de de los asientos en la sala virtual
+	 * @param horario : Recibe un string que corresponde a la llave de horarios que seleccionó el cliente
+	 * @return <b>resultado</b> : Retorna un string con las posiciones de los asientos y su disponibilidad
+	 * */
 	public String mostrarAsientosSalaVirtual(String horario) {
-		String resultado = "Asientos de Cine" + "\n" + "      1   2   3   4   5   6   7   8" + "\n";
-		for (int i = 0; i < this.getHorarios().get(horario).length; i++) {
-			resultado = resultado + i + "    ";
-			for (int j = 0; j < this.getHorarios().get(horario).length; j++) {
-				resultado = resultado + "[" + this.getHorarios().get(horario)[i][j] + "]" + " ";
-			}
-			resultado = resultado + "\n";
-		}
-		return resultado;
+		StringBuilder resultado = new StringBuilder("Asientos de Cine\n");
+	    resultado.append("   ");
+	   
+	    // Agregar números de columnas
+	    for (int i = 0; i < this.getHorarios().get(horario).length; i++) {
+	        resultado.append(String.format("%-4d", i + 1));
+	    }
+	    resultado.append("\n");
+
+	    // Mostrar asientos
+	    for (int i = 0; i < this.getHorarios().get(horario).length; i++) {
+	        resultado.append(String.format("%-2d ", i + 1));
+	        for (int j = 0; j < this.getHorarios().get(horario).length; j++) {
+	            resultado.append("[");
+	            resultado.append((this.getHorarios().get(horario)[i][j] == 1) ? "X" : "O");
+	            resultado.append("] ");
+	        }
+	        resultado.append("\n");
+	    }
+
+	    return resultado.toString();
 	}
+	
+	/**
+	 * Description : Este método se encarga cambiar la desponibilidad de un índice de la salaVirtual
+	 * @param horario : Recibe la llave de horarios seleccionada por el cliente
+	 * @param fila : Recibe el número de la fila seleccionada por el cliente
+	 * @param columna : Recibe el número de la columna seleccionada por el cliente
+	 * */
 	public void modificarSalaVirtual(String horario, int fila, int columna) {
-		if (this.getHorarios().get(horario)[fila][columna] == 0) {
-			this.getHorarios().get(horario)[fila][columna] = 1;	
+		if (this.getHorarios().get(horario)[fila - 1][columna - 1] == 0) {
+			this.getHorarios().get(horario)[fila - 1][columna - 1] = 1;	
 		}else {
-			this.getHorarios().get(horario)[fila][columna] = 0;	
+			this.getHorarios().get(horario)[fila - 1][columna - 1] = 0;	
 		}	
 	}
 	
-	public void crearSalaVirtual(String Horario) {
+	/**
+	 * Description : Este método se encarga de crear una matriz que representa la sala virtual
+	 * posteriormente esta se pasa como valor a una llave y se introducen en el diccionario de horarios
+	 * @param horario : Recibe un String que corresponde a la llave seleccionada por el usuario de horarios
+	 * @return <b>Void</b> : No retorna nada, solo añade un par clave, valor a horarios
+	 * */
+	public void crearSalaVirtual(String horario) {
 		int[][] nuevaSalaVirtual = new int[8][8];
 		
 		for (int i = 0; i < 8; i++) {
@@ -209,9 +272,13 @@ public class Pelicula{
 				nuevaSalaVirtual[i][j] = 0;
 			}
 		}
-		this.getHorarios().put(Horario, nuevaSalaVirtual);
+		this.getHorarios().put(horario, nuevaSalaVirtual);
 	}
 	
+	/**
+	 * Description : Este método se encarga de filtar las películas en cartelera cuya categoría es para niños
+	 * @return <b>ArrayList</b> : Retorna una lista con las peliculas filtradas por el criterio anterior 
+	 * */
 	public ArrayList<Pelicula> mostrarCarteleraInfantil(){
 		ArrayList<Pelicula> carteleraInfantil = new ArrayList<Pelicula>();
 		for (Pelicula pelicula : cartelera) {
@@ -221,6 +288,30 @@ public class Pelicula{
 		}
 		return carteleraInfantil;
 	}
+	
+	//Crear método para generar menú cartelera
+	/**
+	 * Description : Este método se encarga de crear un string que se imprimirá en pantalla para visualizar las 
+	 * películas en cartelera
+	 * @return <b>String</b> : Retorna un string con el nombre, duración y formato de las películas en cartelera
+	 * */
+	public static String mostrarCartelera(){
+		String resultado = null;
+		int i = 1;
+		for (Pelicula pelicula : cartelera) {
+			if (resultado == null) {
+				resultado = i + ". Película: " + pelicula.getNombre() + "; Duración: " + pelicula.getDuracion() 
+				+ "; Formato: " + pelicula.getTipoDeFormato() + "\n";
+			}else {
+				resultado = resultado + i + ". Película: " + pelicula.getNombre() + "; Duración: " 
+				+ pelicula.getDuracion() + "; Formato: " + pelicula.getTipoDeFormato() + "\n";
+			}
+			i++;
+		}
+		return resultado;
+		
+	}
+	
 	
 	
 }

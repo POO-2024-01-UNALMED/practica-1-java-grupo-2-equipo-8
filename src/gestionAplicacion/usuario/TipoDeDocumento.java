@@ -15,6 +15,11 @@ public enum TipoDeDocumento {
 		TiposDeDocumento = tiposDeDocumento;
 	}
 	
+	/**
+	 * Description : Este método genera un String que se imprimirá en pantalla, con el fin de que el usuario
+	 * pueda visualizar los distintos tipos de tipos de documento
+	 * @return resultado : Retorna un string, que se imprimirá en pantalla como parte del menú de las funcionalidades.
+	 * */
 	public static String mostrarTiposDeDocumento() {
 		String resultado = null;
 		int i = 1;

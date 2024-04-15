@@ -9,7 +9,7 @@ public class Cliente {
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
 	private Ticket ticket;
-	private ArrayList<String> factura = new ArrayList<>();
+	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
 	private Membresia membresia;
 	private long documento;
@@ -32,7 +32,7 @@ public class Cliente {
 		clientes.add(this);
 	}
 
-	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, Ticket ticket, ArrayList<String> factura,
+	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, Ticket ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, int duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<Bono> bonosCliente) {
@@ -40,7 +40,7 @@ public class Cliente {
 		this.nombre = nombre;
 		this.historialDePeliculas = historialDePeliculas;
 		this.ticket = ticket;
-		this.factura = factura;
+		this.facturas = facturas;
 		this.edad = edad;
 		this.membresia = membresia;
 		this.documento = documento;
@@ -48,21 +48,36 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 		this.cuenta = cuenta;
 		this.metodosDePago = metodosDePago;
-		this.bonosCliente = bonosCliente;
+		this.setBonosCliente(bonosCliente);
 		clientes.add(this);
 	}
 	
 	//Methods
-	public static String obtenerClientePorCedula(Long Documento) {
-		boolean verificacion;
+	/**
+	 * Description : Este método genera un String que se imprimirá en pantalla, con el fin de que el usuario
+	 * pueda visualizar la información relevante a su perfil.
+	 * @param documento : Solicita un Long que corresponde al documento del usuario.
+	 * @return String : Retorna la información del cliente, obtenida por el toString() de este.
+	 * */
+	public static String obtenerClientePorCedula(Long documento) {
+		boolean verificacion = false;
 		for (Cliente cliente : clientes) {
-			verificacion = (cliente.getDocumento() == Documento);
+			verificacion = (cliente.getDocumento() == documento);
 			if (verificacion) {
 				return cliente.toString();
 			}
 		}
-		return "El cliente no ha sido encontrado";
+		return "El usuario no ha sido encontrado";
 	}
+	
+	
+	/**
+	*Description: se recibe un parametro long con el numero de cedula de el cliente y se busca en el array
+	*de clientes si hay alguno que tiene ese mismo documento asociado, en caso de que si se retorna ese cliente
+	*del array y de lo contrario se retorna nulo.
+	*@param numero :  sirve para verificar si el usuario ya esta registrado
+	*@return <b>Cliente</b> :  se retorna nulo en caso de que no exista el cliente o se retorna el cliente existente.
+	*/
 	
 	public static Cliente revisarDatosCliente(long numero) {
 		Cliente cliente1=null;
@@ -77,6 +92,11 @@ public class Cliente {
 	public Ticket generarTicket() {return new Ticket();}
 	public void editarCuenta() {}
 	public void modificarMetodosDePago() {}
+	
+	/**
+	*Description: se verifica si el usuario tiene asociada una cuenta de tarjeta cinemar 
+	*@return <b>boolean</b> :  retorna true o false dependiendo si cumple o no la condicion
+	*/
 	
 	public boolean verificarCuenta() {
 		boolean value = false;
@@ -127,12 +147,12 @@ public class Cliente {
 		this.ticket = ticket;
 	}
 
-	public ArrayList<String> getFactura() {
-		return factura;
+	public ArrayList<String> getFacturas() {
+		return facturas;
 	}
 
-	public void setFactura(ArrayList<String> factura) {
-		this.factura = factura;
+	public void setFacturas(ArrayList<String> facturas) {
+		this.facturas = facturas;
 	}
 
 	public int getEdad() {
@@ -190,6 +210,7 @@ public class Cliente {
 	public void setBonosCliente(ArrayList<Bono> bonosCliente) {
 		this.bonosCliente = bonosCliente;
 	}
+
 	
 	
 	
