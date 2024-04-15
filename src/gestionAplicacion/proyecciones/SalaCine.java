@@ -38,7 +38,6 @@ public class SalaCine {
 	 * */
 	public void crearAsientosSalaDeCine() {
 		Asiento[][] DistribucionAsientosSalaDeCine = new Asiento[8][8];
-		int k = 0;
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				DistribucionAsientosSalaDeCine[i][j] = new Asiento();
@@ -47,7 +46,6 @@ public class SalaCine {
 		this.asientos = DistribucionAsientosSalaDeCine;
 	}
 	
-	//Mejorar forma de mostrar los asientos (cambiar por "X" en uso y "O" libres)
 	/**
 	 * @Description : Este método se encarga de generar un string que se imprimirá en pantalla para visualizar los
 	 * asientos y su disponiblidad
@@ -55,17 +53,28 @@ public class SalaCine {
 	 * pueda interactuar con la funcionalidad
 	 * */
 	public String mostrarAsientos() {
-		String resultado = "Asientos de Cine" + "\n" + "	1      2      3      4      5      6      7      8" + "\n";
-		for (int i = 0; i < this.getAsientos().length; i++) {
-			resultado = resultado + i + "    ";
-			for (int j = 0; j < this.getAsientos().length; j++) {
-				resultado = resultado + "[" + this.getAsientos()[i][j].isDisponibilidad() + "]" + " ";
-			}
-			resultado = resultado + "\n";
-		}
-		return resultado;
+	    StringBuilder resultado = new StringBuilder("Asientos de Cine\n");
+	    resultado.append("   ");
+	   
+	    // Agregar números de columnas
+	    for (int i = 0; i < this.getAsientos().length; i++) {
+	        resultado.append(String.format("%-4d", i + 1));
+	    }
+	    resultado.append("\n");
+
+	    // Mostrar asientos
+	    for (int i = 0; i < this.getAsientos().length; i++) {
+	        resultado.append(String.format("%-2d ", i + 1));
+	        for (int j = 0; j < this.getAsientos()[i].length; j++) {
+	            resultado.append("[");
+	            resultado.append(this.getAsientos()[i][j].isDisponibilidad() ? "O" : "X");
+	            resultado.append("] ");
+	        }
+	        resultado.append("\n");
+	    }
+
+	    return resultado.toString();
 	}
-	
 	/**
 	 * @Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
 	 * si su disponibilidad es false, la cambia a true, en caso de que sea true, la cambia a false.
@@ -74,18 +83,16 @@ public class SalaCine {
 	 * @return : (void): Este método no retorna nada, solo actualiza los asientos de la sala de cine
 	 * */
 	public void cambiarDisponibilidadAsiento(int fila, int columna) {
-		if (this.getAsientos()[fila][columna].isDisponibilidad()) {
-			this.getAsientos()[fila][columna].setDisponibilidad(false);	
+		if (this.getAsientos()[fila - 1][columna - 1].isDisponibilidad()) {
+			this.getAsientos()[fila - 1][columna - 1].setDisponibilidad(false);	
 		}else {
-			this.getAsientos()[fila][columna].setDisponibilidad(true);	
+			this.getAsientos()[fila - 1][columna - 1].setDisponibilidad(true);	
 		}	
 	}
 	
+	public boolean verificarFactura() {return true;}
 	public boolean verificarTicket() {return true;}
 	public void destriurTicket() {}
-	public void visualizarAsientosSalaDeCine() {
-		
-	}
 	public void actualizarPeliculaEnPresentacion() {}
 
 	// Getters and Setters

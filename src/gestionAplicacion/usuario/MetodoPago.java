@@ -152,6 +152,25 @@ public class MetodoPago {
 	public void setLimiteMaximoPago(double limiteMaximoPago) {
 		this.limiteMaximoPago = limiteMaximoPago;
 	}
-	
+
+
+	public static ArrayList<MetodoPago> getMetodosDePagoUsados() {
+		return metodosDePagoUsados;
+	}
+
+
+	public static void setMetodosDePagoUsados(ArrayList<MetodoPago> metodosDePagoUsados) {
+		MetodoPago.metodosDePagoUsados = metodosDePagoUsados;
+	}
+
+
+	public double getValorServicio() {
+		return valorServicio;
+	}
+
+
+	public void setValorServicio(double valorServicio) {
+		this.valorServicio = valorServicio;
+	}
 
 }

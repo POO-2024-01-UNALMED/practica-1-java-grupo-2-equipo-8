@@ -26,8 +26,9 @@ public class Administrador {
 	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 	
-	static Pelicula pelicula1 = new Pelicula("KNJ temparada 4 movie", 18000, "Acción", "1 hora", "+18", "4D"); 
+	static Pelicula pelicula1 = new Pelicula("KNJ temparada 4 movie", 30000, "Acción", "1 hora", "+18", "4D"); 
 	static SalaCine salaDeCine1 = new SalaCine();
+
 	static Pelicula pelicula2 = new Pelicula("Kong vs Godzilla Turbo Remix", 7000, "Acción", "2 horas", "+18","2D"); 
 
 	static Membresia membresia1 = new Membresia("Basico", 1, 5000, 10);
@@ -36,28 +37,65 @@ public class Administrador {
 	static Membresia membresia4 = new Membresia("Challenger", 4, 25000, 25);
 	static Membresia membresia5 = new Membresia("Radiante", 5, 30000, 30);
 	
+	static Ticket ticket1 = new Ticket();
+	static Ticket ticket2 = new Ticket();
+	static Ticket ticket3 = new Ticket();
+	static Ticket ticket4 = new Ticket();
+
 	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 100000, 0.10);
 	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 60000, 0.05);
 	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 150000, 0.15);
+	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",10000000, 0);
 	
 	
 	
 	public static void main(String[] args) {
 		//Llamados métodos de instancias para hacer pruebas
 		{
+			
+			salaDeCine1.crearAsientosSalaDeCine();
+			salaDeCine1.setNumeroSala(1);
+			
 			pelicula1.crearSalaVirtual("10AM");
 			pelicula1.crearSalaVirtual("3PM");
 			pelicula1.crearSalaVirtual("8PM");
+			pelicula1.setNumeroDeSala(1);
 			
 			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
 			
-			salaDeCine1.crearAsientosSalaDeCine();
+			ticket1.setPelicula(pelicula1);
+			ticket1.asignarPrecio();
+			ticket1.setSalaDeCine(salaDeCine1);
+			ticket1.setDueno(cliente1);
+			ticket1.setNumeroAsiento("4-4");
+			ticket1.procesarPagoRealizado(cliente2);
+			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
+			ticket1.realizarPago(metodoPago1);
+			
+			ticket2.setPelicula(pelicula1);
+			ticket2.asignarPrecio();
+			ticket2.setSalaDeCine(salaDeCine1);
+			ticket2.setDueno(cliente2);
+			ticket2.setNumeroAsiento("4-4");
+			ticket2.procesarPagoRealizado(cliente1);
+			pelicula1.modificarSalaVirtual("3PM",4, 4);
+			
+			ticket3.setPelicula(pelicula2);
+			ticket3.asignarPrecio();
+			
+			ticket4.setPelicula(pelicula1);
+			ticket4.asignarPrecio();
+
 			Membresia.asignarTipoMembresia();
 			MetodoPago.metodoPagoPorTipo(metodoPago1);
 			MetodoPago.metodoPagoPorTipo(metodoPago2);
 			MetodoPago.metodoPagoPorTipo(metodoPago3);
-			cliente1.setMembresia(membresia2);
+			cliente1.setMembresia(membresia1);
 			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
+			/*cliente1.setMembresia(membresia1)*/
+			
+			System.out.println();
+					
 		}
 		
 		System.out.println("Bienvenido al cine de marinilla");

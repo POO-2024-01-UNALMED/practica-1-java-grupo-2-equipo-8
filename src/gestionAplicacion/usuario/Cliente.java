@@ -9,7 +9,7 @@ public class Cliente {
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
 	private Ticket ticket;
-	private ArrayList<String> factura = new ArrayList<>();
+	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
 	private Membresia membresia;
 	private long documento;
@@ -32,7 +32,7 @@ public class Cliente {
 		clientes.add(this);
 	}
 
-	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, Ticket ticket, ArrayList<String> factura,
+	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, Ticket ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, int duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<Bono> bonosCliente) {
@@ -40,7 +40,7 @@ public class Cliente {
 		this.nombre = nombre;
 		this.historialDePeliculas = historialDePeliculas;
 		this.ticket = ticket;
-		this.factura = factura;
+		this.facturas = facturas;
 		this.edad = edad;
 		this.membresia = membresia;
 		this.documento = documento;
@@ -97,7 +97,7 @@ public class Cliente {
 	*Description: se verifica si el usuario tiene asociada una cuenta de tarjeta cinemar 
 	*@return <b>boolean</b> :  retorna true o false dependiendo si cumple o no la condicion
 	*/
-
+	
 	public boolean verificarCuenta() {
 		boolean value = false;
 		if (this.cuenta!=null) {
@@ -147,12 +147,12 @@ public class Cliente {
 		this.ticket = ticket;
 	}
 
-	public ArrayList<String> getFactura() {
-		return factura;
+	public ArrayList<String> getFacturas() {
+		return facturas;
 	}
 
-	public void setFactura(ArrayList<String> factura) {
-		this.factura = factura;
+	public void setFacturas(ArrayList<String> facturas) {
+		this.facturas = facturas;
 	}
 
 	public int getEdad() {
