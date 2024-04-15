@@ -221,15 +221,27 @@ public class Pelicula{
 	 * @return <b>resultado</b> : Retorna un string con las posiciones de los asientos y su disponibilidad
 	 * */
 	public String mostrarAsientosSalaVirtual(String horario) {
-		String resultado = "Asientos de Cine" + "\n" + "      1   2   3   4   5   6   7   8" + "\n";
-		for (int i = 0; i < this.getHorarios().get(horario).length; i++) {
-			resultado = resultado + i + "    ";
-			for (int j = 0; j < this.getHorarios().get(horario).length; j++) {
-				resultado = resultado + "[" + this.getHorarios().get(horario)[i][j] + "]" + " ";
-			}
-			resultado = resultado + "\n";
-		}
-		return resultado;
+		StringBuilder resultado = new StringBuilder("Asientos de Cine\n");
+	    resultado.append("   ");
+	   
+	    // Agregar números de columnas
+	    for (int i = 0; i < this.getHorarios().get(horario).length; i++) {
+	        resultado.append(String.format("%-4d", i + 1));
+	    }
+	    resultado.append("\n");
+
+	    // Mostrar asientos
+	    for (int i = 0; i < this.getHorarios().get(horario).length; i++) {
+	        resultado.append(String.format("%-2d ", i + 1));
+	        for (int j = 0; j < this.getHorarios().get(horario).length; j++) {
+	            resultado.append("[");
+	            resultado.append((this.getHorarios().get(horario)[i][j] == 1) ? "X" : "O");
+	            resultado.append("] ");
+	        }
+	        resultado.append("\n");
+	    }
+
+	    return resultado.toString();
 	}
 	
 	/**
@@ -239,10 +251,10 @@ public class Pelicula{
 	 * @param columna : Recibe el número de la columna seleccionada por el cliente
 	 * */
 	public void modificarSalaVirtual(String horario, int fila, int columna) {
-		if (this.getHorarios().get(horario)[fila][columna] == 0) {
-			this.getHorarios().get(horario)[fila][columna] = 1;	
+		if (this.getHorarios().get(horario)[fila - 1][columna - 1] == 0) {
+			this.getHorarios().get(horario)[fila - 1][columna - 1] = 1;	
 		}else {
-			this.getHorarios().get(horario)[fila][columna] = 0;	
+			this.getHorarios().get(horario)[fila - 1][columna - 1] = 0;	
 		}	
 	}
 	
