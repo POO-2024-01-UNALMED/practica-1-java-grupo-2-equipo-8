@@ -2,19 +2,19 @@ package gestionAplicacion.servicios;
 
 public class Pedido {
 	
-	private String producto;
+	private String nombreproducto;
 	private int cantidad;
 	private double valor;
-	private String tamanoProducto;
+	private String tamañoProducto;
 	
 	public Pedido(){}
 	
-	public Pedido(String producto, int cantidad, double valor, String tamanoProducto) {
+	public Pedido(String nombreproducto, int cantidad, double valor, String tamañoProducto) {
 		super();
-		this.producto = producto;
+		this.nombreproducto = nombreproducto;
 		this.cantidad = cantidad;
 		this.valor = valor;
-		this.tamanoProducto = tamanoProducto;
+		this.tamañoProducto = tamañoProducto;
 	}
 
 

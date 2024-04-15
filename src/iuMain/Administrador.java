@@ -44,7 +44,7 @@ public class Administrador {
 		
 		
 		
-		System.out.println("Bienvenido al cine de marinilla");
+		System.out.println("Bienvenido al cine de Marinilla");
 		inicio();
 		
 		
@@ -78,7 +78,62 @@ public class Administrador {
 	}
 	static void reservarTicket() {System.out.println("Reservando tiquete");}
 	
-	static void comprarComida() {System.out.println("Comprando comida");}
+	static void comprarComida() {
+		System.out.println("\nPara ordenar comida debes ingresar el tipo y numero de documento\n¿Deseas ingresar, volver, o salir?\n1.Ingresar\n2.Volver\n3.Salir");
+		int opcion=(int)readLong();
+		if (opcion==2) {inicio();}
+		else if (opcion==3) {salirDelSistema();}
+		else if (opcion==1) {}
+		else {System.out.println("\nOpcion Invalida");comprarComida();}
+		TipoDeDocumento documentoCliente=null;
+		boolean casoValido = true;
+		do{
+			System.out.println("Seleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Volver");
+			int opcion1 = (int)readLong();
+			switch (opcion1) {
+				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
+				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
+				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
+				case 4: ingresoZonaJuegos();casoValido=false;break;
+				default: System.out.println("Opcion invalida");break;
+			}
+		}while(casoValido);	
+		
+		do {
+			System.out.print("Ingrese el numero de documento: ");
+			long numeroDocumentoCliente = readLong();
+			Cliente cliente1=Cliente.revisarDatosCliente(numeroDocumentoCliente);
+			if (cliente1==null) {
+				System.out.print("Ingrese su edad: ");
+				int edadCliente = (int)readLong();
+				System.out.print("Ingrese su nombre: ");
+				String nombreCliente = readLn();
+				cliente1 = new Cliente(nombreCliente,null,null,null,edadCliente,null,numeroDocumentoCliente,0,documentoCliente,null,null,null);
+				
+			}
+			else {
+				System.out.println("¿Eres "+cliente1.getNombre()+"?");
+				System.out.println("1. SI\n2. NO");
+				int eleccion = (int)readLong();
+				if (eleccion==1) {
+					System.out.println("\nEstos son sus datos personales:\nNombre: "+cliente1.getNombre()+"\nIdentificacion: "+cliente1.getDocumento()+"\nEdad: "+cliente1.getEdad());
+					
+					casoValido=true;
+				}
+				else if (eleccion==2) {
+					System.out.println("Verifica el numero de documento\n");
+				}
+				else {System.out.println("Opcion invalida\n");}
+			}
+		}while(!casoValido);
+		System.out.println("¿Quieres reclamar un bono, hacer un pedido o salir?");
+		
+		
+	}
+	
+		
+	   
+	
 	
 	static void comprarSouvenirs() {System.out.println("Comprando souvenirs");}
 	

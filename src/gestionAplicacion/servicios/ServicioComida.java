@@ -19,7 +19,7 @@ public class ServicioComida extends Servicio{
 	}
 	public Pedido generarPedido() {return new Pedido();}
 	public void editarPedido() {}
-	public void mostarPedido() {}
+	public void mostrarPedido() {}
 	public boolean procesarPago() {return true;}
 	public String mostrarCarta() {return "Carta";}
 	public String factura() {return "factura";}
