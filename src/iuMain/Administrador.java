@@ -7,6 +7,7 @@ import gestionAplicacion.usuario.*;
 
 public class Administrador {
 	
+	private static final boolean True = false;
 	static Scanner sc = new Scanner(System.in);
 	
 	static long readLong() { return sc.nextLong();}
@@ -52,6 +53,17 @@ public class Administrador {
 	
 	
 	public static void main(String[] args) {
+		
+		Bono pruevaBono = new Bono(1234,"Peluche","A","Souvenir");
+		Bono pruevaBono1 = new Bono(1235,"Peluche","A","Souvenir");
+		ArrayList<Bono> Bonosss = new ArrayList<>();
+		Bonosss.add(pruevaBono);
+		Bonosss.add(pruevaBono1);
+		Cliente Rusbel = new Cliente();
+		Rusbel.setBonosCliente(Bonosss);
+		Rusbel.setNombre("Rusbel");
+		Rusbel.setDocumento(1037886240);
+		
 		//Llamados métodos de instancias para hacer pruebas
 		{
 			
@@ -235,11 +247,13 @@ public class Administrador {
 				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
 				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
 				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
-				case 4: ingresoZonaJuegos();casoValido=false;break;
+				case 4: comprarSouvenirs();casoValido=false;break;
 				default: System.out.println("Opcion invalida");break;
 			}
 		}while(casoValido);
+		
 		Cliente cliente1;
+		
 		do {
 			System.out.print("Ingrese el numero de documento: ");
 			long numeroDocumentoCliente = readLong();
@@ -270,27 +284,43 @@ public class Administrador {
 			}
 		}while(!casoValido);
 		
-		/*do {
+		do{
 			System.out.print("Que deseas hacer:\n1.Reclamar un Bono.\n2.Hacer un pedido.\nSeleccione una opcion:");
 			int eleccion2 = (int)readLong();
 			if(eleccion2 == 1) {
-				System.out.print("Ingresa el codigo del bono: ");
-				long codigo = readLong();
-				Bono bono = servicioSouvenirs.verificarBono(codigo, cliente1);
-				if (null!= bono) {
-					System.out.print("El bono que tienes asociado es de un:"+bono.getProducto());
+				ArrayList <Bono> bonos;
+				bonos = servicioSouvenirs.verificarBono(cliente1);
+				if (bonos.size() == 0) {
+					System.out.println("No tienes bonos disponibles");
 				}
+				else {
+					for (int i=0;i<bonos.size();i++) {
+						System.out.println(i + "." + bonos.get(i).getProducto());
+					}
+					System.out.println("Seleccione el producto del bono que deseas");
+					int eleccion3 = (int)readLong();
+					if (bonos.get(eleccion3).validarbono()) {
+						System.out.println("Todo salio bien");
+						inicio();
+					}
+				}
+			}
+			else if(eleccion2 == 2) {
+				casoValido = false;
+			}
+			else {
 				
 			}
 		}while(casoValido);
-		*/
 		
-		
-		
-		
-		
+	
 		}
 	
+	private static void print(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	static void ingresoZonaJuegos() {
 
 		System.out.println("\nPara entrar a los juegos es necesario tener la tarjeta cinemar\n¿Desea ingresar o volver?\n1.Ingresar\n2.Volver al menú principal\n3.Salir");

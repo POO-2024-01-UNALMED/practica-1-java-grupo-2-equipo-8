@@ -9,17 +9,20 @@ public class ServicioSouvenirs extends Servicio{
 	private int codigoProducto;
 	private double valorPedido;
 	
-	public Bono verificarBono(long codigo, Cliente cliente) {
+	public ArrayList<Bono> verificarBono(Cliente cliente) {
+		Bono bonosDelUsuario;
+		ArrayList<Bono> bonos = new ArrayList<>();
 		for (int i=0;i<Bono.getBonosCreados().size(); i++) {
-			if((codigo == (Bono.getBonosCreados()).get(i).getCodigo()) && (cliente.getBonosCliente().size()>0)) {
-				for (int j=0;j<cliente.getBonosCliente().size();j++) {
-					if((Bono.getBonosCreados()).get(i) == cliente.getBonosCliente().get(j)) {
-						return Bono.getBonosCreados().get(i);
+			for (int j=0;j<cliente.getBonosCliente().size();j++) {
+				if (Bono.getBonosCreados().get(i) == cliente.getBonosCliente().get(j)) {
+					if (cliente.getBonosCliente().get(j).getTipoServicio().equalsIgnoreCase("Souvenir")){
+						bonosDelUsuario = cliente.getBonosCliente().get(j);
+						bonos.add(bonosDelUsuario);
 					}
 				}
 			}
 		}
-		return null;
+		return bonos;
 	}
 	
 	public Cliente getCliente() {

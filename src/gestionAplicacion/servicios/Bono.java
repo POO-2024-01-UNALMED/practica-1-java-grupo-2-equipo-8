@@ -66,10 +66,20 @@ public class Bono {
 		this.producto = producto;
 		this.tamaño = tamaño;
 		this.tipoServicio = tipoServicio;
+		bonosCreados.add(this);
 	}
 
 
 
-	public boolean validarbono() {return true;}
+	public boolean validarbono() {
+		for (int i=0;i<bonosCreados.size();i++) {
+			if (bonosCreados.get(i).getCodigo() == this.getCodigo()) {
+				bonosCreados.remove(i);
+				bonosUsados.add(this);
+				return true;
+			}
+		}
+		return false;
+		}
 
 }
