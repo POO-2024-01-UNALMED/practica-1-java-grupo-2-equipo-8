@@ -6,6 +6,7 @@ import iuMain.Administrador;
 
 public class Membresia {
 	
+	//Atrbutos
 	private String nombre;
 	private int categoria;
 	private static ArrayList<Membresia> tiposDeMembresia = new ArrayList<>();
@@ -16,6 +17,8 @@ public class Membresia {
 	private int duracionMembresiaDias;
 	private int tipoMembresia;
 	
+	
+	//Constructores
 	public Membresia(String nombre, int categoria, int valorSuscripcionMensual, int duracionMembresiaDias) {
 		this();
 		this.nombre = nombre;
@@ -80,7 +83,7 @@ public class Membresia {
 	*dependiendo de la categoria recorrida en el array.
 	*/
 	public static void asignarDescuento() {
-		
+		//Se realiza un ciclo y se toma la categoria de cada membresia para asignar el descuento con switch.
 		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
 			
 	 		int categoria = membresia.getCategoria();
@@ -130,6 +133,8 @@ public class Membresia {
 	public static String mostrarCategoria() {
 		String resultado = null;
 		int i = 1;
+		
+		//Se recorre la lista de tipos de membresia.
 		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
 			if (resultado == null) {
 				resultado = i + ". "+ membresia.getNombre() + "\n";
@@ -153,6 +158,7 @@ public class Membresia {
 	public static boolean verificarRestriccionMembresia(Cliente cliente, int categoriaSeleccionada) {
 		boolean esValido = false;
 		
+		//Si la categoria es 4 o 5, se revisa si se cumple los requisitos.
 		switch (categoriaSeleccionada) {
 		
 		case 1, 2, 3: esValido = true; break;

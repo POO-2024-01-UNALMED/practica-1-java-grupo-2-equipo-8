@@ -45,32 +45,58 @@ public class MetodoPago {
 	//Métodos
 	
 	/**
-	*<b>Description</b>: Este método se encarga de mostrar los métodos de pago disponibles.
+	*<b>Description</b>: Este método se encarga de mostrar los métodos de pago disponibles con
+	*sus descuentos.
 	*El resultado puede cambiar si el cliente posee membresia y el tipo de esta.
-	*@param cliente : Se usa el objeto de tipo Cliente para saber si este tiene membresia
-	* y de que tipo.
-	*@return <b>string</b> : Se retorna un texto mostrando el nombre de los métodos de pago luego
-	*de realizar el filtrado por la membresia.
+	*@param cliente : Se usa el objeto de tipo Cliente para acceder a su lista de métodos de pago.
+	*@return <b>string</b> : Se retorna un texto mostrando el nombre de los métodos de pago con
+	*sus descuentos.
 	*/
 	public static String mostrarMetodosDePago (Cliente cliente) {
-		Membresia tipoMembresia = cliente.getMembresia();
 		String resultado = null;
 		int i = 1;
-		int tipoMembresiaInt = 0;
+		
+		//Se recorre la lista de los medios de pagos disponibles en la lista del cliente.
+		for (MetodoPago metodoPago : cliente.getMetodosDePago()) {
+				if (resultado == null) {
+					resultado = i + ". "+ metodoPago.getNombre()+ " Descuento: " + metodoPago.getDescuentoAsociado()*100 + "%" +"\n";
+				}else {
+					resultado = resultado + i + ". " + metodoPago.getNombre() +" Descuento: " + metodoPago.getDescuentoAsociado()*100+ "%" + "\n";
+				}
+				i++;
+		}
+		return resultado;
+	}
+	
+	/**
+	*<b>Description</b>: Este método se encarga de asignar los métodos de pago disponibles por 
+	*su tipo de membresia a su lista de métodos de pago.
+	*que tiene el cliente.
+	*@param cliente : Se usa el objeto de tipo Cliente para revisar su membresia y poder asignar
+	*los métodos de pago.
+	*@return <b>Lista de métodos de pago</b> : Se retorna una lista mostrando los métodos de pago luego
+	*de realizar el filtrado por la membresia.
+	*/
+	public static ArrayList<MetodoPago> asignarMetodosDePago(Cliente cliente) {
+		//Se limpia la lista de métodos de pago, esto en caso de que el cliente haya adquirido una
+		//membresia.
+		cliente.getMetodosDePago().clear();
+		
+		//Se revisa si el cliente posee una membresia.
+		Membresia tipoMembresia = cliente.getMembresia();
+		int tipoMembresiaInt= 0;
 		if (tipoMembresia != null) {
 			tipoMembresiaInt = tipoMembresia.getTipoMembresia();
 		}
+		
+		//Se realiza un ciclo para filtrar los métodos de pago por el tipoMembresia del cliente
+		//y se añaden sus lista de métodos de pago.
 		for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
 			if (tipoMembresiaInt == metodoPago.getTipo()) {
-				if (resultado == null) {
-					resultado = i + ". "+ metodoPago.getNombre()+"\n";
-				}else {
-					resultado = resultado + i + ". " + metodoPago.getNombre() +"\n";
-				} 
-				i++;
+				cliente.getMetodosDePago().add(metodoPago);
 			}
 		}
-		return resultado;
+		return cliente.getMetodosDePago();
 	}
 	
 	/**
@@ -82,6 +108,7 @@ public class MetodoPago {
 	*el ciclo for.
 	*/
 	public static void metodoPagoPorTipo (MetodoPago metodopago) {
+		//Se realiza un ciclo para crear varias instancias de los métodos de pago variando sus atributos.
 		for (int i=1; i < 3; i++) {
 			String nombre = metodopago.getNombre();
 			int tipo = metodopago.getTipo() + i;
@@ -93,7 +120,6 @@ public class MetodoPago {
 	
  	public double aplicarDescuento(Cliente cliente, MetodoPago metodopago) {
  		
-
  		
  		return 3.1415926535;
  		}

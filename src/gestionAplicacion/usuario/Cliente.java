@@ -22,21 +22,23 @@ public class Cliente {
 	
 	
 	//Constructores
-	public Cliente(){}
-	
+	public Cliente(){
+		clientes.add(this);
+	}
+
 	public Cliente(String nombre, int edad, long documento, TipoDeDocumento tipoDocumento) {
+		this();
 		this.nombre = nombre;
 		this.edad = edad;
 		this.documento = documento;
 		this.tipoDocumento = tipoDocumento;
-		clientes.add(this);
 	}
 
 	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, Ticket ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, int duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<Bono> bonosCliente) {
-		super();
+		this();
 		this.nombre = nombre;
 		this.historialDePeliculas = historialDePeliculas;
 		this.ticket = ticket;
@@ -49,7 +51,6 @@ public class Cliente {
 		this.cuenta = cuenta;
 		this.metodosDePago = metodosDePago;
 		this.setBonosCliente(bonosCliente);
-		clientes.add(this);
 	}
 	
 	//Methods

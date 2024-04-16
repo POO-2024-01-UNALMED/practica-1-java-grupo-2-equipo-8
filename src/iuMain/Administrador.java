@@ -51,6 +51,7 @@ public class Administrador {
 	
 	
 	
+	
 	public static void main(String[] args) {
 		//Llamados métodos de instancias para hacer pruebas
 		{
@@ -92,8 +93,14 @@ public class Administrador {
 			MetodoPago.metodoPagoPorTipo(metodoPago1);
 			MetodoPago.metodoPagoPorTipo(metodoPago2);
 			MetodoPago.metodoPagoPorTipo(metodoPago3);
-//			cliente1.setMembresia(membresia1);
-//			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
+			MetodoPago.metodoPagoPorTipo(metodoPago4);
+			//cliente1.setMembresia(membresia1);
+			MetodoPago.asignarMetodosDePago(cliente1);
+			MetodoPago.asignarMetodosDePago(cliente2);
+			MetodoPago.asignarMetodosDePago(cliente3);
+			
+			System.out.println(cliente1.getMetodosDePago());
+			
 //			/*cliente1.setMembresia(membresia1)*/
 //			
 //			System.out.println(MetodoPago.getMetodosDePagoDisponibles().size());
