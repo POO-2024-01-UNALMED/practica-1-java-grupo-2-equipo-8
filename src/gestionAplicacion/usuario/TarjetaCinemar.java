@@ -65,7 +65,7 @@ public class TarjetaCinemar implements IBuyable {
 	}
 
 	@Override
-	public double realizarPago(MetodoPago metodoDePago) {
+	public double realizarPago(MetodoPago metodoDePago, Cliente cliente) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

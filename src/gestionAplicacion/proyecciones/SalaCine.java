@@ -11,7 +11,8 @@ public class SalaCine {
 	private Pelicula peliculaEnPresentacion;
 	private ArrayList<Pelicula> peliculas = new ArrayList<>();
 	private ArrayList<Ticket> ticketsCreados = new ArrayList<>();
-	
+	private static String hora;
+	private static String diaSemana;
 	
 	//Constructors
 	public SalaCine(){
@@ -152,10 +153,21 @@ public class SalaCine {
 	public void setTicketsCreados(ArrayList<Ticket> ticketsCreados) {
 		this.ticketsCreados = ticketsCreados;
 	}
-	
-	
-	
-	
-	
+
+	public static String getHora() {
+		return hora;
+	}
+
+	public static void setHora(String hora) {
+		SalaCine.hora = hora;
+	}
+
+	public static String getDiaSemana() {
+		return diaSemana;
+	}
+
+	public static void setDiaSemana(String diaSemana) {
+		SalaCine.diaSemana = diaSemana;
+	}
 	
 }

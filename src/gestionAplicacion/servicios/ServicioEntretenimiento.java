@@ -114,6 +114,7 @@ public class ServicioEntretenimiento extends Servicio{
 		ServicioEntretenimiento.tarjetasEnInventario = tarjetasEnInventario;
 	}
 
+
 	
 	
 	

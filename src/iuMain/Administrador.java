@@ -50,60 +50,72 @@ public class Administrador {
 	
 	
 	
+	
 	public static void main(String[] args) {
 		//Llamados métodos de instancias para hacer pruebas
 		{
 			
-//			salaDeCine1.crearAsientosSalaDeCine();
-//			salaDeCine1.setNumeroSala(1);
-//			
-//			pelicula1.crearSalaVirtual("10AM");
-//			pelicula1.crearSalaVirtual("3PM");
-//			pelicula1.crearSalaVirtual("8PM");
-//			pelicula1.setNumeroDeSala(1);
-//			
-//			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
-//			
-//			ticket1.setPelicula(pelicula1);
-//			ticket1.asignarPrecio();
-//			ticket1.setSalaDeCine(salaDeCine1);
-//			ticket1.setDueno(cliente1);
-//			ticket1.setNumeroAsiento("4-4");
-//			ticket1.procesarPagoRealizado(cliente2);
-//			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
-//			ticket1.realizarPago(metodoPago1);
-//			
-//			ticket2.setPelicula(pelicula1);
-//			ticket2.asignarPrecio();
-//			ticket2.setSalaDeCine(salaDeCine1);
-//			ticket2.setDueno(cliente2);
-//			ticket2.setNumeroAsiento("4-4");
-//			ticket2.procesarPagoRealizado(cliente1);
-//			pelicula1.modificarSalaVirtual("3PM",4, 4);
-//			
-//			ticket3.setPelicula(pelicula2);
-//			ticket3.asignarPrecio();
-//			
-//			ticket4.setPelicula(pelicula1);
-//			ticket4.asignarPrecio();
-//
+			salaDeCine1.crearAsientosSalaDeCine();
+			salaDeCine1.setNumeroSala(1);
+			
+			pelicula1.crearSalaVirtual("10AM");
+			pelicula1.crearSalaVirtual("3PM");
+			pelicula1.crearSalaVirtual("8PM");
+			pelicula1.setNumeroDeSala(1);
+			
+			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
+			
+			ticket1.setPelicula(pelicula1);
+			ticket1.asignarPrecio();
+			ticket1.setSalaDeCine(salaDeCine1);
+			ticket1.setDueno(cliente1);
+			ticket1.setNumeroAsiento("4-4");
+			ticket1.realizarPago(metodoPago1, cliente1);
+			ticket1.procesarPagoRealizado(cliente1);
+			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
+			
+			ticket2.setPelicula(pelicula1);
+			ticket2.asignarPrecio();
+			ticket2.setSalaDeCine(salaDeCine1);
+			ticket2.setDueno(cliente2);
+			ticket2.setNumeroAsiento("4-4");
+			ticket2.realizarPago(metodoPago2, cliente2);
+			ticket2.procesarPagoRealizado(cliente2);
+			pelicula1.modificarSalaVirtual("3PM",4, 4);
+			
+			ticket3.setPelicula(pelicula2);
+			ticket3.asignarPrecio();
+			
+			ticket4.setPelicula(pelicula1);
+			ticket4.asignarPrecio();
+
 			Membresia.asignarTipoMembresia();
 			MetodoPago.metodoPagoPorTipo(metodoPago1);
 			MetodoPago.metodoPagoPorTipo(metodoPago2);
 			MetodoPago.metodoPagoPorTipo(metodoPago3);
+
 //			cliente1.setMembresia(membresia1);
 //			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
 //			/*cliente1.setMembresia(membresia1)*/
 //			
 //			for (MetodoPago pago : MetodoPago.getMetodosDePagoDisponibles()) {
 //				System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
-//			}
+			}
 			
 //			//cliente1.setMembresia(membresia4);
 //			MetodoPago pago = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", cliente1);
 //			//System.out.println("\n"+cliente1.getMembresia().getTipoMembresia());
 //			System.out.println(pago.getNombre()+"\n"+pago.getTipo());
-		}
+
+			MetodoPago.metodoPagoPorTipo(metodoPago4);
+			cliente1.setMembresia(membresia1);
+			MetodoPago.asignarMetodosDePago(cliente1);
+			MetodoPago.asignarMetodosDePago(cliente2);
+			MetodoPago.asignarMetodosDePago(cliente3);
+			
+			System.out.println();
+					
+
 		
 
 		

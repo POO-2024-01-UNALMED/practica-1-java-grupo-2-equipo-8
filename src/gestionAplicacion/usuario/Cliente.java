@@ -17,26 +17,28 @@ public class Cliente {
 	private TipoDeDocumento tipoDocumento;
 	private TarjetaCinemar cuenta;
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
-	//private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
+	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	private ArrayList<Bono> bonosCliente = new ArrayList<>();
 	
 	
 	//Constructores
-	public Cliente(){}
-	
+	public Cliente(){
+		clientes.add(this);
+	}
+
 	public Cliente(String nombre, int edad, long documento, TipoDeDocumento tipoDocumento) {
+		this();
 		this.nombre = nombre;
 		this.edad = edad;
 		this.documento = documento;
 		this.tipoDocumento = tipoDocumento;
-		clientes.add(this);
 	}
 
 	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, Ticket ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, int duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<Bono> bonosCliente) {
-		super();
+		this();
 		this.nombre = nombre;
 		this.historialDePeliculas = historialDePeliculas;
 		this.ticket = ticket;
@@ -47,9 +49,8 @@ public class Cliente {
 		this.duracionMembresiaDias = duracionMembresiaDias;
 		this.tipoDocumento = tipoDocumento;
 		this.cuenta = cuenta;
-		//this.metodosDePago = metodosDePago;
+		this.metodosDePago = metodosDePago;
 		this.setBonosCliente(bonosCliente);
-		clientes.add(this);
 	}
 	
 	//Methods
@@ -195,13 +196,13 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 	}
 
-//	public ArrayList<MetodoPago> getMetodosDePago() {
-//		return metodosDePago;
-//	}
-//
-//	public void setMetodosDePago(ArrayList<MetodoPago> metodosDePago) {
-//		this.metodosDePago = metodosDePago;
-//	}
+	public ArrayList<MetodoPago> getMetodosDePago() {
+		return metodosDePago;
+	}
+
+	public void setMetodosDePago(ArrayList<MetodoPago> metodosDePago) {
+		this.metodosDePago = metodosDePago;
+	}
 
 	public ArrayList<Bono> getBonosCliente() {
 		return bonosCliente;
