@@ -5,7 +5,7 @@ import java.util.Date;
 import gestionAplicacion.usuario.*;
 
 
-public class ServicioEntretenimiento extends Servicio implements IBuyable{
+public class ServicioEntretenimiento extends Servicio{
 	
 	//Atributos
 	private String nombreServicio;
@@ -70,6 +70,39 @@ public class ServicioEntretenimiento extends Servicio implements IBuyable{
 		cliente.setCuenta(tarjetasEnInventario.get(0));
 		tarjetasEnInventario.remove(0);
 	}
+	/**
+	*Description: Buscando el el array de metodos de pago disponibles, encuentra el que el cliente ha seleccionado de acuerdo al nombre y al tipo de membresia que tiene
+	*@param nombreMetodoPago :  Es el String del nombre del metodo de pago seleccionado por el cliente
+	*@param cliente :  Es el cliente asociado al proceso
+	*@return <b>metodoPagoCliente</b> :  se retorna el metodo de pago encontrado para el cliente.
+	*/
+	
+	public static MetodoPago encontrarMetodoPagoCliente(String nombreMetodoPago, Cliente cliente) {
+		MetodoPago metodoPagoCliente = null;
+		for (MetodoPago pago : MetodoPago.getMetodosDePagoDisponibles()) {
+			if (pago.getNombre().equals(nombreMetodoPago)) {
+				if (cliente.getMembresia()==null){
+					if (pago.getTipo()==0) {
+						metodoPagoCliente = pago;
+						break;
+					}
+				}
+				else if (cliente.getMembresia().getTipoMembresia()==1 || cliente.getMembresia().getTipoMembresia()==2) {
+					if (pago.getTipo()==1) {
+						metodoPagoCliente = pago;
+						break;
+					}
+				}
+				else if (cliente.getMembresia().getTipoMembresia()==3) {
+					if (pago.getTipo()==2) {
+						metodoPagoCliente = pago;
+						break;
+					}
+				}
+			}
+		}
+		return metodoPagoCliente;
+	}
 	
 	
 	//getters y setters
@@ -81,23 +114,6 @@ public class ServicioEntretenimiento extends Servicio implements IBuyable{
 		ServicioEntretenimiento.tarjetasEnInventario = tarjetasEnInventario;
 	}
 
-	@Override
-	public double realizarPago(MetodoPago metodoDePago) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void procesarPagoRealizado(Cliente cliente) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String factura(Cliente cliente) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	
 	

@@ -2,7 +2,7 @@ package gestionAplicacion.usuario;
 
 import gestionAplicacion.servicios.ServicioEntretenimiento;
 
-public class TarjetaCinemar {
+public class TarjetaCinemar implements IBuyable {
 	
 	//Atributos
 	private double saldo;
@@ -62,6 +62,24 @@ public class TarjetaCinemar {
 
 	public void setDueno(Cliente dueno) {
 		this.dueno = dueno;
+	}
+
+	@Override
+	public double realizarPago(MetodoPago metodoDePago) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void procesarPagoRealizado(Cliente cliente) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String factura(Cliente cliente) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

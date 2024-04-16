@@ -22,6 +22,7 @@ public class Membresia {
 		this.categoria = categoria;
 		this.valorSuscripcionMensual = valorSuscripcionMensual;
 		this.duracionMembresiaDias = duracionMembresiaDias;
+		tiposDeMembresia.add(this);
 	}
 
 	public Membresia(){
@@ -171,10 +172,15 @@ public class Membresia {
 	*/
 	public static void asignarTipoMembresia () {
 		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
-			if (membresia.getCategoria() > 0 && membresia.getCategoria() < 4) {
+			if (membresia.getCategoria() > 0 && membresia.getCategoria() < 3) {
 				membresia.setTipoMembresia(1);
-			} else {
+			} 
+			else if (membresia.getCategoria() > 2 && membresia.getCategoria() < 5){
 				membresia.setTipoMembresia(2);
+			}
+			else {
+				membresia.setTipoMembresia(3);//MODIFIQUE EL METODO PARA QUE SE PUEDA HACER USO DE EL METODO DE PAGO TIPO 2, (MIRAR METODO CLASE
+				//S.ENTRETENIMIENTO (encontrarMetodoPagoCliente) 
 			}
 		}
 	}

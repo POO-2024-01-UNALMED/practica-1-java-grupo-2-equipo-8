@@ -17,7 +17,7 @@ public class Cliente {
 	private TipoDeDocumento tipoDocumento;
 	private TarjetaCinemar cuenta;
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
-	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
+	//private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	private ArrayList<Bono> bonosCliente = new ArrayList<>();
 	
 	
@@ -47,7 +47,7 @@ public class Cliente {
 		this.duracionMembresiaDias = duracionMembresiaDias;
 		this.tipoDocumento = tipoDocumento;
 		this.cuenta = cuenta;
-		this.metodosDePago = metodosDePago;
+		//this.metodosDePago = metodosDePago;
 		this.setBonosCliente(bonosCliente);
 		clientes.add(this);
 	}
@@ -195,13 +195,13 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 	}
 
-	public ArrayList<MetodoPago> getMetodosDePago() {
-		return metodosDePago;
-	}
-
-	public void setMetodosDePago(ArrayList<MetodoPago> metodosDePago) {
-		this.metodosDePago = metodosDePago;
-	}
+//	public ArrayList<MetodoPago> getMetodosDePago() {
+//		return metodosDePago;
+//	}
+//
+//	public void setMetodosDePago(ArrayList<MetodoPago> metodosDePago) {
+//		this.metodosDePago = metodosDePago;
+//	}
 
 	public ArrayList<Bono> getBonosCliente() {
 		return bonosCliente;

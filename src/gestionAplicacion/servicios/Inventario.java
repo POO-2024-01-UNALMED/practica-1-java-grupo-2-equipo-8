@@ -27,9 +27,9 @@ public class Inventario {
 
 
 	public void cambiarInventarioCiudad() {
-		if (ciudad = "Medellin") {
+		//if (ciudad = "Medellin") {
 				
-		}
+		//}
 	}
 	
 }

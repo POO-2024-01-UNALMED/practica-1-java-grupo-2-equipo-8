@@ -4,7 +4,6 @@ import java.util.Scanner;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.usuario.*;
-import gestionAplicacion.usuario.Membresia;
 
 public class Administrador {
 	
@@ -96,8 +95,14 @@ public class Administrador {
 //			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
 //			/*cliente1.setMembresia(membresia1)*/
 //			
-//			System.out.println(MetodoPago.getMetodosDePagoDisponibles().size());
-					
+//			for (MetodoPago pago : MetodoPago.getMetodosDePagoDisponibles()) {
+//				System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
+//			}
+			
+//			//cliente1.setMembresia(membresia4);
+//			MetodoPago pago = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", cliente1);
+//			//System.out.println("\n"+cliente1.getMembresia().getTipoMembresia());
+//			System.out.println(pago.getNombre()+"\n"+pago.getTipo());
 		}
 		
 
@@ -105,7 +110,7 @@ public class Administrador {
 		
 		
 		
-		System.out.println("Bienvenido al cine de Marinilla");
+		
 
 		System.out.println("Bienvenido al cine de marinilla");
 
@@ -360,12 +365,13 @@ public class Administrador {
 					System.out.print("Ingrese contraseña (4 digitos): ");
 					int clave = (int) readLong();
 					
-//					if (eleccion3>metodoPago1.getLimiteMaximoPago()) {
-//						clienteActual.getCuenta().ingresarSaldo(metodoPago1.getLimiteMaximoPago());
-//						System.out.println("El valor a recargar ha superado el limite permitido por "+metodoPago1.getNombre()+
-//								"\nPor favor escoja otro metodo de pago para pagar los $"+(eleccion3-metodoPago1.getLimiteMaximoPago())+
-//								" restantes");
-//					}
+					MetodoPago metodoPagoCliente = ServicioEntretenimiento.encontrarMetodoPagoCliente("Bancolombia", clienteActual);
+					if (eleccion3>metodoPagoCliente.getLimiteMaximoPago()) {
+						clienteActual.getCuenta().ingresarSaldo(metodoPagoCliente.getLimiteMaximoPago());
+						System.out.println("El valor a recargar ha superado el limite permitido por "+metodoPagoCliente.getNombre()+
+								"\nPor favor escoja otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente.getLimiteMaximoPago())+
+								" restantes");
+					}
 				}
 				casoValido= false;
 			}
