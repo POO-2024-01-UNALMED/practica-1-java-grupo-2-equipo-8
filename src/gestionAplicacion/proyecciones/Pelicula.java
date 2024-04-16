@@ -12,8 +12,7 @@ public class Pelicula{
 	private String clasificacion;
 	//private ArrayList<Horario> horarios = new ArrayList<>();
 	private Map<String, int[][]> horarios = new HashMap<>();
-	private static ArrayList<Pelicula> cartelera = new ArrayList<>(); //Listas únicas?
-	private static ArrayList<Pelicula> historialPeliculas = new ArrayList<>();
+	private static ArrayList<Pelicula> cartelera = new ArrayList<>(); //Listas únicas?, historialPeliculas?
 	private String tipoDeFormato;
 	private int numeroDeSala;
 	private int idPelicula; 

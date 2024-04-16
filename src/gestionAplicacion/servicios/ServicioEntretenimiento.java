@@ -82,7 +82,7 @@ public class ServicioEntretenimiento extends Servicio implements IBuyable{
 	}
 
 	@Override
-	public double realizarPago(MetodoPago metodoDePago) {
+	public double realizarPago(MetodoPago metodoDePago, Cliente cliente) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

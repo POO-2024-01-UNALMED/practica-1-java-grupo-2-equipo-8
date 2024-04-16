@@ -67,11 +67,11 @@ public class Ticket implements IBuyable{
 	 * Description : Este método se encarga de tomar el valor del pedido o del ticket, aplicar el descuento del método de pago elegido por el cliente
 	 * y restarle el monto máximo que se puede pagar con ese método de pago, si el método de pago cubre el valor a pagar, valor a pagar se cambia a 0.
 	 * Además, este método se encarga de pasar la referencia del método de pago a los métodos de pago usados y quita la referencia de métodos de pago 
-	 * disponibles.
+	 * disponibles asociados al cliente.
 	 * @return <b>double</b> : En caso de que el método de pago cubra el valor a pagar retorna 0, en caso de que no
 	 * retorna el valor restante a pagar.
 	 * */	
-	public double realizarPago(MetodoPago metodoDePago) {
+	public double realizarPago(MetodoPago metodoDePago, Cliente cliente) {
 		
 		//Creamos un atributo con scope de método donde obtenemos el precio del producto,
 		//Aplicamos el descuentoAsociado al metodoDePago y le restamos el LimiteMaximoPaago
@@ -80,19 +80,16 @@ public class Ticket implements IBuyable{
 			valorPagar = 0;
 		}
 		
-		//Buscamos el índice del metodoDePago usado en la lista de metodosDePagoDisponibles
-		for(int i = 0; i < MetodoPago.getMetodosDePagoDisponibles().size(); i++) {
-			if ( metodoDePago.equals(MetodoPago.getMetodosDePagoDisponibles().get(i)) ) {
-				//Cuando el método usado sea efectivo, no se pasará a usados
-				if ( metodoDePago.getNombre().equals("Efectivo")) {
-					continue;
-				}
-				//Pasamos el metodoDePago a metodosDePagoUsados
-				MetodoPago.getMetodosDePagoUsados().add(MetodoPago.getMetodosDePagoDisponibles().get(i));
-				//Eliminamos su referencia de metodosDePagoDisponibles
-				MetodoPago.getMetodosDePagoDisponibles().set(i, null);
-			}
+		//Cuando el método usado sea efectivo, no se pasará a usados
+		if ( metodoDePago.getNombre().equals("Efectivo")) {
+			return valorPagar;
 		}
+		
+		//Pasamos el metodoDePago a metodosDePagoUsados
+		MetodoPago.getMetodosDePagoUsados().add(metodoDePago);
+		//Eliminamos su referencia de los metodos de pago asociados al cliente
+		cliente.getMetodosDePago().remove(metodoDePago);
+		
 		//Retornamos el valor tras efectuar el pago, puede generar un saldo pendiente a pagar o 0
 		return valorPagar;
 		
@@ -102,25 +99,23 @@ public class Ticket implements IBuyable{
 	/**
 	 * @Override
 	 * Description: Este método se encarga de generar el último paso del proceso de pago, eliminando la referencia del
-	 * método de pago usado y la pasa a métodos de pago disponibles y según el caso, se le pasa la referencia del pedido
-	 * o ticket al usuario, además, en el caso del ticket, se crea una referencia de este en el arraylist de los tickets 
-	 * de la sala de cine asociada (Este método al igual que el anterior será ejecutado por un ticket o pedido).
+	 * método de pago usado y la pasa a métodos de pago disponibles asociados al clienete 
+	 * y según el caso, se le pasa la referencia del pedido o ticket al usuario, además, en el caso del ticket, 
+	 * se crea una referencia de este en el arraylist de los tickets de la sala de cine asociada 
+	 * (Este método al igual que el anterior será ejecutado por un ticket o pedido).
 	 * @param cliente : Se pide como parámetro el cliente que realiza el pago, con el fin de pasarle la referencia del
 	 * ticket adquirido por este
 	 * @return <b>void</b> : Este método no retorna nada, solo crea y elimina referencias del método de pago en métodos de pago
 	 * disponibles y usados, y de ticket en la sala de cine asociada y en el cliente que compra el ticket
 	 */
 	public void procesarPagoRealizado(Cliente cliente) {
-		//Se crea la referencia del método en métodos de pago disponibles del método de pago usado
+		//Se crea la referencia del método en métodos de pago asociado al cliente del método de pago usado
 		for (MetodoPago metodoDePago : MetodoPago.getMetodosDePagoUsados()) {
-			MetodoPago.getMetodosDePagoDisponibles().add(metodoDePago);
-			for(int i = 0; i < MetodoPago.getMetodosDePagoUsados().size(); i++) {
-				//Se elimina la referencia del método de pago en el array de usados
-				if (MetodoPago.getMetodosDePagoUsados().get(i).equals(metodoDePago)) {
-					MetodoPago.getMetodosDePagoUsados().set(i, null);
-				}
-			}
+			cliente.getMetodosDePago().add(metodoDePago);
 		}
+		
+		//Se eliminan las referencias de los métodosDePagoUsados
+		MetodoPago.getMetodosDePagoUsados().clear();
 		
 		//Se pasa la referencia del ticket al cliente que lo compró
 		cliente.setTicket(this);
@@ -152,8 +147,6 @@ public class Ticket implements IBuyable{
 		"Número de sala : " + this.getPelicula().getNumeroDeSala() + "\n" +
 		"Número de asiento : " + this.getNumeroAsiento();
 	}
-	
-	
 	
 	//Getters and Setters
 	public Cliente getDueno() {
