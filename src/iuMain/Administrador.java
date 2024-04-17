@@ -219,10 +219,40 @@ public class Administrador {
 				else {System.out.println("Opcion invalida\n");}
 			}
 		}while(!casoValido);
-		System.out.println("¿Quieres reclamar un bono, hacer un pedido o salir?");
+		do{
+			System.out.print("Que deseas hacer:\n1.Reclamar un Bono.\n2.Hacer un pedido.\nSeleccione una opcion:");
+			int eleccion2 = (int)readLong();
+			if(eleccion2 == 1) {
+				ArrayList <Bono> bonos;
+				bonos = ServicioComida.verificarBono(cliente1);
+				if (bonos.size() == 0) {
+					System.out.println("No tienes bonos disponibles");
+				}
+				else {
+					for (int i=0;i<bonos.size();i++) {
+						System.out.println(i + "." + bonos.get(i).getProducto());
+					}
+					System.out.println("Seleccione el producto del bono que deseas");
+					int eleccion3 = (int)readLong();
+					if (bonos.get(eleccion3).validarbono()) {
+						System.out.println("Todo salio bien");
+						inicio();
+					}
+				}
+			}
+			else if(eleccion2 == 2) {
+				casoValido = false;
+			}
+			else {
+				
+			}
+		}while(casoValido);
 		
-		
+	
 	}
+		
+		
+	
 	
 		
 	   

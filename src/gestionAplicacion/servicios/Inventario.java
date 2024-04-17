@@ -26,9 +26,63 @@ public class Inventario {
 
 
 	public void cambiarInventarioCiudad() {
-		//if (ciudad = "Medellin") {
-				
-		//}
+		
+	}
+
+	public String getNombreProducto() {
+		return nombreProducto;
+	}
+
+	public void setNombreProducto(String nombreProducto) {
+		this.nombreProducto = nombreProducto;
+	}
+
+	public static ArrayList<Inventario> getProductosEnInventario() {
+		return productosEnInventario;
+	}
+
+	public static void setProductosEnInventario(ArrayList<Inventario> productosEnInventario) {
+		Inventario.productosEnInventario = productosEnInventario;
+	}
+
+	public int getCantidadDisponible() {
+		return cantidadDisponible;
+	}
+
+	public void setCantidadDisponible(int cantidadDisponible) {
+		this.cantidadDisponible = cantidadDisponible;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public String getDescripcionTamañoProducto() {
+		return descripcionTamañoProducto;
+	}
+
+	public void setDescripcionTamañoProducto(String descripcionTamañoProducto) {
+		this.descripcionTamañoProducto = descripcionTamañoProducto;
+	}
+
+	public String getTipoDeProducto() {
+		return tipoDeProducto;
+	}
+
+	public void setTipoDeProducto(String tipoDeProducto) {
+		this.tipoDeProducto = tipoDeProducto;
+	}
+
+	public int getCodigoProducto() {
+		return codigoProducto;
+	}
+
+	public void setCodigoProducto(int codigoProducto) {
+		this.codigoProducto = codigoProducto;
 	}
 	
 }

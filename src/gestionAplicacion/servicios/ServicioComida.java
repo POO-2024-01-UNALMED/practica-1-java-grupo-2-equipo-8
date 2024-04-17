@@ -23,6 +23,46 @@ public class ServicioComida extends Servicio{
 	public boolean procesarPago() {return true;}
 	public String mostrarCarta() {return "Carta";}
 	public String factura() {return "factura";}
-	public boolean verificarBono() {return true;}
+	
+	
+	public static ArrayList<Bono> verificarBono(Cliente cliente) {
+		Bono bonosDelUsuario;
+		ArrayList<Bono> bonos = new ArrayList<>();
+		for (int i=0;i<Bono.getBonosCreados().size(); i++) {
+			for (int j=0;j<cliente.getBonosCliente().size();j++) {
+				if (Bono.getBonosCreados().get(i) == cliente.getBonosCliente().get(j)) {
+					if (cliente.getBonosCliente().get(j).getTipoServicio().equalsIgnoreCase("Souvenir")){
+						bonosDelUsuario = cliente.getBonosCliente().get(j);
+						bonos.add(bonosDelUsuario);
+					}
+				}
+			}
+		}
+		return bonos;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public ArrayList<Pedido> getOrdenComida() {
+		return ordenComida;
+	}
+
+	public void setOrdenComida(ArrayList<Pedido> ordenComida) {
+		this.ordenComida = ordenComida;
+	}
+
+	public double getValorPedido() {
+		return valorPedido;
+	}
+
+	public void setValorPedido(double valorPedido) {
+		this.valorPedido = valorPedido;
+	}
 	
 }
