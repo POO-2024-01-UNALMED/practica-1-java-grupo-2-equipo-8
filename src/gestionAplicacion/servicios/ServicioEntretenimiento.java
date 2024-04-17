@@ -87,13 +87,13 @@ public class ServicioEntretenimiento extends Servicio{
 						break;
 					}
 				}
-				else if (cliente.getMembresia().getTipoMembresia()==1 || cliente.getMembresia().getTipoMembresia()==2) {
+				else if (cliente.getMembresia().getTipoMembresia()==1) {
 					if (pago.getTipo()==1) {
 						metodoPagoCliente = pago;
 						break;
 					}
 				}
-				else if (cliente.getMembresia().getTipoMembresia()==3) {
+				else if (cliente.getMembresia().getTipoMembresia()==2) {
 					if (pago.getTipo()==2) {
 						metodoPagoCliente = pago;
 						break;

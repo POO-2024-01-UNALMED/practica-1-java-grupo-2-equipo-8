@@ -25,6 +25,7 @@ public class Administrador {
 	static Cliente cliente1 = new Cliente("Andy", 18, 13434132, TipoDeDocumento.CC);
 	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
+	static Cliente cliente4 = new Cliente("Juanjo", 18 ,1013458547, TipoDeDocumento.CC);
 	
 	static Pelicula pelicula1 = new Pelicula("KNJ temparada 4 movie", 30000, "Acción", "1 hora", "+18", "4D"); 
 	static SalaCine salaDeCine1 = new SalaCine();
@@ -45,7 +46,7 @@ public class Administrador {
 	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 100000, 0.10);
 	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 60000, 0.05);
 	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 150000, 0.15);
-	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",10000000, 0);
+	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",500000, 0);
 	
 	
 	
@@ -54,52 +55,52 @@ public class Administrador {
 	
 	public static void main(String[] args) {
 		
-		Bono pruevaBono = new Bono(1234,"Peluche","A","Souvenir");
-		Bono pruevaBono1 = new Bono(1235,"Peluche","A","Souvenir");
-		ArrayList<Bono> Bonosss = new ArrayList<>();
-		Bonosss.add(pruevaBono);
-		Bonosss.add(pruevaBono1);
-		Cliente Rusbel = new Cliente();
-		Rusbel.setBonosCliente(Bonosss);
-		Rusbel.setNombre("Rusbel");
-		Rusbel.setDocumento(1037886240);
+//		Bono pruevaBono = new Bono(1234,"Peluche","A","Souvenir");
+//		Bono pruevaBono1 = new Bono(1235,"Peluche","A","Souvenir");
+//		ArrayList<Bono> Bonosss = new ArrayList<>();
+//		Bonosss.add(pruevaBono);
+//		Bonosss.add(pruevaBono1);
+//		Cliente Rusbel = new Cliente();
+//		Rusbel.setBonosCliente(Bonosss);
+//		Rusbel.setNombre("Rusbel");
+//		Rusbel.setDocumento(1037886240);
 		
 		//Llamados métodos de instancias para hacer pruebas
 		{
 			
-			salaDeCine1.crearAsientosSalaDeCine();
-			salaDeCine1.setNumeroSala(1);
-			
-			pelicula1.crearSalaVirtual("10AM");
-			pelicula1.crearSalaVirtual("3PM");
-			pelicula1.crearSalaVirtual("8PM");
-			pelicula1.setNumeroDeSala(1);
-			
-			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
-			
-			ticket1.setPelicula(pelicula1);
-			ticket1.asignarPrecio();
-			ticket1.setSalaDeCine(salaDeCine1);
-			ticket1.setDueno(cliente1);
-			ticket1.setNumeroAsiento("4-4");
-			ticket1.realizarPago(metodoPago1, cliente1);
-			ticket1.procesarPagoRealizado(cliente1);
-			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
-			
-			ticket2.setPelicula(pelicula1);
-			ticket2.asignarPrecio();
-			ticket2.setSalaDeCine(salaDeCine1);
-			ticket2.setDueno(cliente2);
-			ticket2.setNumeroAsiento("4-4");
-			ticket2.realizarPago(metodoPago2, cliente2);
-			ticket2.procesarPagoRealizado(cliente2);
-			pelicula1.modificarSalaVirtual("3PM",4, 4);
-			
-			ticket3.setPelicula(pelicula2);
-			ticket3.asignarPrecio();
-			
-			ticket4.setPelicula(pelicula1);
-			ticket4.asignarPrecio();
+//			salaDeCine1.crearAsientosSalaDeCine();
+//			salaDeCine1.setNumeroSala(1);
+//			
+//			pelicula1.crearSalaVirtual("10AM");
+//			pelicula1.crearSalaVirtual("3PM");
+//			pelicula1.crearSalaVirtual("8PM");
+//			pelicula1.setNumeroDeSala(1);
+//			
+//			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
+//			
+//			ticket1.setPelicula(pelicula1);
+//			ticket1.asignarPrecio();
+//			ticket1.setSalaDeCine(salaDeCine1);
+//			ticket1.setDueno(cliente1);
+//			ticket1.setNumeroAsiento("4-4");
+//			ticket1.realizarPago(metodoPago1, cliente1);
+//			ticket1.procesarPagoRealizado(cliente1);
+//			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
+//			
+//			ticket2.setPelicula(pelicula1);
+//			ticket2.asignarPrecio();
+//			ticket2.setSalaDeCine(salaDeCine1);
+//			ticket2.setDueno(cliente2);
+//			ticket2.setNumeroAsiento("4-4");
+//			ticket2.realizarPago(metodoPago2, cliente2);
+//			ticket2.procesarPagoRealizado(cliente2);
+//			pelicula1.modificarSalaVirtual("3PM",4, 4);
+//			
+//			ticket3.setPelicula(pelicula2);
+//			ticket3.asignarPrecio();
+//			
+//			ticket4.setPelicula(pelicula1);
+//			ticket4.asignarPrecio();
 
 			Membresia.asignarTipoMembresia();
 			MetodoPago.metodoPagoPorTipo(metodoPago1);
@@ -109,10 +110,9 @@ public class Administrador {
 //			cliente1.setMembresia(membresia1);
 //			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
 //			/*cliente1.setMembresia(membresia1)*/
-//			
-//			for (MetodoPago pago : MetodoPago.getMetodosDePagoDisponibles()) {
-//				System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
-			}
+			
+			
+		}
 			
 //			//cliente1.setMembresia(membresia4);
 //			MetodoPago pago = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", cliente1);
@@ -120,15 +120,24 @@ public class Administrador {
 //			System.out.println(pago.getNombre()+"\n"+pago.getTipo());
 
 			MetodoPago.metodoPagoPorTipo(metodoPago4);
-			cliente1.setMembresia(membresia1);
+			
+			cliente4.setMembresia(membresia5);
+			MetodoPago.asignarMetodosDePago(cliente4);
 			MetodoPago.asignarMetodosDePago(cliente1);
 			MetodoPago.asignarMetodosDePago(cliente2);
 			MetodoPago.asignarMetodosDePago(cliente3);
 			
+			
+			
 			System.out.println();
-					
-
-		
+			for (MetodoPago pago : cliente4.getMetodosDePago()) {
+				System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
+			}		
+			
+			MetodoPago metodoPagoCliente = ServicioEntretenimiento.encontrarMetodoPagoCliente("Efectivo", cliente4);
+			
+			System.out.println("Metodos Pago Cliente\n");
+			System.out.println(metodoPagoCliente.getNombre()+"\n"+metodoPagoCliente.getLimiteMaximoPago()+"\n"+metodoPagoCliente.getDescuentoAsociado()+"\n"+metodoPagoCliente.getTipo());
 
 		
 		
@@ -137,8 +146,10 @@ public class Administrador {
 		
 
 		System.out.println("Bienvenido al cine de marinilla");
-
-		inicio();
+//		for (MetodoPago pago : MetodoPago.getMetodosDePagoDisponibles()) {
+//			System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
+//		}
+		//inicio();
 		
 		
 		
@@ -427,7 +438,8 @@ public class Administrador {
 			if (eleccion1==1) {
 				
 				System.out.println("Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago");
-				System.out.println(MetodoPago.mostrarMetodosDePago(clienteActual));
+				MetodoPago.asignarMetodosDePago(clienteActual);
+				System.out.println(MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
 				int eleccion2 = (int)readLong();
 				System.out.println("¿Cuanto desea recargar?\n");
 				double eleccion3 = (double)readLong();
