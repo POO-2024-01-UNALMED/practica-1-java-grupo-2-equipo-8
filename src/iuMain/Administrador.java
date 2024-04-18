@@ -17,6 +17,11 @@ public class Administrador {
 		return sc.nextLine();
 	}
 	
+	static ServicioEntretenimiento game1= new ServicioEntretenimiento("Hang Man", 15000, "Accion");
+	static ServicioEntretenimiento game2= new ServicioEntretenimiento("Hang Man", 20000, "Terror");
+	static ServicioEntretenimiento game3= new ServicioEntretenimiento("Hang Man", 10000, "POO");
+	static ServicioEntretenimiento game4= new ServicioEntretenimiento("Hang Man", 30000, "Comedia");
+	static ServicioEntretenimiento game5= new ServicioEntretenimiento("Hang Man", 5000, "Drama");
 	
 	static TarjetaCinemar cuenta1 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta2 = new TarjetaCinemar();
@@ -143,9 +148,11 @@ public class Administrador {
 //				System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
 //			}
 		
+//			for (ServicioEntretenimiento juego : ServicioEntretenimiento.getJuegos()) {
+//				System.out.println(juego.getGeneroServicio());
+//			}
 		
-		
-		
+		//System.out.println(ServicioEntretenimiento.mostrarJuegosSinDescuento());
 
 		System.out.println("Bienvenido al cine de marinilla");
 //		
@@ -596,23 +603,208 @@ public class Administrador {
 		
 		boolean caso = true;
 		do {
-			System.out.println("\n¿Has realizado alguna compra de un tiquete de cine y no has redimido su codigo?\n1.SI\n2.NO");
+			System.out.println("\n¿Has realizado alguna compra de un tiquete de cine y no has redimido su codigo?\n1.SI\n2.NO\n3.Salir");
 			int eleccion6 = (int)readLong();
 			if (eleccion6==1) {
 				System.out.println("\nIngrese el codigo asociado a la factura de su ticket\nRecuerde que el codigo es el formato de la pelicula pegado a su tipo de documento y el numero de la salaDecine de el tiquete\nEjemplo: 4DCC12 (Todo en mayuscula)");
 				String codigo = readLn();
 				if (ServicioEntretenimiento.comprobarCodigo(codigo)) {
-					System.out.println("Codigo correcto, Se le asiganara un descuento a el precio de los juegos");
+					System.out.println("Codigo correcto, Se le asignó un descuento a el precio de los juegos");
+					ServicioEntretenimiento.AplicarDescuentoJuegos();
 					caso = false;
 				}
 				else {System.out.println("Codigo incorrecto, verifique el codigo");}
 				
 			}
-			else if (eleccion6==2) {caso = false;}
+			else if (eleccion6==2) {
+				caso = false;
+			}
+			else if (eleccion6==3) {
+				salirDelSistema();
+			}
 			else {
 				System.out.println("Opcion invalida");
 			}
 		}while(caso);
+		
+		do {
+			System.out.println(ServicioEntretenimiento.mostrarJuegos());
+			int eleccion7 =(int)readLong();
+			switch(eleccion7) {
+			case 1:
+				if (clienteActual.getCuenta().getSaldo()>=game1.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(game1.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game1.getGeneroServicio());
+					ServicioEntretenimiento.juego(new String[]{"ARMA", "COMBATE", "EXPLOSION","GUERRA","ADRENALINA"});
+					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
+				}
+				else {
+					boolean finWhile = true;
+					while (finWhile) {
+					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
+					int option = (int)readLong();
+						switch(option) {
+						case 1: inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: salirDelSistema();
+						default:  break;
+						}
+					}
+					
+				}
+				boolean finWhile1 = true;
+				while (finWhile1) {
+					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
+					int eleccion8 = (int)readLong();
+					if (eleccion8==1) {
+						finWhile1 = false;
+					}
+					else if (eleccion8==2) {
+						caso = true;
+						finWhile1= false;
+					}
+				}	
+				break;
+			case 2:
+				if (clienteActual.getCuenta().getSaldo()>=game2.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(game2.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game2.getGeneroServicio());
+					ServicioEntretenimiento.juego(new String[]{"FANTASMA", "MOUNSTRUO", "MUERTE","ZOMBI","CEMENTERIO"});
+					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
+				}
+				else {
+					boolean finWhile = true;
+					while (finWhile) {
+					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
+					int option = (int)readLong();
+						switch(option) {
+						case 1: inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: salirDelSistema();
+						default:  break;
+						}
+					}
+					
+				}
+				boolean finWhile2 = true;
+				while (finWhile2) {
+					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
+					int eleccion8 = (int)readLong();
+					if (eleccion8==1) {
+						finWhile2 = false;
+					}
+					else if (eleccion8==2) {
+						caso = true;
+						finWhile2= false;
+					}
+				}	
+				break;
+			
+			case 3:
+				if (clienteActual.getCuenta().getSaldo()>=game3.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(game3.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game3.getGeneroServicio());
+					ServicioEntretenimiento.juego(new String[]{"OBJETO", "GUZMAN", "HERENCIA","CONSTRUCTOR","JAVA"});
+					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
+				}
+				else {
+					boolean finWhile = true;
+					while (finWhile) {
+					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
+					int option = (int)readLong();
+						switch(option) {
+						case 1: inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: salirDelSistema();
+						default:  break;
+						}
+					}
+					
+				}
+				boolean finWhile3 = true;
+				while (finWhile3) {
+					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
+					int eleccion8 = (int)readLong();
+					if (eleccion8==1) {
+						finWhile3 = false;
+					}
+					else if (eleccion8==2) {
+						caso = true;
+						finWhile3= false;
+					}
+				}	
+				break;
+			case 4:
+				if (clienteActual.getCuenta().getSaldo()>=game4.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(game4.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game4.getGeneroServicio());
+					ServicioEntretenimiento.juego(new String[]{"DIVERSION", "RISAS", "CHISTE","PAYASO","GRACIOSO"});
+					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
+				}
+				else {
+					boolean finWhile = true;
+					while (finWhile) {
+					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
+					int option = (int)readLong();
+						switch(option) {
+						case 1: inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: salirDelSistema();
+						default:  break;
+						}
+					}
+					
+				}
+				boolean finWhile4 = true;
+				while (finWhile4) {
+					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
+					int eleccion8 = (int)readLong();
+					if (eleccion8==1) {
+						finWhile4 = false;
+					}
+					else if (eleccion8==2) {
+						caso = true;
+						finWhile4= false;
+					}
+				}	
+				break;
+			case 5:
+				if (clienteActual.getCuenta().getSaldo()>=game5.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(game5.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game5.getGeneroServicio());
+					ServicioEntretenimiento.juego(new String[]{"SHOW", "EMOCIONES", "MUJERES","LAGRIMAS","CONMOVEDOR"});
+					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
+				}
+				else {
+					boolean finWhile = true;
+					while (finWhile) {
+					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
+					int option = (int)readLong();
+						switch(option) {
+						case 1: inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: salirDelSistema();
+						default:  break;
+						}
+					}
+					
+				}
+				boolean finWhile5 = true;
+				while (finWhile5) {
+					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
+					int eleccion8 = (int)readLong();
+					if (eleccion8==1) {
+						finWhile5 = false;
+					}
+					else if (eleccion8==2) {
+						caso = true;
+						finWhile5= false;
+					}
+				}	
+				break;
+			default: break;
+			}	
+		}while(!caso);
 	}
 	
 	static void adquirirMembresia() {

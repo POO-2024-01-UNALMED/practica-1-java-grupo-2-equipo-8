@@ -1,6 +1,7 @@
 package gestionAplicacion.servicios;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 import gestionAplicacion.usuario.*;
 
@@ -12,6 +13,7 @@ public class ServicioEntretenimiento extends Servicio{
 	//private int idServicio;
 	private String horarioServicio;
 	private static ArrayList<TarjetaCinemar> tarjetasEnInventario = new ArrayList<>();
+	private static ArrayList<ServicioEntretenimiento> juegos = new ArrayList<>();
 	private double valorServicio;
 	private static ArrayList<String> codigosGenerados = new ArrayList<>();;
 	private static ArrayList<String> codigosUsados= new ArrayList<>();;
@@ -20,7 +22,7 @@ public class ServicioEntretenimiento extends Servicio{
 	private String generoServicio;
 	
 	//Constructores
-	public ServicioEntretenimiento(){}
+	public ServicioEntretenimiento(){juegos.add(this);}
 	
 	public ServicioEntretenimiento(String nombre, String horario, String nombreServicio, String horarioServicio,
 			double valorServicio, double puntuacionUsuario, String generoServicio) {
@@ -30,8 +32,18 @@ public class ServicioEntretenimiento extends Servicio{
 		this.valorServicio = valorServicio;
 		this.puntuacionUsuario = puntuacionUsuario;
 		this.generoServicio = generoServicio;
+		juegos.add(this);
 	}
 	
+	
+	public ServicioEntretenimiento(String nombreServicio, double valorServicio, String generoServicio) {
+		super();
+		this.nombreServicio = nombreServicio;
+		this.valorServicio = valorServicio;
+		this.generoServicio = generoServicio;
+		juegos.add(this);
+	}
+
 	//metodos
 	public void ingresarSaldo(int saldo) {}
 	public void usarServicio() {}
@@ -101,6 +113,83 @@ public class ServicioEntretenimiento extends Servicio{
 		}
 		return existencia;
 	}
+	
+	public static void juego(String[] PALABRAS) { 
+	  Scanner scanner = new Scanner(System.in);
+      String palabraSecreta = PALABRAS[(int) (Math.random() * PALABRAS.length)];
+      char[] palabraAdivinada = new char[palabraSecreta.length()];
+      boolean[] letrasUsadas = new boolean[26]; // Para rastrear letras ya usadas
+      int intentosRestantes = 7;
+      
+      for (int i = 0; i < palabraAdivinada.length; i++) {
+          palabraAdivinada[i] = '_';
+      }
+      
+      while (intentosRestantes > 0 && !adivinado(palabraAdivinada)) {
+          System.out.println("Intentos restantes: " + intentosRestantes);
+          System.out.println("Palabra "+palabraSecreta.length()+" letras: " + String.valueOf(palabraAdivinada));
+          System.out.print("Ingresa una letra: ");
+          char letra = scanner.nextLine().toUpperCase().charAt(0);
+
+          // Verificar si la letra ya fue usada
+          if (letrasUsadas[letra - 'A']) {
+              System.out.println("Ya has usado esa letra. Intenta otra.");
+              continue;
+          }
+
+          letrasUsadas[letra - 'A'] = true;
+
+          if (palabraSecreta.indexOf(letra) >= 0) {
+              for (int i = 0; i < palabraSecreta.length(); i++) {
+                  if (palabraSecreta.charAt(i) == letra) {
+                      palabraAdivinada[i] = letra;
+                  }
+              }
+          } else {
+              System.out.println("¡Incorrecto! La letra '" + letra + "' no está en la palabra.");
+              intentosRestantes--;
+          }
+      }
+
+      if (adivinado(palabraAdivinada)) {
+          System.out.println("¡Felicidades! ¡Has adivinado la palabra!");
+      } else {
+          System.out.println("¡Oh no! Te has quedado sin intentos. La palabra era: " + palabraSecreta);
+      }
+  }
+	
+	private static boolean adivinado(char[] palabraAdivinada) {
+        for (char c : palabraAdivinada) {
+            if (c == '_') {
+                return false;
+            }
+        }
+        return true;
+    }
+	
+	public static String mostrarJuegos(){
+		String juegos = null;
+		int i = 1;
+		for (ServicioEntretenimiento juego : ServicioEntretenimiento.juegos) {
+			if (juegos == null) {
+				juegos = i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
+				i++;
+			}
+			else {
+				juegos+= i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
+				i++;
+			}
+		}
+		return "¿Cual juego desea jugar?\n"+juegos;
+	}
+	
+	public static void AplicarDescuentoJuegos() {
+		for (ServicioEntretenimiento juego : ServicioEntretenimiento.juegos) {
+			juego.setValorServicio(juego.getValorServicio()-(juego.getValorServicio()*20/100));
+		}
+	}
+	
+	
 	//getters y setters
 	public static ArrayList<TarjetaCinemar> getTarjetasEnInventario() {
 		return tarjetasEnInventario;
@@ -168,6 +257,14 @@ public class ServicioEntretenimiento extends Servicio{
 
 	public void setGeneroServicio(String generoServicio) {
 		this.generoServicio = generoServicio;
+	}
+
+	public static ArrayList<ServicioEntretenimiento> getJuegos() {
+		return juegos;
+	}
+
+	public static void setJuegos(ArrayList<ServicioEntretenimiento> juegos) {
+		ServicioEntretenimiento.juegos = juegos;
 	}
 
 	
