@@ -18,7 +18,10 @@ public class SalaCine {
 	public SalaCine(){
 		Pelicula.getSalasDeCine().add(this);
 	}
-	
+	public SalaCine(int nSala){
+		this.numeroSala = nSala;
+		Pelicula.getSalasDeCine().add(this);
+	}
 	public SalaCine(int numeroSala, String tipoDeSala, Asiento[][] asientos, Pelicula peliculaEnPresentacion,
 			ArrayList<Pelicula> peliculas, ArrayList<Ticket> ticketsCreados) {
 		super();

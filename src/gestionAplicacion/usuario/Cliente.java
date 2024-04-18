@@ -33,6 +33,15 @@ public class Cliente {
 		this.documento = documento;
 		this.tipoDocumento = tipoDocumento;
 	}
+	
+	public Cliente(String nombre, int edad, long documento, TipoDeDocumento tipoDocumento,Ticket ticket) {
+		this();
+		this.nombre = nombre;
+		this.edad = edad;
+		this.documento = documento;
+		this.tipoDocumento = tipoDocumento;
+		this.ticket = ticket;
+	}
 
 	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, Ticket ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, int duracionMembresiaDias,
@@ -105,6 +114,13 @@ public class Cliente {
 			value = true;
 		}
 		return value;
+	}
+	
+	public void restablecerLimiteMaximo(double max, double max2, double max3, double max4) {
+		this.getMetodosDePago().get(0).setLimiteMaximoPago(max);
+		this.getMetodosDePago().get(1).setLimiteMaximoPago(max2);
+		this.getMetodosDePago().get(2).setLimiteMaximoPago(max3);
+		this.getMetodosDePago().get(3).setLimiteMaximoPago(max4);
 	}
 
 	//Getters y setters

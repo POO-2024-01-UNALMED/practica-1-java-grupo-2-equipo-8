@@ -29,7 +29,8 @@ public class Administrador {
 	
 	static Pelicula pelicula1 = new Pelicula("KNJ temparada 4 movie", 30000, "Acción", "1 hora", "+18", "4D"); 
 	static SalaCine salaDeCine1 = new SalaCine();
-
+	static SalaCine salaDeCine2 = new SalaCine(2);
+	
 	static Pelicula pelicula2 = new Pelicula("Kong vs Godzilla Turbo Remix", 7000, "Acción", "2 horas", "+18","2D"); 
 
 	static Membresia membresia1 = new Membresia("Basico", 1, 5000, 10);
@@ -42,7 +43,9 @@ public class Administrador {
 	static Ticket ticket2 = new Ticket();
 	static Ticket ticket3 = new Ticket();
 	static Ticket ticket4 = new Ticket();
-
+	static Ticket ticket5 = new Ticket(cliente4, pelicula1, salaDeCine2);
+	static Ticket ticket6 = new Ticket(cliente4, pelicula2, salaDeCine1);
+	
 	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 100000, 0.10);
 	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 60000, 0.05);
 	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 150000, 0.15);
@@ -68,45 +71,45 @@ public class Administrador {
 		//Llamados métodos de instancias para hacer pruebas
 		{
 			
-//			salaDeCine1.crearAsientosSalaDeCine();
-//			salaDeCine1.setNumeroSala(1);
-//			
-//			pelicula1.crearSalaVirtual("10AM");
-//			pelicula1.crearSalaVirtual("3PM");
-//			pelicula1.crearSalaVirtual("8PM");
-//			pelicula1.setNumeroDeSala(1);
-//			
-//			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
-//			
-//			ticket1.setPelicula(pelicula1);
-//			ticket1.asignarPrecio();
-//			ticket1.setSalaDeCine(salaDeCine1);
-//			ticket1.setDueno(cliente1);
-//			ticket1.setNumeroAsiento("4-4");
-//			ticket1.realizarPago(metodoPago1, cliente1);
-//			ticket1.procesarPagoRealizado(cliente1);
-//			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
-//			
-//			ticket2.setPelicula(pelicula1);
-//			ticket2.asignarPrecio();
-//			ticket2.setSalaDeCine(salaDeCine1);
-//			ticket2.setDueno(cliente2);
-//			ticket2.setNumeroAsiento("4-4");
-//			ticket2.realizarPago(metodoPago2, cliente2);
-//			ticket2.procesarPagoRealizado(cliente2);
-//			pelicula1.modificarSalaVirtual("3PM",4, 4);
-//			
-//			ticket3.setPelicula(pelicula2);
-//			ticket3.asignarPrecio();
-//			
-//			ticket4.setPelicula(pelicula1);
-//			ticket4.asignarPrecio();
+			salaDeCine1.crearAsientosSalaDeCine();
+			salaDeCine1.setNumeroSala(1);
+			
+			pelicula1.crearSalaVirtual("10AM");
+			pelicula1.crearSalaVirtual("3PM");
+			pelicula1.crearSalaVirtual("8PM");
+			pelicula1.setNumeroDeSala(1);
+			
+			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
+			
+			ticket1.setPelicula(pelicula1);
+			ticket1.asignarPrecio();
+			ticket1.setSalaDeCine(salaDeCine1);
+			ticket1.setDueno(cliente1);
+			ticket1.setNumeroAsiento("4-4");
+			ticket1.realizarPago(metodoPago1, cliente1);
+			ticket1.procesarPagoRealizado(cliente1);
+			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
+			
+			ticket2.setPelicula(pelicula1);
+			ticket2.asignarPrecio();
+			ticket2.setSalaDeCine(salaDeCine1);
+			ticket2.setDueno(cliente2);
+			ticket2.setNumeroAsiento("4-4");
+			ticket2.realizarPago(metodoPago2, cliente2);
+			ticket2.procesarPagoRealizado(cliente2);
+			pelicula1.modificarSalaVirtual("3PM",4, 4);
+			
+			ticket3.setPelicula(pelicula2);
+			ticket3.asignarPrecio();
+			
+			ticket4.setPelicula(pelicula1);
+			ticket4.asignarPrecio();
 
 			Membresia.asignarTipoMembresia();
 			MetodoPago.metodoPagoPorTipo(metodoPago1);
 			MetodoPago.metodoPagoPorTipo(metodoPago2);
 			MetodoPago.metodoPagoPorTipo(metodoPago3);
-
+			MetodoPago.metodoPagoPorTipo(metodoPago4);
 //			cliente1.setMembresia(membresia1);
 //			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
 //			/*cliente1.setMembresia(membresia1)*/
@@ -119,37 +122,34 @@ public class Administrador {
 //			//System.out.println("\n"+cliente1.getMembresia().getTipoMembresia());
 //			System.out.println(pago.getNombre()+"\n"+pago.getTipo());
 
-			MetodoPago.metodoPagoPorTipo(metodoPago4);
+			
 			
 			cliente4.setMembresia(membresia5);
-			MetodoPago.asignarMetodosDePago(cliente4);
+			cliente4.setTicket(ticket5);
+//			ticket5.setDueno(cliente4);
+//			ticket5.setPelicula(pelicula1);
+//			ticket5.setSalaDeCine(salaDeCine1);
+			
 			MetodoPago.asignarMetodosDePago(cliente1);
 			MetodoPago.asignarMetodosDePago(cliente2);
 			MetodoPago.asignarMetodosDePago(cliente3);
+			MetodoPago.asignarMetodosDePago(cliente4);
 			
 			
 			
-			System.out.println();
-			for (MetodoPago pago : cliente4.getMetodosDePago()) {
-				System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
-			}		
+			//System.out.println(ticket6.getCodigo());
 			
-			MetodoPago metodoPagoCliente = ServicioEntretenimiento.encontrarMetodoPagoCliente("Efectivo", cliente4);
-			
-			System.out.println("Metodos Pago Cliente\n");
-			System.out.println(metodoPagoCliente.getNombre()+"\n"+metodoPagoCliente.getLimiteMaximoPago()+"\n"+metodoPagoCliente.getDescuentoAsociado()+"\n"+metodoPagoCliente.getTipo());
-
-		
+//			for (MetodoPago pago : cliente1.getMetodosDePago()) {
+//				System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
+//			}
 		
 		
 		
 		
 
 		System.out.println("Bienvenido al cine de marinilla");
-//		for (MetodoPago pago : MetodoPago.getMetodosDePagoDisponibles()) {
-//			System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
-//		}
-		//inicio();
+//		
+		inicio();
 		
 		
 		
@@ -373,7 +373,7 @@ public class Administrador {
 		TipoDeDocumento documentoCliente=null;
 		boolean casoValido = true;
 		do{
-			System.out.println("Seleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Regresar\n5.Volver al menú principal\n6.Salir");
+			System.out.println("\nSeleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Regresar\n5.Volver al menú principal\n6.Salir");
 			int opcion1 = (int)readLong();
 			switch (opcion1) {
 				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
@@ -431,37 +431,159 @@ public class Administrador {
 			}
 		}while(!casoValido);
 		Cliente clienteActual = Cliente.getClientes().get(Cliente.getClientes().size()-1);
+		System.out.println(clienteActual.getNombre()+"\n"+clienteActual.getDocumento()+"\n");
 		do {
 			System.out.println("¿Deseas recargar la tarjeta?");
 			System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir");
 			int eleccion1 = (int)readLong();
+			boolean finCiclo = true;
 			if (eleccion1==1) {
 				
 				System.out.println("Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago");
 				MetodoPago.asignarMetodosDePago(clienteActual);
+				double maximo = clienteActual.getMetodosDePago().get(0).getLimiteMaximoPago();
+				double maximo2 = clienteActual.getMetodosDePago().get(1).getLimiteMaximoPago();
+				double maximo3 = clienteActual.getMetodosDePago().get(2).getLimiteMaximoPago();
+				double maximo4 = clienteActual.getMetodosDePago().get(3).getLimiteMaximoPago();
 				System.out.println(MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
 				int eleccion2 = (int)readLong();
 				System.out.println("¿Cuanto desea recargar?\n");
 				double eleccion3 = (double)readLong();
-				switch (eleccion2) {
-				
-				case 1:
-					System.out.print("Ingrese contraseña (4 digitos): ");
-					int clave = (int) readLong();
+				while (finCiclo) {
 					
-					MetodoPago metodoPagoCliente = ServicioEntretenimiento.encontrarMetodoPagoCliente("Bancolombia", clienteActual);
-					if (eleccion3>metodoPagoCliente.getLimiteMaximoPago()) {
-						clienteActual.getCuenta().ingresarSaldo(metodoPagoCliente.getLimiteMaximoPago());
-						System.out.println("El valor a recargar ha superado el limite permitido por "+metodoPagoCliente.getNombre()+
-								"\nPor favor escoja otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente.getLimiteMaximoPago())+
-								" restantes");
+					switch (eleccion2) {
+					
+					case 1:
+						System.out.print("Ingrese contraseña (4 digitos): ");
+						int clave = (int) readLong();
+						
+						MetodoPago metodoPagoCliente = ServicioEntretenimiento.encontrarMetodoPagoCliente("Bancolombia", clienteActual.getMetodosDePago());
+						
+						if (eleccion3>metodoPagoCliente.getLimiteMaximoPago()) {
+							clienteActual.getCuenta().ingresarSaldo(metodoPagoCliente.getLimiteMaximoPago());
+							System.out.println("\nSe han recargado: $"+metodoPagoCliente.getLimiteMaximoPago()+" exitosamente,\nSin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente.getNombre()+
+									"\nPor favor otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente.getLimiteMaximoPago())+
+									" restantes");
+							
+							eleccion3 = (double)eleccion3-metodoPagoCliente.getLimiteMaximoPago();
+							metodoPagoCliente.setLimiteMaximoPago(0);
+							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
+							eleccion2 = (int)readLong();
+						}
+						else {
+							clienteActual.getCuenta().ingresarSaldo(eleccion3);
+							System.out.println("\nSe han recargado: $"+eleccion3+" exitosamente");
+							finCiclo = false;
+						}
+						break;
+					case 2:
+						System.out.print("Ingrese contraseña (4 digitos): ");
+						int clave2 = (int) readLong();
+						
+						MetodoPago metodoPagoCliente2 = ServicioEntretenimiento.encontrarMetodoPagoCliente("AV Villas", clienteActual.getMetodosDePago());
+						
+						if (eleccion3>metodoPagoCliente2.getLimiteMaximoPago()) {
+							clienteActual.getCuenta().ingresarSaldo(metodoPagoCliente2.getLimiteMaximoPago());
+							System.out.println("\nSe han recargado: $"+metodoPagoCliente2.getLimiteMaximoPago()+" exitosamente,\nSin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente2.getNombre()+
+									"\nPor favor otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente2.getLimiteMaximoPago())+
+									" restantes");
+							
+							eleccion3 = (double)eleccion3-metodoPagoCliente2.getLimiteMaximoPago();
+							metodoPagoCliente2.setLimiteMaximoPago(0);
+							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
+							eleccion2 = (int)readLong();
+						}
+						else {
+							clienteActual.getCuenta().ingresarSaldo(eleccion3);
+							System.out.println("\nSe han recargado: $"+eleccion3+" exitosamente");
+							finCiclo = false;
+						}
+						break;
+					case 3:
+						System.out.print("Ingrese contraseña (4 digitos): ");
+						int clave3 = (int) readLong();
+						
+						MetodoPago metodoPagoCliente3 = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", clienteActual.getMetodosDePago());
+						
+						if (eleccion3>metodoPagoCliente3.getLimiteMaximoPago()) {
+							clienteActual.getCuenta().ingresarSaldo(metodoPagoCliente3.getLimiteMaximoPago());
+							System.out.println("\nSe han recargado: $"+metodoPagoCliente3.getLimiteMaximoPago()+" exitosamente,\nSin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente3.getNombre()+
+									"\nPor favor otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente3.getLimiteMaximoPago())+
+									" restantes");
+							
+							eleccion3 = (double)eleccion3-metodoPagoCliente3.getLimiteMaximoPago();
+							metodoPagoCliente3.setLimiteMaximoPago(0);
+							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
+							eleccion2 = (int)readLong();
+						}
+						else {
+							clienteActual.getCuenta().ingresarSaldo(eleccion3);
+							System.out.println("\nSe han recargado: $"+eleccion3+" exitosamente");
+							finCiclo = false;
+						}
+						break;
+					case 4:
+						System.out.print("Ingrese contraseña (4 digitos): ");
+						int clave4 = (int) readLong();
+						
+						MetodoPago metodoPagoCliente4 = ServicioEntretenimiento.encontrarMetodoPagoCliente("Efectivo", clienteActual.getMetodosDePago());
+						
+						if (eleccion3>metodoPagoCliente4.getLimiteMaximoPago()) {
+							clienteActual.getCuenta().ingresarSaldo(metodoPagoCliente4.getLimiteMaximoPago());
+							System.out.println("\nSe han recargado: $"+metodoPagoCliente4.getLimiteMaximoPago()+" exitosamente,\nSin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente4.getNombre()+
+									"\nPor favor otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente4.getLimiteMaximoPago())+
+									" restantes");
+							
+							eleccion3 = (double)eleccion3-metodoPagoCliente4.getLimiteMaximoPago();
+							metodoPagoCliente4.setLimiteMaximoPago(0);
+							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
+							eleccion2 = (int)readLong();
+						}
+						else {
+							clienteActual.getCuenta().ingresarSaldo(eleccion3);
+							System.out.println("\nSe han recargado: $"+eleccion3+" exitosamente");
+							finCiclo = false;
+						}
+						break;
+					default:
+						System.out.println("Opcion invalida");
+						break;
 					}
+					
+						
+						
 				}
-				casoValido= false;
+				
+				clienteActual.restablecerLimiteMaximo(maximo, maximo2, maximo3, maximo4);
+				System.out.println("\nEl saldo de su tarjeta cinemar es: "+clienteActual.getCuenta().getSaldo());
+				while(!finCiclo) {
+					System.out.println("Desea ingresar a los juegos, Volver a recargar la tarjeta, volver al inicio o Salir");
+					System.out.println("1.Ingresar\n2.Recargar tarjeta cinemar\n3.Volver al menu principal\n4.Salir");
+					int eleccion4 = (int)readLong();
+					switch (eleccion4) {
+					case 1: casoValido= false;finCiclo= true; break;
+					case 2: finCiclo= true; break;
+					case 3: inicio();
+					case 4: salirDelSistema();
+					default: finCiclo = false; break; 
+				}
+				}
+				
 			}
 			else if (eleccion1==2) {
 				System.out.println("Recuerde que debe tener saldo para acceder a los diferentes juegos\nSu saldo en Tarjeta Cinemar: "+clienteActual.getCuenta().getSaldo());
-				casoValido = false;
+				while(finCiclo) {
+					System.out.println("Desea ingresar a los juegos, recargar la tarjeta, volver al inicio o Salir");
+					System.out.println("1.Ingresar\n2.Recargar tarjeta cinemar\n3.Volver al menu principal\n4.Salir");
+					int eleccion4 = (int)readLong();
+					switch (eleccion4) {
+					case 1: casoValido= false;finCiclo= false; break;
+					case 2: finCiclo= false; break;
+					case 3: inicio();
+					case 4: salirDelSistema();
+					default: finCiclo = true; break; 
+					}
+				}
 			}
 			else if (eleccion1==3) {
 				inicio();
@@ -471,6 +593,26 @@ public class Administrador {
 			}
 			else {System.out.println("Opcion invalida");}
 		}while(casoValido);
+		
+		boolean caso = true;
+		do {
+			System.out.println("\n¿Has realizado alguna compra de un tiquete de cine y no has redimido su codigo?\n1.SI\n2.NO");
+			int eleccion6 = (int)readLong();
+			if (eleccion6==1) {
+				System.out.println("\nIngrese el codigo asociado a la factura de su ticket\nRecuerde que el codigo es el formato de la pelicula pegado a su tipo de documento y el numero de la salaDecine de el tiquete\nEjemplo: 4DCC12 (Todo en mayuscula)");
+				String codigo = readLn();
+				if (ServicioEntretenimiento.comprobarCodigo(codigo)) {
+					System.out.println("Codigo correcto, Se le asiganara un descuento a el precio de los juegos");
+					caso = false;
+				}
+				else {System.out.println("Codigo incorrecto, verifique el codigo");}
+				
+			}
+			else if (eleccion6==2) {caso = false;}
+			else {
+				System.out.println("Opcion invalida");
+			}
+		}while(caso);
 	}
 	
 	static void adquirirMembresia() {

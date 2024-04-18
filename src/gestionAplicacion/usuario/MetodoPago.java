@@ -82,9 +82,9 @@ public class MetodoPago {
 		//Se recorre la lista de los medios de pagos disponibles en la lista del cliente.
 		for (MetodoPago metodoPago : metodosPagoCliente) {
 				if (resultado == null) {
-					resultado = i + ". "+ metodoPago.getNombre()+ " Recarga máxima: $" + metodoPago.getLimiteMaximoPago() +"\n";
+					resultado = i + ". "+ metodoPago.getNombre()+ " -- Recarga máxima: $" + metodoPago.getLimiteMaximoPago() +"\n";
 				}else {
-					resultado = resultado + i + ". " + metodoPago.getNombre() +" Recarga máxima: $"+ metodoPago.getLimiteMaximoPago() +"\n";
+					resultado = resultado + i + ". " + metodoPago.getNombre() +" -- Recarga máxima: $"+ metodoPago.getLimiteMaximoPago() +"\n";
 				}
 				i++;
 		}
@@ -140,6 +140,7 @@ public class MetodoPago {
 			new MetodoPago(nombre, descuentoAsociado, limiteMaximoPago, tipo);
 		}	
 	}
+	
 	
  	public double aplicarDescuento(Cliente cliente, MetodoPago metodopago) {
  		

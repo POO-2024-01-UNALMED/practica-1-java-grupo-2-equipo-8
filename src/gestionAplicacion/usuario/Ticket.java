@@ -1,6 +1,7 @@
 package gestionAplicacion.usuario;
  
 import gestionAplicacion.proyecciones.*;
+import gestionAplicacion.servicios.ServicioEntretenimiento;
 
 public class Ticket implements IBuyable{
 	
@@ -14,10 +15,12 @@ public class Ticket implements IBuyable{
 	private String horario;
 	private int idPelicula;
 	private String numeroAsiento;
+	private String codigo;
 
 	//Constructors
 	public Ticket(){
 		Ticket.cantidadTicketsCreados++;
+		
 	}
 	
 	public Ticket(Cliente dueno, SalaCine salaDeCine, Asiento asiento, double precio, Pelicula pelicula, String horario, int idPelicula) {
@@ -30,8 +33,20 @@ public class Ticket implements IBuyable{
 		this.idPelicula = idPelicula;
 		Ticket.cantidadTicketsCreados++;
 		this.idTicket = Ticket.cantidadTicketsCreados;
+		this.codigo = this.generarCodigoTicket();
+		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
 	}
 	
+	public Ticket(Cliente dueno, Pelicula pelicula, SalaCine salaCine) {
+		this.dueno = dueno;
+		this.pelicula = pelicula;
+		this.idTicket = Ticket.cantidadTicketsCreados;
+		this.salaDeCine = salaCine;
+		Ticket.cantidadTicketsCreados++;
+		this.codigo = this.generarCodigoTicket();
+		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
+
+	}
 	//Methods
 	/**
 	 * Description : Este método se encarga de verificar si se puede aplicar o no un descuento sobre el precio de la pelicula
@@ -139,6 +154,11 @@ public class Ticket implements IBuyable{
 		return factura;
 	}
 	
+	private String generarCodigoTicket() {
+		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getSalaDeCine().getNumeroSala();
+		return codigoTicket;
+	}
+	
 	public String toString() {
 		return "=== Factura de Ticket ===\n" +
 		"Nombre dueño : " + this.getDueno().getNombre() + "\n" +
@@ -227,6 +247,14 @@ public class Ticket implements IBuyable{
 
 	public void setNumeroAsiento(String numeroAsiento) {
 		this.numeroAsiento = numeroAsiento;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 	
 	
