@@ -111,6 +111,9 @@ public class Administrador {
 			ticket4.asignarPrecio();
 
 			Membresia.asignarTipoMembresia();
+//			for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
+//				MetodoPago.metodoPagoPorTipo(metodoPago);
+//			}
 			MetodoPago.metodoPagoPorTipo(metodoPago1);
 			MetodoPago.metodoPagoPorTipo(metodoPago2);
 			MetodoPago.metodoPagoPorTipo(metodoPago3);
@@ -130,6 +133,7 @@ public class Administrador {
 			
 			
 			cliente4.setMembresia(membresia5);
+			cliente3.setMembresia(membresia2);
 			cliente4.setTicket(ticket5);
 //			ticket5.setDueno(cliente4);
 //			ticket5.setPelicula(pelicula1);
@@ -140,6 +144,7 @@ public class Administrador {
 			MetodoPago.asignarMetodosDePago(cliente3);
 			MetodoPago.asignarMetodosDePago(cliente4);
 			
+
 			
 			
 			//System.out.println(ticket6.getCodigo());
@@ -147,6 +152,16 @@ public class Administrador {
 //			for (MetodoPago pago : cliente1.getMetodosDePago()) {
 //				System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
 //			}
+
+			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
+					
+
+		
+
+		
+		
+		
+
 		
 //			for (ServicioEntretenimiento juego : ServicioEntretenimiento.getJuegos()) {
 //				System.out.println(juego.getGeneroServicio());
@@ -808,14 +823,123 @@ public class Administrador {
 	}
 	
 	static void adquirirMembresia() {
-		System.out.println(Membresia.mostrarCategoria());
-		System.out.println("Escoga la categoria de su membresia o escriba 5 para volver");
+		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla. ¿Desea continuar en la adquisición? \n1. Si \n2. No \n3. Salir");
+		//System.out.println(Membresia.mostrarCategoria() + "6. Volver");
 		int opcion = (int)readLong();
-		if (opcion==5) {inicio();}
-		else if (opcion < 5 && opcion > 0) {
-			System.out.println(Membresia.verificarRestriccionMembresia(cliente1, opcion));
-		}
-	} 
+		if (opcion == 1) {}
+		else if (opcion == 2) {inicio();}
+		else if (opcion == 3 ) {salirDelSistema();}
+		else {System.out.println("\nOpcion Invalida");adquirirMembresia();}
+		TipoDeDocumento documentoCliente=null;
+		boolean casoValido = true;
+		do{
+			System.out.println("Seleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Regresar\n5.Volver al menú principal\n6.Salir");
+			int opcion1 = (int)readLong();
+			switch (opcion1) {
+				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
+				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
+				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
+				case 4: adquirirMembresia();casoValido=false;break;
+				case 5: inicio();casoValido=false;break;
+				case 6: salirDelSistema();
+				default: System.out.println("Opcion invalida");break;
+			}
+		}while(casoValido);	
+			
+		do {
+			System.out.print("Ingrese el numero de documento: ");
+			long numeroDocumentoCliente = readLong();
+			Cliente cliente=Cliente.revisarDatosCliente(numeroDocumentoCliente);
+			if (cliente==null) {
+				System.out.print("Ingrese su edad: ");
+				int edadCliente = (int)readLong();
+				System.out.print("Ingrese su nombre: ");
+				String nombreCliente = readLn();
+				cliente = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
+				System.out.print("Gracias por su registro, " + cliente.getNombre()
+				+ ". Por favor, seleccione la membresia que desea adquirir.\n" 
+				+ Membresia.mostrarCategoria() + "6. Volver \nIngrese la opción: ");
+				int categoriaMembresia = (int)readLong();
+				if (categoriaMembresia == 6) {inicio();}
+				else if (categoriaMembresia >0 && categoriaMembresia <6) {
+					boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(cliente, categoriaMembresia);
+					if (requisitosMembresia == false) {
+						System.out.print("No puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello: Por favor seleccione una opción:\n1. Volver al menú principal.\n2. Volver a la selección de membresias.\n3. Salir");
+						int option = (int)readLong();
+						switch(option) {
+						case 1: inicio();
+						case 2: adquirirMembresia();
+						case 3: salirDelSistema();
+						default:  break;
+						}
+						
+					} else {
+						Membresia membresiaNueva = null;
+						for (Membresia membresia : Membresia.getTiposDeMembresia()) {
+							if (membresia.getCategoria() == categoriaMembresia) {
+								membresiaNueva = membresia;
+							}
+						}
+						System.out.print("El precio de la membresia es de " + membresiaNueva.getValorSuscripcionMensual() 
+						+ ". Por favor, seleccione el método de pago a usar: "
+						+ MetodoPago.mostrarMetodosDePago(cliente) + "4. Volver \nIngrese la opción: ");
+					}
+				
+				casoValido = true;
+				}
+			} else {
+				System.out.println("¿Eres "+cliente.getNombre()+"?");
+				System.out.println("1. SI\n2. NO");
+				int eleccion = (int)readLong();
+				if (eleccion==2) {
+					System.out.print("Por favor, escriba nuevamente su documento para continuar. \n");
+					adquirirMembresia();
+				} else {
+					Membresia membresiaActual = cliente.getMembresia();
+					String nombreMembresiaActual = null;
+					if (membresiaActual == null) {
+						nombreMembresiaActual = "Sin membresia";
+					} else {
+						nombreMembresiaActual = membresiaActual.getNombre();
+					}
+				System.out.print("Bienvenido, " + cliente.getNombre()
+				+ ". Actualmente su membresia es " + nombreMembresiaActual 
+				+ ". Por favor, seleccione la membresia que desea adquirir/actualizar.\n"
+				+ Membresia.mostrarCategoria() + "6. Volver \nIngrese la opción: ");
+				int categoriaMembresia = (int)readLong();
+				if (categoriaMembresia == 6) {inicio();}
+				else if (categoriaMembresia == membresiaActual.getCategoria()) {
+					System.out.print("Ya posee esta membresia.");
+				}
+				else if (categoriaMembresia >0 && categoriaMembresia <6) {
+					boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(cliente, categoriaMembresia);
+					if (requisitosMembresia == false) {
+						System.out.print("No puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello: Por favor seleccione una opción:\n1. Volver al menú principal.\n2. Volver a la selección de membresias.\n3. Salir");
+						int option = (int)readLong();
+						switch(option) {
+						case 1: inicio();
+						case 2: adquirirMembresia();
+						case 3: salirDelSistema();
+						default:  break;
+						}
+
+					} else {
+						Membresia membresiaNueva = null;
+						for (Membresia membresia : Membresia.getTiposDeMembresia()) {
+							if (membresia.getCategoria() == categoriaMembresia) {
+								membresiaNueva = membresia;
+							}
+						}
+						
+						System.out.print("El precio de la membresia es de " + membresiaNueva.getValorSuscripcionMensual() 
+						+ ". Por favor, seleccione el método de pago a usar: \n"
+						+ MetodoPago.mostrarMetodosDePago(cliente) + "4. Volver \nIngrese la opción: ");
+					}
+				}
+				
+				}
+			}
+		}while (!casoValido); }
 	
 	static void salirDelSistema() {
 		System.out.println("¡Adios, vuelva pronto!");

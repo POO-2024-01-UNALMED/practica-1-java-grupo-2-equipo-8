@@ -25,7 +25,6 @@ public class Membresia {
 		this.categoria = categoria;
 		this.valorSuscripcionMensual = valorSuscripcionMensual;
 		this.duracionMembresiaDias = duracionMembresiaDias;
-		tiposDeMembresia.add(this);
 	}
 
 	public Membresia(){
@@ -234,6 +233,14 @@ public class Membresia {
 
 	public void setDescuentoAsociado(double descuentoAsociado) {
 		this.descuentoAsociado = descuentoAsociado;
+	}
+
+	public int getValorSuscripcionMensual() {
+		return valorSuscripcionMensual;
+	}
+
+	public void setValorSuscripcionMensual(int valorSuscripcionMensual) {
+		this.valorSuscripcionMensual = valorSuscripcionMensual;
 	}
 	
 	
