@@ -1,5 +1,7 @@
 package gestionAplicacion.proyecciones;
 import java.util.ArrayList;
+
+import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.Ticket;
 
 public class SalaCine {
@@ -9,7 +11,7 @@ public class SalaCine {
 	private static String fecha;
 	private Asiento[][] asientos;
 	private Pelicula peliculaEnPresentacion;
-	private ArrayList<Pelicula> peliculas = new ArrayList<>();
+	//private ArrayList<Pelicula> peliculas = new ArrayList<>(); Posiblemente sea innecesario
 	private ArrayList<Ticket> ticketsCreados = new ArrayList<>();
 	private static String hora;
 	private static String diaSemana;
@@ -22,14 +24,12 @@ public class SalaCine {
 		this.numeroSala = nSala;
 		Pelicula.getSalasDeCine().add(this);
 	}
-	public SalaCine(int numeroSala, String tipoDeSala, Asiento[][] asientos, Pelicula peliculaEnPresentacion,
-			ArrayList<Pelicula> peliculas, ArrayList<Ticket> ticketsCreados) {
+	public SalaCine(int numeroSala, String tipoDeSala, Asiento[][] asientos, Pelicula peliculaEnPresentacion, ArrayList<Ticket> ticketsCreados) {
 		super();
 		this.numeroSala = numeroSala;
 		this.tipoDeSala = tipoDeSala;
 		this.asientos = asientos;
 		this.peliculaEnPresentacion = peliculaEnPresentacion;
-		this.peliculas = peliculas;
 		this.ticketsCreados = ticketsCreados;
 	}
 
@@ -81,23 +81,73 @@ public class SalaCine {
 	}
 	/**
 	 * @Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
-	 * si su disponibilidad es false, la cambia a true, en caso de que sea true, la cambia a false.
-	 * @params : (int fila): Index de la fila del asiento que queremos modificar;
-	 * (int columna): Index de la columna del asiento que queremos modificar.
+	 * si su disponibilidad es true la cambia a false, se usa para separar un asiento luego de ser comprado
+	 * @param fila : Index de la fila del asiento que queremos modificar;
+	 * @param columna : Index de la columna del asiento que queremos modificar.
 	 * @return : (void): Este método no retorna nada, solo actualiza los asientos de la sala de cine
 	 * */
-	public void cambiarDisponibilidadAsiento(int fila, int columna) {
+	public void cambiarDisponibilidadAsientoLibre(int fila, int columna) {
 		if (this.getAsientos()[fila - 1][columna - 1].isDisponibilidad()) {
 			this.getAsientos()[fila - 1][columna - 1].setDisponibilidad(false);	
+		}
+	}
+	
+	/**
+	 * @Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
+	 * si su disponibilidad es false la cambia a true, es especialmente útil para actualizar la sala de cine
+	 * @param fila : Index de la fila del asiento que queremos modificar;
+	 * @param columna : Index de la columna del asiento que queremos modificar.
+	 * @return : (void): Este método no retorna nada, solo actualiza los asientos de la sala de cine
+	 * */
+	public void cambiarDisponibilidadAsientoOcupadoParaLibre(int fila, int columna) {
+		if (this.getAsientos()[fila - 1][columna - 1].isDisponibilidad()) {
 		}else {
 			this.getAsientos()[fila - 1][columna - 1].setDisponibilidad(true);	
 		}	
 	}
 	
 	public boolean verificarFactura() {return true;}
-	public boolean verificarTicket() {return true;}
-	public void destriurTicket() {}
-	public void actualizarPeliculaEnPresentacion() {}
+	public boolean verificarTicket(Cliente cliente) {
+		return true;
+	}
+	//public void destriurTicket() {} Este proceso se puede hacer directamente en la verificación
+	
+	/***/
+	public void actualizarPeliculaEnPresentacion() {
+		String day = null;
+		String hour = null;
+		
+		//Actualizamos la película
+		for (Pelicula pelicula : Pelicula.getCartelera()) {
+			if (pelicula.getNumeroDeSala() == this.getNumeroSala()) {
+				for (ArrayList<String> horario : pelicula.getHorarios().keySet()) {
+					if (horario.get(0).equals(SalaCine.getDiaSemana())& horario.get(1).equals(SalaCine.getHora())){
+						this.setPeliculaEnPresentacion(pelicula);
+						day = horario.get(0);
+						hour = horario.get(1);
+						break;
+					}
+				}
+				break;
+			}
+		}
+		
+		//Preparamos los asientos para ser actualizados
+		for (int i = 0; i < this.getAsientos().length; i++) {
+	        for (int j = 0; j < this.getAsientos()[i].length; j++) {
+	            this.cambiarDisponibilidadAsientoOcupadoParaLibre(i+1, j+1);
+	        }
+	    }
+		
+		//Actualizamos los asientos de la sala de cine
+		for (int i = 0; i < this.getAsientos().length; i++) {
+	        for (int j = 0; j < this.getAsientos()[i].length; j++) {
+	        	if (!this.getPeliculaEnPresentacion().isDisponibilidadAsientoSalaVirtual(day, hour, i+1, j+1))
+	            this.cambiarDisponibilidadAsientoLibre(i+1, j+1);
+	        }
+	    }
+		
+	}
 
 	// Getters and Setters
 	public int getNumeroSala() {
@@ -139,14 +189,6 @@ public class SalaCine {
 
 	public void setPeliculaEnPresentacion(Pelicula peliculaEnPresentacion) {
 		this.peliculaEnPresentacion = peliculaEnPresentacion;
-	}
-
-	public ArrayList<Pelicula> getPeliculas() {
-		return peliculas;
-	}
-
-	public void setPeliculas(ArrayList<Pelicula> peliculas) {
-		this.peliculas = peliculas;
 	}
 
 	public ArrayList<Ticket> getTicketsCreados() {

@@ -75,13 +75,16 @@ public class Administrador {
 		
 		//Llamados métodos de instancias para hacer pruebas
 		{
-			
+			SalaCine.setDiaSemana("Lunes");
+			SalaCine.setHora("10AM");
 			salaDeCine1.crearAsientosSalaDeCine();
 			salaDeCine1.setNumeroSala(1);
+			SalaCine.setDiaSemana("Martes");
+			SalaCine.setHora("3PM");
 			
-			pelicula1.crearSalaVirtual("10AM");
-			pelicula1.crearSalaVirtual("3PM");
-			pelicula1.crearSalaVirtual("8PM");
+			pelicula1.crearSalaVirtual("Lunes", "10AM");
+			pelicula1.crearSalaVirtual("Martes", "3PM");
+			pelicula1.crearSalaVirtual("Miércoles", "8PM");
 			pelicula1.setNumeroDeSala(1);
 			
 			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
@@ -93,7 +96,7 @@ public class Administrador {
 			ticket1.setNumeroAsiento("4-4");
 			ticket1.realizarPago(metodoPago1, cliente1);
 			ticket1.procesarPagoRealizado(cliente1);
-			salaDeCine1.cambiarDisponibilidadAsiento(4, 4);
+			salaDeCine1.cambiarDisponibilidadAsientoLibre(4, 4);
 			
 			ticket2.setPelicula(pelicula1);
 			ticket2.asignarPrecio();
@@ -102,7 +105,8 @@ public class Administrador {
 			ticket2.setNumeroAsiento("4-4");
 			ticket2.realizarPago(metodoPago2, cliente2);
 			ticket2.procesarPagoRealizado(cliente2);
-			pelicula1.modificarSalaVirtual("3PM",4, 4);
+			pelicula1.modificarSalaVirtual("Martes", "3PM", 1, 4);
+			salaDeCine1.actualizarPeliculaEnPresentacion();
 			
 			ticket3.setPelicula(pelicula2);
 			ticket3.asignarPrecio();
@@ -122,6 +126,7 @@ public class Administrador {
 //			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
 //			/*cliente1.setMembresia(membresia1)*/
 			
+			System.out.println(salaDeCine1.mostrarAsientos());
 			
 		}
 			
