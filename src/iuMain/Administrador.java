@@ -98,7 +98,8 @@ public class Administrador {
 			ticket1.setSalaDeCine(salaDeCine1);
 			ticket1.setDueno(cliente1);
 			ticket1.setNumeroAsiento("4-4");
-			ticket1.realizarPago(metodoPago1, cliente1);
+			double precio = ticket1.getPrecio();
+			ticket1.realizarPago(precio, metodoPago1, cliente1);
 			ticket1.procesarPagoRealizado(cliente1);
 			salaDeCine1.cambiarDisponibilidadAsientoLibre(4, 4);
 			
@@ -106,8 +107,9 @@ public class Administrador {
 			ticket2.asignarPrecio();
 			ticket2.setSalaDeCine(salaDeCine1);
 			ticket2.setDueno(cliente2);
-			ticket2.setNumeroAsiento("4-4");
-			ticket2.realizarPago(metodoPago2, cliente2);
+			ticket2.setNumeroAsiento("1-4");
+			precio = ticket2.getPrecio();
+			ticket2.realizarPago(precio, metodoPago2, cliente2);
 			ticket2.procesarPagoRealizado(cliente2);
 			pelicula1.modificarSalaVirtual("Martes", "3PM", 1, 4);
 			salaDeCine1.actualizarPeliculaEnPresentacion();
@@ -126,11 +128,12 @@ public class Administrador {
 			MetodoPago.metodoPagoPorTipo(metodoPago2);
 			MetodoPago.metodoPagoPorTipo(metodoPago3);
 			MetodoPago.metodoPagoPorTipo(metodoPago4);
+			salaDeCine1.verificarTicket(cliente2);
 //			cliente1.setMembresia(membresia1);
 //			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
 //			/*cliente1.setMembresia(membresia1)*/
 			
-			System.out.println(salaDeCine1.mostrarAsientos());
+			System.out.println();
 			
 		}
 			
@@ -143,7 +146,7 @@ public class Administrador {
 			
 			cliente4.setMembresia(membresia5);
 			cliente3.setMembresia(membresia2);
-			cliente4.setTicket(ticket5);
+			cliente4.getTickets().add(ticket5);
 //			ticket5.setDueno(cliente4);
 //			ticket5.setPelicula(pelicula1);
 //			ticket5.setSalaDeCine(salaDeCine1);

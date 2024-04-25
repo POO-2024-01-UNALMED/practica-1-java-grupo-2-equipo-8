@@ -83,14 +83,16 @@ public class Ticket implements IBuyable{
 	 * y restarle el monto máximo que se puede pagar con ese método de pago, si el método de pago cubre el valor a pagar, valor a pagar se cambia a 0.
 	 * Además, este método se encarga de pasar la referencia del método de pago a los métodos de pago usados y quita la referencia de métodos de pago 
 	 * disponibles asociados al cliente.
+	 * @param precio : Se pide el precio del ticket a pagar, este se obtuvo anteriormente como variable durante el proceso de la funcionalidad
+	 * @param metodoPago : Se usa el método de pago seleccionado por el cliente
+	 * @param cliente : Se pide al cliente que va a efectuar el proceso de realizar pago  
 	 * @return <b>double</b> : En caso de que el método de pago cubra el valor a pagar retorna 0, en caso de que no
 	 * retorna el valor restante a pagar.
 	 * */	
-	public double realizarPago(MetodoPago metodoDePago, Cliente cliente) {
-		
+	public double realizarPago(double precio, MetodoPago metodoDePago, Cliente cliente) {
 		//Creamos un atributo con scope de método donde obtenemos el precio del producto,
-		//Aplicamos el descuentoAsociado al metodoDePago y le restamos el LimiteMaximoPaago
-		double valorPagar = ( this.getPrecio() * ( 1 - metodoDePago.getDescuentoAsociado() ) ) - metodoDePago.getLimiteMaximoPago() ;
+		//Aplicamos el descuentoAsociado al metodoDePago y le restamos el LimiteMaximoPago
+		double valorPagar = ( precio * ( 1 - metodoDePago.getDescuentoAsociado() ) ) - metodoDePago.getLimiteMaximoPago();
 		if (valorPagar < 0) {
 			valorPagar = 0;
 		}
@@ -133,7 +135,7 @@ public class Ticket implements IBuyable{
 		MetodoPago.getMetodosDePagoUsados().clear();
 		
 		//Se pasa la referencia del ticket al cliente que lo compró
-		cliente.setTicket(this);
+		cliente.getTickets().add(this);
 		
 		//Se crea la referencia del ticket en el array de ticketsCreados de la sala de cine asociada a este
 		this.getSalaDeCine().getTicketsCreados().add(this);

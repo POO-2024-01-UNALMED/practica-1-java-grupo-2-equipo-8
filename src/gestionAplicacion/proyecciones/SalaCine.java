@@ -36,7 +36,7 @@ public class SalaCine {
 	
 	//Methods
 	/**
-	 * @Description : Este método se encarga de generar asientos para la sala de cine, facilitando el proceso de
+	 * Description : Este método se encarga de generar asientos para la sala de cine, facilitando el proceso de
 	 * crear una sala de cine
 	 * @return : Este método no retorna nada (void), solo actualiza los asientos de la sala de cine
 	 * */
@@ -51,7 +51,7 @@ public class SalaCine {
 	}
 	
 	/**
-	 * @Description : Este método se encarga de generar un string que se imprimirá en pantalla para visualizar los
+	 * Description : Este método se encarga de generar un string que se imprimirá en pantalla para visualizar los
 	 * asientos y su disponiblidad
 	 * @return : (String Resultado) : Este método retorna un string que será impreso en pantalla para que el cliente 
 	 * pueda interactuar con la funcionalidad
@@ -80,7 +80,7 @@ public class SalaCine {
 	    return resultado.toString();
 	}
 	/**
-	 * @Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
+	 * Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
 	 * si su disponibilidad es true la cambia a false, se usa para separar un asiento luego de ser comprado
 	 * @param fila : Index de la fila del asiento que queremos modificar;
 	 * @param columna : Index de la columna del asiento que queremos modificar.
@@ -93,11 +93,11 @@ public class SalaCine {
 	}
 	
 	/**
-	 * @Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
+	 * Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
 	 * si su disponibilidad es false la cambia a true, es especialmente útil para actualizar la sala de cine
 	 * @param fila : Index de la fila del asiento que queremos modificar;
 	 * @param columna : Index de la columna del asiento que queremos modificar.
-	 * @return : (void): Este método no retorna nada, solo actualiza los asientos de la sala de cine
+	 * @return (void): Este método no retorna nada, solo actualiza los asientos de la sala de cine
 	 * */
 	public void cambiarDisponibilidadAsientoOcupadoParaLibre(int fila, int columna) {
 		if (this.getAsientos()[fila - 1][columna - 1].isDisponibilidad()) {
@@ -106,13 +106,51 @@ public class SalaCine {
 		}	
 	}
 	
-	public boolean verificarFactura() {return true;}
-	public boolean verificarTicket(Cliente cliente) {
-		return true;
-	}
-	//public void destriurTicket() {} Este proceso se puede hacer directamente en la verificación
 	
-	/***/
+	// public boolean verificarFactura() {return true;} ¿Para volver a entrar a la Sala de Cine?
+	
+	/**
+	 * Description: Este método se encarga de verificar si una persona tiene al menos un ticket registrado en su array que cumpla los
+	 * siguientes criterios al mismo tiempo: 
+	 * 1. Se encuentra en el arrayList de ticketsCreados de la salaDeCine
+	 * 2. La película asociada a este ticket se encuentra coincide con la peliculaEnPresentacion de la SalaDeCine
+	 * @param cliente : Este método solicita al cliente que va a ingresar a la SalaDeCine
+	 * @return boolean : Este método se encarga de retornar un boolean que será el resultado del proceso de verificación
+	 * */
+	public boolean verificarTicket(Cliente cliente) {
+		
+		boolean verificacion = false;
+		Ticket ticketVerficado = null;
+		
+		//Verificamos si el atributo película de alguno de los tickets que tiene el cliente coinicide con la película en presentación
+		//Verificamos si el ticket se encuetra en el arrayList de tickets creados de esta sala de cine
+		for (Ticket ticket : cliente.getTickets()) {
+			verificacion = ticket.getPelicula().equals(this.peliculaEnPresentacion) & this.getTicketsCreados().contains(ticket);
+			if (verificacion) {
+				ticketVerficado = ticket;
+				break;
+			}
+		}
+		
+		//Eliminamos la referencia del ticket verificado, en caso de que la verificación sea correcta del cliente y de la sala de cine (Lo destruimos)
+		if (verificacion) {
+			cliente.getTickets().remove(ticketVerficado);
+			this.getTicketsCreados().remove(ticketVerficado);
+		}
+		
+		//Retornamos el resultado de la verificación
+		return verificacion;
+	}
+	
+	//Podría mejorar este método implementando un try en caso de que no haya ninguna película para actualizar, con esto podría implementar
+	//Un método estático que actualice a todas las salas de cine directamente.
+	/**
+	 * Description: Este método se encarga actualizar la película en presentación según si la película coincide con el número de sala y luego
+	 * respecto al día y la hora actual, una vez hecho esto, limpiamos los asientos de la sala de cine, cambiando su disponibilidad a libre, y
+	 * por último actualizamos la información de la disponibilidad de los asientos, tomando la información del array de la sala virtual que 
+	 * coincidio en fecha y hora de la película en presentación
+	 * @return (void): Este método no retorna nada, solo actualiza los asientos de la sala de cine y de la película en presentación
+	 * */
 	public void actualizarPeliculaEnPresentacion() {
 		String day = null;
 		String hour = null;
