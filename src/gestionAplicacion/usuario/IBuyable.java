@@ -11,7 +11,7 @@ package gestionAplicacion.usuario;
 */
 public interface IBuyable {
 	
-	public double realizarPago(MetodoPago metodoDePago, Cliente cliente);
+	public double realizarPago(double precio, MetodoPago metodoDePago, Cliente cliente);
 	public void procesarPagoRealizado(Cliente cliente);
 	public String factura(Cliente cliente);
 

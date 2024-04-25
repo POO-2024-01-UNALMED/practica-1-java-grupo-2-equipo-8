@@ -8,7 +8,7 @@ public class Cliente {
 	//Atributos
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
-	private Ticket ticket;
+	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
 	private Membresia membresia;
@@ -34,23 +34,14 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 	}
 	
-	public Cliente(String nombre, int edad, long documento, TipoDeDocumento tipoDocumento,Ticket ticket) {
-		this();
-		this.nombre = nombre;
-		this.edad = edad;
-		this.documento = documento;
-		this.tipoDocumento = tipoDocumento;
-		this.ticket = ticket;
-	}
-
-	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, Ticket ticket, ArrayList<String> facturas,
+	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Ticket> ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, int duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<Bono> bonosCliente) {
 		this();
 		this.nombre = nombre;
 		this.historialDePeliculas = historialDePeliculas;
-		this.ticket = ticket;
+		this.tickets = ticket;
 		this.facturas = facturas;
 		this.edad = edad;
 		this.membresia = membresia;
@@ -156,12 +147,12 @@ public class Cliente {
 		this.historialDePeliculas = historialDePeliculas;
 	}
 
-	public Ticket getTicket() {
-		return ticket;
+	public ArrayList<Ticket> getTickets() {
+		return tickets;
 	}
 
-	public void setTicket(Ticket ticket) {
-		this.ticket = ticket;
+	public void setTickets(ArrayList<Ticket> tickets) {
+		this.tickets = tickets;
 	}
 
 	public ArrayList<String> getFacturas() {
