@@ -63,6 +63,10 @@ public class Administrador {
 	
 	public static void main(String[] args) {
 		
+		
+		
+		
+		
 //		Bono pruevaBono = new Bono(1234,"Peluche","A","Souvenir");
 //		Bono pruevaBono1 = new Bono(1235,"Peluche","A","Souvenir");
 //		ArrayList<Bono> Bonosss = new ArrayList<>();
@@ -351,43 +355,58 @@ public class Administrador {
 				}
 			}
 		}while(!casoValido);
-		
-		do{
-			System.out.print("Que deseas hacer:\n1.Reclamar un Bono.\n2.Hacer un pedido.\nSeleccione una opcion:");
-			int eleccion2 = (int)readLong();
-			if(eleccion2 == 1) {
-				ArrayList <Bono> bonos;
-				bonos = servicioSouvenirs.verificarBono(cliente1);
-				if (bonos.size() == 0) {
-					System.out.println("No tienes bonos disponibles");
+
+		do {
+			for (int i=0;i<Inventario.getProductosEnInventario().size();i++) {
+				int n = i+1;
+				System.out.println(n+". "+Inventario.getProductosEnInventario().get(i).getNombreProducto()+" "+Inventario.getProductosEnInventario().get(i).getDescripcionTamañoProducto()+" :"+Inventario.getProductosEnInventario().get(i).getPrecio());
+			}
+			System.out.print("Selecciona una opcion: ");
+			int eleccion2 = (int) readLong();
+			eleccion2 = eleccion2-1;
+			if ((eleccion2 >= 0) && (eleccion2 < Inventario.getProductosEnInventario().size())){
+				System.out.print("Ingrese la cantidad de productos que deseas llevar: ");
+				int eleccion3 = (int) readLong();
+				if (null != (Pedido.generarPedido(Inventario.getProductosEnInventario().get(eleccion2).getCodigoProducto(), eleccion3))){
+					cliente1.getFacturas().add(Pedido.generarPedido(eleccion2, eleccion3));
 				}
 				else {
-					for (int i=0;i<bonos.size();i++) {
-						System.out.println(i + "." + bonos.get(i).getProducto());
-					}
-					System.out.println("Seleccione el producto del bono que deseas");
-					int eleccion3 = (int)readLong();
-					if (bonos.get(eleccion3).validarbono()) {
-						System.out.println("Todo salio bien");
-						inicio();
-					}
+					System.out.println("No hay suficientes productos");
+					System.out.println("En el momento hay: "+Inventario.getProductosEnInventario().get(eleccion2).getCantidadDisponible()+" de "+Inventario.getProductosEnInventario().get(eleccion2).getNombreProducto());
 				}
 			}
-			else if(eleccion2 == 2) {
-				casoValido = false;
-			}
 			else {
-				
+				System.out.println("Te equivocaste en la eleccion");
+				continue;
 			}
+			int eleccion3 = 0;
+			while (eleccion3 != 2) {
+				System.out.print("Deseas hacer otro pedido:\n1.SI\n2.NO\nSeleccione una opcion: ");
+				eleccion3 = (int) readLong();
+				if (eleccion3 == 1) {
+					break;
+				}
+				if (eleccion3 == 2) {
+					casoValido = false;
+				}
+				else {
+					System.out.println("Te equivocaste en la eleccion");
+				}
+			}
+			
 		}while(casoValido);
 		
-	
+		System.out.println("Lo que pediste fue: ");
+		for (int i = 0;i < cliente1.getFacturas().size(); i++) {
+			System.out.println(cliente1.getFacturas().get(i).getNombreproducto());
 		}
-	
-	private static void print(String string) {
-		// TODO Auto-generated method stub
 		
 	}
+		
+		
+		
+		
+		
 
 	static void ingresoZonaJuegos() {
 

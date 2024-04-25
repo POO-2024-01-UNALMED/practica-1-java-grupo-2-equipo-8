@@ -2,6 +2,7 @@ package gestionAplicacion.usuario;
 import java.util.ArrayList;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
+import gestionAplicacion.servicios.Pedido;
 
 public class Cliente {
 	
@@ -9,7 +10,7 @@ public class Cliente {
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
 	private Ticket ticket;
-	private ArrayList<String> facturas = new ArrayList<>();
+	private ArrayList<Pedido> facturas = new ArrayList<>();
 	private int edad;
 	private Membresia membresia;
 	private long documento;
@@ -164,11 +165,11 @@ public class Cliente {
 		this.ticket = ticket;
 	}
 
-	public ArrayList<String> getFacturas() {
+	public ArrayList<Pedido> getFacturas() {
 		return facturas;
 	}
 
-	public void setFacturas(ArrayList<String> facturas) {
+	public void setFacturas(ArrayList<Pedido> facturas) {
 		this.facturas = facturas;
 	}
 
