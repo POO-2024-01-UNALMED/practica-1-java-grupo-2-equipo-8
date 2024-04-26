@@ -27,7 +27,7 @@ public class Administrador {
 	static TarjetaCinemar cuenta2 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta3 = new TarjetaCinemar();
 	
-	static Cliente cliente1 = new Cliente("Andy", 18, 13434132, TipoDeDocumento.CC);
+	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
 	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 	static Cliente cliente4 = new Cliente("Juanjo", 18 ,1013458547, TipoDeDocumento.CC);
@@ -101,6 +101,7 @@ public class Administrador {
 			double precio = ticket1.getPrecio();
 			ticket1.realizarPago(precio, metodoPago1, cliente1);
 			ticket1.procesarPagoRealizado(cliente1);
+			ticket1.factura(cliente1);
 			salaDeCine1.cambiarDisponibilidadAsientoLibre(4, 4);
 			
 			ticket2.setPelicula(pelicula1);
@@ -111,6 +112,7 @@ public class Administrador {
 			precio = ticket2.getPrecio();
 			ticket2.realizarPago(precio, metodoPago2, cliente2);
 			ticket2.procesarPagoRealizado(cliente2);
+			ticket2.factura(cliente2);
 			pelicula1.modificarSalaVirtual("Martes", "3PM", 1, 4);
 			salaDeCine1.actualizarPeliculaEnPresentacion();
 			
@@ -133,7 +135,7 @@ public class Administrador {
 //			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
 //			/*cliente1.setMembresia(membresia1)*/
 			
-			System.out.println();
+			//System.out.println();
 			
 		}
 			
@@ -205,7 +207,7 @@ public class Administrador {
 		
 		case 1: reservarTicket();inicio(); break;
 		case 2: comprarComida(); inicio(); break;
-		case 3: comprarSouvenirs();inicio(); break;
+		//case 3: comprarSouvenirs();inicio(); break;
 		case 4: ingresoZonaJuegos(); inicio(); break;
 		case 5: adquirirMembresia(); inicio(); break;
 		case 6: salirDelSistema();break;
@@ -214,7 +216,177 @@ public class Administrador {
 		}
 		
 	}
-	static void reservarTicket() {System.out.println("Reservando tiquete");}
+	static void reservarTicket() {
+		System.out.println("Bienvenido al Sistema de Reserva de ticket para película");
+		
+		//Elección menu inicial
+		boolean casoValido = false;
+		int opcionMenu = 0;
+		do {
+			try {
+				System.out.println("¿Desea ingresar o volver?" +"\n1.Ingresar" + "\n2.Volver al menú principal" + "\n3.Salir");
+				opcionMenu = sc.nextInt();
+			}catch(java.util.InputMismatchException e) {
+				System.out.println("Error, debes ingresar un dato numérico");
+				sc.nextLine();
+				continue;
+			}
+			
+			switch (opcionMenu) {
+				case 1: casoValido = true; break;
+				case 2: inicio(); casoValido = true; break;
+				case 3: salirDelSistema(); casoValido = true; break;
+				default: System.out.println("Opcion invalida"); break;
+			}
+			
+		}while(!casoValido);
+		
+		//Pedimos el tipo de documento al usuario
+		TipoDeDocumento documentoCliente = null;
+		boolean casoValidoConfirmacion = false;
+		casoValido = false;
+		do{
+			try {
+				System.out.println("Seleccione el tipo de documento:\n"+ TipoDeDocumento.mostrarTiposDeDocumento());
+				opcionMenu = sc.nextInt();
+			}catch(java.util.InputMismatchException e){
+				System.out.println("Error, debes ingresar un dato numérico");
+				sc.nextLine();
+				continue;
+			}
+			
+			switch (opcionMenu) {
+				case 1: documentoCliente = TipoDeDocumento.CC; casoValido=true; break;
+				case 2: documentoCliente = TipoDeDocumento.TI; casoValido=true; break;
+				case 3: documentoCliente = TipoDeDocumento.CE; casoValido=true; break;
+				case 4: reservarTicket(); casoValido=true; break;
+				default: System.out.println("Opcion invalida"); break;
+			}
+			
+		}while(!casoValido);	
+		
+		//Se pide al usuario su número de documento
+		long numeroDocumentoCliente = 0;
+		casoValido = false;
+		casoValidoConfirmacion = false;
+		opcionMenu = 0;
+		do {
+			try {
+				System.out.print("Ingrese el numero de documento: ");
+				numeroDocumentoCliente = sc.nextLong();
+			}catch(java.util.InputMismatchException e) {
+				System.out.println("Error, debes ingresar datos numéricos correspondientes a tu número de documento");
+				sc.nextLine();
+				continue;
+			}
+			
+			//Se verficia si el cliente existe
+			Cliente clienteProceso = Cliente.revisarDatosCliente(numeroDocumentoCliente);
+			
+			//En caso de que no exista
+			if (clienteProceso==null) {
+				System.out.println("Hemos detectado que es la primera vez que visita nuestro cine, " +
+				"Por políticas de seguridad de nuestra compañia, le solicitamos que amablemente responda las siguientes preguntas");
+				//Pedimos la edad del cliente
+				int edadCliente = 0;
+				do {
+					try {
+						System.out.print("Ingrese su edad: ");
+						edadCliente = sc.nextInt();
+					}catch (java.util.InputMismatchException e) {
+						System.out.println("Error, debes ingresar datos numéricos correspondientes a tu edad");
+						sc.nextLine();
+						continue;
+					}
+					
+					//Confirmamos si es un dato correcto
+					do {
+						try {
+							System.out.println("Tu edad es: " + edadCliente + " \n 1. Correcto \n 2. Cambiar edad");
+							opcionMenu = sc.nextInt();
+						}catch(java.util.InputMismatchException e) {
+							System.out.println("Error, debes ingresar un dato numérico");
+							sc.nextLine();
+							continue;
+						}
+						
+					}while(!(opcionMenu == 1 || opcionMenu == 2));
+					
+					switch(opcionMenu) {
+						case 1: casoValidoConfirmacion = true; break;
+						case 2: casoValidoConfirmacion = false; break;
+						default: casoValidoConfirmacion = false; System.out.println("Opción invalida"); break;
+					}
+				}while(!casoValidoConfirmacion);
+				
+				//Pedimos el nombre del cliente
+				String nombreCliente = null;
+				casoValido = false;
+				opcionMenu = 0;
+				do {
+					//Consumimos un salto de línea pendiente
+					sc.nextLine();
+					
+					System.out.println("Ingrese su nombre: ");
+					nombreCliente = sc.nextLine();
+					
+					
+					//Confirmamos si el dato es correcto
+					do {
+						try {
+							System.out.println("Su nombre es: " + nombreCliente + "\n1. Correcto \n2. Cambiar nombre");
+							opcionMenu = sc.nextInt();
+						}catch(java.util.InputMismatchException e) {
+							System.out.println("Error, debe ingresar un dato numérico");
+							sc.nextLine();
+							continue;
+						}
+					}while(!(opcionMenu == 1 || opcionMenu == 2));
+					
+					switch(opcionMenu) {
+						case 1: casoValidoConfirmacion = true; break;
+						case 2: casoValidoConfirmacion = false; break;
+						default: casoValidoConfirmacion = false; System.out.println("Opción invalida"); break;
+					}
+					
+				}while(!casoValidoConfirmacion);
+				
+				//Creamos un nuevo cliente con la información dada
+				clienteProceso = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
+				casoValido = true;
+			}
+			//En caso de que el cliente exista
+			else {
+				do {
+					try {
+						System.out.println("¿Eres " + clienteProceso.getNombre() + "?\n1. SI\n2. NO");
+						opcionMenu = sc.nextInt();
+					}catch(java.util.InputMismatchException e) {
+						System.out.println("Error, debes ingresar un dato numérico");
+						sc.nextLine();
+						continue;
+					}
+					
+					switch(opcionMenu) {
+						case 1: 
+							System.out.println("\nEstos son sus datos personales: " + 
+							"\nNombre: " + cliente1.getNombre() + "\nIdentificacion: "+ cliente1.getDocumento() + "\nEdad: " + cliente1.getEdad());
+							casoValido=true;
+							casoValidoConfirmacion = true;
+							break;
+						case 2:
+							System.out.println("Verifica el numero de documento\n");
+							casoValidoConfirmacion = true;
+							break;
+						default: System.out.println("Digite una opción valida"); continue;
+					}
+				}while(!casoValidoConfirmacion);
+			}
+		}while(!casoValido);
+		
+		//Funcionalidad reserva de tickets
+		
+	}
 	
 	static void comprarComida() {
 		System.out.println("\nPara ordenar comida debes ingresar el tipo y numero de documento\n¿Deseas ingresar, volver, o salir?\n1.Ingresar\n2.Volver\n3.Salir");
@@ -301,7 +473,7 @@ public class Administrador {
 	
 		
 	   
-	
+	/*
 	
 	static void comprarSouvenirs() {
 		System.out.print("Estas seguro de acceder al servicio de souvenir:\n1.SI.\n2.NO.\nSeleccina una opcion:");
@@ -404,7 +576,7 @@ public class Administrador {
 			System.out.println(cliente1.getFacturas().get(i).getNombreproducto());
 		}
 		
-	}
+	} */
 		
 		
 		

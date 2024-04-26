@@ -1,4 +1,4 @@
-package gestionaplicacion.usuario;
+package gestionAplicacion.usuario;
 import java.util.ArrayList;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
@@ -9,8 +9,7 @@ public class Cliente {
 	//Atributos
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
-	private Ticket ticket;
-	private ArrayList<Pedido> facturas = new ArrayList<>();
+	private ArrayList<Pedido> pedidos = new ArrayList<>();
 	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
@@ -158,11 +157,19 @@ public class Cliente {
 		this.tickets = tickets;
 	}
 
-	public ArrayList<Pedido> getFacturas() {
+	public ArrayList<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(ArrayList<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public ArrayList<String> getFacturas() {
 		return facturas;
 	}
 
-	public void setFacturas(ArrayList<Pedido> facturas) {
+	public void setFacturas(ArrayList<String> facturas) {
 		this.facturas = facturas;
 	}
 

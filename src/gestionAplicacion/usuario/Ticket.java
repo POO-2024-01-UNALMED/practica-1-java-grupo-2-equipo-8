@@ -151,7 +151,12 @@ public class Ticket implements IBuyable{
 	 * @return <b>factura</b> : Este método retorna un String que contiene la información de la factura con el fin de imprimirla en pantalla
 	 * */
 	public String factura(Cliente cliente) {
-		String factura = this.toString();
+		String factura = "=== Factura de Ticket ===\n" +
+				"Nombre dueño : " + this.getDueno().getNombre() + "\n" +
+				"Documento : " + this.getDueno().getDocumento() + "\n" +
+				"Pelicula : " + this.getPelicula().getNombre() + "\n" +
+				"Número de sala : " + this.getPelicula().getNumeroDeSala() + "\n" +
+				"Número de asiento : " + this.getNumeroAsiento();
 		cliente.getFacturas().add(factura);
 		return factura;
 	}
@@ -161,14 +166,14 @@ public class Ticket implements IBuyable{
 		return codigoTicket;
 	}
 	
-	public String toString() {
+	/*public String toString() {
 		return "=== Factura de Ticket ===\n" +
 		"Nombre dueño : " + this.getDueno().getNombre() + "\n" +
 		"Documento : " + this.getDueno().getDocumento() + "\n" +
 		"Pelicula : " + this.getPelicula().getNombre() + "\n" +
 		"Número de sala : " + this.getPelicula().getNumeroDeSala() + "\n" +
 		"Número de asiento : " + this.getNumeroAsiento();
-	}
+	}*/
 	
 	//Getters and Setters
 	public Cliente getDueno() {

@@ -34,6 +34,7 @@ public enum TipoDeDocumento {
 		
 		return resultado;
 	}
+	
 	public String getNombre() {
 		return nombre;
 	}
