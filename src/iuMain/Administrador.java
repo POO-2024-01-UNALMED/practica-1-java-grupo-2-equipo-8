@@ -201,7 +201,7 @@ public class Administrador {
 		System.out.println("4. Ingresar a la zona de juegos");
 		System.out.println("5. Adquirir o actualizar membresia");
 		System.out.println("6. Salir");
-		opcion = (int)readLong();
+		opcion = Integer.parseInt(sc.nextLine());
 		
 		switch (opcion) {
 		
@@ -223,12 +223,12 @@ public class Administrador {
 		boolean casoValido = false;
 		int opcionMenu = 0;
 		do {
+			
 			try {
 				System.out.println("¿Desea ingresar o volver?" +"\n1.Ingresar" + "\n2.Volver al menú principal" + "\n3.Salir");
-				opcionMenu = sc.nextInt();
-			}catch(java.util.InputMismatchException e) {
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
 				System.out.println("Error, debes ingresar un dato numérico");
-				sc.nextLine();
 				continue;
 			}
 			
@@ -248,10 +248,9 @@ public class Administrador {
 		do{
 			try {
 				System.out.println("Seleccione el tipo de documento:\n"+ TipoDeDocumento.mostrarTiposDeDocumento());
-				opcionMenu = sc.nextInt();
-			}catch(java.util.InputMismatchException e){
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e){
 				System.out.println("Error, debes ingresar un dato numérico");
-				sc.nextLine();
 				continue;
 			}
 			
@@ -259,7 +258,6 @@ public class Administrador {
 				case 1: documentoCliente = TipoDeDocumento.CC; casoValido=true; break;
 				case 2: documentoCliente = TipoDeDocumento.TI; casoValido=true; break;
 				case 3: documentoCliente = TipoDeDocumento.CE; casoValido=true; break;
-				case 4: reservarTicket(); casoValido=true; break;
 				default: System.out.println("Opcion invalida"); break;
 			}
 			
@@ -271,19 +269,38 @@ public class Administrador {
 		casoValidoConfirmacion = false;
 		opcionMenu = 0;
 		do {
-			try {
-				System.out.print("Ingrese el numero de documento: ");
-				numeroDocumentoCliente = sc.nextLong();
-			}catch(java.util.InputMismatchException e) {
-				System.out.println("Error, debes ingresar datos numéricos correspondientes a tu número de documento");
-				sc.nextLine();
-				continue;
-			}
+			do {
+				try {
+					System.out.print("Ingrese el numero de documento: ");
+					numeroDocumentoCliente = Long.parseLong(sc.nextLine());
+				}catch(NumberFormatException e) {
+					System.out.println("Error, debes ingresar datos numéricos correspondientes a tu número de documento");
+					continue;
+				}
+				
+				//Confirmamos si es un dato correcto
+				do {
+					try {
+						System.out.println("Tu número de documento es: " + numeroDocumentoCliente + " \n 1. Correcto \n 2. Cambiar número de documento");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch(NumberFormatException e) {
+						System.out.println("Error, debes ingresar un único dato numérico");
+						continue;
+					}
+				}while(!(opcionMenu == 1 || opcionMenu == 2));
+				
+				switch(opcionMenu) {
+				case 1: casoValidoConfirmacion = true; break;
+				case 2: casoValidoConfirmacion = false; break;
+				default: casoValidoConfirmacion = false; System.out.println("Opción invalida"); break;
+				}
+				
+			}while(!casoValidoConfirmacion);
 			
 			//Se verficia si el cliente existe
 			Cliente clienteProceso = Cliente.revisarDatosCliente(numeroDocumentoCliente);
 			
-			//En caso de que no exista
+			//En caso de que no exista, lo creamos
 			if (clienteProceso==null) {
 				System.out.println("Hemos detectado que es la primera vez que visita nuestro cine, " +
 				"Por políticas de seguridad de nuestra compañia, le solicitamos que amablemente responda las siguientes preguntas");
@@ -292,10 +309,9 @@ public class Administrador {
 				do {
 					try {
 						System.out.print("Ingrese su edad: ");
-						edadCliente = sc.nextInt();
-					}catch (java.util.InputMismatchException e) {
+						edadCliente = Integer.parseInt(sc.nextLine());
+					}catch (NumberFormatException e) {
 						System.out.println("Error, debes ingresar datos numéricos correspondientes a tu edad");
-						sc.nextLine();
 						continue;
 					}
 					
@@ -303,10 +319,9 @@ public class Administrador {
 					do {
 						try {
 							System.out.println("Tu edad es: " + edadCliente + " \n 1. Correcto \n 2. Cambiar edad");
-							opcionMenu = sc.nextInt();
-						}catch(java.util.InputMismatchException e) {
-							System.out.println("Error, debes ingresar un dato numérico");
-							sc.nextLine();
+							opcionMenu = Integer.parseInt(sc.nextLine());
+						}catch(NumberFormatException e) {
+							System.out.println("Error, debes ingresar un único dato numérico");
 							continue;
 						}
 						
@@ -324,21 +339,17 @@ public class Administrador {
 				casoValido = false;
 				opcionMenu = 0;
 				do {
-					//Consumimos un salto de línea pendiente
-					sc.nextLine();
-					
 					System.out.println("Ingrese su nombre: ");
-					nombreCliente = sc.nextLine();
+					nombreCliente = sc.nextLine(); 
 					
 					
 					//Confirmamos si el dato es correcto
 					do {
 						try {
 							System.out.println("Su nombre es: " + nombreCliente + "\n1. Correcto \n2. Cambiar nombre");
-							opcionMenu = sc.nextInt();
-						}catch(java.util.InputMismatchException e) {
-							System.out.println("Error, debe ingresar un dato numérico");
-							sc.nextLine();
+							opcionMenu = Integer.parseInt(sc.nextLine());
+						}catch(NumberFormatException e) {
+							System.out.println("Error, debe ingresar un único dato numérico");
 							continue;
 						}
 					}while(!(opcionMenu == 1 || opcionMenu == 2));
@@ -360,10 +371,9 @@ public class Administrador {
 				do {
 					try {
 						System.out.println("¿Eres " + clienteProceso.getNombre() + "?\n1. SI\n2. NO");
-						opcionMenu = sc.nextInt();
-					}catch(java.util.InputMismatchException e) {
-						System.out.println("Error, debes ingresar un dato numérico");
-						sc.nextLine();
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch(NumberFormatException e) {
+						System.out.println("Error, debes ingresar un único dato numérico");
 						continue;
 					}
 					
@@ -371,7 +381,7 @@ public class Administrador {
 						case 1: 
 							System.out.println("\nEstos son sus datos personales: " + 
 							"\nNombre: " + cliente1.getNombre() + "\nIdentificacion: "+ cliente1.getDocumento() + "\nEdad: " + cliente1.getEdad());
-							casoValido=true;
+							casoValido = true;
 							casoValidoConfirmacion = true;
 							break;
 						case 2:
