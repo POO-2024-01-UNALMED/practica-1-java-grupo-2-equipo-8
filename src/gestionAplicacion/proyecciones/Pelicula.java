@@ -2,6 +2,7 @@ package gestionAplicacion.proyecciones;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class Pelicula{
 	
@@ -11,7 +12,7 @@ public class Pelicula{
 	private String duracion;
 	private String clasificacion;
 	//private ArrayList<Horario> horarios = new ArrayList<>();
-	private Map<ArrayList<String>, int[][]> horarios = new HashMap<>();
+	private LinkedHashMap<ArrayList<String>, int[][]> horarios = new LinkedHashMap<>();
 	private static ArrayList<Pelicula> cartelera = new ArrayList<>();
 	private String tipoDeFormato;
 	private int numeroDeSala;
@@ -59,11 +60,11 @@ public class Pelicula{
 		this.clasificacion = clasificacion;
 	}
 
-	public Map<ArrayList<String>, int[][]> getHorarios() {
+	public LinkedHashMap<ArrayList<String>, int[][]> getHorarios() {
 		return horarios;
 	}
 
-	public void setHorarios(Map<ArrayList<String>, int[][]> horarios) {
+	public void setHorarios(LinkedHashMap<ArrayList<String>, int[][]> horarios) {
 		this.horarios = horarios;
 	}
 
@@ -113,7 +114,7 @@ public class Pelicula{
 	}
 
 	public Pelicula(String nombre, int precio, String genero, String duracion, String clasificacion,
-			String tipoDeFormato) {
+			String tipoDeFormato, int numeroDeSala) {
 		this();
 		this.nombre = nombre;
 		this.precio = precio;
@@ -121,10 +122,11 @@ public class Pelicula{
 		this.duracion = duracion;
 		this.clasificacion = clasificacion;
 		this.tipoDeFormato = tipoDeFormato;
+		this.numeroDeSala = numeroDeSala;
 	}
 
 	public Pelicula(String nombre, int precio, String genero, String duracion, String clasificacion,
-			Map<ArrayList<String>, int[][]> horarios, String tipoDeFormato, int numeroDeSala, int idPelicula) {
+			LinkedHashMap<ArrayList<String>, int[][]> horarios, String tipoDeFormato, int numeroDeSala, int idPelicula) {
 		this();
 		this.nombre = nombre;
 		this.precio = precio;
@@ -192,10 +194,11 @@ public class Pelicula{
 		for (ArrayList<String> Horario : this.getHorarios().keySet()) {
 			
 			if (horarios == null) {
-				horarios = i + ". Día: " + Horario.get(0) + " Hora: " + Horario.get(1) + "\n";
+				horarios = i + ". Día: " + Horario.get(0) + ", Hora: " + Horario.get(1) + "\n";
 			}else {
-				horarios = horarios + i + ". Día: " + Horario.get(0) + " Hora: " + Horario.get(1) + "\n";
+				horarios = horarios + i + ". Día: " + Horario.get(0) + ", Hora: " + Horario.get(1) + "\n";
 			}
+			i++;
 		}
 		return horarios;
 	}
@@ -348,6 +351,26 @@ public class Pelicula{
 		
 	}
 	
+	/**
+	 * Description : Este método se encarga de retornar la llave del LinkedHashMap
+	 * a partir de la posición pasada como parámetro
+	 * @param posicion : Recibe un entero que representa la posición del horario 
+	 * seleccionado por el usuario luego de mostrarHorarios de esta película
+	 * @return <b>ArrayList<String></b> : Retorna el ArrayList correspondiente a la elcción hecha por el usuario
+	 * el formato linkedHashMap garantiza que siempre retorna el ArrayList deseado
+	 * */
+	public ArrayList<String> obtenerHorario(int posicion){
+		int i = 0;
+		ArrayList<String> horarioDeseado = null;
+		for (ArrayList<String> horario : this.getHorarios().keySet()) {
+			if (i == (posicion - 1)) {
+				horarioDeseado = horario;
+			}
+			i++;
+		}
+		
+		return horarioDeseado;
+	}
 	
 	
 }

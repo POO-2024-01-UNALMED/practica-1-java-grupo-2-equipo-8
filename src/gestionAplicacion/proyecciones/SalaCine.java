@@ -20,8 +20,9 @@ public class SalaCine {
 	public SalaCine(){
 		Pelicula.getSalasDeCine().add(this);
 	}
-	public SalaCine(int nSala){
+	public SalaCine(int nSala, String tipoDeSala){
 		this.numeroSala = nSala;
+		this.tipoDeSala = tipoDeSala;
 		Pelicula.getSalasDeCine().add(this);
 	}
 	public SalaCine(int numeroSala, String tipoDeSala, Asiento[][] asientos, Pelicula peliculaEnPresentacion, ArrayList<Ticket> ticketsCreados) {
@@ -33,7 +34,6 @@ public class SalaCine {
 		this.ticketsCreados = ticketsCreados;
 	}
 
-	
 	//Methods
 	/**
 	 * Description : Este método se encarga de generar asientos para la sala de cine, facilitando el proceso de
@@ -184,6 +184,12 @@ public class SalaCine {
 	            this.cambiarDisponibilidadAsientoLibre(i+1, j+1);
 	        }
 	    }
+		
+		//Eliminamos la sala de cine virtual
+		ArrayList<String> horario = new ArrayList<>();
+		horario.add(day);
+		horario.add(hour);
+		this.getPeliculaEnPresentacion().getHorarios().remove(horario);
 		
 	}
 

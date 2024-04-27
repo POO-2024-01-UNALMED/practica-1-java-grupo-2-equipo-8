@@ -1,5 +1,6 @@
 package iuMain;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
@@ -32,14 +33,20 @@ public class Administrador {
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 	static Cliente cliente4 = new Cliente("Juanjo", 18 ,1013458547, TipoDeDocumento.CC);
 	
-	static Pelicula pelicula1 = new Pelicula("KNJ temparada 4 movie", 30000, "Acción", "1 hora", "+18", "4D"); 
-	static SalaCine salaDeCine1 = new SalaCine();
-	static SalaCine salaDeCine2 = new SalaCine(2);
+	static Pelicula pelicula1 = new Pelicula("KNJ temporada 4 movie", 30000, "Aventura", "1 hora", "+12", "4D", 3); 
+	static Pelicula pelicula2 = new Pelicula("Oppenheimer", 15000, "Drama", "2 horas", "+18", "2D", 1); 
+	static Pelicula pelicula3 = new Pelicula("BNHA temporada 7 movie", 18000, "Acción", "1 hora", "+18", "3D", 2);
+	static Pelicula pelicula4 = new Pelicula("Código Enigma", 12000, "Historia", "3 horas", "+18", "2D", 2);
+	static Pelicula pelicula5 = new Pelicula("Spy x Familiy Código: Blanco", 25000, "Comedia", "1 hora 45 minutos", "+8", "4D", 3);
+	static Pelicula pelicula6 = new Pelicula("Jhon Wick 4", 17000, "Acción", "3 horas", "+18", "3D", 4);
 	
-	static Pelicula pelicula2 = new Pelicula("Kong vs Godzilla Turbo Remix", 7000, "Acción", "2 horas", "+18","2D"); 
+	static SalaCine salaDeCine1 = new SalaCine(1, "2D");
+	static SalaCine salaDeCine2 = new SalaCine(2, "3D");
+	static SalaCine salaDeCine3 = new SalaCine(3, "4D");
+	static SalaCine salaDeCine4 = new SalaCine(4, "3D");
 
-	static Membresia membresia1 = new Membresia("Basico", 1, 5000, 10);
-	static Membresia membresia2 = new Membresia("Heroico", 2, 10000, 15);
+	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
+	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);
 	static Membresia membresia3 = new Membresia("Global", 3, 15000, 20);
 	static Membresia membresia4 = new Membresia("Challenger", 4, 25000, 25);
 	static Membresia membresia5 = new Membresia("Radiante", 5, 30000, 30);
@@ -114,7 +121,7 @@ public class Administrador {
 			ticket2.procesarPagoRealizado(cliente2);
 			ticket2.factura(cliente2);
 			pelicula1.modificarSalaVirtual("Martes", "3PM", 1, 4);
-			salaDeCine1.actualizarPeliculaEnPresentacion();
+			//salaDeCine1.actualizarPeliculaEnPresentacion();
 			
 			ticket3.setPelicula(pelicula2);
 			ticket3.asignarPrecio();
@@ -223,7 +230,6 @@ public class Administrador {
 		boolean casoValido = false;
 		int opcionMenu = 0;
 		do {
-			
 			try {
 				System.out.println("¿Desea ingresar o volver?" +"\n1.Ingresar" + "\n2.Volver al menú principal" + "\n3.Salir");
 				opcionMenu = Integer.parseInt(sc.nextLine());
@@ -263,6 +269,8 @@ public class Administrador {
 			
 		}while(!casoValido);	
 		
+		//Obtenemso al cliente que hará el proceso de reserva de ticket
+		Cliente clienteProceso = null;
 		//Se pide al usuario su número de documento
 		long numeroDocumentoCliente = 0;
 		casoValido = false;
@@ -298,7 +306,7 @@ public class Administrador {
 			}while(!casoValidoConfirmacion);
 			
 			//Se verficia si el cliente existe
-			Cliente clienteProceso = Cliente.revisarDatosCliente(numeroDocumentoCliente);
+			clienteProceso = Cliente.revisarDatosCliente(numeroDocumentoCliente);
 			
 			//En caso de que no exista, lo creamos
 			if (clienteProceso==null) {
@@ -394,7 +402,189 @@ public class Administrador {
 			}
 		}while(!casoValido);
 		
-		//Funcionalidad reserva de tickets
+		//Funcionalidad reserva de ticket
+		casoValido = false;
+		casoValidoConfirmacion = false;
+		opcionMenu = 0;
+		Ticket ticketProceso = null;
+		Pelicula peliculaProceso = null;
+		do {
+			System.out.println("\nHola " + clienteProceso.getNombre() + ", Bienvenido al sistema de reserva de ticket");
+			System.out.println("=========================================================================");
+			//Mostramos las películas en cartelera y le pedimos al usuario elegir una de estas
+			do {
+				do {
+					try {
+						System.out.println("Este es el listado de las películas en cartelera, elige una de las siguientes opciones\n" 
+						+ Pelicula.mostrarCartelera() + "\n" + ( Integer.valueOf(Pelicula.getCartelera().size()) + 1 ) + ". Salir al menú principal");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch (NumberFormatException e) {
+						System.out.println("Error, debes ingresar un único dato numérico");
+						continue;
+					}
+				}while(!(opcionMenu > 0 && opcionMenu <= Pelicula.getCartelera().size() + 1));
+				
+				
+				try {
+					peliculaProceso = Pelicula.getCartelera().get(opcionMenu - 1);
+				}catch(IndexOutOfBoundsException e) {
+					inicio();
+				}
+				
+				do {
+					try {
+						System.out.println("Has elegido la película " + peliculaProceso.getNombre() + "\n1.Correcto \n2.Cambiar Pelicula");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch(NumberFormatException e) {
+						System.out.println("Error, debes ingresar un único dato numérico");
+						continue;
+					}
+				}while(!(opcionMenu == 1 | opcionMenu == 2));
+				
+				switch(opcionMenu) {
+					case 1: casoValido = true; casoValidoConfirmacion = true; break;
+					case 2: casoValido = false; casoValidoConfirmacion = true; break;
+					default : System.out.println("Opcion Invalida"); casoValidoConfirmacion = false; break;
+				}
+				
+			}while (!casoValidoConfirmacion);
+		}while (!casoValido);
+		
+		//Elegimos el horario de la película seleccionada
+		casoValido = false;
+		casoValidoConfirmacion = false;
+		opcionMenu = 0;
+		ArrayList<String> horarioProceso = new ArrayList<>();
+		do {
+			do {
+				try {
+					System.out.println("\nLos horarios de la película " + peliculaProceso.getNombre() 
+					+ " son:\n" + peliculaProceso.mostrarHorarioPelicula() 
+					+ "\n" + (Integer.valueOf(peliculaProceso.getHorarios().size()) + 1) + ". Volver al menú principal");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("Error, debes ingresar un único dato numérico");
+					continue;
+				}
+				
+			}while(!(opcionMenu > 0 && opcionMenu <= Integer.valueOf(peliculaProceso.getHorarios().size()) + 1));
+			
+			if(peliculaProceso.obtenerHorario(opcionMenu) == null) {
+				inicio();
+			}else {
+				horarioProceso = peliculaProceso.obtenerHorario(opcionMenu);
+			}
+			
+			do {
+				try {
+					System.out.println("Elegiste la película el día: " + horarioProceso.get(0) 
+					+ ", A las: " + horarioProceso.get(1) + "\n1.Correcto \n2.Cambiar horario");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("Error, debes ingresar un único dato numérico");
+					continue;
+				}
+				
+				switch(opcionMenu) {
+					case 1: casoValidoConfirmacion = true; casoValido = true; break;
+					case 2: casoValidoConfirmacion = true; casoValido = false; break;
+					default : System.out.println("Opcion invalida"); casoValidoConfirmacion = false; break;
+				}
+			}while(!casoValidoConfirmacion);
+			
+		}while(!casoValido);
+		
+		//Elegimos el asiento
+		casoValido = false;
+		casoValidoConfirmacion = false;
+		String numeroAsientoProceso = null;
+		int filaProceso = 0;
+		int columnaProceso = 0;
+		do {
+			System.out.println("\nEsta es la distribución de asientos con su disponibilidad actual de la película en el horario seleccionado" 
+		    + "\n X : Ocupado\n O: Disponible\n" + peliculaProceso.mostrarAsientosSalaVirtual(horarioProceso.get(0), horarioProceso.get(1)) );
+			
+			//Elegimos la fila del asiento
+			do {
+				try {
+					System.out.println("Digite la fila de su asiento deseado");
+					filaProceso = Integer.parseInt(sc.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles");
+					continue;
+				}
+				
+				if(!(filaProceso > 0 & filaProceso <= Integer.valueOf(peliculaProceso.getHorarios().get(horarioProceso).length))){
+					System.out.println("La fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
+					continue;
+				}
+				
+				do {
+					try {
+						System.out.println("La fila seleccionada es: " + filaProceso + "\n1. Correcto \n2. Cambiar fila");
+						opcionMenu = Integer.parseInt(sc.nextLine()); 
+					}catch (NumberFormatException e) {
+						System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+						continue;
+					}
+				}while(!(opcionMenu == 1 || opcionMenu == 2));
+				
+				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
+				
+			}while(!(casoValidoConfirmacion));
+			
+			//Elegimos la columna del asiento
+			casoValidoConfirmacion = false;
+			opcionMenu = 0;
+			do {
+				try {
+					System.out.println("\nDigite la columna de su asiento deseado");
+					columnaProceso = Integer.parseInt(sc.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
+					continue;
+				}
+				
+				if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(peliculaProceso.getHorarios().get(horarioProceso).length))){
+					System.out.println("La columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
+					continue;
+				}
+				
+				do {
+					try {
+						System.out.println("La columna seleccionada es: " + columnaProceso + "\n1. Correcto \n2. Cambiar columna");
+						opcionMenu = Integer.parseInt(sc.nextLine()); 
+					}catch (NumberFormatException e) {
+						System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+						continue;
+					}
+				}while(!(opcionMenu == 1 || opcionMenu == 2));
+				
+				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
+				
+			}while(!(casoValidoConfirmacion));
+			
+			numeroAsientoProceso = filaProceso + "-" + columnaProceso;
+			
+			
+			if(peliculaProceso.isDisponibilidadAsientoSalaVirtual(horarioProceso.get(0), horarioProceso.get(1), filaProceso, columnaProceso)) {
+				casoValido = true;
+				System.out.println("\nEl asiento " + numeroAsientoProceso + " ha sido seleccionado con exito");
+			}else {
+				casoValido = false;
+				System.out.println("\nEl asiento " + numeroAsientoProceso + " no se encuentra disponible actualmente.\n" + 
+				"Se le solicita amablemente que seleccione uno de los asientos disponibles para disfrutar de su película.\n" + 
+				"A continuación se mostrarán en pantalla los asientos con su respectiva disponibilidad\n");
+			}
+			
+		}while(!casoValido);
+		
+		//Revisar lógica del códig anterior: 1. Implementar Sistema para ver lista de películas en presentación (crear método de apoyo)
+		// 2. En caso de seleccionar una película en presentación que realice el proceso de búsqueda de asientos en la sala de cine (implementar método existente y crear un método de apoyo)
+		// 3. Mejorar la forma en la que se muestran las películas en cartelera, ser más específico
+		// 4. Hacer pruebas con HashMap en horarios de Pelicula antes de descartarlo de manera definitiva
+		
+		//Realizar pago
 		
 	}
 	
