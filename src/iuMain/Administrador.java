@@ -214,7 +214,7 @@ public class Administrador {
 		
 		case 1: reservarTicket();inicio(); break;
 		case 2: comprarComida(); inicio(); break;
-		//case 3: comprarSouvenirs();inicio(); break;
+		case 3: comprarSouvenirs();inicio(); break;
 		case 4: ingresoZonaJuegos(); inicio(); break;
 		case 5: adquirirMembresia(); inicio(); break;
 		case 6: salirDelSistema();break;
@@ -672,78 +672,159 @@ public class Administrador {
 	
 	
 		
-	   
-	/*
+//******************************************************************************************************************************************	   
 	
 	static void comprarSouvenirs() {
-		System.out.print("Estas seguro de acceder al servicio de souvenir:\n1.SI.\n2.NO.\nSeleccina una opcion:");
-		int eleccion = (int)readLong();
-		if (eleccion==2) {inicio();}
-		else if (eleccion==1){}
-		else {
-			System.out.println("Opcion Invalida");
-			comprarSouvenirs();
-		}
+		System.out.println("Bienvenido a la tienda de souvenirs");
+		
+		//Reiteramos la eleccion del usuario
+		boolean casoValido = true;
+		int opcionMenu = 0;
+		do {
+			try {
+				System.out.print("Estas seguro de acceder al servicio de souvenir:\n1.SI.\n2.NO.\nSeleccina una opcion:");
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debes ingresar un dato numérico");
+				continue;
+			}
+			switch (opcionMenu) {
+				case 1: casoValido = false;break;
+				case 2: inicio(); casoValido = false; break;
+				default: System.out.println("Opcion invalida"); break;
+			}
+			
+		}while(casoValido);
+		
+		//Pedimos el tipo de documento al usuario
 		ServicioSouvenirs servicioSouvenirs = new ServicioSouvenirs();
 		TipoDeDocumento documentoCliente = null;
-		boolean casoValido = true;
+		casoValido = true;
 		do{
-			System.out.println("Seleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Volver");
-			int opcion1 = (int)readLong();
-			switch (opcion1) {
+			try {
+				System.out.println("Seleccione el tipo de documento:\n"+ TipoDeDocumento.mostrarTiposDeDocumento());
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e){
+				System.out.println("Error, debes ingresar un dato numérico");
+				continue;
+			}
+			switch (opcionMenu) {
 				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
 				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
 				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
-				case 4: comprarSouvenirs();casoValido=false;break;
 				default: System.out.println("Opcion invalida");break;
 			}
 		}while(casoValido);
 		
-		Cliente cliente1;
-		
+		//Se le pide el numero de documento y se verifica si ya esta registrado como cliente
+		Cliente cliente1 = null;
+		long numeroDocumentoCliente = 0;
+		casoValido = true;
+		boolean casoValido2 = true;
 		do {
-			System.out.print("Ingrese el numero de documento: ");
-			long numeroDocumentoCliente = readLong();
+			try {
+				System.out.print("Ingrese el numero de documento: ");
+				numeroDocumentoCliente = Long.parseLong(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debes ingresar datos numéricos correspondientes a tu número de documento");
+				continue;
+			}
+			//Se verficia si el cliente existe
 			cliente1=Cliente.revisarDatosCliente(numeroDocumentoCliente);
+			
+			//En caso de que no exista, lo creamos
 			if (cliente1==null) {
-				System.out.print("Ingrese su edad: ");
-				int edadCliente = (int)readLong();
+				System.out.println("Hemos detectado que es la primera vez que visita nuestro cine, " +
+						"Por políticas de seguridad de nuestra compañia, le solicitamos que amablemente responda las siguientes preguntas");
+				int edadCliente = 0;
+				
+				//Se registra la edad
+				do {
+					try {
+						System.out.print("Ingrese su edad: ");
+						edadCliente = Integer.parseInt(sc.nextLine());
+						casoValido2 = false;
+					}catch (NumberFormatException e) {
+						System.out.println("Error, debes ingresar datos numéricos correspondientes a tu edad");
+						continue;
+					}
+				}while(casoValido2);
+				
+				//Se registra el nombre
 				System.out.print("Ingrese su nombre: ");
-				String nombreCliente = readLn();
+				String nombreCliente = sc.nextLine(); 
+
+				//Se asocia todo a la nueva instancia del cliente
 				cliente1 = new Cliente(nombreCliente,null,null,null,edadCliente,null,numeroDocumentoCliente,0,documentoCliente,null,null,null);
 				servicioSouvenirs.setCliente(cliente1);
-				casoValido=true;
+				casoValido=false;
 			}
-			else {
-				System.out.println("¿Eres "+cliente1.getNombre()+"?");
-				System.out.println("1. SI\n2. NO");
-				int eleccion1 = (int)readLong();
-				if (eleccion1==1) {
-					servicioSouvenirs.setCliente(cliente1);
-					casoValido=true;
+			
+			//En caso de que el cliente ya esta registrado
+			else{
+				do{
+					try {
+						System.out.println("¿Eres "+cliente1.getNombre()+"?");
+						System.out.println("1. SI\n2. NO");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+						casoValido2 = false;
+					}catch(NumberFormatException e){
+						System.out.println("Error, debes ingresar un único dato numérico");
+						continue;
 					}
-				else if(eleccion1==2){
-					System.out.println("Verifica el numero de documento\n");
-				}
-				else {
-					System.out.println("Opcion invalida\n");
-				}
+					if (opcionMenu==1) {
+						servicioSouvenirs.setCliente(cliente1);
+						casoValido=false;
+						casoValido2 = false;
+						}
+					else if(opcionMenu==2){
+						System.out.println("Verifica el numero de documento\n");
+					}
+					else {
+						System.out.println("Opcion invalida\n");
+					}
+				}while(casoValido2);
 			}
-		}while(!casoValido);
-
+		}while(casoValido);
+		
+		//Interaccion #1 de la funcionalidad 3 la cual es una busqueda de los procutos disponibles
+		casoValido = true;
+		casoValido2 = true;
+		int cantidad;
+		int codigo;
 		do {
-			for (int i=0;i<Inventario.getProductosEnInventario().size();i++) {
-				int n = i+1;
-				System.out.println(n+". "+Inventario.getProductosEnInventario().get(i).getNombreProducto()+" "+Inventario.getProductosEnInventario().get(i).getDescripcionTamañoProducto()+" :"+Inventario.getProductosEnInventario().get(i).getPrecio());
-			}
-			System.out.print("Selecciona una opcion: ");
+			do {
+				System.out.print(Inventario.mostrarInventario());
+				try {
+					System.out.print("Selecciona una opcion: ");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+					System.out.print("Ingrese la cantidad de productos que deseas llevar: ");
+					cantidad = Integer.parseInt(sc.nextLine());
+					casoValido2 = false;
+				}catch(NumberFormatException e){
+					System.out.println("Error, debes ingresar un único dato numérico");
+					continue;
+					}
+				if ((cantidad > 0) && (cantidad < Inventario.getProductosEnInventario().size())){
+					codigo = Inventario.getProductosEnInventario().get(opcionMenu).getCodigoProducto();
+					if ( null != Pedido.generarPedido(codigo, cantidad)){
+						cliente1.getPedidos().add(Pedido.generarPedido(opcionMenu, cantidad));
+					}
+					else {
+						System.out.println("No hay suficientes productos");
+						System.out.println("En el momento hay: "+Inventario.getProductosEnInventario().get(opcionMenu).getCantidadDisponible()+" de "+Inventario.getProductosEnInventario().get(opcionMenu).getNombreProducto());
+					}
+			}while(casoValido2);
+		}while(casoValido);
+			
+			
 			int eleccion2 = (int) readLong();
 			eleccion2 = eleccion2-1;
 			if ((eleccion2 >= 0) && (eleccion2 < Inventario.getProductosEnInventario().size())){
 				System.out.print("Ingrese la cantidad de productos que deseas llevar: ");
 				int eleccion3 = (int) readLong();
 				if (null != (Pedido.generarPedido(Inventario.getProductosEnInventario().get(eleccion2).getCodigoProducto(), eleccion3))){
-					cliente1.getFacturas().add(Pedido.generarPedido(eleccion2, eleccion3));
+					cliente1.getPedidos().add(Pedido.generarPedido(eleccion2, eleccion3));
 				}
 				else {
 					System.out.println("No hay suficientes productos");
@@ -772,14 +853,14 @@ public class Administrador {
 		}while(casoValido);
 		
 		System.out.println("Lo que pediste fue: ");
-		for (int i = 0;i < cliente1.getFacturas().size(); i++) {
-			System.out.println(cliente1.getFacturas().get(i).getNombreproducto());
+		for (int i = 0;i < cliente1.getPedidos().size(); i++) {
+			System.out.println(cliente1.getPedidos().get(i).getNombreproducto());
 		}
 		
-	} */
+	} 
 		
 		
-		
+//------------------------------------------------------------------------------------------------------------------		
 		
 		
 

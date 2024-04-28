@@ -24,7 +24,27 @@ public class Inventario {
 		this.codigoProducto = codigoProducto;
 		productosEnInventario.add(this);
 	}
-
+	
+	/**
+	 * Description : Este metodo se encarga de ver los productos disponibles que hay en el inventario
+	 * recorriento el arraylist (productosEnInventario) y verificando que la cantidad sea 
+	 * cantidadDisponible de 0
+	 * @return <b>String<b> : Este metodo retorna un texto con los productos disponibles y sus precios
+	 **/
+	public static String mostrarInventario( ) {
+		String inventario = null;
+		int n = 1;
+		for (int i=0;i<productosEnInventario.size();i++) {
+			if (0<productosEnInventario.get(i).getCantidadDisponible() && productosEnInventario.get(i).getTipoDeProducto().equalsIgnoreCase("Souvenirs")){
+				inventario = n + ". " + productosEnInventario.get(i).getNombreProducto() +
+						"  " + productosEnInventario.get(i).getDescripcionTamañoProducto() + " : " +
+						productosEnInventario.get(i).getPrecio() + "\n";
+				n++;
+			}	
+		}
+		return inventario;
+	}
+	
 
 	public String getNombreProducto() {
 		return nombreProducto;
