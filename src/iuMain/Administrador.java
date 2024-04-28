@@ -1,4 +1,5 @@
 package iuMain;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -86,19 +87,28 @@ public class Administrador {
 		
 		//Llamados métodos de instancias para hacer pruebas
 		{
-			SalaCine.setDiaSemana("Lunes");
-			SalaCine.setHora("10AM");
+			SalaCine.setFecha(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			salaDeCine1.crearAsientosSalaDeCine();
 			salaDeCine1.setNumeroSala(1);
-			SalaCine.setDiaSemana("Martes");
-			SalaCine.setHora("3PM");
 			
-			pelicula1.crearSalaVirtual("Lunes", "10AM");
-			pelicula1.crearSalaVirtual("Martes", "3PM");
-			pelicula1.crearSalaVirtual("Miércoles", "8PM");
-			pelicula1.setNumeroDeSala(1);
+			pelicula1.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			pelicula1.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 2, 30, 00));
+			pelicula1.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 5, 30, 00));
+			pelicula1.setNumeroDeSala(3);
+			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 12, 00, 00));
+			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 16, 30, 00));
+			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 20, 30, 00));
+			pelicula2.setNumeroDeSala(1);
+			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 8, 00, 00));
+			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 12, 30, 00));
+			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 16, 30, 00));
+			pelicula3.setNumeroDeSala(2);
+			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 13, 00, 00));
+			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 17, 30, 00));
+			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 21, 30, 00));
+			pelicula6.setNumeroDeSala(4);
 			
-			salaDeCine1.setPeliculaEnPresentacion(pelicula1);
+			salaDeCine3.setPeliculaEnPresentacion(pelicula1);
 			
 			ticket1.setPelicula(pelicula1);
 			ticket1.asignarPrecio();
@@ -120,7 +130,7 @@ public class Administrador {
 			ticket2.realizarPago(precio, metodoPago2, cliente2);
 			ticket2.procesarPagoRealizado(cliente2);
 			ticket2.factura(cliente2);
-			pelicula1.modificarSalaVirtual("Martes", "3PM", 1, 4);
+			pelicula1.modificarSalaVirtual(LocalDateTime.of(2024, 4, 28, 2, 30, 00), 1, 4);
 			//salaDeCine1.actualizarPeliculaEnPresentacion();
 			
 			ticket3.setPelicula(pelicula2);
@@ -410,7 +420,7 @@ public class Administrador {
 		Pelicula peliculaProceso = null;
 		do {
 			System.out.println("\nHola " + clienteProceso.getNombre() + ", Bienvenido al sistema de reserva de ticket");
-			System.out.println("=========================================================================");
+			System.out.println("=====================================================================================");
 			//Mostramos las películas en cartelera y le pedimos al usuario elegir una de estas
 			do {
 				do {
@@ -450,11 +460,36 @@ public class Administrador {
 			}while (!casoValidoConfirmacion);
 		}while (!casoValido);
 		
+		if(!(peliculaProceso.whereIsPeliculaEnPresentacion().equals(null))) {
+			SalaCine salaDeCinePresentacionProceso = peliculaProceso.whereIsPeliculaEnPresentacion();
+			casoValido = false;
+			casoValidoConfirmacion = false;
+			opcionMenu = 0;
+			do {
+				do {
+					try {
+						System.out.println("Hemos detectado que la película seleccionada se encuentra en presentación, inicio de proyección: " + 
+						salaDeCinePresentacionProceso.getHorarioPeliculaEnPresentacion() + ", ¿Desea reservar un ticket para este horario? " +
+						" (Hora actual: " + SalaCine.getFecha() + " )\n1. Comprar en este horario\n2. Comprar en otro horario");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch(NumberFormatException e){
+						System.out.println("Error, debes ingresar un único dato númerico");
+						continue;
+					}
+				}while(!(opcionMenu == 1 || opcionMenu == 2));
+				
+				if (opcionMenu == 2) {
+					break;
+				}
+				
+				System.out.println("Comprando Ticket...(Aún no ha sido implementado, si deseas continuar elige otro horario)");
+			}while(!(casoValido));
+		}
 		//Elegimos el horario de la película seleccionada
 		casoValido = false;
 		casoValidoConfirmacion = false;
 		opcionMenu = 0;
-		ArrayList<String> horarioProceso = new ArrayList<>();
+		LocalDateTime horarioProceso = null;
 		do {
 			do {
 				try {
@@ -477,8 +512,8 @@ public class Administrador {
 			
 			do {
 				try {
-					System.out.println("Elegiste la película el día: " + horarioProceso.get(0) 
-					+ ", A las: " + horarioProceso.get(1) + "\n1.Correcto \n2.Cambiar horario");
+					System.out.println("Elegiste la película el día: " + horarioProceso.getDayOfWeek() +  " fecha: "
+					+ horarioProceso.toLocalDate() + ", A las: " + horarioProceso.toLocalTime() + "\n1.Correcto \n2.Cambiar horario");
 					opcionMenu = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
 					System.out.println("Error, debes ingresar un único dato numérico");
@@ -502,7 +537,7 @@ public class Administrador {
 		int columnaProceso = 0;
 		do {
 			System.out.println("\nEsta es la distribución de asientos con su disponibilidad actual de la película en el horario seleccionado" 
-		    + "\n X : Ocupado\n O: Disponible\n" + peliculaProceso.mostrarAsientosSalaVirtual(horarioProceso.get(0), horarioProceso.get(1)) );
+		    + "\n X : Ocupado\n O: Disponible\n" + peliculaProceso.mostrarAsientosSalaVirtual(horarioProceso) );
 			
 			//Elegimos la fila del asiento
 			do {
@@ -567,7 +602,7 @@ public class Administrador {
 			numeroAsientoProceso = filaProceso + "-" + columnaProceso;
 			
 			
-			if(peliculaProceso.isDisponibilidadAsientoSalaVirtual(horarioProceso.get(0), horarioProceso.get(1), filaProceso, columnaProceso)) {
+			if(peliculaProceso.isDisponibilidadAsientoSalaVirtual(horarioProceso, filaProceso, columnaProceso)) {
 				casoValido = true;
 				System.out.println("\nEl asiento " + numeroAsientoProceso + " ha sido seleccionado con exito");
 			}else {
@@ -581,8 +616,11 @@ public class Administrador {
 		
 		//Revisar lógica del códig anterior: 1. Implementar Sistema para ver lista de películas en presentación (crear método de apoyo)
 		// 2. En caso de seleccionar una película en presentación que realice el proceso de búsqueda de asientos en la sala de cine (implementar método existente y crear un método de apoyo)
-		// 3. Mejorar la forma en la que se muestran las películas en cartelera, ser más específico
-		// 4. Hacer pruebas con HashMap en horarios de Pelicula antes de descartarlo de manera definitiva
+		// 3. Mostrar la opción en pantalla de comprar un ticket de una película que se encuentra en presentación (mostrar fecha y hora actual y la hora a la que empezó la película) Esto soluciona el paso 1
+		// 4. Mostrar La fecha y la hora de la pelicula en los tickets en factura
+		// 5. Añadir paso de verificacion fecha en la verificacionTicket SalaCine
+		// 6. Modificar La duración de la película para que sea en formato hora
+		// 7. Una vez hecho 6 crear hora inicio película y hora fin película y añadirla al paso verificación de 5
 		
 		//Realizar pago
 		

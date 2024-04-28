@@ -1,7 +1,6 @@
 package gestionAplicacion.proyecciones;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 
 public class Pelicula{
@@ -12,7 +11,7 @@ public class Pelicula{
 	private String duracion;
 	private String clasificacion;
 	//private ArrayList<Horario> horarios = new ArrayList<>();
-	private LinkedHashMap<ArrayList<String>, int[][]> horarios = new LinkedHashMap<>();
+	private LinkedHashMap<LocalDateTime, int[][]> horarios = new LinkedHashMap<>();
 	private static ArrayList<Pelicula> cartelera = new ArrayList<>();
 	private String tipoDeFormato;
 	private int numeroDeSala;
@@ -60,11 +59,11 @@ public class Pelicula{
 		this.clasificacion = clasificacion;
 	}
 
-	public LinkedHashMap<ArrayList<String>, int[][]> getHorarios() {
+	public LinkedHashMap<LocalDateTime, int[][]> getHorarios() {
 		return horarios;
 	}
 
-	public void setHorarios(LinkedHashMap<ArrayList<String>, int[][]> horarios) {
+	public void setHorarios(LinkedHashMap<LocalDateTime, int[][]> horarios) {
 		this.horarios = horarios;
 	}
 
@@ -126,7 +125,7 @@ public class Pelicula{
 	}
 
 	public Pelicula(String nombre, int precio, String genero, String duracion, String clasificacion,
-			LinkedHashMap<ArrayList<String>, int[][]> horarios, String tipoDeFormato, int numeroDeSala, int idPelicula) {
+			LinkedHashMap<LocalDateTime, int[][]> horarios, String tipoDeFormato, int numeroDeSala, int idPelicula) {
 		this();
 		this.nombre = nombre;
 		this.precio = precio;
@@ -191,12 +190,12 @@ public class Pelicula{
 	public String mostrarHorarioPelicula() {
 		String horarios = null;
 		int i = 1;
-		for (ArrayList<String> Horario : this.getHorarios().keySet()) {
+		for (LocalDateTime Horario : this.getHorarios().keySet()) {
 			
 			if (horarios == null) {
-				horarios = i + ". Día: " + Horario.get(0) + ", Hora: " + Horario.get(1) + "\n";
+				horarios = i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + "\n";
 			}else {
-				horarios = horarios + i + ". Día: " + Horario.get(0) + ", Hora: " + Horario.get(1) + "\n";
+				horarios = horarios + i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + "\n";
 			}
 			i++;
 		}
@@ -220,30 +219,25 @@ public class Pelicula{
 	/**
 	 * Description : Este método se encarga de generar un String que se imprimirá en pantalla con el fin de visualizar
 	 * el estado de de los asientos en la sala virtual
-	 * @param day : Recibe un string que corresponde a la llave de horarios que seleccionó el cliente
-	 * @param hour : Recibe un string que corresponde a la llave de horarios que seleccionó el cliente
+	 * @param fecha : Recibe un LocalDateTime que corresponde a la llave de horarios que seleccionó el cliente
 	 * @return <b>resultado</b> : Retorna un string con las posiciones de los asientos y su disponibilidad
 	 * */
-	public String mostrarAsientosSalaVirtual(String day, String hour) {
+	public String mostrarAsientosSalaVirtual(LocalDateTime fecha) {
 		StringBuilder resultado = new StringBuilder("Asientos de Cine\n");
 	    resultado.append("   ");
 	    
-	    ArrayList<String> horario = new ArrayList<>();
-	    horario.add(day);
-	    horario.add(hour);
-	    
 	    // Agregar números de columnas
-	    for (int i = 0; i < this.getHorarios().get(horario).length; i++) {
+	    for (int i = 0; i < this.getHorarios().get(fecha).length; i++) {
 	        resultado.append(String.format("%-4d", i + 1));
 	    }
 	    resultado.append("\n");
 
 	    // Mostrar asientos
-	    for (int i = 0; i < this.getHorarios().get(horario).length; i++) {
+	    for (int i = 0; i < this.getHorarios().get(fecha).length; i++) {
 	        resultado.append(String.format("%-2d ", i + 1));
-	        for (int j = 0; j < this.getHorarios().get(horario).length; j++) {
+	        for (int j = 0; j < this.getHorarios().get(fecha).length; j++) {
 	            resultado.append("[");
-	            resultado.append((this.getHorarios().get(horario)[i][j] == 1) ? "X" : "O");
+	            resultado.append((this.getHorarios().get(fecha)[i][j] == 1) ? "X" : "O");
 	            resultado.append("] ");
 	        }
 	        resultado.append("\n");
@@ -254,36 +248,28 @@ public class Pelicula{
 	
 	/**
 	 * Description : Este método se encarga cambiar la desponibilidad de un índice de la salaVirtual
-	 * @param day : Recibe el dato del día seleccionado por el cliente que se pasará a la llave de horarios
-	 * @param hour : Recibe el dato de la hora seleccionada por el cliente que se pasará a la llave de horarios
+	 * @param fecha : Recibe el dato de la fecha, en formato localDateTime, seleccionado por el cliente que se pasará a la llave de horarios
 	 * @param fila : Recibe el número de la fila seleccionada por el cliente
 	 * @param columna : Recibe el número de la columna seleccionada por el cliente
 	 * */
-	public void modificarSalaVirtual(String day, String hour, int fila, int columna) {
-		ArrayList<String> horario = new ArrayList<>();
-	    horario.add(day);
-	    horario.add(hour);
+	public void modificarSalaVirtual(LocalDateTime fecha, int fila, int columna) {
 	    
-		if (this.getHorarios().get(horario)[fila - 1][columna - 1] == 0) {
-			this.getHorarios().get(horario)[fila - 1][columna - 1] = 1;	
+		if (this.getHorarios().get(fecha)[fila - 1][columna - 1] == 0) {
+			this.getHorarios().get(fecha)[fila - 1][columna - 1] = 1;	
 		}else {
-			this.getHorarios().get(horario)[fila - 1][columna - 1] = 0;	
+			this.getHorarios().get(fecha)[fila - 1][columna - 1] = 0;	
 		}	
 	}
 	
 	/**
 	 * Description : Este método se encarga revisar la desponibilidad de un índice de la salaVirtual
-	 * @param day : Recibe el dato del día seleccionado por el cliente que se pasará a la llave de horarios
-	 * @param hour : Recibe el dato de la hora seleccionada por el cliente que se pasará a la llave de horarios
+	 * @param day : Recibe el dato del localDateTime seleccionado por el cliente con la que se obtendrá su valor del LinkedHashMap
 	 * @param fila : Recibe el número de la fila seleccionada por el cliente
 	 * @param columna : Recibe el número de la columna seleccionada por el cliente
 	 * */
-	public boolean isDisponibilidadAsientoSalaVirtual(String day, String hour, int fila, int columna) {
-		ArrayList<String> horario = new ArrayList<>();
-	    horario.add(day);
-	    horario.add(hour);
+	public boolean isDisponibilidadAsientoSalaVirtual(LocalDateTime fecha, int fila, int columna) {
 	    
-		if (this.getHorarios().get(horario)[fila - 1][columna - 1] == 0) {
+		if (this.getHorarios().get(fecha)[fila - 1][columna - 1] == 0) {
 			return true;	
 		}else {
 			return false;	
@@ -293,11 +279,10 @@ public class Pelicula{
 	/**
 	 * Description : Este método se encarga de crear una matriz que representa la sala virtual
 	 * posteriormente esta se pasa como valor a una llave y se introducen en el diccionario de horarios
-	 * @param day : Recibe un String que corresponde a un campo de la llave dada por el administrador para crear el horario
-	 * @param hour : Recibe un String que corresponde a un campo de la llave dada por el administrador para crear el horario
+	 * @param fecha : Este método recibe del administrador un LocalDateTime para crear la salaDeCineVirtual 
 	 * @return <b>Void</b> : No retorna nada, solo añade un par clave, valor a horarios
 	 * */
-	public void crearSalaVirtual(String day, String hour) {
+	public void crearSalaVirtual(LocalDateTime fecha) {
 		int[][] nuevaSalaVirtual = new int[8][8];
 		
 		for (int i = 0; i < 8; i++) {
@@ -306,11 +291,7 @@ public class Pelicula{
 			}
 		}
 		
-		ArrayList<String> horario = new ArrayList<>();
-		horario.add(day);
-		horario.add(hour);
-		
-		this.getHorarios().put(horario, nuevaSalaVirtual);
+		this.getHorarios().put(fecha, nuevaSalaVirtual);
 		
 	}
 	
@@ -356,13 +337,13 @@ public class Pelicula{
 	 * a partir de la posición pasada como parámetro
 	 * @param posicion : Recibe un entero que representa la posición del horario 
 	 * seleccionado por el usuario luego de mostrarHorarios de esta película
-	 * @return <b>ArrayList<String></b> : Retorna el ArrayList correspondiente a la elcción hecha por el usuario
-	 * el formato linkedHashMap garantiza que siempre retorna el ArrayList deseado
+	 * @return <b>LocalDateTime</b> : Retorna la localDateTime correspondiente a la elcción hecha por el usuario
+	 * el formato linkedHashMap garantiza que siempre retorna la localDateTime deseada
 	 * */
-	public ArrayList<String> obtenerHorario(int posicion){
+	public LocalDateTime obtenerHorario(int posicion){
 		int i = 0;
-		ArrayList<String> horarioDeseado = null;
-		for (ArrayList<String> horario : this.getHorarios().keySet()) {
+		LocalDateTime horarioDeseado = null;
+		for (LocalDateTime horario : this.getHorarios().keySet()) {
 			if (i == (posicion - 1)) {
 				horarioDeseado = horario;
 			}
@@ -370,6 +351,27 @@ public class Pelicula{
 		}
 		
 		return horarioDeseado;
+	}
+	
+	/**
+	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
+	 * utilidad de este método radica en que si retorna algo distinto de null se ejecuta un menú adicional antes de mostrar el
+	 * horario de la pelicula seleccionada por el usuario
+	 * @return <b>SalaCine</b> : Este método retorna la salaDeCine donde está siendo proyectada la película, en caso de estarlo,
+	 * si la película no se encuentra en presentacion, retorna null.
+	 * */
+	public SalaCine whereIsPeliculaEnPresentacion() {
+		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
+			try {
+				if (salaDeCine.getPeliculaEnPresentacion().equals(this)) {
+					return salaDeCine;
+				}
+			}catch(NullPointerException e) {
+				continue;
+			}
+			
+		}
+		return null;
 	}
 	
 	

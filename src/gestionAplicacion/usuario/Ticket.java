@@ -1,5 +1,7 @@
 package gestionAplicacion.usuario;
  
+import java.time.LocalDateTime;
+
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.ServicioEntretenimiento;
 
@@ -12,7 +14,7 @@ public class Ticket implements IBuyable{
 	private Asiento asiento;
 	private double precio;
 	private Pelicula pelicula;
-	private String horario;
+	private LocalDateTime horario;
 	private int idPelicula;
 	private String numeroAsiento;
 	private String codigo;
@@ -23,7 +25,7 @@ public class Ticket implements IBuyable{
 		
 	}
 	
-	public Ticket(Cliente dueno, SalaCine salaDeCine, Asiento asiento, double precio, Pelicula pelicula, String horario, int idPelicula) {
+	public Ticket(Cliente dueno, SalaCine salaDeCine, Asiento asiento, double precio, Pelicula pelicula, LocalDateTime horario, int idPelicula) {
 		this.dueno = dueno;
 		this.salaDeCine = salaDeCine;
 		this.asiento = asiento;
@@ -216,11 +218,11 @@ public class Ticket implements IBuyable{
 		this.pelicula = pelicula;
 	}
 
-	public String getHorario() {
+	public LocalDateTime getHorario() {
 		return horario;
 	}
 
-	public void setHorario(String horario) {
+	public void setHorario(LocalDateTime horario) {
 		this.horario = horario;
 	}
 

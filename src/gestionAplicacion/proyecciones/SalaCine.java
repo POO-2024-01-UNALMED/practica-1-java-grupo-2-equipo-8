@@ -1,4 +1,5 @@
 package gestionAplicacion.proyecciones;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import gestionAplicacion.usuario.Cliente;
@@ -8,22 +9,23 @@ public class SalaCine {
 	
 	private int numeroSala;
 	private String tipoDeSala;
-	private static String fecha;
+	private static LocalDateTime fecha;
+	private LocalDateTime horarioPeliculaEnPresentacion;
 	private Asiento[][] asientos;
 	private Pelicula peliculaEnPresentacion;
 	//private ArrayList<Pelicula> peliculas = new ArrayList<>(); Posiblemente sea innecesario
 	private ArrayList<Ticket> ticketsCreados = new ArrayList<>();
-	private static String hora;
-	private static String diaSemana;
+	private static ArrayList<SalaCine> salasCine = new ArrayList<>();
 	
 	//Constructors
 	public SalaCine(){
 		Pelicula.getSalasDeCine().add(this);
+		SalaCine.getSalasCine().add(this);
 	}
 	public SalaCine(int nSala, String tipoDeSala){
+		this();
 		this.numeroSala = nSala;
 		this.tipoDeSala = tipoDeSala;
-		Pelicula.getSalasDeCine().add(this);
 	}
 	public SalaCine(int numeroSala, String tipoDeSala, Asiento[][] asientos, Pelicula peliculaEnPresentacion, ArrayList<Ticket> ticketsCreados) {
 		super();
@@ -148,21 +150,18 @@ public class SalaCine {
 	 * Description: Este método se encarga actualizar la película en presentación según si la película coincide con el número de sala y luego
 	 * respecto al día y la hora actual, una vez hecho esto, limpiamos los asientos de la sala de cine, cambiando su disponibilidad a libre, y
 	 * por último actualizamos la información de la disponibilidad de los asientos, tomando la información del array de la sala virtual que 
-	 * coincidio en fecha y hora de la película en presentación
+	 * coincidió en fecha y hora de la película en presentación, además modificamos el atributo horarioPeliculaEnPresentacion de la salaDeCine
 	 * @return (void): Este método no retorna nada, solo actualiza los asientos de la sala de cine y de la película en presentación
 	 * */
-	public void actualizarPeliculaEnPresentacion() {
-		String day = null;
-		String hour = null;
-		
+	public void actualizarPeliculasEnPresentacion() {
+		Pelicula peliculaPresentacion = null;
 		//Actualizamos la película
 		for (Pelicula pelicula : Pelicula.getCartelera()) {
 			if (pelicula.getNumeroDeSala() == this.getNumeroSala()) {
-				for (ArrayList<String> horario : pelicula.getHorarios().keySet()) {
-					if (horario.get(0).equals(SalaCine.getDiaSemana())& horario.get(1).equals(SalaCine.getHora())){
+				for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
+					if (horario.equals(SalaCine.getFecha())){
 						this.setPeliculaEnPresentacion(pelicula);
-						day = horario.get(0);
-						hour = horario.get(1);
+						peliculaPresentacion = this.getPeliculaEnPresentacion();
 						break;
 					}
 				}
@@ -170,26 +169,27 @@ public class SalaCine {
 			}
 		}
 		
-		//Preparamos los asientos para ser actualizados
-		for (int i = 0; i < this.getAsientos().length; i++) {
-	        for (int j = 0; j < this.getAsientos()[i].length; j++) {
-	            this.cambiarDisponibilidadAsientoOcupadoParaLibre(i+1, j+1);
-	        }
-	    }
-		
-		//Actualizamos los asientos de la sala de cine
-		for (int i = 0; i < this.getAsientos().length; i++) {
-	        for (int j = 0; j < this.getAsientos()[i].length; j++) {
-	        	if (!this.getPeliculaEnPresentacion().isDisponibilidadAsientoSalaVirtual(day, hour, i+1, j+1))
-	            this.cambiarDisponibilidadAsientoLibre(i+1, j+1);
-	        }
-	    }
-		
-		//Eliminamos la sala de cine virtual
-		ArrayList<String> horario = new ArrayList<>();
-		horario.add(day);
-		horario.add(hour);
-		this.getPeliculaEnPresentacion().getHorarios().remove(horario);
+		//Ejecutamos esta operacion si cambiamos la pelicula en presentación
+		if (peliculaPresentacion != null) {
+			//Preparamos los asientos para ser actualizados
+			for (int i = 0; i < this.getAsientos().length; i++) {
+		        for (int j = 0; j < this.getAsientos()[i].length; j++) {
+		            this.cambiarDisponibilidadAsientoOcupadoParaLibre(i+1, j+1);
+		        }
+		    }
+			
+			//Actualizamos los asientos de la sala de cine
+			for (int i = 0; i < this.getAsientos().length; i++) {
+		        for (int j = 0; j < this.getAsientos()[i].length; j++) {
+		        	if (!this.getPeliculaEnPresentacion().isDisponibilidadAsientoSalaVirtual(SalaCine.getFecha(), i+1, j+1)) {
+		            this.cambiarDisponibilidadAsientoLibre(i+1, j+1);
+		        	}
+		        }
+		    }
+			
+			//Eliminamos la sala de cine virtual
+			this.getPeliculaEnPresentacion().getHorarios().remove(SalaCine.getFecha());
+		}
 		
 	}
 
@@ -210,11 +210,11 @@ public class SalaCine {
 		this.tipoDeSala = tipoDeSala;
 	}
 
-	public static String getFecha() {
+	public static LocalDateTime getFecha() {
 		return fecha;
 	}
 
-	public static void setFecha(String fecha) {
+	public static void setFecha(LocalDateTime fecha) {
 		SalaCine.fecha = fecha;
 	}
 
@@ -242,21 +242,23 @@ public class SalaCine {
 	public void setTicketsCreados(ArrayList<Ticket> ticketsCreados) {
 		this.ticketsCreados = ticketsCreados;
 	}
-
-	public static String getHora() {
-		return hora;
+	
+	public static ArrayList<SalaCine> getSalasCine() {
+		return salasCine;
 	}
-
-	public static void setHora(String hora) {
-		SalaCine.hora = hora;
+	
+	public static void setSalasCine(ArrayList<SalaCine> salasCine) {
+		SalaCine.salasCine = salasCine;
 	}
-
-	public static String getDiaSemana() {
-		return diaSemana;
+	
+	public LocalDateTime getHorarioPeliculaEnPresentacion() {
+		return horarioPeliculaEnPresentacion;
 	}
-
-	public static void setDiaSemana(String diaSemana) {
-		SalaCine.diaSemana = diaSemana;
+	
+	public void setHorarioPelicula(LocalDateTime horarioPeliculaEnPresentacion) {
+		this.horarioPeliculaEnPresentacion = horarioPeliculaEnPresentacion;
 	}
+	
+	
 	
 }
