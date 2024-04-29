@@ -322,10 +322,11 @@ public class Pelicula{
 		for (Pelicula pelicula : cartelera) {
 			if (resultado == null) {
 				resultado = i + ". Película: " + pelicula.getNombre() + "; Duración: " + pelicula.getDuracion().toMinutes() + " Minutos" 
-				+ "; Formato: " + pelicula.getTipoDeFormato() + "\n";
+				+ "; Formato: " + pelicula.getTipoDeFormato() + "; Precio: " + pelicula.getPrecio() + "\n";
 			}else {
 				resultado = resultado + i + ". Película: " + pelicula.getNombre() + "; Duración: " 
-				+ pelicula.getDuracion().toMinutes() + " Minutos"  + "; Formato: " + pelicula.getTipoDeFormato() + "\n";
+				+ pelicula.getDuracion().toMinutes() + " Minutos"  + "; Formato: " + pelicula.getTipoDeFormato() + 
+				"; Precio: " + pelicula.getPrecio() + "\n";
 			}
 			i++;
 		}
