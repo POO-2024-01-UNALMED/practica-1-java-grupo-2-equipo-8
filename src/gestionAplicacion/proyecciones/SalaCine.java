@@ -1,5 +1,6 @@
 package gestionAplicacion.proyecciones;
 import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.ArrayList;
 
 import gestionAplicacion.usuario.Cliente;
@@ -11,6 +12,7 @@ public class SalaCine {
 	private String tipoDeSala;
 	private static LocalDateTime fecha;
 	private LocalDateTime horarioPeliculaEnPresentacion;
+	private Duration DuracionPeliculaEnPresentacion;
 	private Asiento[][] asientos;
 	private Pelicula peliculaEnPresentacion;
 	//private ArrayList<Pelicula> peliculas = new ArrayList<>(); Posiblemente sea innecesario
@@ -116,18 +118,27 @@ public class SalaCine {
 	 * siguientes criterios al mismo tiempo: 
 	 * 1. Se encuentra en el arrayList de ticketsCreados de la salaDeCine
 	 * 2. La película asociada a este ticket se encuentra coincide con la peliculaEnPresentacion de la SalaDeCine
+	 * 3. La fecha actual de SalaCine es anterior a la fecha en que finaliza la película
 	 * @param cliente : Este método solicita al cliente que va a ingresar a la SalaDeCine
 	 * @return boolean : Este método se encarga de retornar un boolean que será el resultado del proceso de verificación
 	 * */
 	public boolean verificarTicket(Cliente cliente) {
 		
 		boolean verificacion = false;
+		boolean verificacionPelicula = false;
+		boolean verificacionHorario = false;
 		Ticket ticketVerficado = null;
 		
 		//Verificamos si el atributo película de alguno de los tickets que tiene el cliente coinicide con la película en presentación
 		//Verificamos si el ticket se encuetra en el arrayList de tickets creados de esta sala de cine
 		for (Ticket ticket : cliente.getTickets()) {
-			verificacion = ticket.getPelicula().equals(this.peliculaEnPresentacion) & this.getTicketsCreados().contains(ticket);
+			verificacionPelicula = (ticket.getPelicula().equals(this.peliculaEnPresentacion) & this.getTicketsCreados().contains(ticket) ) ;
+			try {
+				verificacionHorario = SalaCine.getFecha().isBefore(this.getHorarioPeliculaEnPresentacion().plus(this.getDuracionPeliculaEnPresentacion())); 
+			}catch(NullPointerException e) {
+				verificacionHorario = false;
+			}
+			verificacion = verificacionPelicula & verificacionHorario;
 			if (verificacion) {
 				ticketVerficado = ticket;
 				break;
@@ -162,6 +173,7 @@ public class SalaCine {
 					if (horario.equals(SalaCine.getFecha())){
 						this.setPeliculaEnPresentacion(pelicula);
 						peliculaPresentacion = this.getPeliculaEnPresentacion();
+						this.setHorarioPeliculaEnPresentacion(horario);
 						break;
 					}
 				}
@@ -190,6 +202,17 @@ public class SalaCine {
 			//Eliminamos la sala de cine virtual
 			this.getPeliculaEnPresentacion().getHorarios().remove(SalaCine.getFecha());
 		}
+		
+	}
+	
+	/**
+	 * Description : Este método se encarga de retornar la disponibilidad de un asiento dada su fila y su columna
+	 * @param fila : Este método recibe la fila del asiento a consultar
+	 * @param columna: Este método recibe la columna del asiento a consultar
+	 * @return <b>boolean</b> : Este método retorna la disponibilidad del asiento consultado
+	 * */
+	public boolean isDisponibilidadAsiento(int fila, int columna) {
+		return this.getAsientos()[fila - 1][columna - 1].isDisponibilidad();
 		
 	}
 
@@ -233,6 +256,7 @@ public class SalaCine {
 
 	public void setPeliculaEnPresentacion(Pelicula peliculaEnPresentacion) {
 		this.peliculaEnPresentacion = peliculaEnPresentacion;
+		this.DuracionPeliculaEnPresentacion = peliculaEnPresentacion.getDuracion();
 	}
 
 	public ArrayList<Ticket> getTicketsCreados() {
@@ -256,6 +280,18 @@ public class SalaCine {
 	}
 	
 	public void setHorarioPelicula(LocalDateTime horarioPeliculaEnPresentacion) {
+		this.horarioPeliculaEnPresentacion = horarioPeliculaEnPresentacion;
+	}
+	
+	public Duration getDuracionPeliculaEnPresentacion() {
+		return DuracionPeliculaEnPresentacion;
+	}
+	
+	public void setDuracionPeliculaEnPresentacion(Duration duracionPeliculaEnPresentacion) {
+		DuracionPeliculaEnPresentacion = duracionPeliculaEnPresentacion;
+	}
+	
+	public void setHorarioPeliculaEnPresentacion(LocalDateTime horarioPeliculaEnPresentacion) {
 		this.horarioPeliculaEnPresentacion = horarioPeliculaEnPresentacion;
 	}
 	

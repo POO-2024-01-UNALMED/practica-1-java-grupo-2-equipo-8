@@ -1,11 +1,11 @@
 package iuMain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Scanner;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.usuario.*;
+import java.time.Duration;
 
 public class Administrador {
 	
@@ -34,12 +34,12 @@ public class Administrador {
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 	static Cliente cliente4 = new Cliente("Juanjo", 18 ,1013458547, TipoDeDocumento.CC);
 	
-	static Pelicula pelicula1 = new Pelicula("KNJ temporada 4 movie", 30000, "Aventura", "1 hora", "+12", "4D", 3); 
-	static Pelicula pelicula2 = new Pelicula("Oppenheimer", 15000, "Drama", "2 horas", "+18", "2D", 1); 
-	static Pelicula pelicula3 = new Pelicula("BNHA temporada 7 movie", 18000, "Acción", "1 hora", "+18", "3D", 2);
-	static Pelicula pelicula4 = new Pelicula("Código Enigma", 12000, "Historia", "3 horas", "+18", "2D", 2);
-	static Pelicula pelicula5 = new Pelicula("Spy x Familiy Código: Blanco", 25000, "Comedia", "1 hora 45 minutos", "+8", "4D", 3);
-	static Pelicula pelicula6 = new Pelicula("Jhon Wick 4", 17000, "Acción", "3 horas", "+18", "3D", 4);
+	static Pelicula pelicula1 = new Pelicula("KNJ temporada 4 movie", 30000, "Aventura", Duration.ofMinutes(60), "+12", "4D", 3); 
+	static Pelicula pelicula2 = new Pelicula("Oppenheimer", 15000, "Drama", Duration.ofMinutes(120), "+18", "2D", 1); 
+	static Pelicula pelicula3 = new Pelicula("BNHA temporada 7 movie", 18000, "Acción", Duration.ofMinutes(60), "+18", "3D", 2);
+	static Pelicula pelicula4 = new Pelicula("Código Enigma", 12000, "Historia", Duration.ofMinutes(180), "+18", "2D", 2);
+	static Pelicula pelicula5 = new Pelicula("Spy x Familiy Código: Blanco", 25000, "Comedia", Duration.ofMinutes(105), "+8", "4D", 3);
+	static Pelicula pelicula6 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "3D", 4);
 	
 	static SalaCine salaDeCine1 = new SalaCine(1, "2D");
 	static SalaCine salaDeCine2 = new SalaCine(2, "3D");
@@ -56,8 +56,8 @@ public class Administrador {
 	static Ticket ticket2 = new Ticket();
 	static Ticket ticket3 = new Ticket();
 	static Ticket ticket4 = new Ticket();
-	static Ticket ticket5 = new Ticket(cliente4, pelicula1, salaDeCine2);
-	static Ticket ticket6 = new Ticket(cliente4, pelicula2, salaDeCine1);
+	static Ticket ticket5 = new Ticket(cliente4, pelicula1, LocalDateTime.of(2024, 4, 28, 12, 0, 0), "4-8");
+	static Ticket ticket6 = new Ticket(cliente4, pelicula2, LocalDateTime.of(2024, 5, 4, 16, 0, 0), "2-2");
 	
 	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 100000, 0.10);
 	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 60000, 0.05);
@@ -89,7 +89,9 @@ public class Administrador {
 		{
 			SalaCine.setFecha(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			salaDeCine1.crearAsientosSalaDeCine();
-			salaDeCine1.setNumeroSala(1);
+			salaDeCine2.crearAsientosSalaDeCine();
+			salaDeCine3.crearAsientosSalaDeCine();
+			salaDeCine4.crearAsientosSalaDeCine(); 
 			
 			pelicula1.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula1.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 2, 30, 00));
@@ -108,7 +110,8 @@ public class Administrador {
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 21, 30, 00));
 			pelicula6.setNumeroDeSala(4);
 			
-			salaDeCine3.setPeliculaEnPresentacion(pelicula1);
+			salaDeCine3.actualizarPeliculasEnPresentacion();
+			//salaDeCine1.actualizarPeliculasEnPresentacion();
 			
 			ticket1.setPelicula(pelicula1);
 			ticket1.asignarPrecio();
@@ -118,7 +121,8 @@ public class Administrador {
 			double precio = ticket1.getPrecio();
 			ticket1.realizarPago(precio, metodoPago1, cliente1);
 			ticket1.procesarPagoRealizado(cliente1);
-			ticket1.factura(cliente1);
+			ticket1.setHorario(SalaCine.getFecha());
+		    ticket1.factura(cliente1);
 			salaDeCine1.cambiarDisponibilidadAsientoLibre(4, 4);
 			
 			ticket2.setPelicula(pelicula1);
@@ -126,12 +130,12 @@ public class Administrador {
 			ticket2.setSalaDeCine(salaDeCine1);
 			ticket2.setDueno(cliente2);
 			ticket2.setNumeroAsiento("1-4");
+			ticket2.setHorario(SalaCine.getFecha());
 			precio = ticket2.getPrecio();
 			ticket2.realizarPago(precio, metodoPago2, cliente2);
 			ticket2.procesarPagoRealizado(cliente2);
 			ticket2.factura(cliente2);
 			pelicula1.modificarSalaVirtual(LocalDateTime.of(2024, 4, 28, 2, 30, 00), 1, 4);
-			//salaDeCine1.actualizarPeliculaEnPresentacion();
 			
 			ticket3.setPelicula(pelicula2);
 			ticket3.asignarPrecio();
@@ -153,6 +157,8 @@ public class Administrador {
 //			/*cliente1.setMembresia(membresia1)*/
 			
 			//System.out.println();
+			SalaCine.setFecha(SalaCine.getFecha().plusMinutes(14));
+			
 			
 		}
 			
@@ -175,7 +181,6 @@ public class Administrador {
 			MetodoPago.asignarMetodosDePago(cliente3);
 			MetodoPago.asignarMetodosDePago(cliente4);
 			
-
 			
 			
 			//System.out.println(ticket6.getCodigo());
@@ -460,7 +465,10 @@ public class Administrador {
 			}while (!casoValidoConfirmacion);
 		}while (!casoValido);
 		
-		if(!(peliculaProceso.whereIsPeliculaEnPresentacion().equals(null))) {
+		//Mostramos este menú en caso de que la película se encuentre en presentación en alguna sala de cine y 
+		//además la película no lleva más de 15 minutos en presentación
+		boolean terminarProceso = false;
+		if(!(peliculaProceso.whereIsPeliculaEnPresentacion().equals(null)) & SalaCine.getFecha().isBefore(peliculaProceso.whereIsPeliculaEnPresentacion().getHorarioPeliculaEnPresentacion().plusMinutes(15))) {
 			SalaCine salaDeCinePresentacionProceso = peliculaProceso.whereIsPeliculaEnPresentacion();
 			casoValido = false;
 			casoValidoConfirmacion = false;
@@ -468,12 +476,12 @@ public class Administrador {
 			do {
 				do {
 					try {
-						System.out.println("Hemos detectado que la película seleccionada se encuentra en presentación, inicio de proyección: " + 
-						salaDeCinePresentacionProceso.getHorarioPeliculaEnPresentacion() + ", ¿Desea reservar un ticket para este horario? " +
+						System.out.println("Hemos detectado que la película seleccionada se encuentra en presentación. \ninicio de proyección: " + 
+						salaDeCinePresentacionProceso.getHorarioPeliculaEnPresentacion() + "\n¿Desea reservar un ticket para este horario? " +
 						" (Hora actual: " + SalaCine.getFecha() + " )\n1. Comprar en este horario\n2. Comprar en otro horario");
 						opcionMenu = Integer.parseInt(sc.nextLine());
 					}catch(NumberFormatException e){
-						System.out.println("Error, debes ingresar un único dato númerico");
+						System.out.println("Error, debes ingresar un único dato númerico entre los disponibles");
 						continue;
 					}
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
@@ -482,9 +490,172 @@ public class Administrador {
 					break;
 				}
 				
-				System.out.println("Comprando Ticket...(Aún no ha sido implementado, si deseas continuar elige otro horario)");
+				String numeroAsientoProceso = null;
+				int filaProceso = 0;
+				int columnaProceso = 0;
+				do {
+					System.out.println("\nEsta es la distribución de asientos con su disponibilidad actual de la película en el horario seleccionado" 
+						    + "\n X : Ocupado\n O: Disponible\n" + salaDeCinePresentacionProceso.mostrarAsientos());
+							
+					//Elegimos la fila del asiento
+					casoValidoConfirmacion = false;
+					opcionMenu = 0;
+					do {
+						try {
+							System.out.println("Digite la fila de su asiento deseado");
+							filaProceso = Integer.parseInt(sc.nextLine());
+						} catch(NumberFormatException e) {
+								System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles");
+								continue;
+						}
+								
+						if(!(filaProceso > 0 & filaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos().length))){
+							System.out.println("La fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
+							continue;
+							}
+								
+						do {
+							try {
+								System.out.println("La fila seleccionada es: " + filaProceso + "\n1. Correcto \n2. Cambiar fila");
+								opcionMenu = Integer.parseInt(sc.nextLine()); 
+							}catch (NumberFormatException e) {
+								System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+								continue;
+								}
+						}while(!(opcionMenu == 1 || opcionMenu == 2));
+								
+						casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
+								
+					}while(!(casoValidoConfirmacion));
+							
+					//Elegimos la columna del asiento
+					casoValidoConfirmacion = false;
+					opcionMenu = 0;
+					do {
+						try {
+							System.out.println("\nDigite la columna de su asiento deseado");
+							columnaProceso = Integer.parseInt(sc.nextLine());
+						} catch(NumberFormatException e) {
+							System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
+							continue;
+						}
+								
+						if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos().length))){
+							System.out.println("La columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
+							continue;
+						}
+								
+						do {
+							try {
+								System.out.println("La columna seleccionada es: " + columnaProceso + "\n1. Correcto \n2. Cambiar columna");
+								opcionMenu = Integer.parseInt(sc.nextLine()); 
+							}catch (NumberFormatException e) {
+								System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+								continue;
+							}
+						}while(!(opcionMenu == 1 || opcionMenu == 2));
+								
+						casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
+								
+					}while(!(casoValidoConfirmacion));
+							
+					numeroAsientoProceso = filaProceso + "-" + columnaProceso;
+							
+							
+					if(salaDeCinePresentacionProceso.isDisponibilidadAsiento(filaProceso, columnaProceso)) {
+						casoValido = true;
+						System.out.println("\nEl asiento " + numeroAsientoProceso + " ha sido seleccionado con exito");
+					}else {
+						casoValido = false;
+						System.out.println("\nEl asiento " + numeroAsientoProceso + " no se encuentra disponible actualmente.\n" + 
+						"Se le solicita amablemente que seleccione uno de los asientos disponibles para disfrutar de su película.\n" + 
+						"A continuación se mostrarán en pantalla los asientos con su respectiva disponibilidad\n");
+					}
+					
+				}while(!(casoValido));
+				
+				//Realiza pago
+				do {
+					try {
+						System.out.println("Vamos a empezar con el proceso de pago\n1. Continuar\n2. Volver al menú principal");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch(NumberFormatException e) {
+						System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+						continue;
+					}
+				}while(!(opcionMenu == 1 || opcionMenu == 2));
+				
+				if (opcionMenu == 1) {
+					//Creamos el ticket con su respectivo precio
+					ticketProceso = new Ticket(clienteProceso, salaDeCinePresentacionProceso.getPeliculaEnPresentacion(), salaDeCinePresentacionProceso.getHorarioPeliculaEnPresentacion(), numeroAsientoProceso);
+					ticketProceso.asignarPrecio();
+				}else {
+					inicio();
+				}
+
+				//Seleccionar Método de pago y realizar pago
+				MetodoPago metodoPagoProceso = null;
+				casoValido = false;
+				casoValidoConfirmacion = false;
+				double precioTicketProceso = ticketProceso.getPrecio();
+				do {
+					do {
+						try {
+							System.out.println("\nEl valor a pagar por el ticket es: " + precioTicketProceso 
+							+ "\nEste es el listado de los métodos de pago disponibles: " 
+							+ MetodoPago.mostrarMetodosDePago(clienteProceso));
+							opcionMenu = Integer.parseInt(sc.nextLine());
+						}catch(NumberFormatException e) {
+							System.out.println("Error, debe ingresar un único dato númerico entre los disponibles");
+							continue;
+						}
+					}while(!(opcionMenu > 0 & opcionMenu <= clienteProceso.getMetodosDePago().size() ) );
+					
+				
+					metodoPagoProceso = clienteProceso.getMetodosDePago().get(opcionMenu - 1);
+					
+					
+					do {
+						try {
+							System.out.println("El método de pago escogido es: " + metodoPagoProceso.getNombre() + "\n1. Correcto\n2. Cambiar Método de pago");
+							opcionMenu = Integer.parseInt(sc.nextLine());
+						}catch(NumberFormatException e) {
+							System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+							continue;
+						}
+						
+						switch(opcionMenu) {
+						case 1: casoValidoConfirmacion = true; break;
+						case 2: casoValidoConfirmacion = true; break;
+						default: System.out.println("Opcion Invalida"); casoValidoConfirmacion = false; break; 
+						}
+					}while(!casoValidoConfirmacion);
+					
+					if (opcionMenu == 2) {
+						continue;
+					}
+					
+					if (ticketProceso.realizarPago(ticketProceso.getPrecio(), metodoPagoProceso, clienteProceso) == 0) {
+						System.out.println("La compra fue exitosa");
+						System.out.println(ticketProceso.factura(clienteProceso));
+						casoValido = true;
+						terminarProceso = true;
+					}else {
+						precioTicketProceso = ticketProceso.realizarPago(ticketProceso.getPrecio(), metodoPagoProceso, clienteProceso);
+						System.out.println("Tiene un saldo pendiente de : " + precioTicketProceso);
+						casoValido = false;
+					}
+					
+				}while(!casoValido);
+				
 			}while(!(casoValido));
 		}
+		
+		if(terminarProceso) {
+			ticketProceso.factura(clienteProceso);
+			inicio();
+		}
+		
 		//Elegimos el horario de la película seleccionada
 		casoValido = false;
 		casoValidoConfirmacion = false;
@@ -614,15 +785,85 @@ public class Administrador {
 			
 		}while(!casoValido);
 		
-		//Revisar lógica del códig anterior: 1. Implementar Sistema para ver lista de películas en presentación (crear método de apoyo)
-		// 2. En caso de seleccionar una película en presentación que realice el proceso de búsqueda de asientos en la sala de cine (implementar método existente y crear un método de apoyo)
-		// 3. Mostrar la opción en pantalla de comprar un ticket de una película que se encuentra en presentación (mostrar fecha y hora actual y la hora a la que empezó la película) Esto soluciona el paso 1
-		// 4. Mostrar La fecha y la hora de la pelicula en los tickets en factura
-		// 5. Añadir paso de verificacion fecha en la verificacionTicket SalaCine
-		// 6. Modificar La duración de la película para que sea en formato hora
-		// 7. Una vez hecho 6 crear hora inicio película y hora fin película y añadirla al paso verificación de 5
 		
-		//Realizar pago
+		do {
+			try {
+				System.out.println("Vamos a empezar con el proceso de pago\n1. Continuar\n2. Volver al menú principal");
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+				continue;
+			}
+		}while(!(opcionMenu == 1 || opcionMenu == 2));
+		
+		if (opcionMenu == 1) {
+			//Creamos el ticket con su respectivo precio
+			ticketProceso = new Ticket(clienteProceso, peliculaProceso, horarioProceso, numeroAsientoProceso);
+			ticketProceso.asignarPrecio();
+		}else {
+			inicio();
+		}
+
+		//Seleccionar Método de pago y realizar pago
+		MetodoPago metodoPagoProceso = null;
+		casoValido = false;
+		casoValidoConfirmacion = false;
+		double precioTicketProceso = ticketProceso.getPrecio();
+		do {
+			do {
+				try {
+					System.out.println("El valor a pagar por el ticket es: " + precioTicketProceso 
+					+ "Este es el listado de los métodos de pago disponibles: " 
+					+ MetodoPago.mostrarMetodosDePago(clienteProceso));
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				}catch(NumberFormatException e) {
+					System.out.println("Error, debe ingresar un único dato númerico entre los disponibles");
+					continue;
+				}
+			}while(!(opcionMenu > 0 & opcionMenu <= clienteProceso.getMetodosDePago().size() ) );
+			
+		
+			metodoPagoProceso = clienteProceso.getMetodosDePago().get(opcionMenu - 1);
+			
+			
+			do {
+				try {
+					System.out.println("El método de pago escogido es: " + metodoPagoProceso.getNombre() + "\n1. Correcto\n2. Cambiar Método de pago");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				}catch(NumberFormatException e) {
+					System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+					continue;
+				}
+				
+				switch(opcionMenu) {
+				case 1: casoValidoConfirmacion = true; break;
+				case 2: casoValidoConfirmacion = true; break;
+				default: System.out.println("Opcion Invalida"); casoValidoConfirmacion = false; break; 
+				}
+			}while(!casoValidoConfirmacion);
+			
+			if (opcionMenu == 2) {
+				continue;
+			}
+			
+			if (ticketProceso.realizarPago(ticketProceso.getPrecio(), metodoPagoProceso, clienteProceso) == 0) {
+				System.out.println("La compra fue exitosa");
+				ticketProceso.procesarPagoRealizado(clienteProceso);
+				System.out.println(ticketProceso.factura(clienteProceso));
+				casoValido = true;
+			}else {
+				precioTicketProceso = ticketProceso.realizarPago(ticketProceso.getPrecio(), metodoPagoProceso, clienteProceso);
+				System.out.println("Tiene un saldo pendiente de : " + precioTicketProceso);
+				casoValido = false;
+			}
+			
+		}while(!casoValido);
+		
+		// Posiblemente añadir horarioFinPelicula en SalaCine una vez se establece la película en presentacion
+		// Organizar bien los datos creados de tipo Pelicula y SalaDeCine
+		// Organizar el listado de los métodos de pago disponibles
+		// Crear un apartado en el menú principal para ingresar a la salaDeCine
+		// Revisar Saltos de línea y ortografía
 		
 	}
 	

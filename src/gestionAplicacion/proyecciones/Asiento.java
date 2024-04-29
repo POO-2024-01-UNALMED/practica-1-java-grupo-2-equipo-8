@@ -9,6 +9,7 @@ public class Asiento {
 	public Asiento(){}
 	
 	public Asiento(int numeroAsiento, boolean disponibilidad) {
+		++AsientosCreados;
 		this.numeroAsiento = ++AsientosCreados;
 		this.disponibilidad = disponibilidad;
 	}

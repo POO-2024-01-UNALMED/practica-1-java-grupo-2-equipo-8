@@ -39,14 +39,16 @@ public class Ticket implements IBuyable{
 		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
 	}
 	
-	public Ticket(Cliente dueno, Pelicula pelicula, SalaCine salaCine) {
+	public Ticket(Cliente dueno, Pelicula pelicula, LocalDateTime horario, String numeroAsiento) {
 		this.dueno = dueno;
 		this.pelicula = pelicula;
 		this.idTicket = Ticket.cantidadTicketsCreados;
-		this.salaDeCine = salaCine;
+		this.salaDeCine = pelicula.obtenerSalaDeCineConCodigo();
 		Ticket.cantidadTicketsCreados++;
 		this.codigo = this.generarCodigoTicket();
 		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
+		this.numeroAsiento = numeroAsiento;
+		this.horario = horario;
 
 	}
 	//Methods
@@ -158,7 +160,10 @@ public class Ticket implements IBuyable{
 				"Documento : " + this.getDueno().getDocumento() + "\n" +
 				"Pelicula : " + this.getPelicula().getNombre() + "\n" +
 				"Número de sala : " + this.getPelicula().getNumeroDeSala() + "\n" +
-				"Número de asiento : " + this.getNumeroAsiento();
+				"Número de asiento : " + this.getNumeroAsiento() + "\n" +
+				"Fecha: " + this.getHorario().toLocalDate() + "\n" +
+				"Hora: " + this.getHorario().toLocalTime();
+				
 		cliente.getFacturas().add(factura);
 		return factura;
 	}

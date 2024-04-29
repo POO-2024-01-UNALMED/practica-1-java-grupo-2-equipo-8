@@ -2,13 +2,14 @@ package gestionAplicacion.proyecciones;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
+import java.time.Duration;
 
 public class Pelicula{
 	
 	private String nombre;
 	private int precio;
 	private String genero;
-	private String duracion;
+	private Duration duracion;
 	private String clasificacion;
 	//private ArrayList<Horario> horarios = new ArrayList<>();
 	private LinkedHashMap<LocalDateTime, int[][]> horarios = new LinkedHashMap<>();
@@ -43,11 +44,11 @@ public class Pelicula{
 		this.genero = genero;
 	}
 
-	public String getDuracion() {
+	public Duration getDuracion() {
 		return duracion;
 	}
 
-	public void setDuracion(String duracion) {
+	public void setDuracion(Duration duracion) {
 		this.duracion = duracion;
 	}
 
@@ -112,7 +113,7 @@ public class Pelicula{
 		Pelicula.getCartelera().add(this);
 	}
 
-	public Pelicula(String nombre, int precio, String genero, String duracion, String clasificacion,
+	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
 			String tipoDeFormato, int numeroDeSala) {
 		this();
 		this.nombre = nombre;
@@ -124,7 +125,7 @@ public class Pelicula{
 		this.numeroDeSala = numeroDeSala;
 	}
 
-	public Pelicula(String nombre, int precio, String genero, String duracion, String clasificacion,
+	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
 			LinkedHashMap<LocalDateTime, int[][]> horarios, String tipoDeFormato, int numeroDeSala, int idPelicula) {
 		this();
 		this.nombre = nombre;
@@ -320,11 +321,11 @@ public class Pelicula{
 		int i = 1;
 		for (Pelicula pelicula : cartelera) {
 			if (resultado == null) {
-				resultado = i + ". Película: " + pelicula.getNombre() + "; Duración: " + pelicula.getDuracion() 
+				resultado = i + ". Película: " + pelicula.getNombre() + "; Duración: " + pelicula.getDuracion().toMinutes() + " Minutos" 
 				+ "; Formato: " + pelicula.getTipoDeFormato() + "\n";
 			}else {
 				resultado = resultado + i + ". Película: " + pelicula.getNombre() + "; Duración: " 
-				+ pelicula.getDuracion() + "; Formato: " + pelicula.getTipoDeFormato() + "\n";
+				+ pelicula.getDuracion().toMinutes() + " Minutos"  + "; Formato: " + pelicula.getTipoDeFormato() + "\n";
 			}
 			i++;
 		}
@@ -364,6 +365,25 @@ public class Pelicula{
 		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
 			try {
 				if (salaDeCine.getPeliculaEnPresentacion().equals(this)) {
+					return salaDeCine;
+				}
+			}catch(NullPointerException e) {
+				continue;
+			}
+			
+		}
+		return null;
+	}
+	
+	/**
+	 * Description: Este método se encarga de buscar la salaDeCine en el array de salasDeCine
+	 *  que tiene el mismo numero de sala de la película para luego retornarlo
+	 * @return : Este método retorna la salaDeCine que tiene el mismo número de sala.
+	 * */
+	public SalaCine obtenerSalaDeCineConCodigo() {
+		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
+			try {
+				if (this.getNumeroDeSala() == salaDeCine.getNumeroSala()) {
 					return salaDeCine;
 				}
 			}catch(NullPointerException e) {
