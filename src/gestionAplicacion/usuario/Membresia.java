@@ -1,10 +1,11 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
+import java.time.LocalDate;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
 import iuMain.Administrador;
 
-public class Membresia {
+public class Membresia implements IBuyable{
 	
 	//Atrbutos
 	private String nombre;
@@ -52,27 +53,24 @@ public class Membresia {
 	/**
 	*<b>Description</b>: Este método se encarga de verificar si el cliente tiene membresia activa
 	*@param cliente : Se pide al cliente para revisar su atributo de tipo Membresia
-	*@return <b>string con switch</b> : Se retorna un texto indicando si tiene membresia o no y da
-	*las opciones para seguir con la funcionalidad o no.
+	*@return <b>string</b> : Se retorna un texto personalizado indicando si tiene membresia
+	*o no.
 	*/
-	public String verificarMembresia(Cliente cliente) {
+	public static String verificarMembresiaActual(Cliente cliente) {
+		//Se crea las instancias
+		Membresia membresiaActual = cliente.getMembresia();
+		String nombreMembresiaActual = null;
 		
-		if (cliente.getMembresia() == null) {
-			return "No tiene membresia, ¿Desea adquirir una? SI/NO";
-			
-			/*switch (opcion) {
-			
-			case "SI": adquirirSuscripcion(); break;
-			/*case "NO": inicio(); break;*/
-			
+		//Se actualiza el nombre de la membresia.
+		if (membresiaActual == null) {
+			nombreMembresiaActual = "Sin membresia";
 		} else {
-			return "Actualizar o mejorar cuenta SI/NO";
-			
-			/*switch (opcion) {
-			
-			case "SI": actualizarSuscripcion(); break;
-			/*case "NO": inicio(); break;*/}
+			nombreMembresiaActual = cliente.getMembresia().getNombre();
 		}
+		return "Bienvenido, " + cliente.getNombre() 
+		+".\nActualmente, su membresia es " + nombreMembresiaActual
+		+ "\nPor favor, seleccione la membresia que desea adquirir/actualizar:\n";
+	}
 		
 		
 	/**
@@ -176,6 +174,7 @@ public class Membresia {
 	*de las membresias existentes.
 	*/
 	public static void asignarTipoMembresia () {
+		//Se revisa la lista de Tipos de Membresia y se asigna el tipo
 		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
 			if (membresia.getCategoria() > 0 && membresia.getCategoria() <= 3) {
 				membresia.setTipoMembresia(1);
@@ -184,6 +183,27 @@ public class Membresia {
 				membresia.setTipoMembresia(2);
 			}
 		}
+	}
+	
+	/**
+	*<b>Description</b>: Este método se encarga de asignar la nueva membresia con un apuntador
+	*de Membresia que coincida con la opción seleccionada durante el proceso de compra.
+	*@param membresia : Se pide una instancia de tipo de membresia para usarlo como apuntador.
+	*@param categoriaMembresia : Se pide un entero que es la selección de la membresia.
+	*@return <b>Membresia</b> : Se retorna un dato de tipo Membresia que contiene el apuntador de
+	*tipo Membresia que coincide con la categoria deseada.
+	*/
+	public static Membresia asignarMembresiaNueva(Membresia membresia, int categoriaMembresia) {
+		//Se crea una instancia de tipo Membresia null
+		Membresia membresiaNueva = null;
+		//Se busca las instancias de tipo Membresia en Tipos de Membresia y si la categoria coincide, la instancia anterior apunta a este resultado
+		for (Membresia membresia2 : Membresia.getTiposDeMembresia()) {
+			if (membresia2.getCategoria() == categoriaMembresia) {
+					membresiaNueva = membresia2;
+					break;
+			}
+		}
+		return membresiaNueva;
 	}
 
 	//Getters and Setters
@@ -241,6 +261,49 @@ public class Membresia {
 
 	public void setValorSuscripcionMensual(int valorSuscripcionMensual) {
 		this.valorSuscripcionMensual = valorSuscripcionMensual;
+	}
+	
+	public ArrayList<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(ArrayList<Cliente> clientes) {
+		this.clientes = clientes;
+	}
+	
+	
+	//Métodos implementados por la interfaz.
+	@Override
+	public void procesarPagoRealizado(Cliente cliente) {
+		//Se crea la referencia del método en métodos de pago asociado al cliente del método de pago usado
+		for (MetodoPago metodoDePago : MetodoPago.getMetodosDePagoUsados()) {
+			cliente.getMetodosDePago().add(metodoDePago);
+		}
+		//Se eliminan las referencias de los métodosDePagoUsados
+		MetodoPago.getMetodosDePagoUsados().clear();
+				
+		//Se pasa la referencia de la membresia al cliente que lo compró y se agrega este último al array de clientes en Membresia
+		cliente.setMembresia(this);
+		this.getClientes().add(cliente);
+	}
+		
+
+
+
+	@Override
+	public String factura(Cliente cliente) {
+		
+		String factura = "=== Factura de Ticket ===\n" +
+				"Nombre dueño : " + cliente.getNombre() + "\n" +
+				"Documento : " + cliente.getDocumento() + "\n" +
+				"Membresia : " + cliente.getMembresia().getNombre()+ "\n" +
+				"Categoria : " + cliente.getMembresia().getCategoria() + "\n" +
+				"Tipo : " + cliente.getMembresia().getTipoMembresia() + "\n" +
+				"Duración: " + cliente.getMembresia().getDuracionMembresiaDias()+ " dias.\n" +
+				"Valida hasta: " + LocalDate.now();
+		
+		cliente.getFacturas().add(factura);
+		return factura;
 	}
 	
 	
