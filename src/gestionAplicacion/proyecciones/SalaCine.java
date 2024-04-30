@@ -119,20 +119,23 @@ public class SalaCine {
 	 * 1. Se encuentra en el arrayList de ticketsCreados de la salaDeCine
 	 * 2. La película asociada a este ticket se encuentra coincide con la peliculaEnPresentacion de la SalaDeCine
 	 * 3. La fecha actual de SalaCine es anterior a la fecha en que finaliza la película
+	 * 4. La sala de cine asociada al ticket es la misma que la que ejecuta este método
 	 * @param cliente : Este método solicita al cliente que va a ingresar a la SalaDeCine
-	 * @return boolean : Este método se encarga de retornar un boolean que será el resultado del proceso de verificación
+	 * @return boolean : Este método se encarga de retornar un boolean que será el resultado del proceso de verificación de entrada a la salaDeCine
 	 * */
 	public boolean verificarTicket(Cliente cliente) {
 		
 		boolean verificacion = false;
 		boolean verificacionPelicula = false;
 		boolean verificacionHorario = false;
-		Ticket ticketVerficado = null;
+		Ticket ticketVerificado = null;
 		
 		//Verificamos si el atributo película de alguno de los tickets que tiene el cliente coinicide con la película en presentación
 		//Verificamos si el ticket se encuetra en el arrayList de tickets creados de esta sala de cine
+		//Veriificamos si el ticket tiene asociada la salaDeCine que ejecuta este método
+		//Verificamos si la fecha de actual no excede a la fecha en la que se presentaba la película más la duración de la misma
 		for (Ticket ticket : cliente.getTickets()) {
-			verificacionPelicula = (ticket.getPelicula().equals(this.peliculaEnPresentacion) & this.getTicketsCreados().contains(ticket) ) ;
+			verificacionPelicula = (ticket.getPelicula().equals(this.peliculaEnPresentacion) & this.getTicketsCreados().contains(ticket) ) & ( ticket.getSalaDeCine().equals(this)) ;
 			try {
 				verificacionHorario = SalaCine.getFecha().isBefore(this.getHorarioPeliculaEnPresentacion().plus(this.getDuracionPeliculaEnPresentacion())); 
 			}catch(NullPointerException e) {
@@ -140,15 +143,17 @@ public class SalaCine {
 			}
 			verificacion = verificacionPelicula & verificacionHorario;
 			if (verificacion) {
-				ticketVerficado = ticket;
+				ticketVerificado = ticket;
 				break;
 			}
 		}
 		
 		//Eliminamos la referencia del ticket verificado, en caso de que la verificación sea correcta del cliente y de la sala de cine (Lo destruimos)
+		//Añadimos la película vista al historial de películas del cliente
 		if (verificacion) {
-			cliente.getTickets().remove(ticketVerficado);
-			this.getTicketsCreados().remove(ticketVerficado);
+			cliente.getHistorialDePeliculas().add(ticketVerificado.getPelicula());
+			cliente.getTickets().remove(ticketVerificado);
+			this.getTicketsCreados().remove(ticketVerificado);
 		}
 		
 		//Retornamos el resultado de la verificación
@@ -158,7 +163,7 @@ public class SalaCine {
 	//Podría mejorar este método implementando un try en caso de que no haya ninguna película para actualizar, con esto podría implementar
 	//Un método estático que actualice a todas las salas de cine directamente.
 	/**
-	 * Description: Este método se encarga actualizar la película en presentación según si la película coincide con el número de sala y luego
+	 * Description: Este método se encarga actualizar la película en presentación según si la película coincide con el número de sala y el formato y luego
 	 * respecto al día y la hora actual, una vez hecho esto, limpiamos los asientos de la sala de cine, cambiando su disponibilidad a libre, y
 	 * por último actualizamos la información de la disponibilidad de los asientos, tomando la información del array de la sala virtual que 
 	 * coincidió en fecha y hora de la película en presentación, además modificamos el atributo horarioPeliculaEnPresentacion de la salaDeCine
@@ -167,21 +172,25 @@ public class SalaCine {
 	public void actualizarPeliculasEnPresentacion() {
 		Pelicula peliculaPresentacion = null;
 		//Actualizamos la película
-		for (Pelicula pelicula : Pelicula.getCartelera()) {
-			if (pelicula.getNumeroDeSala() == this.getNumeroSala()) {
-				for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
-					if (horario.equals(SalaCine.getFecha())){
-						this.setPeliculaEnPresentacion(pelicula);
-						peliculaPresentacion = this.getPeliculaEnPresentacion();
-						this.setHorarioPeliculaEnPresentacion(horario);
-						break;
+		try {
+			for (Pelicula pelicula : Pelicula.getCartelera()) {
+				if ( (pelicula.getNumeroDeSala() == this.getNumeroSala() ) && (pelicula.getTipoDeFormato().equals(this.getTipoDeSala())) ) {
+					for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
+						if (horario.equals(SalaCine.getFecha())){
+							this.setPeliculaEnPresentacion(pelicula);
+							peliculaPresentacion = this.getPeliculaEnPresentacion();
+							this.setHorarioPeliculaEnPresentacion(horario);
+							break;
+						}
 					}
+					break;
 				}
-				break;
 			}
+		}catch(NullPointerException e) {
+			//Continua con el siguiente proceso
 		}
 		
-		//Ejecutamos esta operacion si cambiamos la pelicula en presentación
+		//Ejecutamos esta operacion en caso de que se cambie la película en presentación
 		if (peliculaPresentacion != null) {
 			//Preparamos los asientos para ser actualizados
 			for (int i = 0; i < this.getAsientos().length; i++) {
@@ -256,7 +265,7 @@ public class SalaCine {
 
 	public void setPeliculaEnPresentacion(Pelicula peliculaEnPresentacion) {
 		this.peliculaEnPresentacion = peliculaEnPresentacion;
-		this.DuracionPeliculaEnPresentacion = peliculaEnPresentacion.getDuracion();
+		this.setDuracionPeliculaEnPresentacion(peliculaEnPresentacion.getDuracion());
 	}
 
 	public ArrayList<Ticket> getTicketsCreados() {
