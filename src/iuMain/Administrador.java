@@ -1093,10 +1093,8 @@ public class Administrador {
 		//Interaccion #1 de la funcionalidad 3 la cual es una busqueda de los procutos disponibles
 		servicioSouvenirs.generarOrden(servicioSouvenirs.getCliente());
 		
-		
+		System.out.println("lol");
 	} 
-		
-		
 //------------------------------------------------------------------------------------------------------------------		
 		
 		
