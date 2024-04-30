@@ -1,5 +1,9 @@
 package gestionAplicacion.servicios;
 
+import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.TipoDeDocumento;
+import java.util.Scanner;
+
 public class Servicio {
 	
 	private static int idServicio;
@@ -17,6 +21,5 @@ public class Servicio {
 	
 	public boolean realizarPago() {return true;}
 	public String factura() {return "factura";}
-	public void validarCliente() {}
 	public static void sumarValorGananciasTotales() {}
 }

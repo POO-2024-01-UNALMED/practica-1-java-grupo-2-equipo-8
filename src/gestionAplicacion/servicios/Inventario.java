@@ -32,11 +32,11 @@ public class Inventario {
 	 * @return <b>String<b> : Este metodo retorna un texto con los productos disponibles y sus precios
 	 **/
 	public static String mostrarInventario( ) {
-		String inventario = null;
+		String inventario = "Estos son nuestros productos disponibles:";
 		int n = 1;
 		for (int i=0;i<productosEnInventario.size();i++) {
 			if (0<productosEnInventario.get(i).getCantidadDisponible() && productosEnInventario.get(i).getTipoDeProducto().equalsIgnoreCase("Souvenirs")){
-				inventario = n + ". " + productosEnInventario.get(i).getNombreProducto() +
+				inventario = inventario+ "\n" + n + ". " + productosEnInventario.get(i).getNombreProducto() +
 						"  " + productosEnInventario.get(i).getDescripcionTamañoProducto() + " : " +
 						productosEnInventario.get(i).getPrecio() + "\n";
 				n++;
