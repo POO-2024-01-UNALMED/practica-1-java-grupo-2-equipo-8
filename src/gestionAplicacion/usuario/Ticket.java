@@ -66,7 +66,7 @@ public class Ticket implements IBuyable{
 			if (this.getPelicula().getTipoDeFormato().equals("3D") || this.getPelicula().getTipoDeFormato().equals("4D") ) {
 				precio = precio * 0.5;
 			}else {
-				precio = precio  * 0.8;
+				precio = precio  * 0.2;
 			}
 		}
 		return precio;

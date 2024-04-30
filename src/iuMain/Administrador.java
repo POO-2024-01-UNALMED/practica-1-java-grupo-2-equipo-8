@@ -48,6 +48,8 @@ public class Administrador {
 	static SalaCine salaDeCine2 = new SalaCine(2, "3D");
 	static SalaCine salaDeCine3 = new SalaCine(3, "4D");
 	static SalaCine salaDeCine4 = new SalaCine(4, "3D");
+	static SalaCine salaDeCine5 = new SalaCine(4, "2D");
+	static SalaCine salaDeCine6 = new SalaCine(4, "3D");
 
 	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
 	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);
@@ -75,10 +77,6 @@ public class Administrador {
 	
 	
 	public static void main(String[] args) {
-		
-		
-		
-		
 		
 //		Bono pruevaBono = new Bono(1234,"Peluche","A","Souvenir");
 //		Bono pruevaBono1 = new Bono(1235,"Peluche","A","Souvenir");
@@ -110,19 +108,26 @@ public class Administrador {
 			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
 			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 16, 30, 00));
 			pelicula3.setNumeroDeSala(2);
+
+			pelicula4.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
+			pelicula5.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 21, 30, 00));
+
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 17, 30, 00));
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 21, 30, 00));
 			pelicula6.setNumeroDeSala(4);
 			
+
 			salaDeCine3.actualizarPeliculasEnPresentacion();
 			salaDeCine1.actualizarPeliculasEnPresentacion();
 			salaDeCine2.actualizarPeliculasEnPresentacion();
 			salaDeCine4.actualizarPeliculasEnPresentacion();
+
+			Pelicula.actualizarSalasDeCine();
 			
 			ticket1.setPelicula(pelicula1);
 			ticket1.asignarPrecio();
-			ticket1.setSalaDeCine(salaDeCine1);
+			ticket1.setSalaDeCine(salaDeCine3);
 			ticket1.setDueno(cliente1);
 			ticket1.setNumeroAsiento("4-4");
 			double precio = ticket1.getPrecio();
@@ -130,7 +135,7 @@ public class Administrador {
 			ticket1.procesarPagoRealizado(cliente1);
 			ticket1.setHorario(SalaCine.getFecha());
 		    ticket1.factura(cliente1);
-			salaDeCine1.cambiarDisponibilidadAsientoLibre(4, 4);
+			salaDeCine3.cambiarDisponibilidadAsientoLibre(4, 4);
 			
 			ticket2.setPelicula(pelicula1);
 			ticket2.asignarPrecio();
@@ -165,9 +170,6 @@ public class Administrador {
 			
 			//System.out.println();
 			SalaCine.setFecha(SalaCine.getFecha().plusMinutes(14));
-			
-			
-		}
 			
 //			//cliente1.setMembresia(membresia4);
 //			MetodoPago pago = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", cliente1);
@@ -209,38 +211,47 @@ public class Administrador {
 //			for (ServicioEntretenimiento juego : ServicioEntretenimiento.getJuegos()) {
 //				System.out.println(juego.getGeneroServicio());
 //			}
-		
-		//System.out.println(ServicioEntretenimiento.mostrarJuegosSinDescuento());
+		System.out.println();
+			
+		}
+			
+
 
 		System.out.println("Bienvenido al cine de marinilla");
-//		
+	
 		inicio();
-		
-		
-		
 		
 	}
 	
 	static void inicio() {
-		int opcion;
-		System.out.println("\n¿Qué operacion desea realizar?");
-		System.out.println("1. Reservar ticket de pelicula");
-		System.out.println("2. Realizar orden de comida"); 
-		System.out.println("3. Realizar compra de souvenirs");
-		System.out.println("4. Ingresar a la zona de juegos");
-		System.out.println("5. Adquirir o actualizar membresia");
-		System.out.println("6. Salir");
-		opcion = Integer.parseInt(sc.nextLine());
+		int opcion = 0;
+		do {
+			try {
+				System.out.println("\n¿Qué operacion desea realizar?");
+				System.out.println("1. Reservar ticket de pelicula");
+				System.out.println("2. Ingresar a Sala de cine");
+				System.out.println("3. Realizar orden de comida"); 
+				System.out.println("4. Realizar compra de souvenirs");
+				System.out.println("5. Ingresar a la zona de juegos");
+				System.out.println("6. Adquirir o actualizar membresia");
+				System.out.println("7. Salir");
+				opcion = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+				continue;
+			}
+		}while(!(opcion > 0 && opcion <= 7));
 		
 		switch (opcion) {
 		
 		case 1: reservarTicket();inicio(); break;
-		case 2: comprarComida(); inicio(); break;
-		case 3: comprarSouvenirs();inicio(); break;
-		case 4: ingresoZonaJuegos(); inicio(); break;
-		case 5: adquirirMembresia(); inicio(); break;
-		case 6: salirDelSistema();break;
-		default: System.out.println("Opcion invalida"); inicio(); break;
+		case 2: ingresarSalaCine(); inicio(); break; 
+		case 3: comprarComida(); inicio(); break;
+		case 4: comprarSouvenirs();inicio(); break;
+		case 5: ingresoZonaJuegos(); inicio(); break;
+		case 6: adquirirMembresia(); inicio(); break;
+		case 7: salirDelSistema();break;
+		default: System.out.println("Opción invalida"); inicio();
 		
 		}
 		
@@ -264,7 +275,7 @@ public class Administrador {
 				case 1: casoValido = true; break;
 				case 2: inicio(); casoValido = true; break;
 				case 3: salirDelSistema(); casoValido = true; break;
-				default: System.out.println("Opcion invalida"); break;
+				default: System.out.println("Opcion invalida");
 			}
 			
 		}while(!casoValido);
@@ -393,6 +404,7 @@ public class Administrador {
 				
 				//Creamos un nuevo cliente con la información dada
 				clienteProceso = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
+				clienteProceso.setMetodosDePago(MetodoPago.asignarMetodosDePago(clienteProceso));
 				casoValido = true;
 			}
 			//En caso de que el cliente exista
@@ -564,8 +576,7 @@ public class Administrador {
 					}while(!(casoValidoConfirmacion));
 							
 					numeroAsientoProceso = filaProceso + "-" + columnaProceso;
-							
-							
+					
 					if(salaDeCinePresentacionProceso.isDisponibilidadAsiento(filaProceso, columnaProceso)) {
 						casoValido = true;
 						System.out.println("\nEl asiento " + numeroAsientoProceso + " ha sido seleccionado con exito");
@@ -673,8 +684,25 @@ public class Administrador {
 		}
 		
 		//Mostramos la factura en pantalla en caso de haber realizado la reserva de un ticket de una película en reservación
-		if(terminarProceso) {
-			System.out.println(clienteProceso.getFacturas().get(Integer.valueOf(clienteProceso.getFacturas().size()) - 1));
+		if(terminarProceso) {		
+			do {
+				opcionMenu = 0;
+				try {
+					System.out.println("\nPara finalizar, ¿Con cuál de las siguientes opciones desea continuar?" + 
+					"\n1. Ingresar a las salas de cine \n2. Volver al menú principal");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				}catch(NumberFormatException e) {
+					System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+				}
+				
+			}while(!(opcionMenu == 1 || opcionMenu == 2));
+			
+			if(opcionMenu == 1) {
+				ingresarSalaCine();
+			}
+			
+			System.out.println("\nFin del proceso reserva de ticket");
+			
 			inicio();
 		}
 		
@@ -883,6 +911,11 @@ public class Administrador {
 			}
 			
 			System.out.println("\nEstamos procesando su pago, por favor espere\n");
+			try {
+				Thread.sleep(3000);
+			}catch(InterruptedException e) {
+				e.printStackTrace();
+			}
 			
 			if (ticketProceso.realizarPago(ticketProceso.getPrecio(), metodoPagoProceso, clienteProceso) == 0) {
 				System.out.println("Pago realizado, La compra de su ticket fue exitosa");
@@ -898,12 +931,34 @@ public class Administrador {
 			}
 			
 		}while(!casoValido);
+
+		do {
+			opcionMenu = 0;
+			try {
+				System.out.println("\nPara finalizar, ¿Con cuál de las siguientes opciones desea continuar?" + 
+				"\n1. Ingresar a las salas de cine \n2. Volver al menú principal");
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+			}
+			
+		}while(!(opcionMenu == 1 || opcionMenu == 2));
 		
-		// 1. Falta añadir casoVerificacion y mostrarCarteleraInfantil !!!
+		if(opcionMenu == 1) {
+			ingresarSalaCine();
+		}
+		
+		System.out.println("\nFin del proceso reserva de ticket");
+		
+		//1. Falta añadir casoVerificacion para mostrarCarteleraInfantil
+		//4. Implementar barra de carga al momento de procesar pago (antes de ejecutar el método ticket.realizarPago(...))
+		//5. Implementar verifcacion NumeroDocumento.unique()
 		// 2. Posiblemente añadir horarioFinPelicula en SalaCine una vez se establece la película en presentacion 
 		// para crear un método que elimine los tickets creados en una salaDeCine cuando se ejecute el método actualizarPeliculaPresentacion !!!
-		// 3. Crear un apartado en el menú principal para ingresar a la salaDeCine
-		// 4. Solucinar error métodos de pago de cliente al crear un nuevo cliente
+	}
+	
+	static void ingresarSalaCine() {
+
 		
 	}
 	
