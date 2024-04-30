@@ -288,7 +288,7 @@ public class Membresia implements IBuyable{
 	}
 		
 
-
+	//Prueba
 
 	@Override
 	public String factura(Cliente cliente) {
