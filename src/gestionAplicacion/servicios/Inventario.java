@@ -22,7 +22,7 @@ public class Inventario {
 		this.descripcionTamañoProducto = descripcionTamañoProducto;
 		this.tipoDeProducto = tipoDeProducto;
 		this.codigoProducto = codigoProducto;
-<<<<<<< Updated upstream
+
 		productosEnInventario.add(this);
 	}
 	

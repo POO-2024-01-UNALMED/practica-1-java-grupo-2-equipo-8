@@ -5,7 +5,7 @@ import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
 import iuMain.Administrador;
 
-public class Membresia implements IBuyable{
+public class Membresia {
 	
 	//Atrbutos
 	private String nombre;
@@ -56,21 +56,27 @@ public class Membresia implements IBuyable{
 	*@return <b>string</b> : Se retorna un texto personalizado indicando si tiene membresia
 	*o no.
 	*/
-	public static String verificarMembresiaActual(Cliente cliente) {
-		//Se crea las instancias
-		Membresia membresiaActual = cliente.getMembresia();
-		String nombreMembresiaActual = null;
-		
-		//Se actualiza el nombre de la membresia.
-		if (membresiaActual == null) {
-			nombreMembresiaActual = "Sin membresia";
+	public String verificarMembresia(Cliente cliente) {
+		if (cliente.getMembresia() == null) {
+			return "No tiene membresia, ¿Desea adquirir una? SI/NO";
+			
+			/*switch (opcion) {
+			
+			case "SI": adquirirSuscripcion(); break;
+			/*case "NO": inicio(); break;*/
 		} else {
-			nombreMembresiaActual = cliente.getMembresia().getNombre();
+return "Actualizar o mejorar cuenta SI/NO";
+			
+			/*switch (opcion) {
+			
+			case "SI": actualizarSuscripcion(); break;
+			/*case "NO": inicio(); break;*/}
 		}
-		return "Bienvenido, " + cliente.getNombre() 
-		+".\nActualmente, su membresia es " + nombreMembresiaActual
-		+ "\nPor favor, seleccione la membresia que desea adquirir/actualizar:\n";
-	}
+		
+		
+		
+		
+		
 		
 		
 	/**
@@ -273,7 +279,7 @@ public class Membresia implements IBuyable{
 	
 	
 	//Métodos implementados por la interfaz.
-	@Override
+	
 	public void procesarPagoRealizado(Cliente cliente) {
 		//Se crea la referencia del método en métodos de pago asociado al cliente del método de pago usado
 		for (MetodoPago metodoDePago : MetodoPago.getMetodosDePagoUsados()) {
@@ -290,7 +296,7 @@ public class Membresia implements IBuyable{
 
 	//Prueba
 
-	@Override
+	
 	public String factura(Cliente cliente) {
 		
 		String factura = "=== Factura de Ticket ===\n" +

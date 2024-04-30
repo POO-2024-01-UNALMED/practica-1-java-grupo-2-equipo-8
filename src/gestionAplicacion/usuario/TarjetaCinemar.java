@@ -63,6 +63,11 @@ public class TarjetaCinemar implements IBuyable {
 	public void setDueno(Cliente dueno) {
 		this.dueno = dueno;
 	}
+	//@Override
+	//public double realizarPago(double precio, MetodoPago metodoDePago, Cliente cliente) {
+		// TODO Auto-generated method stub
+		//return 0;
+	//}
 
 	@Override
 	public void procesarPagoRealizado(Cliente cliente) {

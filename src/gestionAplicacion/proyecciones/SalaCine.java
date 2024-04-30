@@ -121,7 +121,7 @@ public class SalaCine {
 	 * 3. La fecha actual de SalaCine es anterior a la fecha en que finaliza la película
 	 * 4. La sala de cine asociada al ticket es la misma que la que ejecuta este método
 	 * @param cliente : Este método solicita al cliente que va a ingresar a la SalaDeCine
-	 * @return boolean : Este método se encarga de retornar un boolean que será el resultado del proceso de verificación de entrada a la salaDeCine
+	  * @return boolean : Este método se encarga de retornar un boolean que será el resultado del proceso de verificación
 	 * */
 	public boolean verificarTicket(Cliente cliente) {
 		
@@ -151,9 +151,8 @@ public class SalaCine {
 		//Eliminamos la referencia del ticket verificado, en caso de que la verificación sea correcta del cliente y de la sala de cine (Lo destruimos)
 		//Añadimos la película vista al historial de películas del cliente
 		if (verificacion) {
-			cliente.getHistorialDePeliculas().add(ticketVerificado.getPelicula());
-			cliente.getTickets().remove(ticketVerificado);
-			this.getTicketsCreados().remove(ticketVerificado);
+			cliente.getTickets().remove(ticketVerficado);
+			this.getTicketsCreados().remove(ticketVerficado);
 		}
 		
 		//Retornamos el resultado de la verificación

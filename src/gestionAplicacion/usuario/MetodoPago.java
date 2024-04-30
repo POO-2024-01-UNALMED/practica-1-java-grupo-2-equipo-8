@@ -147,7 +147,12 @@ public class MetodoPago{
  		
  		return 3.1415926535;
  		}
- 	
+public boolean usarMetodopago() {
+		
+		
+		
+		return true;
+		}
 	public static MetodoPago usarMetodopago(Cliente cliente, int metodoPagoAUsar) {
 		MetodoPago usar = null;
 		for (MetodoPago metodopago : cliente.getMetodosDePago()) {

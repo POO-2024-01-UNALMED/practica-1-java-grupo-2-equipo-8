@@ -22,4 +22,5 @@ public class Servicio {
 	public boolean realizarPago() {return true;}
 	public String factura() {return "factura";}
 	public static void sumarValorGananciasTotales() {}
+	public void validarCliente() {}
 }
