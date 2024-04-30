@@ -186,9 +186,20 @@ public class Administrador {
 				else {System.out.println("Opcion invalida\n");}
 			}
 		}while(!casoValido);
-		System.out.println("¿Quieres reclamar un bono, hacer un pedido o salir?");
-		
-		
+	    do {
+		System.out.print("Que deseas hacer:\n1.Reclamar un Bono.\n2.Hacer un pedido.\nSeleccione una opcion:");
+		int eleccion2 = (int)readLong();
+		if(eleccion2 == 1) {
+			System.out.print("Ingresa el codigo del bono: ");
+			long codigo = readLong();
+			Bono bono = servicioComida.verificarBono(codigo, cliente1);
+			if (null!= bono) {
+				System.out.print("El bono que tienes asociado es de un:"+bono.getProducto());
+			}
+			
+		}
+	
+	*/
 	}
 	
 		
