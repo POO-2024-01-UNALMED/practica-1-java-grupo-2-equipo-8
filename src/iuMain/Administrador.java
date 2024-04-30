@@ -36,6 +36,7 @@ public class Administrador {
 	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 	static Cliente cliente4 = new Cliente("Juanjo", 18 ,1013458547, TipoDeDocumento.CC);
+	static Cliente cliente5 = new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
 	
 	static Pelicula pelicula1 = new Pelicula("KNJ temporada 4 movie", 30000, "Aventura", Duration.ofMinutes(60), "+12", "4D", 3); 
 	static Pelicula pelicula2 = new Pelicula("Oppenheimer", 15000, "Drama", Duration.ofMinutes(120), "+18", "2D", 1); 
@@ -70,14 +71,14 @@ public class Administrador {
 	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",500000, 0);
 	
 	
-	
+	static Inventario inventarioComida = new Inventario("Crispetas", 5,2000,"Grnade","Comida",3231231);
 	
 	
 	
 	public static void main(String[] args) {
 		
 		
-		
+//		Bono bono1=new Bono (123,"Peluche","A","Comida");
 		
 		
 //		Bono pruevaBono = new Bono(1234,"Peluche","A","Souvenir");
@@ -977,7 +978,11 @@ public class Administrador {
 				}
 			}
 			else if(eleccion2 == 2) {
-				casoValido = false;
+				System.out.println("Estos son los productos que tenemos disponibles en el momento");
+				Inventario.mostrarInventario();
+				System.out.println("¿Que productos deseas llevar?");
+				
+					casoValido = false;
 			}
 			else {
 				
