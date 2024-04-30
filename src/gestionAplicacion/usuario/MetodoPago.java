@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import gestionAplicacion.servicios.Bono;
 
-public class MetodoPago {
+public class MetodoPago{
 	
 	//Atributos
 	private String nombre;
@@ -148,12 +148,15 @@ public class MetodoPago {
  		return 3.1415926535;
  		}
  	
-	public boolean usarMetodopago() {
-		
-		
-		
-		return true;
-		}
+	public static MetodoPago usarMetodopago(Cliente cliente, int metodoPagoAUsar) {
+		MetodoPago usar = null;
+		for (MetodoPago metodopago : cliente.getMetodosDePago()) {
+			if (metodoPagoAUsar == cliente.getMetodosDePago().indexOf(metodopago) + 1) {
+				usar = metodopago;
+				break;
+			}
+		} return usar;
+	}
 	
 	//Getters and setters.
 	public String getNombre() {
@@ -223,4 +226,37 @@ public class MetodoPago {
 		this.valorServicio = valorServicio;
 	}
 
+	/**
+	 * @Override
+	 * Description : Este método se encarga de tomar el valor a pagar, aplicar el descuento del método de pago elegido por el cliente
+	 * y restarle el monto máximo que se puede pagar con ese método de pago, si el método de pago cubre el valor a pagar, éste se cambia se cambia a 0.
+	 * Además, este método se encarga de pasar la referencia del método de pago a los métodos de pago usados y quita la referencia de métodos de pago 
+	 * disponibles asociados al cliente.
+	 * @param precio : Se pide el valor a pagar, este se obtuvo anteriormente como variable durante el proceso de la funcionalidad
+	 * @param cliente : Se pide al cliente que va a efectuar el proceso de realizar pago  
+	 * @return <b>double</b> : En caso de que el método de pago cubra el valor a pagar retorna 0, en caso de que no
+	 * retorna el valor restante a pagar.
+	 * */
+	public double realizarPago(double precio, Cliente cliente) {
+		//Creamos un atributo con scope de método donde obtenemos el precio del producto,
+		//Aplicamos el descuentoAsociado al metodoDePago y le restamos el LimiteMaximoPago
+		double valorPagar = ( precio * ( 1 - this.getDescuentoAsociado() ) ) - this.getLimiteMaximoPago();
+		if (valorPagar < 0) {
+			valorPagar = 0;
+		}
+				
+		//Cuando el método usado sea efectivo, no se pasará a usados
+		if ( this.getNombre().equals("Efectivo")) {
+			return valorPagar;
+		}
+				
+		//Pasamos el metodoDePago a metodosDePagoUsados
+		MetodoPago.getMetodosDePagoUsados().add(this);
+		//Eliminamos su referencia de los metodos de pago asociados al cliente
+		cliente.getMetodosDePago().remove(this);
+				
+		//Retornamos el valor tras efectuar el pago, puede generar un saldo pendiente a pagar o 0
+		return valorPagar;
+				
+	}
 }

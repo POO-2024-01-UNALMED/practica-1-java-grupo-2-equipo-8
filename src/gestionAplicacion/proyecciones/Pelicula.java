@@ -395,5 +395,16 @@ public class Pelicula{
 		return null;
 	}
 	
+	/**
+	 * Description: Este método se encarga de actualizarPeliculasEnPresentación de todas las sala de cine implementadas,
+	 * para ver más a detalle como se realiza este proceso se recomienda leer la documentación de actualizarPeliculasEnPresentacion 
+	 * en la clase SalaCine
+	 * return: <b>void</b> : Este método no retorna nada, solo actualiza las salaDeCine
+	 * */
+	public static void actualizarSalasDeCine() {
+		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
+			salaDeCine.actualizarPeliculasEnPresentacion();
+		}
+	}
 	
 }
