@@ -31,7 +31,7 @@ public class ServicioComida extends Servicio{
 		for (int i=0;i<Bono.getBonosCreados().size(); i++) {
 			for (int j=0;j<cliente.getBonosCliente().size();j++) {
 				if (Bono.getBonosCreados().get(i) == cliente.getBonosCliente().get(j)) {
-					if (cliente.getBonosCliente().get(j).getTipoServicio().equalsIgnoreCase("Comida")){
+					if (cliente.getBonosCliente().get(j).getTipoServicio().equalsIgnoreCase("Souvenir")){
 						bonosDelUsuario = cliente.getBonosCliente().get(j);
 						bonos.add(bonosDelUsuario);
 					}

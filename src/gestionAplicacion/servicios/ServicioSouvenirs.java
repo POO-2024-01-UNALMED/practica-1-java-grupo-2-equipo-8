@@ -70,7 +70,7 @@ public class ServicioSouvenirs extends Servicio{
 		this.codigoProducto = codigoProducto;
 		this.valorPedido = valorPedido;
 	}
-	public Pedido generarPedido() {return new Pedido();}
+	
 	public String generarOrden(Cliente cliente1) {
 		Scanner sc = new Scanner(System.in);
 		boolean casoValido = true;

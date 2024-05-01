@@ -66,7 +66,7 @@ public class Ticket implements IBuyable{
 			if (this.getPelicula().getTipoDeFormato().equals("3D") || this.getPelicula().getTipoDeFormato().equals("4D") ) {
 				precio = precio * 0.5;
 			}else {
-				precio = precio  * 0.8;
+				precio = precio  * 0.2;
 			}
 		}
 		return precio;
@@ -80,40 +80,7 @@ public class Ticket implements IBuyable{
 	public void asignarPrecio() {
 		this.setPrecio(clienteSuertudo());
 	}
-	/**
-	 * @Override
-	 * Description : Este método se encarga de tomar el valor del pedido o del ticket, aplicar el descuento del método de pago elegido por el cliente
-	 * y restarle el monto máximo que se puede pagar con ese método de pago, si el método de pago cubre el valor a pagar, valor a pagar se cambia a 0.
-	 * Además, este método se encarga de pasar la referencia del método de pago a los métodos de pago usados y quita la referencia de métodos de pago 
-	 * disponibles asociados al cliente.
-	 * @param precio : Se pide el precio del ticket a pagar, este se obtuvo anteriormente como variable durante el proceso de la funcionalidad
-	 * @param metodoPago : Se usa el método de pago seleccionado por el cliente
-	 * @param cliente : Se pide al cliente que va a efectuar el proceso de realizar pago  
-	 * @return <b>double</b> : En caso de que el método de pago cubra el valor a pagar retorna 0, en caso de que no
-	 * retorna el valor restante a pagar.
-	 * */	
-	public double realizarPago(double precio, MetodoPago metodoDePago, Cliente cliente) {
-		//Creamos un atributo con scope de método donde obtenemos el precio del producto,
-		//Aplicamos el descuentoAsociado al metodoDePago y le restamos el LimiteMaximoPago
-		double valorPagar = ( precio * ( 1 - metodoDePago.getDescuentoAsociado() ) ) - metodoDePago.getLimiteMaximoPago();
-		if (valorPagar < 0) {
-			valorPagar = 0;
-		}
-		
-		//Cuando el método usado sea efectivo, no se pasará a usados
-		if ( metodoDePago.getNombre().equals("Efectivo")) {
-			return valorPagar;
-		}
-		
-		//Pasamos el metodoDePago a metodosDePagoUsados
-		MetodoPago.getMetodosDePagoUsados().add(metodoDePago);
-		//Eliminamos su referencia de los metodos de pago asociados al cliente
-		cliente.getMetodosDePago().remove(metodoDePago);
-		
-		//Retornamos el valor tras efectuar el pago, puede generar un saldo pendiente a pagar o 0
-		return valorPagar;
-		
-	}
+
 	/**
 	 * @Override
 	 * Description: Este método se encarga de generar el último paso del proceso de pago, eliminando la referencia del

@@ -22,7 +22,6 @@ public class Inventario {
 		this.descripcionTamañoProducto = descripcionTamañoProducto;
 		this.tipoDeProducto = tipoDeProducto;
 		this.codigoProducto = codigoProducto;
-
 		productosEnInventario.add(this);
 	}
 	
@@ -104,10 +103,4 @@ public class Inventario {
 	}
 	
 	
-=======
-	}
-
-
->>>>>>> Stashed changes
 }
-
