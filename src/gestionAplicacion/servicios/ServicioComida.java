@@ -1,5 +1,7 @@
 package gestionAplicacion.servicios;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import gestionAplicacion.usuario.Cliente;
 
 public class ServicioComida extends Servicio{
@@ -17,7 +19,47 @@ public class ServicioComida extends Servicio{
 		this.ordenComida = ordenComida;
 		this.valorPedido = valorPedido;
 	}
-	public Pedido generarPedido() {return new Pedido();}
+	public Pedido generarPedido() {
+		Scanner sc = new Scanner(System.in);
+		boolean casoValido = true;
+		boolean casoValido2 = true;
+		String Orden = "Los productos que llevas son:";
+		int opcionMenu = 0;
+		int cantidad;
+		int codigo;
+		do {
+			do {
+				System.out.print(Inventario.mostrarInventario());
+				try {
+					System.out.print("\nSelecciona una opcion: ");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+					opcionMenu = opcionMenu-1;
+					System.out.print("\nIngrese la cantidad de productos que deseas llevar: ");
+					cantidad = Integer.parseInt(sc.nextLine());
+					casoValido2 = false;
+				}catch(NumberFormatException e){
+					System.out.println("\nError, debes ingresar un único dato numérico\n");
+					continue;
+					}
+				if ((cantidad > 0) && (cantidad < Inventario.getProductosEnInventario().size())){
+					codigo = Inventario.getProductosEnInventario().get(opcionMenu).getCodigoProducto();
+					if ( null != Pedido.generarPedido(codigo, cantidad)){
+						cliente1.getPedidos().add(Pedido.generarPedido(opcionMenu, cantidad));
+						casoValido = false;
+					}
+					else {
+						System.out.println("No hay suficientes productos");
+						System.out.println("En el momento hay: "+Inventario.getProductosEnInventario().get(opcionMenu).getCantidadDisponible()+" de "+Inventario.getProductosEnInventario().get(opcionMenu).getNombreProducto());
+					}
+				}
+			}while(casoValido2);
+		}while(casoValido);
+		for (int i = 0;i < cliente1.getPedidos().size(); i++) {
+			Orden = Orden + "\n" + cliente1.getPedidos().get(i).getCantidad()+" "+cliente1.getPedidos().get(i).getNombreproducto();
+		}
+		return Orden;
+	}
+	
 	public void editarPedido() {}
 	public void mostrarPedido() {}
 	public boolean procesarPago() {return true;}
@@ -31,7 +73,7 @@ public class ServicioComida extends Servicio{
 		for (int i=0;i<Bono.getBonosCreados().size(); i++) {
 			for (int j=0;j<cliente.getBonosCliente().size();j++) {
 				if (Bono.getBonosCreados().get(i) == cliente.getBonosCliente().get(j)) {
-					if (cliente.getBonosCliente().get(j).getTipoServicio().equalsIgnoreCase("Souvenir")){
+					if (cliente.getBonosCliente().get(j).getTipoServicio().equalsIgnoreCase("Comida")){
 						bonosDelUsuario = cliente.getBonosCliente().get(j);
 						bonos.add(bonosDelUsuario);
 					}
