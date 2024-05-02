@@ -1,5 +1,6 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
+import java.time.Duration;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Pedido;
@@ -15,7 +16,7 @@ public class Cliente {
 	private int edad;
 	private Membresia membresia;
 	private long documento;
-	private int duracionMembresiaDias;
+	private Duration duracionMembresiaDias;
 	private TipoDeDocumento tipoDocumento;
 	private TarjetaCinemar cuenta;
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
@@ -37,7 +38,7 @@ public class Cliente {
 	}
 	
 	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Ticket> ticket, ArrayList<String> facturas,
-			int edad, Membresia membresia, long documento, int duracionMembresiaDias,
+			int edad, Membresia membresia, long documento, Duration duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<Bono> bonosCliente) {
 		this();
@@ -197,11 +198,11 @@ public class Cliente {
 		this.documento = documento;
 	}
 
-	public int getDuracionMembresiaDias() {
+	public Duration getDuracionMembresiaDias() {
 		return duracionMembresiaDias;
 	}
 
-	public void setDuracionMembresiaDias(int duracionMembresiaDias) {
+	public void setDuracionMembresiaDias(Duration duracionMembresiaDias) {
 		this.duracionMembresiaDias = duracionMembresiaDias;
 	}
 

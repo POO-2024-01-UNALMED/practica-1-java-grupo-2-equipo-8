@@ -1,9 +1,9 @@
 package iuMain;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
-import javax.swing.SwingUtilities;
 
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
@@ -12,7 +12,7 @@ import java.time.Duration;
 
 public class Administrador {
 	
-	private static final boolean True = false;
+//	private static final boolean True = false;
 	static Scanner sc = new Scanner(System.in);
 	
 	static long readLong() { return sc.nextLong();}
@@ -168,7 +168,7 @@ public class Administrador {
 			salaDeCine1.verificarTicket(cliente2);
 //			cliente1.setMembresia(membresia1);
 
-			cliente1.setMembresia(membresia1);
+			cliente1.setMembresia(membresia3);
 
 //			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
 //			/*cliente1.setMembresia(membresia1)*/
@@ -1026,7 +1026,7 @@ public class Administrador {
 		
 		//Creacion o validacion del cliente
 		servicioSouvenirs.setCliente(validarCliente());
-		casoValido = True;
+		casoValido = true;
 		do {
 			//Interaccion #1 de la funcionalidad 3 la cual es una busqueda de los procutos disponibles
 			System.out.println(servicioSouvenirs.generarOrden(servicioSouvenirs.getCliente()));
@@ -1495,7 +1495,7 @@ public class Administrador {
 	}
 	
 	static void adquirirMembresia() {
-		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla. ¿Desea continuar en la adquisición?\n");
+		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla.");
 		//System.out.println(Membresia.mostrarCategoria() + "6. Volver");
 		boolean casoValido = false;
 		int opcionMenu = 0;
@@ -1540,33 +1540,67 @@ public class Administrador {
 		}while(casoValido);	
 		
 		//Se pide la cédula del cliente para la confirmación
-		long numeroDocumentoCliente;
+		long numeroDocumentoCliente = 0;
 		Cliente cliente = null;
-		int opcionConfirmacion;
 		do {
+			opcionMenu = 0;
+			try {
 			System.out.print("Ingrese el numero de documento: ");
-			numeroDocumentoCliente = readLong();
+			numeroDocumentoCliente = Integer.parseInt(sc.nextLine());
+			}catch (NumberFormatException e){
+				System.out.print("Error, solo se puede ingresar números.\n");
+				continue;
+			}
 			System.out.print("Es el número de documento "+ numeroDocumentoCliente 
 			+ "\n1. Correcto \n2. Incorrecto");
-			opcionConfirmacion = (int) readLong();
-		} while (opcionConfirmacion != 1);
+			opcionMenu = Integer.parseInt(sc.nextLine());
+		} while (opcionMenu != 1);
 		
 		//Se revisa si la cédula del cliente esta registrada.
 		cliente=Cliente.revisarDatosCliente(numeroDocumentoCliente);
 		do {
 			if (cliente==null) {
-				System.out.print("Ingrese su edad: ");
-				int edadCliente = (int)readLong();
-				System.out.print("Ingrese su nombre: ");
-				String nombreCliente = readLn();
+				opcionMenu = 0;
+				int edadCliente;
+				String nombreCliente;
+				do {
+					System.out.print("Ingrese su edad: ");
+					edadCliente = (int)readLong();
+					System.out.print("Ingrese su nombre: ");
+					nombreCliente = readLn();
+					System.out.print("Confirme si sus datos son correctos para el registro.\n" 
+					+ "Nombre: " + nombreCliente + "\nEdad: " +edadCliente + "\nNúmero de documento: " + numeroDocumentoCliente
+					+ "\n1. Correcto.\n2. Editar datos.");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+					//Se puede editar todos los datos en caso de error.
+					if (opcionMenu == 2) {
+						long numeroDocumentoNuevo;
+						Cliente clienteNuevo = null;
+						do {
+							System.out.print("Ingrese el número de documento para la nueva cuenta: ");
+							numeroDocumentoNuevo = (int)readLong();
+							clienteNuevo=Cliente.revisarDatosCliente(numeroDocumentoNuevo);
+							if (clienteNuevo!=null) {
+								System.out.println("Este número de documento ya existe en el registro");
+							} else {
+								numeroDocumentoCliente = numeroDocumentoNuevo;
+								clienteNuevo = null;
+							}
+						} while (clienteNuevo!=null);
+					}
+					
+				} while (opcionMenu == 2);
+				
 				cliente = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
 				MetodoPago.asignarMetodosDePago(cliente);
 				System.out.print("Gracias por su registro.\n");
 			} else {
+				//Se realiza la verificación del cliente
+				opcionMenu = 0;
 				System.out.println("¿Eres "+cliente.getNombre()+"?");
 				System.out.println("1. SI\n2. NO");
-				int eleccion = (int)readLong();
-				if (eleccion==2) {
+				opcionMenu = Integer.parseInt(sc.nextLine());
+				if (opcionMenu==2) {
 					cliente = null;
 					long numeroDocumentoNuevo;
 					Cliente clienteNuevo = null;
@@ -1589,44 +1623,80 @@ public class Administrador {
 		//Se da a escoger al usuario la membresia
 		Membresia membresiaNueva = null;
 		do {
-		System.out.print(Membresia.verificarMembresiaActual(cliente));
-		System.out.print(Membresia.mostrarCategoria() + "6. Volver al inicio. \nIngrese la opción: ");
-		int categoriaMembresia = (int)readLong();
-		if (categoriaMembresia == 6) {inicio(); break;}
-		else if (categoriaMembresia >0 && categoriaMembresia <6) {
-			boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(cliente, categoriaMembresia);
-				if (requisitosMembresia == false) {
-					System.out.print("No puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello.\n"
-							+ "Redirigiendo al menú de membresias\n");
-					continue;
-				} else {
-					membresiaNueva = Membresia.asignarMembresiaNueva(membresiaNueva, categoriaMembresia);
+			opcionMenu = 0;
+			System.out.print(Membresia.verificarMembresiaActual(cliente));
+			System.out.print(Membresia.mostrarCategoria(cliente) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
+			opcionMenu = (int) Integer.parseInt(sc.nextLine());
+			if (opcionMenu == 6) {inicio(); break;}
+			else if (opcionMenu >0 && opcionMenu <6) {
+				if (cliente.getMembresia()!= null) {
+					int categoriaCliente = cliente.getMembresia().getCategoria();
+					if (categoriaCliente == opcionMenu) {
+						System.out.print("Ya posee esta categoria. Redirigiendo al menú de membresias\n");
+						continue;
+					}
 				}
-		} else {
-			continue;
-		}
+				boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(cliente, opcionMenu);
+					if (requisitosMembresia == false) {
+						System.out.print("No puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello.\n"
+								+ "Redirigiendo al menú de membresias\n");
+						continue;
+					} else {
+						membresiaNueva = Membresia.asignarMembresiaNueva(membresiaNueva, opcionMenu);
+					}
+			} else {
+				continue;
+			}
 		} while (membresiaNueva == null);
 		
 		//Una vez se ha escogido la membresia, se pasa a realizar el pago
-		boolean pagoRealizado = false;
+		double valorAPagar= membresiaNueva.getValorSuscripcionMensual();
+		double precio = 0;
+		LinkedHashMap<MetodoPago, Double> pagosEnTransaccion = new LinkedHashMap<>();
+		Entry<MetodoPago, Double> primerPagoUsado = null;
+		String descuentoActivo = "hola";
 		do {
-		System.out.print("El precio de la membresia es de " + membresiaNueva.getValorSuscripcionMensual() 
-		+ ". Por favor, seleccione el método de pago a usar:\n"
-		+ MetodoPago.mostrarMetodosDePago(cliente) + "5. Volver al inicio \nIngrese la opción: ");
-		int seleccion = (int) readLong();
-		if (seleccion == 5) {inicio();}
-		MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(cliente, seleccion);
-			if (metodoPagoSeleccionado.getDescuentoAsociado() != 0) {
-				double descuento = membresiaNueva.getValorSuscripcionMensual() - membresiaNueva.getValorSuscripcionMensual() * metodoPagoSeleccionado.getDescuentoAsociado();
-				System.out.print("Con el método de pago " 
-				+ metodoPagoSeleccionado.getNombre()+ ", el nuevo monto a pagar es " 
-				+ descuento +". Por favor confirme su monto de pago: ");
+			opcionMenu = 0;
+			System.out.print("El precio de la membresia es de " + valorAPagar 
+			+ ". Por favor, seleccione el método de pago a usar:\n"
+			+ MetodoPago.mostrarMetodosDePago(cliente) + "5. Volver al inicio \nIngrese la opción: ");
+			opcionMenu = Integer.parseInt(sc.nextLine());
+			if (opcionMenu == 5) {inicio();}
+			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(cliente, opcionMenu);
+			try {
+				descuentoActivo = "";
+				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {
+					valorAPagar = valorAPagar - valorAPagar * metodoPagoSeleccionado.getDescuentoAsociado();
+					System.out.print("Con el método de pago " 
+						+ metodoPagoSeleccionado.getNombre()+ ", el nuevo monto a pagar es " 
+						+ valorAPagar +". Por favor, seleccione una opción: ");
+					if (primerPagoUsado != null) {
+					descuentoActivo = "El descuento de " + primerPagoUsado.getKey().getDescuentoAsociado()
+							+ " ya ha sido aplicado al precio de " + membresiaNueva.getValorSuscripcionMensual();}
+				} else {
+					System.out.print(descuentoActivo);
+					System.out.print("El monto a pagar con el método de pago " 
+						+ metodoPagoSeleccionado.getNombre()+ " es " 
+						+ valorAPagar + ". Por favor, seleccione una opción: ");
+				}
+			precio = Double.parseDouble(sc.nextLine());
+			}catch (NumberFormatException e) {
+			System.out.print("Por favor, solo ingrese números");}
+			if (precio < valorAPagar) {
+				System.out.print("Por favor, termine de completar el pago.\n");
+				pagosEnTransaccion.put(metodoPagoSeleccionado, precio);
+				primerPagoUsado = pagosEnTransaccion.entrySet().iterator().next();
+				valorAPagar = valorAPagar - precio;
+				continue;
 			} else {
-				System.out.print("Por favor, confirme el monto a pagar: ");
-			} 
-		double pago = (int) readLong();
-		
-		}while (pagoRealizado != true); }
+				pagosEnTransaccion.put(metodoPagoSeleccionado, precio);
+				valorAPagar = metodoPagoSeleccionado.realizarPago(precio, cliente);
+				break;
+			}
+		}while (valorAPagar != 0); 
+		membresiaNueva.procesarPagoRealizado(cliente);
+		System.out.print(membresiaNueva.factura(cliente));
+	}
 						
 				
 	
@@ -1697,7 +1767,7 @@ public class Administrador {
 				String nombreCliente = sc.nextLine(); 
 
 				//Se asocia todo a la nueva instancia del cliente
-				cliente1 = new Cliente(nombreCliente,null,null,null,edadCliente,null,numeroDocumentoCliente,0,documentoCliente,null,null,null);
+				cliente1 = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
 				return cliente1;
 			}
 			
