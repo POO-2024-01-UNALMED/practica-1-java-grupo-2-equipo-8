@@ -223,7 +223,6 @@ public class Administrador {
 
 
 		System.out.println("Bienvenido al cine de marinilla");
-	
 		inicio();
 		
 	}
@@ -1001,7 +1000,7 @@ public class Administrador {
 //******************************************************************************************************************************************	   
 	
 	static void comprarSouvenirs() {
-		System.out.println("\nBienvenido a la tienda de souvenirs\n");
+		System.out.println("\n----------------Bienvenido a la tienda de souvenirs--------------\n");
 		
 		//Reiteramos la eleccion del usuario
 		boolean casoValido = true;
@@ -1027,9 +1026,27 @@ public class Administrador {
 		
 		//Creacion o validacion del cliente
 		servicioSouvenirs.setCliente(validarCliente());
-		
-		//Interaccion #1 de la funcionalidad 3 la cual es una busqueda de los procutos disponibles
-		servicioSouvenirs.generarOrden(servicioSouvenirs.getCliente());
+		casoValido = True;
+		do {
+			//Interaccion #1 de la funcionalidad 3 la cual es una busqueda de los procutos disponibles
+			System.out.println(servicioSouvenirs.generarOrden(servicioSouvenirs.getCliente()));
+			do {
+				try {
+					System.out.println("\n¿Deseas hacer otro pedido?\n1.SI\n2.No");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				}catch(NumberFormatException e) {
+					System.out.println("\nError, debes ingresar un dato numérico\n");
+					continue;
+				}
+				switch (opcionMenu) {
+					case 1: casoValido = false;break;
+					case 2: casoValido = false;break;
+					default: System.out.println("\nOpcion invalida\n");break;
+			}
+			}while(casoValido);
+			
+		}while(opcionMenu != 2);
+
 		
 		
 	} 
@@ -1625,17 +1642,19 @@ public class Administrador {
 		int opcionMenu;
 		do{
 			try {
-				System.out.println("\nSeleccione el tipo de documento:\n"+ TipoDeDocumento.mostrarTiposDeDocumento());
+				System.out.println("\n------------------Tipos de documentos-------------------\n"+ 
+				TipoDeDocumento.mostrarTiposDeDocumento());
+				System.out.print("Seleccione una opcion:");
 				opcionMenu = Integer.parseInt(sc.nextLine());
 			}catch(NumberFormatException e){
-				System.out.println("\nError, debes ingresar un dato numérico\n");
+				System.out.println("\n*****Error, debes ingresar un dato numérico*****\n");
 				continue;
 			}
 			switch (opcionMenu) {
 				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
 				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
 				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
-				default: System.out.println("Opcion invalida");break;
+				default: System.out.println("**********Opcion invalida**********");break;
 			}
 		}while(casoValido);
 		
@@ -1646,10 +1665,10 @@ public class Administrador {
 		boolean casoValido2 = true;
 		do {
 			try {
-				System.out.print("\nIngrese el numero de documento: ");
+				System.out.print("Ingrese el numero de documento: ");
 				numeroDocumentoCliente = Long.parseLong(sc.nextLine());
 			}catch(NumberFormatException e) {
-				System.out.println("\nError, debes ingresar datos numéricos correspondientes a tu número de documento\n");
+				System.out.println("\n*****Error, debes ingresar datos numéricos correspondientes a tu número de documento\n*****");
 				continue;
 			}
 			//Se verficia si el cliente existe
