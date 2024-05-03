@@ -24,13 +24,13 @@ public class Ticket implements IBuyable{
 		
 	}
 	
-	public Ticket(Cliente dueno, SalaCine salaDeCine, double precio, Pelicula pelicula, LocalDateTime horario, int idPelicula) {
+	public Ticket(Cliente dueno, SalaCine salaDeCine, double precio, Pelicula pelicula, LocalDateTime horario, String numeroAsiento) {
 		this.dueno = dueno;
 		this.salaDeCine = salaDeCine;
 		this.precio = precio;
 		this.pelicula = pelicula;
 		this.horario = horario;
-		this.idPelicula = idPelicula;
+		this.numeroAsiento = numeroAsiento;
 		Ticket.cantidadTicketsCreados++;
 		this.idTicket = Ticket.cantidadTicketsCreados;
 		this.codigo = this.generarCodigoTicket();

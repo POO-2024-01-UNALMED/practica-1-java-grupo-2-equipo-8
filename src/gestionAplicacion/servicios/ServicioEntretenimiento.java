@@ -116,49 +116,61 @@ public class ServicioEntretenimiento extends Servicio{
 		return existencia;
 	}
 	
-	public static void juego(String[] PALABRAS) { 
-	  Scanner scanner = new Scanner(System.in);
-      String palabraSecreta = PALABRAS[(int) (Math.random() * PALABRAS.length)];
-      char[] palabraAdivinada = new char[palabraSecreta.length()];
-      boolean[] letrasUsadas = new boolean[26]; // Para rastrear letras ya usadas
-      int intentosRestantes = 7;
-      
-      for (int i = 0; i < palabraAdivinada.length; i++) {
-          palabraAdivinada[i] = '_';
-      }
-      
-      while (intentosRestantes > 0 && !adivinado(palabraAdivinada)) {
-          System.out.println("Intentos restantes: " + intentosRestantes);
-          System.out.println("Palabra "+palabraSecreta.length()+" letras: " + String.valueOf(palabraAdivinada));
-          System.out.print("Ingresa una letra: ");
-          char letra = scanner.nextLine().toUpperCase().charAt(0);
+	public static void juego(String[] PALABRAS) {
+        Scanner scanner = new Scanner(System.in);
+        String palabraSecreta = PALABRAS[(int) (Math.random() * PALABRAS.length)];
+        char[] palabraAdivinada = new char[palabraSecreta.length()];
+        boolean[] letrasUsadas = new boolean[26]; // Para rastrear letras ya usadas
+        int intentosRestantes = 7;
 
-          // Verificar si la letra ya fue usada
-          if (letrasUsadas[letra - 'A']) {
-              System.out.println("Ya has usado esa letra. Intenta otra.");
-              continue;
-          }
+        for (int i = 0; i < palabraAdivinada.length; i++) {
+            palabraAdivinada[i] = '_';
+        }
 
-          letrasUsadas[letra - 'A'] = true;
+        while (intentosRestantes > 0 && !adivinado(palabraAdivinada)) {
+            System.out.println("Intentos restantes: " + intentosRestantes);
+            System.out.print("Palabra: ");
+            for (char c : palabraAdivinada) {
+                System.out.print(c + " ");
+            }
+            System.out.println();
 
-          if (palabraSecreta.indexOf(letra) >= 0) {
-              for (int i = 0; i < palabraSecreta.length(); i++) {
-                  if (palabraSecreta.charAt(i) == letra) {
-                      palabraAdivinada[i] = letra;
-                  }
-              }
-          } else {
-              System.out.println("¡Incorrecto! La letra '" + letra + "' no está en la palabra.");
-              intentosRestantes--;
-          }
-      }
+            System.out.print("Ingresa una letra: ");
+            String input = scanner.nextLine().toUpperCase();
+            if (input.length() != 1 || !Character.isLetter(input.charAt(0))) {
+                System.out.println("Carácter inválido. Intenta otra vez.");
+                intentosRestantes--;
+                continue;
+            }
 
-      if (adivinado(palabraAdivinada)) {
-          System.out.println("¡Felicidades! ¡Has adivinado la palabra!");
-      } else {
-          System.out.println("¡Oh no! Te has quedado sin intentos. La palabra era: " + palabraSecreta);
-      }
-  }
+            char letra = input.charAt(0);
+
+            // Verificar si la letra ya fue usada
+            if (letrasUsadas[letra - 'A']) {
+                System.out.println("Ya has usado esa letra. Intenta otra.");
+                continue;
+            }
+
+            letrasUsadas[letra - 'A'] = true;
+
+            if (palabraSecreta.indexOf(letra) >= 0) {
+                for (int i = 0; i < palabraSecreta.length(); i++) {
+                    if (palabraSecreta.charAt(i) == letra) {
+                        palabraAdivinada[i] = letra;
+                    }
+                }
+            } else {
+                System.out.println("¡Incorrecto! La letra '" + letra + "' no está en la palabra.");
+                intentosRestantes--;
+            }
+        }
+
+        if (adivinado(palabraAdivinada)) {
+            System.out.println("¡Felicidades! ¡Has adivinado la palabra!");
+        } else {
+            System.out.println("¡Oh no! Te has quedado sin intentos. La palabra era: " + palabraSecreta);
+        }
+    }
 	
 	private static boolean adivinado(char[] palabraAdivinada) {
         for (char c : palabraAdivinada) {

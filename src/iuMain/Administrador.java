@@ -34,8 +34,8 @@ public class Administrador {
 	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
 	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
-	static Cliente cliente4 = new Cliente("Juanjo", 18 ,1013458547, TipoDeDocumento.CC);
 	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
+	static Cliente cliente4 = new Cliente("Juanjo", 18 ,1013458547, TipoDeDocumento.CC);
 	
 	static Pelicula pelicula1 = new Pelicula("KNJ temporada 4 movie", 30000, "Aventura", Duration.ofMinutes(60), "+12", "4D", 3); 
 	static Pelicula pelicula2 = new Pelicula("Oppenheimer", 15000, "Drama", Duration.ofMinutes(120), "+18", "2D", 1); 
@@ -59,7 +59,7 @@ public class Administrador {
 	static Ticket ticket2 = new Ticket();
 	static Ticket ticket3 = new Ticket();
 	static Ticket ticket4 = new Ticket();
-	static Ticket ticket5 = new Ticket(cliente4, pelicula1, LocalDateTime.of(2024, 4, 28, 12, 0, 0), "4-8");
+	static Ticket ticket5 = new Ticket(cliente4, salaDeCine3, 50000,  pelicula1, LocalDateTime.of(2024, 4, 28, 12, 0, 0), "4-8");
 	static Ticket ticket6 = new Ticket(cliente4, pelicula2, LocalDateTime.of(2024, 5, 4, 16, 0, 0), "2-2");
 	static Ticket ticket7 = new Ticket();
 	static Ticket ticket8 = new Ticket();
@@ -73,6 +73,7 @@ public class Administrador {
 	static Inventario camisas1 = new Inventario ("camisa",50,33000,"L","Souvenirs",11);
 	static Inventario crispetas1= new Inventario("crispeta",60,20000,"Grande","Comida",21);
 	
+	static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000,false, cliente4);
 	
 	public static void main(String[] args) {
 		
@@ -152,7 +153,8 @@ public class Administrador {
 			
 			ticket4.setPelicula(pelicula1);
 			ticket4.asignarPrecio();
-
+			
+			cliente4.setCuenta(tarjeta1);
 			Membresia.asignarTipoMembresia();
 //			for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
 //				MetodoPago.metodoPagoPorTipo(metodoPago);
@@ -1526,6 +1528,7 @@ public class Administrador {
 						break;
 					default:
 						System.out.println("Opcion invalida");
+						finCiclo = false;
 						break;
 					}
 					
