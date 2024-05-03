@@ -75,7 +75,7 @@ public class ServicioSouvenirs extends Servicio{
 		Scanner sc = new Scanner(System.in);
 		boolean casoValido = true;
 		boolean casoValido2 = true;
-		String Orden = "Los productos que llevas son:";
+		String Orden = "--------------------ORDEN ACTUAL--------------------";
 		int opcionMenu = 0;
 		int cantidad;
 		int codigo;
@@ -93,10 +93,13 @@ public class ServicioSouvenirs extends Servicio{
 					System.out.println("\nError, debes ingresar un único dato numérico\n");
 					continue;
 					}
-				if ((cantidad > 0) && (cantidad < Inventario.getProductosEnInventario().size())){
+				if (cantidad > 0){
 					codigo = Inventario.getProductosEnInventario().get(opcionMenu).getCodigoProducto();
-					if ( null != Pedido.generarPedido(codigo, cantidad)){
-						cliente1.getPedidos().add(Pedido.generarPedido(opcionMenu, cantidad));
+					Pedido pedido = new Pedido();
+					pedido = Pedido.generarPedido(codigo, cantidad);
+					if ( null != pedido){
+						cliente1.getPedidos().add(pedido);
+						System.out.println("Pedido realizado con exito");
 						casoValido = false;
 					}
 					else {
@@ -107,7 +110,8 @@ public class ServicioSouvenirs extends Servicio{
 			}while(casoValido2);
 		}while(casoValido);
 		for (int i = 0;i < cliente1.getPedidos().size(); i++) {
-			Orden = Orden + "\n" + cliente1.getPedidos().get(i).getCantidad()+" "+cliente1.getPedidos().get(i).getNombreproducto();
+			int n = i+1;
+			Orden = Orden + "\n"+ n + ". " + cliente1.getPedidos().get(i).getCantidad()+" "+cliente1.getPedidos().get(i).getNombreproducto();
 		}
 		return Orden;
 	}

@@ -59,10 +59,15 @@ public class Pedido {
 				pedido.setTamañoProducto(Inventario.getProductosEnInventario().get(i).getDescripcionTamañoProducto());
 				pedido.setValor(Inventario.getProductosEnInventario().get(i).getPrecio()*cantidad);
 				Inventario.getProductosEnInventario().get(i).setCantidadDisponible(Inventario.getProductosEnInventario().get(i).getCantidadDisponible() - cantidad);
-				return pedido;
 			}
 		}
-		return null;
+		if (pedido.getNombreproducto()!= null) {
+			return pedido;
+		}
+		else {
+			return null;
+		}
+		
 	}
 
 	public int getCodigo() {

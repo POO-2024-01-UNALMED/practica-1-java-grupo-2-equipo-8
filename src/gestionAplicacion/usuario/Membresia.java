@@ -1,9 +1,11 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
+import java.time.Duration;
 import java.time.LocalDate;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
 import iuMain.Administrador;
+import gestionAplicacion.proyecciones.SalaCine;
 
 public class Membresia implements IBuyable{
 	
@@ -58,20 +60,22 @@ public class Membresia implements IBuyable{
 	*/
 	public static String verificarMembresiaActual(Cliente cliente) {
 		//Se crea las instancias
+		String mensaje = null;
 		Membresia membresiaActual = cliente.getMembresia();
 		String nombreMembresiaActual = null;
 		
 		//Se actualiza el nombre de la membresia.
 		if (membresiaActual == null) {
-			nombreMembresiaActual = "Sin membresia";
+			mensaje = "Bienvenido, " + cliente.getNombre() 
+			+".\nActualmente, no tiene membresia activa en el sistema.\nPor favor, seleccione la membresia que desea adquirir:\n";
 		} else {
 			nombreMembresiaActual = cliente.getMembresia().getNombre();
+			mensaje = "Bienvenido, " + cliente.getNombre() 
+			+".\nActualmente, su membresia es " + nombreMembresiaActual
+			+ " de categoria " + cliente.getMembresia().getCategoria() + "\nPor favor, seleccione la membresia que desea adquirir/actualizar:\n";
 		}
-		return "Bienvenido, " + cliente.getNombre() 
-		+".\nActualmente, su membresia es " + nombreMembresiaActual
-		+ "\nPor favor, seleccione la membresia que desea adquirir/actualizar:\n";
+		return mensaje;
 	}
-		
 		
 	/**
 	*<b>Description</b>: Este método se encarga de asignar los descuentos dependiendo de la
@@ -128,16 +132,31 @@ public class Membresia implements IBuyable{
 	*@param none : No se pide parametros
 	*@return <b>string</b> : Se retorna un texto mostrando el nombre de las categorias.
 	*/
-	public static String mostrarCategoria() {
+	public static String mostrarCategoria(Cliente cliente) {
 		String resultado = null;
 		int i = 1;
+		Membresia membresiaActual = cliente.getMembresia();
+		String nombreMembresiaActual = null;
 		
+		//Se actualiza el nombre de la membresia.
+		if (membresiaActual == null) {
+			nombreMembresiaActual = "Sin membresia";
+		} else {
+			nombreMembresiaActual = cliente.getMembresia().getNombre();}
 		//Se recorre la lista de tipos de membresia.
 		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
 			if (resultado == null) {
-				resultado = i + ". "+ membresia.getNombre() + "\n";
+				if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
+					i++;
+					continue;
+				}
+				resultado = "Categoria " + i + ". "+ membresia.getNombre() + "\n";
 			}else {
-				resultado = resultado + i + ". " + membresia.getNombre() + "\n";
+				if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
+					i++;
+					continue;
+				}
+				resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + "\n";
 			}
 			i++;
 		}
@@ -275,15 +294,13 @@ public class Membresia implements IBuyable{
 	//Métodos implementados por la interfaz.
 	@Override
 	public void procesarPagoRealizado(Cliente cliente) {
-		//Se crea la referencia del método en métodos de pago asociado al cliente del método de pago usado
-		for (MetodoPago metodoDePago : MetodoPago.getMetodosDePagoUsados()) {
-			cliente.getMetodosDePago().add(metodoDePago);
-		}
+		//Se asigna la referencia de la membresia adquirida en el cliente y se actualizan sus métodos de pago.
+		cliente.setMembresia(this);
+		cliente.setDuracionMembresiaDias(Duration.ofDays(this.duracionMembresiaDias));
+		MetodoPago.asignarMetodosDePago(cliente);
 		//Se eliminan las referencias de los métodosDePagoUsados
 		MetodoPago.getMetodosDePagoUsados().clear();
-				
 		//Se pasa la referencia de la membresia al cliente que lo compró y se agrega este último al array de clientes en Membresia
-		cliente.setMembresia(this);
 		this.getClientes().add(cliente);
 	}
 		
@@ -292,16 +309,15 @@ public class Membresia implements IBuyable{
 
 	@Override
 	public String factura(Cliente cliente) {
-		
-		String factura = "=== Factura de Ticket ===\n" +
-				"Nombre dueño : " + cliente.getNombre() + "\n" +
-				"Documento : " + cliente.getDocumento() + "\n" +
-				"Membresia : " + cliente.getMembresia().getNombre()+ "\n" +
-				"Categoria : " + cliente.getMembresia().getCategoria() + "\n" +
-				"Tipo : " + cliente.getMembresia().getTipoMembresia() + "\n" +
+		String factura = "=== Factura de compra ===\n" +
+				"Fecha de compra: " + SalaCine.getFecha() + "\n" +
+				"Nombre dueño: " + cliente.getNombre() + "\n" +
+				"Documento: " + cliente.getDocumento() + "\n" +
+				"Membresia: " + cliente.getMembresia().getNombre()+ "\n" +
+				"Categoria: " + cliente.getMembresia().getCategoria() + "\n" +
+				"Tipo: " + cliente.getMembresia().getTipoMembresia() + "\n" +
 				"Duración: " + cliente.getMembresia().getDuracionMembresiaDias()+ " dias.\n" +
-				"Valida hasta: " + LocalDate.now();
-		
+				"Valida hasta: " + SalaCine.getFecha().plusDays(this.duracionMembresiaDias);
 		cliente.getFacturas().add(factura);
 		return factura;
 	}
