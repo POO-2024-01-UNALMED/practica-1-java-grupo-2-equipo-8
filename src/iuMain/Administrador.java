@@ -1939,7 +1939,7 @@ public class Administrador {
 		double precio = 0;
 		LinkedHashMap<MetodoPago, Double> pagosEnTransaccion = new LinkedHashMap<>();
 		Entry<MetodoPago, Double> primerPagoUsado = null;
-		String descuentoActivo = "hola";
+		String descuentoActivo = null;
 		do {
 			opcionMenu = 0;
 			System.out.print("El precio de la membresia es de " + valorAPagar 
@@ -1949,18 +1949,14 @@ public class Administrador {
 			if (opcionMenu == 5) {inicio();}
 			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(cliente, opcionMenu);
 			try {
-				descuentoActivo = "";
 				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {
 					valorAPagar = valorAPagar - valorAPagar * metodoPagoSeleccionado.getDescuentoAsociado();
 					System.out.print("Con el método de pago " 
 						+ metodoPagoSeleccionado.getNombre()+ ", el nuevo monto a pagar es " 
 						+ valorAPagar +". Por favor, seleccione una opción: ");
-					if (primerPagoUsado != null) {
-					descuentoActivo = "El descuento de " + primerPagoUsado.getKey().getDescuentoAsociado()
-							+ " ya ha sido aplicado al precio de " + membresiaNueva.getValorSuscripcionMensual();}
-				} else {
-					System.out.print(descuentoActivo);
-					System.out.print("El monto a pagar con el método de pago " 
+					
+				}else {
+					System.out.print(descuentoActivo + "\nEl monto a pagar con el método de pago " 
 						+ metodoPagoSeleccionado.getNombre()+ " es " 
 						+ valorAPagar + ". Por favor, seleccione una opción: ");
 				}
@@ -1971,6 +1967,8 @@ public class Administrador {
 				System.out.print("Por favor, termine de completar el pago.\n");
 				pagosEnTransaccion.put(metodoPagoSeleccionado, precio);
 				primerPagoUsado = pagosEnTransaccion.entrySet().iterator().next();
+				descuentoActivo = "El descuento de " + (int)(primerPagoUsado.getKey().getDescuentoAsociado()*100)
+				+ "% ya ha sido aplicado al precio original de " + membresiaNueva.getValorSuscripcionMensual();
 				valorAPagar = valorAPagar - precio;
 				continue;
 			} else {
@@ -1981,6 +1979,55 @@ public class Administrador {
 		}while (valorAPagar != 0); 
 		membresiaNueva.procesarPagoRealizado(cliente);
 		System.out.print(membresiaNueva.factura(cliente));
+		TarjetaCinemar tarjetaCinemarActual = cliente.getCuenta();
+		int tipoMembresia = 0;
+		if (tarjetaCinemarActual != null) {
+			tipoMembresia = cliente.getMembresia().getTipoMembresia();
+			if (tipoMembresia == 1) {
+				tarjetaCinemarActual.ingresarSaldo(10000);
+			}else {
+				tarjetaCinemarActual.ingresarSaldo(20000);
+			}
+		}else {
+			boolean finalizarCompra = false;
+			double saldoCuenta = 0.0;
+			tipoMembresia = cliente.getMembresia().getTipoMembresia();
+			if (tipoMembresia == 1) {
+				saldoCuenta = 5000.0;
+			} else {
+				saldoCuenta = 20000.0;
+			}
+			do {
+				try{
+					opcionMenu = 0;
+					System.out.print("\nGracias por adquirir el programa de membresia. \nComo regalo, le otorgamos una tarjeta cinemar con "
+							+ (int)saldoCuenta + " recargados.\n1. Confirmar.\n2. Rechazar. \nPor favor, seleccione una opción: ");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				}catch (NumberFormatException e){
+					System.out.print("Error. Por favor, escriba un dato numérico");}
+				if (opcionMenu == 1) {
+					ServicioEntretenimiento.asociarTarjetaCliente(cliente);
+					cliente.getCuenta().ingresarSaldo(saldoCuenta);
+					System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
+					System.out.print("\nGracias por su compra. Redirigiendo al menú principal.");
+					finalizarCompra = true;
+				} else {
+					try {
+						opcionMenu = 0;
+						System.out.print("Recuerde que esta oferta es única. ¿Esta seguro? \n1. Si. \n2. No. \nIngrese la opción: ");	
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch (NumberFormatException e){
+						System.out.print("Error. Por favor, escriba un dato numérico");}
+					if (opcionMenu == 1 ) {
+						System.out.print("Gracias por su compra. Redirigiendo al menú principal.");
+						finalizarCompra = true;
+					} else {
+						continue;
+					}
+				}
+				
+			} while (!finalizarCompra);
+		}
 	}
 						
 				

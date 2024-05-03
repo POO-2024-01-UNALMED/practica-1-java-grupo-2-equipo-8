@@ -2,6 +2,7 @@ package gestionAplicacion.usuario;
 import java.util.ArrayList;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
 import iuMain.Administrador;
@@ -317,6 +318,7 @@ public class Membresia implements IBuyable{
 				"Categoria: " + cliente.getMembresia().getCategoria() + "\n" +
 				"Tipo: " + cliente.getMembresia().getTipoMembresia() + "\n" +
 				"Duración: " + cliente.getMembresia().getDuracionMembresiaDias()+ " dias.\n" +
+				"Precio de compra: " + cliente.getMembresia().getValorSuscripcionMensual() + "\n" +
 				"Valida hasta: " + SalaCine.getFecha().plusDays(this.duracionMembresiaDias);
 		cliente.getFacturas().add(factura);
 		return factura;

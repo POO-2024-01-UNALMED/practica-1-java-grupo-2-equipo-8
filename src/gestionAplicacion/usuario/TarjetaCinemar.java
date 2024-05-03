@@ -52,7 +52,7 @@ public class TarjetaCinemar implements IBuyable {
 		return dueno;
 	}
 
-	public void setSaldo(int saldo) {
+	public void setSaldo(double saldo) {
 		this.saldo = saldo;
 	}
 

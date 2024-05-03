@@ -45,7 +45,9 @@ public class ServicioEntretenimiento extends Servicio{
 	}
 
 	//metodos
-	public void ingresarSaldo(int saldo) {}
+	public void ingresarSaldo(int saldo) {
+		
+	}
 	public void usarServicio() {}
 	public void leerFactura() {}
 	public boolean verificarPuntuacion() {return true;}
