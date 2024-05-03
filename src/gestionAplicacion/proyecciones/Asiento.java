@@ -1,25 +1,33 @@
 package gestionAplicacion.proyecciones;
 
 public class Asiento {
-
-	private int numeroAsiento;
+	
+	private String numeroAsiento;
 	private boolean disponibilidad = true;
 	private static int AsientosCreados;
 	
-	public Asiento(){}
-	
-	public Asiento(int numeroAsiento, boolean disponibilidad) {
+	public Asiento(){
 		++AsientosCreados;
-		this.numeroAsiento = ++AsientosCreados;
-		this.disponibilidad = disponibilidad;
 	}
-
-	public int getNumeroAsiento() {
+	
+	public Asiento(int fila, int columna){
+		++AsientosCreados;
+		this.numeroAsiento = (fila + 1) + "-" + (columna + 1);
+	}
+	public String getNumeroAsiento() {
 		return numeroAsiento;
 	}
 
-	public void setNumeroAsiento(int numeroAsiento) {
+	public void setNumeroAsiento(String numeroAsiento) {
 		this.numeroAsiento = numeroAsiento;
+	}
+
+	public static int getAsientosCreados() {
+		return AsientosCreados;
+	}
+
+	public static void setAsientosCreados(int asientosCreados) {
+		AsientosCreados = asientosCreados;
 	}
 
 	public boolean isDisponibilidad() {
@@ -29,7 +37,6 @@ public class Asiento {
 	public void setDisponibilidad(boolean disponibilidad) {
 		this.disponibilidad = disponibilidad;
 	}
-
 	
 }
 

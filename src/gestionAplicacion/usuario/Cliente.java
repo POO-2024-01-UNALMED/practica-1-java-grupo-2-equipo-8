@@ -1,4 +1,5 @@
 package gestionAplicacion.usuario;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
@@ -114,6 +115,32 @@ public class Cliente {
 		this.getMetodosDePago().get(1).setLimiteMaximoPago(max2);
 		this.getMetodosDePago().get(2).setLimiteMaximoPago(max3);
 		this.getMetodosDePago().get(3).setLimiteMaximoPago(max4);
+	}
+	
+	/**
+	 * Description: Este método se encarga de mostrar al cliente las sala de cine a las que puede ingresar
+	 * examinando su array de tickets e imprimiendo en pantalla información relevante de estos para facilitar
+	 * la elección de la sala de cine a ingresar
+	 * @return: <b>String</b> : Este método se encarga de retornar un string con el nombre de la película
+	 * el número de la sala de cine y la fecha de la película de cada uno de los tickets asociados del cliente
+	 * */
+	public String mostrarTicketsParaUsar() {
+		String tickets = null;
+		int i = 1;
+		for (Ticket ticket : this.getTickets()) {
+			
+			if (tickets == null) {
+				tickets = i + ". Película: " + ticket.getPelicula().getNombre() 
+						+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
+						+ ", Hora: " + ticket.getHorario() + "\n";
+			}else {
+				tickets = tickets + i + ". Película: " + ticket.getPelicula().getNombre() 
+						+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
+						+ ", Hora: " + ticket.getHorario() + "\n";
+			}
+			i++;
+		}
+		return tickets;
 	}
 
 	//Getters y setters

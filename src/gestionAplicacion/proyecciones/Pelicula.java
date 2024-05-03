@@ -225,7 +225,8 @@ public class Pelicula{
 	 * */
 	public String mostrarAsientosSalaVirtual(LocalDateTime fecha) {
 		StringBuilder resultado = new StringBuilder("Asientos de Cine\n");
-	    resultado.append("   ");
+		resultado.append("  --------------------------------- \n              Pantalla\n");
+	    resultado.append("    ");
 	    
 	    // Agregar números de columnas
 	    for (int i = 0; i < this.getHorarios().get(fecha).length; i++) {
@@ -310,7 +311,6 @@ public class Pelicula{
 		return carteleraInfantil;
 	}
 	
-	//Crear método para generar menú cartelera
 	/**
 	 * Description : Este método se encarga de crear un string que se imprimirá en pantalla para visualizar las 
 	 * películas en cartelera
@@ -340,7 +340,7 @@ public class Pelicula{
 	 * @param posicion : Recibe un entero que representa la posición del horario 
 	 * seleccionado por el usuario luego de mostrarHorarios de esta película
 	 * @return <b>LocalDateTime</b> : Retorna la localDateTime correspondiente a la elcción hecha por el usuario
-	 * el formato linkedHashMap garantiza que siempre retorna la localDateTime deseada
+	 * el formato LinkedHashMap garantiza que siempre retorna la localDateTime deseada
 	 * */
 	public LocalDateTime obtenerHorario(int posicion){
 		int i = 0;
@@ -407,4 +407,37 @@ public class Pelicula{
 		}
 	}
 	
+	/**
+	 * Description : Este método se encarga de generar un listado de la salas de cine con información relevante de estas,
+	 * con el fin de que el usuario elija una de las opciones disponibles para ingresar
+	 * @return <b>String</b>: Retorna la lista de las salas de cine disponibles 
+	 * */
+	public static String mostrarSalaCine() {
+		String resultado = null;
+		int i = 1;
+		
+		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
+			
+			if (salaDeCine.getPeliculaEnPresentacion() == null) {
+				continue;
+			}
+			
+			if (resultado == null) {
+				resultado = i + ". Número sala de cine: " + salaDeCine.getNumeroSala() 
+				+ "; Formato de sala de cine : " + salaDeCine.getTipoDeSala()
+				+ "; Película en presentación : " + salaDeCine.getPeliculaEnPresentacion().getNombre()
+				+ "; Horario película : " + salaDeCine.getHorarioPeliculaEnPresentacion();
+			}else {
+				resultado = resultado + "\n" + i + ". Número sala de cine: " + salaDeCine.getNumeroSala() 
+				+ "; Formato de sala de cine : " + salaDeCine.getTipoDeSala()
+				+ "; Película en presentación : " + salaDeCine.getPeliculaEnPresentacion().getNombre()
+				+ "; Horario película : " + salaDeCine.getHorarioPeliculaEnPresentacion();
+			}
+			
+			i++;
+			
+		}
+		
+		return resultado;
+	}
 }

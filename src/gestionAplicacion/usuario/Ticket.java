@@ -1,7 +1,6 @@
 package gestionAplicacion.usuario;
- 
-import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.ServicioEntretenimiento;
 
@@ -11,13 +10,13 @@ public class Ticket implements IBuyable{
 	private int idTicket;
 	private Cliente dueno;
 	private SalaCine salaDeCine;
-	private Asiento asiento;
+	//private Asiento asiento; Ver la forma de asociar el objeto o eliminar este atributo (Eliminar atributo)
 	private double precio;
 	private Pelicula pelicula;
 	private LocalDateTime horario;
-	private int idPelicula;
+	private int idPelicula; //De la película tomar el Id
 	private String numeroAsiento;
-	private String codigo;
+	private String codigo; //Cambiar por id borrar id
 
 	//Constructors
 	public Ticket(){
@@ -25,10 +24,9 @@ public class Ticket implements IBuyable{
 		
 	}
 	
-	public Ticket(Cliente dueno, SalaCine salaDeCine, Asiento asiento, double precio, Pelicula pelicula, LocalDateTime horario, int idPelicula) {
+	public Ticket(Cliente dueno, SalaCine salaDeCine, double precio, Pelicula pelicula, LocalDateTime horario, int idPelicula) {
 		this.dueno = dueno;
 		this.salaDeCine = salaDeCine;
-		this.asiento = asiento;
 		this.precio = precio;
 		this.pelicula = pelicula;
 		this.horario = horario;
@@ -106,7 +104,7 @@ public class Ticket implements IBuyable{
 		cliente.getTickets().add(this);
 		
 		//Se crea la referencia del ticket en el array de ticketsCreados de la sala de cine asociada a este
-		this.getSalaDeCine().getTicketsCreados().add(this);
+		SalaCine.getTicketsCreados().add(this);
 	}
 	
 	
@@ -161,14 +159,6 @@ public class Ticket implements IBuyable{
 
 	public void setSalaDeCine(SalaCine salaDeCine) {
 		this.salaDeCine = salaDeCine;
-	}
-
-	public Asiento getAsiento() {
-		return asiento;
-	}
-
-	public void setAsiento(Asiento asiento) {
-		this.asiento = asiento;
 	}
 
 	public double getPrecio() {
