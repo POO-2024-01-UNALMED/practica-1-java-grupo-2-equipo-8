@@ -374,41 +374,39 @@ public class Administrador {
 		
 //------------------------------------------------------------------------------------------------------------------		
 		
-		
-
-	static void ingresoZonaJuegos(Cliente clienteProceso) {
+	static void ingresoZonaJuegos() {
 
 		System.out.println("\nPara entrar a los juegos es necesario tener la tarjeta cinemar\n¿Desea ingresar o volver?\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
-		int opcion = (int)readLong();
-		if (opcion==2) {inicio(clienteProceso);}
+		int opcion = (int)Administrador.readLong();
+		if (opcion==2) {Administrador.inicio();}
 		else if (opcion==1) {}
-		else if (opcion==3) {salirDelSistema();}
-		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(clienteProceso);}
+		else if (opcion==3) {Administrador.salirDelSistema();}
+		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos();}
 		TipoDeDocumento documentoCliente=null;
 		boolean casoValido = true;
 		do{
 			System.out.println("\nSeleccione el tipo de documento:\n1."+TipoDeDocumento.CC+"-"+TipoDeDocumento.CC.getNombre()+"\n2."+TipoDeDocumento.TI+"-"+TipoDeDocumento.TI.getNombre()+"\n3."+TipoDeDocumento.CE+"-"+TipoDeDocumento.CE.getNombre()+"\n4.Regresar\n5.Volver al menú principal\n6.Salir");
-			int opcion1 = (int)readLong();
+			int opcion1 = (int)Administrador.readLong();
 			switch (opcion1) {
 				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
 				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
 				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
-				case 4: ingresoZonaJuegos(clienteProceso);casoValido=false;break;
-				case 5: inicio(clienteProceso);casoValido=false;break;
-				case 6: salirDelSistema();
+				case 4: ingresoZonaJuegos();casoValido=false;break;
+				case 5: Administrador.inicio();casoValido=false;break;
+				case 6: Administrador.salirDelSistema();
 				default: System.out.println("Opcion invalida");break;
 			}
 		}while(casoValido);	
 			
 		do {
 			System.out.print("Ingrese el numero de documento: ");
-			long numeroDocumentoCliente = readLong();
+			long numeroDocumentoCliente = Administrador.readLong();
 			Cliente cliente=Cliente.revisarDatosCliente(numeroDocumentoCliente);
 			if (cliente==null) {
 				System.out.print("Ingrese su edad: ");
-				int edadCliente = (int)readLong();
+				int edadCliente = (int)Administrador.readLong();
 				System.out.print("Ingrese su nombre: ");
-				String nombreCliente = readLn();
+				String nombreCliente = Administrador.readLn();
 				cliente = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
 				if (ServicioEntretenimiento.verificarTarjetasEnInventario()) {
 					System.out.println("\nEl precio de la tarjeta Cinemar es de 5000 pesos\nEste valor sera descontado al saldo de su tarjeta");
@@ -416,13 +414,13 @@ public class Administrador {
 					cliente.getCuenta().hacerPago(5000);
 					System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
 				}
-				else {System.out.println("\nLo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); inicio(clienteProceso);}
+				else {System.out.println("\nLo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); Administrador.inicio();}
 				casoValido=true;
 			}
 			else {
 				System.out.println("¿Eres "+cliente.getNombre()+"?");
 				System.out.println("1. SI\n2. NO");
-				int eleccion = (int)readLong();
+				int eleccion = (int)Administrador.readLong();
 				if (eleccion==1) {
 					if (!cliente.verificarCuenta()) {
 						if (ServicioEntretenimiento.verificarTarjetasEnInventario()) {
@@ -431,7 +429,7 @@ public class Administrador {
 							cliente.getCuenta().hacerPago(5000);
 							System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
 						}
-						else {System.out.println("Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); inicio(clienteProceso);}
+						else {System.out.println("Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); Administrador.inicio();}
 					}
 					else {
 						System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
@@ -449,7 +447,7 @@ public class Administrador {
 		do {
 			System.out.println("¿Deseas recargar la tarjeta?");
 			System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir");
-			int eleccion1 = (int)readLong();
+			int eleccion1 = (int)Administrador.readLong();
 			boolean finCiclo = true;
 			if (eleccion1==1) {
 				
@@ -460,16 +458,16 @@ public class Administrador {
 				double maximo3 = clienteActual.getMetodosDePago().get(2).getLimiteMaximoPago();
 				double maximo4 = clienteActual.getMetodosDePago().get(3).getLimiteMaximoPago();
 				System.out.println(MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
-				int eleccion2 = (int)readLong();
+				int eleccion2 = (int)Administrador.readLong();
 				System.out.println("¿Cuanto desea recargar?\n");
-				double eleccion3 = (double)readLong();
+				double eleccion3 = (double)Administrador.readLong();
 				while (finCiclo) {
 					
 					switch (eleccion2) {
 					
 					case 1:
 						System.out.print("Ingrese contraseña (4 digitos): ");
-						int clave = (int) readLong();
+						int clave = (int) Administrador.readLong();
 						
 						MetodoPago metodoPagoCliente = ServicioEntretenimiento.encontrarMetodoPagoCliente("Bancolombia", clienteActual.getMetodosDePago());
 						
@@ -482,7 +480,7 @@ public class Administrador {
 							eleccion3 = (double)eleccion3-metodoPagoCliente.getLimiteMaximoPago();
 							metodoPagoCliente.setLimiteMaximoPago(0);
 							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
-							eleccion2 = (int)readLong();
+							eleccion2 = (int)Administrador.readLong();
 						}
 						else {
 							clienteActual.getCuenta().ingresarSaldo(eleccion3);
@@ -492,7 +490,7 @@ public class Administrador {
 						break;
 					case 2:
 						System.out.print("Ingrese contraseña (4 digitos): ");
-						int clave2 = (int) readLong();
+						int clave2 = (int) Administrador.readLong();
 						
 						MetodoPago metodoPagoCliente2 = ServicioEntretenimiento.encontrarMetodoPagoCliente("AV Villas", clienteActual.getMetodosDePago());
 						
@@ -505,7 +503,7 @@ public class Administrador {
 							eleccion3 = (double)eleccion3-metodoPagoCliente2.getLimiteMaximoPago();
 							metodoPagoCliente2.setLimiteMaximoPago(0);
 							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
-							eleccion2 = (int)readLong();
+							eleccion2 = (int)Administrador.readLong();
 						}
 						else {
 							clienteActual.getCuenta().ingresarSaldo(eleccion3);
@@ -515,7 +513,7 @@ public class Administrador {
 						break;
 					case 3:
 						System.out.print("Ingrese contraseña (4 digitos): ");
-						int clave3 = (int) readLong();
+						int clave3 = (int) Administrador.readLong();
 						
 						MetodoPago metodoPagoCliente3 = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", clienteActual.getMetodosDePago());
 						
@@ -528,7 +526,7 @@ public class Administrador {
 							eleccion3 = (double)eleccion3-metodoPagoCliente3.getLimiteMaximoPago();
 							metodoPagoCliente3.setLimiteMaximoPago(0);
 							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
-							eleccion2 = (int)readLong();
+							eleccion2 = (int)Administrador.readLong();
 						}
 						else {
 							clienteActual.getCuenta().ingresarSaldo(eleccion3);
@@ -538,7 +536,7 @@ public class Administrador {
 						break;
 					case 4:
 						System.out.print("Ingrese contraseña (4 digitos): ");
-						int clave4 = (int) readLong();
+						int clave4 = (int) Administrador.readLong();
 						
 						MetodoPago metodoPagoCliente4 = ServicioEntretenimiento.encontrarMetodoPagoCliente("Efectivo", clienteActual.getMetodosDePago());
 						
@@ -551,7 +549,7 @@ public class Administrador {
 							eleccion3 = (double)eleccion3-metodoPagoCliente4.getLimiteMaximoPago();
 							metodoPagoCliente4.setLimiteMaximoPago(0);
 							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(clienteActual.getMetodosDePago()));
-							eleccion2 = (int)readLong();
+							eleccion2 = (int)Administrador.readLong();
 						}
 						else {
 							clienteActual.getCuenta().ingresarSaldo(eleccion3);
@@ -574,12 +572,12 @@ public class Administrador {
 				while(!finCiclo) {
 					System.out.println("Desea ingresar a los juegos, Volver a recargar la tarjeta, volver al inicio o Salir");
 					System.out.println("1.Ingresar\n2.Recargar tarjeta cinemar\n3.Volver al menu principal\n4.Salir");
-					int eleccion4 = (int)readLong();
+					int eleccion4 = (int)Administrador.readLong();
 					switch (eleccion4) {
 					case 1: casoValido= false;finCiclo= true; break;
 					case 2: finCiclo= true; break;
-					case 3: inicio(clienteProceso);
-					case 4: salirDelSistema();
+					case 3: Administrador.inicio();
+					case 4: Administrador.salirDelSistema();
 					default: finCiclo = false; break; 
 				}
 				}
@@ -590,21 +588,21 @@ public class Administrador {
 				while(finCiclo) {
 					System.out.println("Desea ingresar a los juegos, recargar la tarjeta, volver al inicio o Salir");
 					System.out.println("1.Ingresar\n2.Recargar tarjeta cinemar\n3.Volver al menu principal\n4.Salir");
-					int eleccion4 = (int)readLong();
+					int eleccion4 = (int)Administrador.readLong();
 					switch (eleccion4) {
 					case 1: casoValido= false;finCiclo= false; break;
 					case 2: finCiclo= false; break;
-					case 3: inicio(clienteProceso);
-					case 4: salirDelSistema();
+					case 3: Administrador.inicio();
+					case 4: Administrador.salirDelSistema();
 					default: finCiclo = true; break; 
 					}
 				}
 			}
 			else if (eleccion1==3) {
-				inicio(clienteProceso);
+				Administrador.inicio();
 			}
 			else if (eleccion1==4) {
-				salirDelSistema();
+				Administrador.salirDelSistema();
 			}
 			else {System.out.println("Opcion invalida");}
 		}while(casoValido);
@@ -612,10 +610,10 @@ public class Administrador {
 		boolean caso = true;
 		do {
 			System.out.println("\n¿Has realizado alguna compra de un tiquete de cine y no has redimido su codigo?\n1.SI\n2.NO\n3.Salir");
-			int eleccion6 = (int)readLong();
+			int eleccion6 = (int)Administrador.readLong();
 			if (eleccion6==1) {
 				System.out.println("\nIngrese el codigo asociado a la factura de su ticket\nRecuerde que el codigo es el formato de la pelicula pegado a su tipo de documento y el numero de la salaDecine de el tiquete\nEjemplo: 4DCC12 (Todo en mayuscula)");
-				String codigo = readLn();
+				String codigo = Administrador.readLn();
 				if (ServicioEntretenimiento.comprobarCodigo(codigo)) {
 					System.out.println("Codigo correcto, Se le asignó un descuento a el precio de los juegos");
 					ServicioEntretenimiento.AplicarDescuentoJuegos();
@@ -628,7 +626,7 @@ public class Administrador {
 				caso = false;
 			}
 			else if (eleccion6==3) {
-				salirDelSistema();
+				Administrador.salirDelSistema();
 			}
 			else {
 				System.out.println("Opcion invalida");
@@ -637,12 +635,12 @@ public class Administrador {
 		
 		do {
 			System.out.println(ServicioEntretenimiento.mostrarJuegos());
-			int eleccion7 =(int)readLong();
+			int eleccion7 =(int)Administrador.readLong();
 			switch(eleccion7) {
 			case 1:
-				if (clienteActual.getCuenta().getSaldo()>=game1.getValorServicio()) {
-					clienteActual.getCuenta().hacerPago(game1.getValorServicio());
-					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game1.getGeneroServicio());
+				if (clienteActual.getCuenta().getSaldo()>=Administrador.game1.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(Administrador.game1.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game1.getGeneroServicio());
 					ServicioEntretenimiento.juego(new String[]{"ARMA", "COMBATE", "EXPLOSION","GUERRA","ADRENALINA"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
 				}
@@ -650,11 +648,11 @@ public class Administrador {
 					boolean finWhile = true;
 					while (finWhile) {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
-					int option = (int)readLong();
+					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: inicio(clienteProceso);
-						case 2: ingresoZonaJuegos(clienteProceso);
-						case 3: salirDelSistema();
+						case 1: Administrador.inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}
 					}
@@ -663,7 +661,7 @@ public class Administrador {
 				boolean finWhile1 = true;
 				while (finWhile1) {
 					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
-					int eleccion8 = (int)readLong();
+					int eleccion8 = (int)Administrador.readLong();
 					if (eleccion8==1) {
 						finWhile1 = false;
 					}
@@ -674,9 +672,9 @@ public class Administrador {
 				}	
 				break;
 			case 2:
-				if (clienteActual.getCuenta().getSaldo()>=game2.getValorServicio()) {
-					clienteActual.getCuenta().hacerPago(game2.getValorServicio());
-					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game2.getGeneroServicio());
+				if (clienteActual.getCuenta().getSaldo()>=Administrador.game2.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(Administrador.game2.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game2.getGeneroServicio());
 					ServicioEntretenimiento.juego(new String[]{"FANTASMA", "MOUNSTRUO", "MUERTE","ZOMBI","CEMENTERIO"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
 				}
@@ -684,11 +682,11 @@ public class Administrador {
 					boolean finWhile = true;
 					while (finWhile) {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
-					int option = (int)readLong();
+					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: inicio(clienteProceso);
-						case 2: ingresoZonaJuegos(clienteProceso);
-						case 3: salirDelSistema();
+						case 1: Administrador.inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}
 					}
@@ -697,7 +695,7 @@ public class Administrador {
 				boolean finWhile2 = true;
 				while (finWhile2) {
 					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
-					int eleccion8 = (int)readLong();
+					int eleccion8 = (int)Administrador.readLong();
 					if (eleccion8==1) {
 						finWhile2 = false;
 					}
@@ -709,9 +707,9 @@ public class Administrador {
 				break;
 			
 			case 3:
-				if (clienteActual.getCuenta().getSaldo()>=game3.getValorServicio()) {
-					clienteActual.getCuenta().hacerPago(game3.getValorServicio());
-					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game3.getGeneroServicio());
+				if (clienteActual.getCuenta().getSaldo()>=Administrador.game3.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(Administrador.game3.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game3.getGeneroServicio());
 					ServicioEntretenimiento.juego(new String[]{"OBJETO", "GUZMAN", "HERENCIA","CONSTRUCTOR","JAVA"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
 				}
@@ -719,11 +717,11 @@ public class Administrador {
 					boolean finWhile = true;
 					while (finWhile) {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
-					int option = (int)readLong();
+					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: inicio(clienteProceso);
-						case 2: ingresoZonaJuegos(clienteProceso);
-						case 3: salirDelSistema();
+						case 1: Administrador.inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}
 					}
@@ -732,7 +730,7 @@ public class Administrador {
 				boolean finWhile3 = true;
 				while (finWhile3) {
 					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
-					int eleccion8 = (int)readLong();
+					int eleccion8 = (int)Administrador.readLong();
 					if (eleccion8==1) {
 						finWhile3 = false;
 					}
@@ -743,9 +741,9 @@ public class Administrador {
 				}	
 				break;
 			case 4:
-				if (clienteActual.getCuenta().getSaldo()>=game4.getValorServicio()) {
-					clienteActual.getCuenta().hacerPago(game4.getValorServicio());
-					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game4.getGeneroServicio());
+				if (clienteActual.getCuenta().getSaldo()>=Administrador.game4.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(Administrador.game4.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game4.getGeneroServicio());
 					ServicioEntretenimiento.juego(new String[]{"DIVERSION", "RISAS", "CHISTE","PAYASO","GRACIOSO"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
 				}
@@ -753,11 +751,11 @@ public class Administrador {
 					boolean finWhile = true;
 					while (finWhile) {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
-					int option = (int)readLong();
+					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: inicio(clienteProceso);
-						case 2: ingresoZonaJuegos(clienteProceso);
-						case 3: salirDelSistema();
+						case 1: Administrador.inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}
 					}
@@ -766,7 +764,7 @@ public class Administrador {
 				boolean finWhile4 = true;
 				while (finWhile4) {
 					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
-					int eleccion8 = (int)readLong();
+					int eleccion8 = (int)Administrador.readLong();
 					if (eleccion8==1) {
 						finWhile4 = false;
 					}
@@ -777,9 +775,9 @@ public class Administrador {
 				}	
 				break;
 			case 5:
-				if (clienteActual.getCuenta().getSaldo()>=game5.getValorServicio()) {
-					clienteActual.getCuenta().hacerPago(game5.getValorServicio());
-					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+game5.getGeneroServicio());
+				if (clienteActual.getCuenta().getSaldo()>=Administrador.game5.getValorServicio()) {
+					clienteActual.getCuenta().hacerPago(Administrador.game5.getValorServicio());
+					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game5.getGeneroServicio());
 					ServicioEntretenimiento.juego(new String[]{"SHOW", "EMOCIONES", "MUJERES","LAGRIMAS","CONMOVEDOR"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+clienteActual.getCuenta().getSaldo());
 				}
@@ -787,11 +785,11 @@ public class Administrador {
 					boolean finWhile = true;
 					while (finWhile) {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
-					int option = (int)readLong();
+					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: inicio(clienteProceso);
-						case 2: ingresoZonaJuegos(clienteProceso);
-						case 3: salirDelSistema();
+						case 1: Administrador.inicio();
+						case 2: ingresoZonaJuegos();
+						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}
 					}
@@ -800,7 +798,7 @@ public class Administrador {
 				boolean finWhile5 = true;
 				while (finWhile5) {
 					System.out.println("\n¿Desea volver a jugar?\n1.SI\n2.NO");
-					int eleccion8 = (int)readLong();
+					int eleccion8 = (int)Administrador.readLong();
 					if (eleccion8==1) {
 						finWhile5 = false;
 					}
@@ -814,6 +812,8 @@ public class Administrador {
 			}	
 		}while(!caso);
 	}
+
+//------------------------------------------------------------------------------------------------------------------		
 	
 	static void adquirirMembresia(Cliente clienteProceso) {
 		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla.");
