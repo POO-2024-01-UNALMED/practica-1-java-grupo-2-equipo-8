@@ -25,9 +25,9 @@ public enum TipoDeDocumento {
 		int i = 1;
 		for (TipoDeDocumento TipoDeDocumento : TiposDeDocumento) {
 			if (resultado == null) {
-				resultado = i + ". "+ TipoDeDocumento.getNombre() + "\n";
+				resultado = i + ". "+ TipoDeDocumento.getNombre();
 			}else {
-				resultado = resultado + i + ". " + TipoDeDocumento.getNombre() + "\n";
+				resultado = resultado + "\n" +  i + ". " + TipoDeDocumento.getNombre();
 			}
 			i++;
 		}

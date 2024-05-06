@@ -40,7 +40,7 @@ public class Administrador {
 	static Pelicula pelicula1 = new Pelicula("KNJ temporada 4 movie", 30000, "Aventura", Duration.ofMinutes(60), "+12", "4D", 3); 
 	static Pelicula pelicula2 = new Pelicula("Oppenheimer", 15000, "Drama", Duration.ofMinutes(120), "+18", "2D", 1); 
 	static Pelicula pelicula3 = new Pelicula("BNHA temporada 7 movie", 18000, "Acción", Duration.ofMinutes(60), "+18", "3D", 2);
-	static Pelicula pelicula4 = new Pelicula("Código Enigma", 12000, "Historia", Duration.ofMinutes(180), "+18", "2D", 2);
+	static Pelicula pelicula4 = new Pelicula("Código Enigma", 12000, "Historia", Duration.ofMinutes(180), "+18", "2D", 1);
 	static Pelicula pelicula5 = new Pelicula("Spy x Familiy Código: Blanco", 25000, "Comedia", Duration.ofMinutes(105), "+8", "4D", 3);
 	static Pelicula pelicula6 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "3D", 4);
 	
@@ -60,7 +60,7 @@ public class Administrador {
 	static Ticket ticket3 = new Ticket();
 	static Ticket ticket4 = new Ticket();
 	static Ticket ticket5 = new Ticket(cliente4, salaDeCine3, 50000,  pelicula1, LocalDateTime.of(2024, 4, 28, 12, 0, 0), "4-8");
-	static Ticket ticket6 = new Ticket(cliente4, pelicula2, LocalDateTime.of(2024, 5, 4, 16, 0, 0), "2-2");
+	static Ticket ticket6 = new Ticket(cliente1, pelicula4, LocalDateTime.of(2024, 4, 28, 13, 30, 00), "2-2");
 	static Ticket ticket7 = new Ticket();
 	static Ticket ticket8 = new Ticket();
 	
@@ -109,7 +109,7 @@ public class Administrador {
 			pelicula3.setNumeroDeSala(2);
 
 			pelicula4.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
-			pelicula5.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 21, 30, 00));
+			pelicula5.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 11, 00, 00));
 
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 17, 30, 00));
@@ -135,10 +135,11 @@ public class Administrador {
 			ticket1.procesarPagoRealizado(cliente1);
 		    ticket1.factura(cliente1);
 			salaDeCine3.cambiarDisponibilidadAsientoLibre(4, 4);
+			cliente1.getTickets().add(ticket6);
 			
 			ticket2.setPelicula(pelicula1);
 			ticket2.asignarPrecio();
-			ticket2.setSalaDeCine(salaDeCine1);
+			ticket2.setSalaDeCine(salaDeCine3);
 			ticket2.setDueno(cliente2);
 			ticket2.setNumeroAsiento("1-4");
 			ticket2.setHorario(SalaCine.getFecha());
@@ -164,7 +165,7 @@ public class Administrador {
 			MetodoPago.metodoPagoPorTipo(metodoPago3);
 			MetodoPago.metodoPagoPorTipo(metodoPago4);
 
-			salaDeCine1.verificarTicket(cliente2);
+			salaDeCine3.verificarTicket(cliente2);
 //			cliente1.setMembresia(membresia1);
 
 			cliente1.setMembresia(membresia3);
@@ -206,29 +207,31 @@ public class Administrador {
 					
 
 		
-
-		
-		
-		
-
-		
+			
 //			for (ServicioEntretenimiento juego : ServicioEntretenimiento.getJuegos()) {
 //				System.out.println(juego.getGeneroServicio());
 //			}
+			
+			//Print tests
 			System.out.println();
 			
 		}
-			
-
-
-		System.out.println("Bienvenido al cine de marinilla");
-		inicio();
+		
+		//MAIN
+		System.out.println("Iniciar sesión");
+		Cliente clienteProceso = iniciarSesion();
+		
+		System.out.println("\nSeleccione la ubicación de una de nuestras instalaciones: ");
+		//Implementar método
+		
+		System.out.println("Hola " + clienteProceso.getNombre() + " Bienvenido al cine de marinilla");
+		inicio(clienteProceso);
 		
 	}
 	
       
 	
-	static void inicio() {
+	public static void inicio(Cliente clienteProceso) {
 	int opcion = 0;
 	do {
 		try {
@@ -240,1009 +243,39 @@ public class Administrador {
 			System.out.println("4. Realizar compra de souvenirs");
 			System.out.println("5. Ingresar a la zona de juegos");
 			System.out.println("6. Adquirir o actualizar membresia");
-			System.out.println("7. Salir");
+			System.out.println("7. Sala de espera");
+			System.out.println("8. Salir");
 			opcion = Integer.parseInt(sc.nextLine());
 		}catch(NumberFormatException e) {
 			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
 		}
-	}while(!(opcion > 0 & opcion <= 7));
+	}while(!(opcion > 0 & opcion <= 8));
 	
 	
 	switch (opcion) {
-		case 1: reservarTicket();inicio(); break;
-		case 2: ingresarSalaCineDesdeMenu(); inicio(); break;
-		case 3: comprarComida(); inicio(); break;
-		case 4: comprarSouvenirs();inicio(); break;
-		case 5: ingresoZonaJuegos(); inicio(); break;
-		case 6: adquirirMembresia(); inicio(); break;
-		case 7: salirDelSistema(); break;
-		default: System.out.println("Opción invalida"); inicio();
+		case 1: Funcionalidad1.reservarTicket(clienteProceso);inicio(clienteProceso); break;
+		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso); inicio(clienteProceso); break;
+		case 3: comprarComida(clienteProceso); inicio(clienteProceso); break;
+		case 4: comprarSouvenirs(clienteProceso);inicio(clienteProceso); break;
+		case 5: ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
+		case 6: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
+		case 7: Funcionalidad1.salaDeEspera(clienteProceso); inicio(clienteProceso); break;
+		case 8: salirDelSistema(); break;
+		default: System.out.println("Opción invalida"); inicio(clienteProceso);
 	  }
 	
 	}
-	static void reservarTicket() {
-		System.out.println("Bienvenido al Sistema de Reserva de ticket para película");
-		
-		//Elección menu inicial
-		boolean casoValido = false;
-		int opcionMenu = 0;
-		do {
-			try {
-				System.out.println("¿Desea ingresar o volver?" +"\n1.Ingresar" + "\n2.Volver al menú principal" + "\n3.Salir");
-				opcionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e) {
-				System.out.println("Error, debes ingresar un dato numérico");
-				continue;
-			}
-			
-			switch (opcionMenu) {
-				case 1: casoValido = true; break;
-				case 2: inicio(); casoValido = true; break;
-				case 3: salirDelSistema(); casoValido = true; break;
-				default: System.out.println("Opción invalida");
-			}
-			
-		}while(!casoValido);
-		
-		//Pedimos el tipo de documento al usuario
-		TipoDeDocumento documentoCliente = null;
-		boolean casoValidoConfirmacion = false;
-		casoValido = false;
-		do{
-			opcionMenu = 0;
-			try {
-				System.out.println("\nSeleccione el tipo de documento:\n"+ TipoDeDocumento.mostrarTiposDeDocumento());
-				opcionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e){
-				System.out.println("Error, debes ingresar un dato numérico");
-				continue;
-			}
-			
-			switch (opcionMenu) {
-				case 1: documentoCliente = TipoDeDocumento.CC; casoValido=true; break;
-				case 2: documentoCliente = TipoDeDocumento.TI; casoValido=true; break;
-				case 3: documentoCliente = TipoDeDocumento.CE; casoValido=true; break;
-				default: System.out.println("Opción invalida");
-			}
-			
-		}while(!casoValido);	
-		
-		//Obtenemos al cliente que hará el proceso de reserva de ticket
-		Cliente clienteProceso = null;
-		
-		//Se pide al usuario su número de documento
-		long numeroDocumentoCliente = 0;
-		casoValido = false;
-		casoValidoConfirmacion = false;
-		do {
-			do {
-				try {
-					System.out.print("\nIngrese el número de documento: ");
-					numeroDocumentoCliente = Long.parseLong(sc.nextLine());
-				}catch(NumberFormatException e) {
-					System.out.println("Error, debes ingresar datos numéricos correspondientes a tu número de documento");
-					continue;
-				}
-				
-				//Confirmamos si es un dato correcto
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("Tu número de documento es: " + numeroDocumentoCliente + " \n1. Correcto \n2. Cambiar número de documento");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-					}catch(NumberFormatException e) {
-						System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
-					}
-				}while(!(opcionMenu == 1 || opcionMenu == 2));
-				
-				switch(opcionMenu) {
-				case 1: casoValidoConfirmacion = true; break;
-				case 2: casoValidoConfirmacion = false; break;
-				default: casoValidoConfirmacion = false; System.out.println("Opción invalida");
-				}
-				
-			}while(!casoValidoConfirmacion);
-			
-			//Se verficia si el cliente existe
-			clienteProceso = Cliente.revisarDatosCliente(numeroDocumentoCliente);
-			
-			//En caso de que no exista, lo creamos
-			if (clienteProceso==null) {
-				System.out.println("Hemos detectado que es la primera vez que visita nuestro cine, " +
-				"Por políticas de seguridad de nuestra compañia, le solicitamos que amablemente responda las siguientes preguntas");
-				//Pedimos la edad del cliente
-				int edadCliente = 0;
-				do {
-					try {
-						System.out.print("Ingrese su edad: ");
-						edadCliente = Integer.parseInt(sc.nextLine());
-					}catch (NumberFormatException e) {
-						System.out.println("Error, debes ingresar datos numéricos correspondientes a tu edad");
-						continue;
-					}
-					
-					//Confirmamos si es un dato correcto
-					do {
-						opcionMenu = 0;
-						try {
-							System.out.println("Tu edad es: " + edadCliente + " \n 1. Correcto \n 2. Cambiar edad");
-							opcionMenu = Integer.parseInt(sc.nextLine());
-						}catch(NumberFormatException e) {
-							System.out.println("Error, debes ingresar un único dato numérico");
-						}
-						
-					}while(!(opcionMenu == 1 || opcionMenu == 2));
-					
-					switch(opcionMenu) {
-						case 1: casoValidoConfirmacion = true; break;
-						case 2: casoValidoConfirmacion = false; break;
-						default: casoValidoConfirmacion = false; System.out.println("Opción invalida");
-					}
-				}while(!casoValidoConfirmacion);
-				
-				//Pedimos el nombre del cliente
-				String nombreCliente = null;
-				casoValido = false;
-				do {
-					System.out.println("Ingrese su nombre: ");
-					nombreCliente = sc.nextLine(); 
-					
-					//Confirmamos si el dato es correcto
-					do {
-						opcionMenu = 0;
-						try {
-							System.out.println("Su nombre es: " + nombreCliente + "\n1. Correcto \n2. Cambiar nombre");
-							opcionMenu = Integer.parseInt(sc.nextLine());
-						}catch(NumberFormatException e) {
-							System.out.println("Error, debe ingresar un único dato numérico");
-						}
-					}while(!(opcionMenu == 1 || opcionMenu == 2));
-					
-					switch(opcionMenu) {
-						case 1: casoValidoConfirmacion = true; break;
-						case 2: casoValidoConfirmacion = false; break;
-						default: casoValidoConfirmacion = false; System.out.println("Opción invalida");
-					}
-					
-				}while(!casoValidoConfirmacion);
-				
-				//Creamos un nuevo cliente con la información dada
-				clienteProceso = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
-				clienteProceso.setMetodosDePago(MetodoPago.asignarMetodosDePago(clienteProceso));
-				casoValido = true;
-			}
-			//En caso de que el cliente exista
-			else {
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("¿Eres " + clienteProceso.getNombre() + "?\n1. SI\n2. NO");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-					}catch(NumberFormatException e) {
-						System.out.println("Error, debes ingresar un único dato numérico");
-					}
-					
-					switch(opcionMenu) {
-						case 1: 
-							System.out.println("\nEstos son sus datos personales: " + 
-							"\nNombre: " + cliente1.getNombre() + "\nIdentificacion: "+ cliente1.getDocumento() + "\nEdad: " + cliente1.getEdad());
-							casoValido = true;
-							casoValidoConfirmacion = true;
-							break;
-						case 2:
-							System.out.println("Verifica el numero de documento\n");
-							casoValidoConfirmacion = true;
-							break;
-						default: 
-							System.out.println("Digite una opción valida"); 
-							casoValidoConfirmacion = false;
-					}
-				}while(!casoValidoConfirmacion);
-			}
-		}while(!casoValido);
-		
-		//Funcionalidad reserva de ticket
-		casoValido = false;
-		casoValidoConfirmacion = false;
-		Ticket ticketProceso = null;
-		Pelicula peliculaProceso = null;
-		do {
-			System.out.println("\nHola " + clienteProceso.getNombre() + ", Bienvenido al sistema de reserva de ticket");
-			System.out.println("=====================================================================================");
-			//Mostramos las películas en cartelera y le pedimos al usuario elegir una de estas
-			do {
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("Este es el listado de las películas en cartelera, elige una de las siguientes opciones\n" 
-						+ Pelicula.mostrarCartelera() + ( Integer.valueOf(Pelicula.getCartelera().size()) + 1 ) + ". Salir al menú principal");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-					}catch (NumberFormatException e) {
-						System.out.println("Error, debes ingresar un único dato numérico");
-					}
-				}while(!(opcionMenu > 0 && opcionMenu <= Pelicula.getCartelera().size() + 1));
-				
-				
-				try {
-					peliculaProceso = Pelicula.getCartelera().get(opcionMenu - 1);
-				}catch(IndexOutOfBoundsException e) {
-					inicio();
-				}
-				
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("Has elegido la película " + peliculaProceso.getNombre() + "\n1.Correcto \n2.Cambiar Pelicula");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-					}catch(NumberFormatException e) {
-						System.out.println("Error, debes ingresar un único dato numérico");
-					}
-				}while(!(opcionMenu == 1 | opcionMenu == 2));
-				
-				switch(opcionMenu) {
-					case 1: casoValido = true; casoValidoConfirmacion = true; break;
-					case 2: casoValido = false; casoValidoConfirmacion = true; break;
-					default : System.out.println("Opción Invalida"); casoValidoConfirmacion = false; 
-				}
-				
-			}while (!casoValidoConfirmacion);
-		}while (!casoValido);
-		
-		//Mostramos este menú en caso de que la película se encuentre en presentación en alguna sala de cine y 
-		//además la película no lleva más de 15 minutos en presentación
-		boolean terminarProceso = false;
-		if(!(peliculaProceso.whereIsPeliculaEnPresentacion().equals(null)) & SalaCine.getFecha().isBefore(peliculaProceso.whereIsPeliculaEnPresentacion().getHorarioPeliculaEnPresentacion().plusMinutes(15))) {
-			SalaCine salaDeCinePresentacionProceso = peliculaProceso.whereIsPeliculaEnPresentacion();
-			casoValido = false;
-			casoValidoConfirmacion = false;
-			do {
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("Hemos detectado que la película seleccionada se encuentra en presentación. \ninicio de proyección: " + 
-						salaDeCinePresentacionProceso.getHorarioPeliculaEnPresentacion() + "\n¿Desea reservar un ticket para este horario? " +
-						" (Hora actual: " + SalaCine.getFecha() + ")\n1. Comprar en este horario\n2. Comprar en otro horario");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-					}catch(NumberFormatException e){
-						System.out.println("Error, debes ingresar un único dato númerico entre los disponibles");
-					}
-				}while(!(opcionMenu == 1 || opcionMenu == 2));
-				
-				if (opcionMenu == 2) {
-					break;
-				}
-				
-				String numeroAsientoProceso = null;
-				int filaProceso = 0;
-				int columnaProceso = 0;
-				do {
-					System.out.println("\nEsta es la distribución de asientos con su disponibilidad actual de la película en el horario seleccionado" 
-						    + "\n X : Ocupado\n O : Disponible\n" + salaDeCinePresentacionProceso.mostrarAsientos());
-							
-					//Elegimos la fila del asiento
-					casoValidoConfirmacion = false;
-					do {
-						try {
-							System.out.println("Digite la fila de su asiento deseado");
-							filaProceso = Integer.parseInt(sc.nextLine());
-						} catch(NumberFormatException e) {
-								System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles");
-								continue;
-						}
-								
-						if(!(filaProceso > 0 & filaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos().length))){
-							System.out.println("La fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
-							continue;
-							}
-						
-						do {
-							opcionMenu = 0;
-							try {
-								System.out.println("La fila seleccionada es: " + filaProceso + "\n1. Correcto \n2. Cambiar fila");
-								opcionMenu = Integer.parseInt(sc.nextLine()); 
-							}catch (NumberFormatException e) {
-								System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-							}
-						}while(!(opcionMenu == 1 || opcionMenu == 2));
-								
-						casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
-								
-					}while(!(casoValidoConfirmacion));
-							
-					//Elegimos la columna del asiento
-					casoValidoConfirmacion = false;
-					do {
-						try {
-							System.out.println("\nDigite la columna de su asiento deseado");
-							columnaProceso = Integer.parseInt(sc.nextLine());
-						} catch(NumberFormatException e) {
-							System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
-							continue;
-						}
-								
-						if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos().length))){
-							System.out.println("La columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
-							continue;
-						}
-							
-						do {
-							opcionMenu = 0;
-							try {
-								System.out.println("La columna seleccionada es: " + columnaProceso + "\n1. Correcto \n2. Cambiar columna");
-								opcionMenu = Integer.parseInt(sc.nextLine()); 
-							}catch (NumberFormatException e) {
-								System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-							}
-						}while(!(opcionMenu == 1 || opcionMenu == 2));
-								
-						casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
-								
-					}while(!(casoValidoConfirmacion));
-							
-					numeroAsientoProceso = filaProceso + "-" + columnaProceso;
-					
-					if(salaDeCinePresentacionProceso.isDisponibilidadAsiento(filaProceso, columnaProceso)) {
-						casoValido = true;
-						System.out.println("\nEl asiento " + numeroAsientoProceso + " ha sido seleccionado con éxito");
-					}else {
-						casoValido = false;
-						System.out.println("\nEl asiento " + numeroAsientoProceso + " no se encuentra disponible actualmente.\n" + 
-						"Se le solicita amablemente que seleccione uno de los asientos disponibles para disfrutar de su película.\n" + 
-						"A continuación se mostrarán en pantalla los asientos con su respectiva disponibilidad\n");
-					}
-					
-				}while(!(casoValido));
-				
-				//Compra película en otro horario
-				//Realiza pago
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("Vamos a empezar con el proceso de pago\n1. Continuar\n2. Volver al menú principal");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-					}catch(NumberFormatException e) {
-						System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
-					}
-				}while(!(opcionMenu == 1 || opcionMenu == 2));
-				
-				if (opcionMenu == 1) {
-					//Creamos el ticket con su respectivo precio
-					ticketProceso = new Ticket(clienteProceso, salaDeCinePresentacionProceso.getPeliculaEnPresentacion(), salaDeCinePresentacionProceso.getHorarioPeliculaEnPresentacion(), numeroAsientoProceso);
-					ticketProceso.asignarPrecio();
-					if(!(ticketProceso.getPrecio() == peliculaProceso.getPrecio())) {
-						if (peliculaProceso.getTipoDeFormato().equals("3D") || peliculaProceso.getTipoDeFormato().equals("4D") ) {
-							System.out.println("\nFelicidades, por ser nuestro cliente número " + Ticket.getCantidadTicketsCreados() 
-							+ " has recibido un descuento del 50% por la compra de tu ticket\n" 
-							+ "(Precio anterior :" + peliculaProceso.getPrecio() + " -> Precio actual: " + ticketProceso.getPrecio() + " )");
-						}else {
-							System.out.println("\nFelicidades, por ser nuestro cliente número " + Ticket.getCantidadTicketsCreados() 
-							+ " has recibido un descuento del 80% por la compra de tu ticket\n"
-							+ "(Precio anterior :" + peliculaProceso.getPrecio() + " -> Precio actual: " + ticketProceso.getPrecio() + " )");
-						}
-					}
-				}else {
-					inicio();
-				}
-
-				//Seleccionar Método de pago y realizar pago
-				MetodoPago metodoPagoProceso = null;
-				casoValido = false;
-				casoValidoConfirmacion = false;
-				double precioTicketProceso = ticketProceso.getPrecio();
-				do {
-					do {
-						opcionMenu = 0;
-						try {
-							System.out.println("\nEl valor a pagar por el ticket es: " + precioTicketProceso 
-							+ "\nEste es el listado de los métodos de pago disponibles:\n" 
-							+ MetodoPago.mostrarMetodosDePago(clienteProceso));
-							opcionMenu = Integer.parseInt(sc.nextLine());
-						}catch(NumberFormatException e) {
-							System.out.println("Error, debe ingresar un único dato númerico entre los disponibles");
-						}
-					}while(!(opcionMenu > 0 & opcionMenu <= clienteProceso.getMetodosDePago().size() ) );
-					
-					metodoPagoProceso = clienteProceso.getMetodosDePago().get(opcionMenu - 1);
-					
-					do {
-						opcionMenu = 0;
-						try {
-							precioTicketProceso = ticketProceso.getPrecio() * (1 - metodoPagoProceso.getDescuentoAsociado());
-							System.out.println("El método de pago escogido es: " + metodoPagoProceso.getNombre() 
-							+ " ( Precio anterior: " + ticketProceso.getPrecio() + " -> Precio actual: " + precioTicketProceso + " )"
-							+ "\n1. Correcto\n2. Cambiar Método de pago");
-							opcionMenu = Integer.parseInt(sc.nextLine());
-						}catch(NumberFormatException e) {
-							System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
-						}
-						switch(opcionMenu) {
-						case 1: casoValidoConfirmacion = true; break;
-						case 2: casoValidoConfirmacion = true; precioTicketProceso = ticketProceso.getPrecio(); break;
-						default: System.out.println("Opción Invalida"); casoValidoConfirmacion = false;
-						}
-					}while(!casoValidoConfirmacion);
-					
-					if (opcionMenu == 2 || opcionMenu == 0) {
-						continue;
-					}
-					
-					ticketProceso.setPrecio(precioTicketProceso);
-					//Setteamos el precio del ticket como el resultado de ejecutar el método realizar pago con los datos obtenidos
-					precioTicketProceso = metodoPagoProceso.realizarPago(ticketProceso.getPrecio(), clienteProceso);
-					
-					System.out.println("\nEstamos procesando su pago, por favor espere\n");
-					try {
-						Thread.sleep(3000);
-					}catch(InterruptedException e) {
-						e.printStackTrace();
-					}
-					
-					//Ponemos la condición para procesar un pago realizado con sus respectivos procesos
-					if (precioTicketProceso == 0) {
-						System.out.println("Pago realizado, la compra de su ticket fue exitosa\n");
-						ticketProceso.procesarPagoRealizado(clienteProceso);
-						ticketProceso.factura(clienteProceso);
-						ticketProceso.getSalaDeCine().cambiarDisponibilidadAsientoLibre(filaProceso, columnaProceso);
-						casoValido = true;
-						terminarProceso = true;
-					}else {
-						precioTicketProceso = metodoPagoProceso.realizarPago(ticketProceso.getPrecio(), clienteProceso);
-						System.out.println("Tiene un saldo pendiente de : " + precioTicketProceso);
-						casoValido = false;
-					}
-					
-				}while(!casoValido);
-				
-			}while(!(casoValido));
-		}
-		
-		//Mostramos la factura en pantalla en caso de haber realizado la reserva de un ticket de una película en reservación
-		if(terminarProceso) {		
-			do {
-				opcionMenu = 0;
-				try {
-					System.out.println("\nPara finalizar, ¿Con cuál de las siguientes opciones desea continuar?" + 
-					"\n1. Ingresar a las salas de cine \n2. Volver al menú principal");
-					opcionMenu = Integer.parseInt(sc.nextLine());
-				}catch(NumberFormatException e) {
-					System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
-				}
-				
-			}while(!(opcionMenu == 1 || opcionMenu == 2));
-			
-			if(opcionMenu == 1) {
-				ingresarSalaCine(clienteProceso);
-			}
-			
-			System.out.println("\nFin del proceso reserva de ticket");
-			
-			inicio();
-		}
-		
-		//Elegimos el horario de la película seleccionada 
-		LocalDateTime horarioProceso = null;
-		do {
-			casoValido = false;
-			casoValidoConfirmacion = false;
-			do {
-				opcionMenu = 0;
-				try {
-					System.out.println("\nLos horarios de la película " + peliculaProceso.getNombre() 
-					+ " son:\n" + peliculaProceso.mostrarHorarioPelicula() 
-					+ (Integer.valueOf(peliculaProceso.getHorarios().size()) + 1) + ". Volver al menú principal");
-					opcionMenu = Integer.parseInt(sc.nextLine());
-				} catch(NumberFormatException e) {
-					System.out.println("Error, debes ingresar un único dato numérico");
-					continue;
-				}
-				
-			}while(!(opcionMenu > 0 && opcionMenu <= Integer.valueOf(peliculaProceso.getHorarios().size()) + 1));
-			
-			if(peliculaProceso.obtenerHorario(opcionMenu) == null) {
-				inicio();
-			}else {
-				horarioProceso = peliculaProceso.obtenerHorario(opcionMenu);
-			}
-			
-			do {
-				opcionMenu = 0;
-				try {
-					System.out.println("Elegiste la película el día: " + horarioProceso.getDayOfWeek() +  " fecha: "
-					+ horarioProceso.toLocalDate() + ", A las: " + horarioProceso.toLocalTime() + "\n1.Correcto \n2.Cambiar horario");
-					opcionMenu = Integer.parseInt(sc.nextLine());
-				} catch(NumberFormatException e) {
-					System.out.println("Error, debes ingresar un único dato numérico");
-					continue;
-				}
-				
-				switch(opcionMenu) {
-					case 1: casoValidoConfirmacion = true; casoValido = true; break;
-					case 2: casoValidoConfirmacion = true; casoValido = false; break;
-					default : System.out.println("Opción invalida"); casoValidoConfirmacion = false; break;
-				}
-			}while(!casoValidoConfirmacion);
-			
-		}while(!casoValido);
-		
-		//Elegimos el asiento
-		casoValido = false;
-		casoValidoConfirmacion = false;
-		String numeroAsientoProceso = null;
-		int filaProceso = 0;
-		int columnaProceso = 0;
-		do {
-			System.out.println("\nEsta es la distribución de asientos con su disponibilidad actual de la película en el horario seleccionado" 
-		    + "\n X : Ocupado\n O : Disponible\n" + peliculaProceso.mostrarAsientosSalaVirtual(horarioProceso) );
-			
-			//Elegimos la fila del asiento
-			do {
-				try {
-					System.out.println("Digite la fila de su asiento deseado");
-					filaProceso = Integer.parseInt(sc.nextLine());
-				} catch(NumberFormatException e) {
-					System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles");
-					continue;
-				}
-				
-				if(!(filaProceso > 0 & filaProceso <= Integer.valueOf(peliculaProceso.getHorarios().get(horarioProceso).length))){
-					System.out.println("La fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
-					continue;
-				}
-				
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("La fila seleccionada es: " + filaProceso + "\n1. Correcto \n2. Cambiar fila");
-						opcionMenu = Integer.parseInt(sc.nextLine()); 
-					}catch (NumberFormatException e) {
-						System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-						continue;
-					}
-				}while(!(opcionMenu == 1 || opcionMenu == 2));
-				
-				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
-				
-			}while(!(casoValidoConfirmacion));
-			
-			//Elegimos la columna del asiento
-			casoValidoConfirmacion = false;
-			do {
-				try {
-					System.out.println("\nDigite la columna de su asiento deseado");
-					columnaProceso = Integer.parseInt(sc.nextLine());
-				} catch(NumberFormatException e) {
-					System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
-					continue;
-				}
-				
-				if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(peliculaProceso.getHorarios().get(horarioProceso).length))){
-					System.out.println("La columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
-					continue;
-				}
-				
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("La columna seleccionada es: " + columnaProceso + "\n1. Correcto \n2. Cambiar columna");
-						opcionMenu = Integer.parseInt(sc.nextLine()); 
-					}catch (NumberFormatException e) {
-						System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-						continue;
-					}
-				}while(!(opcionMenu == 1 || opcionMenu == 2));
-				
-				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
-				
-			}while(!(casoValidoConfirmacion));
-			
-			//Modificamos el numeroAsientoProceso que se usa posteriormente al crear el ticket
-			numeroAsientoProceso = filaProceso + "-" + columnaProceso;
-			
-			if(peliculaProceso.isDisponibilidadAsientoSalaVirtual(horarioProceso, filaProceso, columnaProceso)) {
-				casoValido = true;
-				System.out.println("\nEl asiento " + numeroAsientoProceso + " ha sido seleccionado con éxito");
-			}else {
-				casoValido = false;
-				System.out.println("\nEl asiento " + numeroAsientoProceso + " no se encuentra disponible actualmente.\n" + 
-				"Se le solicita amablemente que seleccione uno de los asientos disponibles para disfrutar de su película.\n" + 
-				"A continuación se mostrarán en pantalla los asientos con su respectiva disponibilidad\n");
-			}
-			
-		}while(!casoValido);
-		
-		//Se genera el último mensaje con posibilidad de regresar al menú principal
-		do {
-			opcionMenu = 0;
-			try {
-				System.out.println("\nVamos a empezar con el proceso de pago\n1. Continuar\n2. Volver al menú principal");
-				opcionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e) {
-				System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
-			}
-		}while(!(opcionMenu == 1 || opcionMenu == 2));
-		
-		//Creamos el ticket y asignamos su precio evaluando la posibilidad del descuento
-		if (opcionMenu == 1) {
-			//Creamos el ticket con su respectivo precio e informamos al cliente en caso de recibir un descuento
-			ticketProceso = new Ticket(clienteProceso, peliculaProceso, horarioProceso, numeroAsientoProceso);
-			ticketProceso.asignarPrecio();
-			if(!(ticketProceso.getPrecio() == peliculaProceso.getPrecio())) {
-				if (peliculaProceso.getTipoDeFormato().equals("3D") || peliculaProceso.getTipoDeFormato().equals("4D") ) {
-					System.out.println("\nFelicidades, por ser nuestro cliente número " + Ticket.getCantidadTicketsCreados() 
-					+ " has recibido un descuento del 50% por la compra de tu ticket\n"
-					+ "(Precio anterior :" + peliculaProceso.getPrecio() + " -> Precio actual: " + ticketProceso.getPrecio() + " )");
-				}else {
-					System.out.println("\nFelicidades, por ser nuestro cliente número: " + Ticket.getCantidadTicketsCreados() 
-					+ " has recibido un descuento del 80% por la compra de tu ticket\n"
-					+ "(Precio anterior :" + peliculaProceso.getPrecio() + " -> Precio actual: " + ticketProceso.getPrecio() + " )");
-				}
-			}
-		}else {
-			inicio();
-		}
-
-		//Seleccionar Método de pago y realizar pago
-		MetodoPago metodoPagoProceso = null;
-		casoValido = false;
-		casoValidoConfirmacion = false;
-		double precioTicketProceso = ticketProceso.getPrecio();
-		do {
-			do {
-				opcionMenu = 0;
-				try {
-					System.out.println("\nEl valor a pagar por el ticket es: " + precioTicketProceso 
-					+ "\nEste es el listado de los métodos de pago disponibles:\n" 
-					+ MetodoPago.mostrarMetodosDePago(clienteProceso));
-					opcionMenu = Integer.parseInt(sc.nextLine());
-				}catch(NumberFormatException e) {
-					System.out.println("Error, debe ingresar un único dato númerico entre los disponibles");
-				}
-			}while(!(opcionMenu > 0 & opcionMenu <= clienteProceso.getMetodosDePago().size() ) );
-			
-		
-			metodoPagoProceso = clienteProceso.getMetodosDePago().get(opcionMenu - 1);
-			
-			do {
-				opcionMenu = 0;
-				try {
-					precioTicketProceso = ticketProceso.getPrecio() * (1 - metodoPagoProceso.getDescuentoAsociado());
-					System.out.println("El método de pago escogido es: " + metodoPagoProceso.getNombre() 
-					+ " ( Precio anterior: " + ticketProceso.getPrecio() + " -> Precio actual: " + precioTicketProceso + " )"
-					+ "\n1. Correcto\n2. Cambiar Método de pago");
-					opcionMenu = Integer.parseInt(sc.nextLine());
-				}catch(NumberFormatException e) {
-					System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
-					continue;
-				}
-				
-				switch(opcionMenu) {
-				case 1: casoValidoConfirmacion = true; break;
-				case 2: casoValidoConfirmacion = true; break;
-				default: System.out.println("Opcion Invalida"); casoValidoConfirmacion = false;
-				}
-			}while(!casoValidoConfirmacion);
-			
-			if (opcionMenu == 2 || opcionMenu == 0) {
-				continue;
-			}
-			
-			ticketProceso.setPrecio(precioTicketProceso);
-			System.out.println("\nEstamos procesando su pago, por favor espere\n");
-			try {
-				Thread.sleep(3000);
-			}catch(InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if (metodoPagoProceso.realizarPago(ticketProceso.getPrecio(), clienteProceso) == 0) {
-				System.out.println("Pago realizado, La compra de su ticket fue exitosa");
-				ticketProceso.procesarPagoRealizado(clienteProceso);
-				ticketProceso.factura(clienteProceso);
-				peliculaProceso.modificarSalaVirtual(horarioProceso, filaProceso, columnaProceso);
-				System.out.println( clienteProceso.getFacturas().get(Integer.valueOf(clienteProceso.getFacturas().size()) - 1) );
-				casoValido = true;
-			}else {
-				precioTicketProceso = metodoPagoProceso.realizarPago(ticketProceso.getPrecio(), clienteProceso);
-				System.out.println("Tiene un saldo pendiente de : " + precioTicketProceso);
-				casoValido = false;
-			}
-			
-		}while(!casoValido);
-		
-		System.out.println("\nFin del proceso reserva de ticket");
-		System.out.println("(Redireccionando al menu principal...)");
-		try {
-			Thread.sleep(3000);
-		}catch(InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		//Cambiar formato horarios para que se vea más bonito
-		//1. Falta añadir casoVerificacion para mostrarCarteleraInfantil
-		//4. Implementar barra de carga al momento de procesar pago (antes de ejecutar el método ticket.realizarPago(...))
-		//5. Implementar verifcacion NumeroDocumento.unique()
-		//2. Posiblemente añadir horarioFinPelicula en SalaCine una vez se establece la película en presentacion 
-		// para crear un método que elimine los tickets creados en una salaDeCine cuando se ejecute el método actualizarPeliculaPresentacion !!!
-		// Especificar qué es una fila y qué es una columna
-	}
 	
-	static void ingresarSalaCineDesdeMenu() {
-		
-		System.out.println("Bienvenido al sistema de ingreso a la sala de cine\n");
-		
-		//Elección menú inicial
-		boolean casoValido = false;
-		int opcionMenu = 0;
-		do {
-			try {
-				System.out.println("¿Desea ingresar o volver?" +"\n1.Ingresar" + "\n2.Volver al menú principal" + "\n3.Salir");
-				opcionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e) {
-				System.out.println("Error, debes ingresar un dato numérico");
-				continue;
-			}
-			
-			switch (opcionMenu) {
-				case 1: casoValido = true; break;
-				case 2: inicio(); casoValido = true; break;
-				case 3: salirDelSistema(); casoValido = true; break;
-				default: System.out.println("Opción invalida");
-			}
-			
-		}while(!casoValido);
-		
-		//Pedimos el tipo de documento al usuario
-		TipoDeDocumento documentoCliente = null;
-		boolean casoValidoConfirmacion = false;
-		casoValido = false;
-		do{
-			opcionMenu = 0;
-			try {
-				System.out.println("\nSeleccione el tipo de documento:\n"+ TipoDeDocumento.mostrarTiposDeDocumento());
-				opcionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e){
-				System.out.println("Error, debes ingresar un dato numérico");
-				continue;
-			}
-			
-			switch (opcionMenu) {
-				case 1: documentoCliente = TipoDeDocumento.CC; casoValido=true; break;
-				case 2: documentoCliente = TipoDeDocumento.TI; casoValido=true; break;
-				case 3: documentoCliente = TipoDeDocumento.CE; casoValido=true; break;
-				default: System.out.println("Opción invalida");
-			}
-			
-		}while(!casoValido);	
-		
-		//Obtenemos al cliente que hará el proceso de reserva de ticket
-		Cliente clienteProceso = null;
-		
-		//Se pide al usuario su número de documento
-		long numeroDocumentoCliente = 0;
-		casoValido = false;
-		casoValidoConfirmacion = false;
-		do {
-			do {
-				try {
-					System.out.print("\nIngrese el número de documento: ");
-					numeroDocumentoCliente = Long.parseLong(sc.nextLine());
-				}catch(NumberFormatException e) {
-					System.out.println("Error, debes ingresar datos numéricos correspondientes a tu número de documento");
-					continue;
-				}
-				
-				//Confirmamos si es un dato correcto
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("Tu número de documento es: " + numeroDocumentoCliente + " \n1. Correcto \n2. Cambiar número de documento");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-					}catch(NumberFormatException e) {
-						System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
-					}
-				}while(!(opcionMenu == 1 || opcionMenu == 2));
-				
-				switch(opcionMenu) {
-				case 1: casoValidoConfirmacion = true; break;
-				case 2: casoValidoConfirmacion = false; break;
-				default: casoValidoConfirmacion = false; System.out.println("Opción invalida");
-				}
-				
-			}while(!casoValidoConfirmacion);
-			
-			//Se verficia si el cliente existe
-			clienteProceso = Cliente.revisarDatosCliente(numeroDocumentoCliente);
-			
-			//En caso de que no exista, lo creamos
-			if (clienteProceso==null) {
-				System.out.println("Hemos detectado que es la primera vez que visita nuestro cine, " +
-				"Por políticas de seguridad de nuestra compañia, le solicitamos que amablemente responda las siguientes preguntas");
-				//Pedimos la edad del cliente
-				int edadCliente = 0;
-				do {
-					try {
-						System.out.print("Ingrese su edad: ");
-						edadCliente = Integer.parseInt(sc.nextLine());
-					}catch (NumberFormatException e) {
-						System.out.println("Error, debes ingresar datos numéricos correspondientes a tu edad");
-						continue;
-					}
-					
-					//Confirmamos si es un dato correcto
-					do {
-						opcionMenu = 0;
-						try {
-							System.out.println("Tu edad es: " + edadCliente + " \n 1. Correcto \n 2. Cambiar edad");
-							opcionMenu = Integer.parseInt(sc.nextLine());
-						}catch(NumberFormatException e) {
-							System.out.println("Error, debes ingresar un único dato numérico");
-						}
-						
-					}while(!(opcionMenu == 1 || opcionMenu == 2));
-					
-					switch(opcionMenu) {
-						case 1: casoValidoConfirmacion = true; break;
-						case 2: casoValidoConfirmacion = false; break;
-						default: casoValidoConfirmacion = false; System.out.println("Opción invalida");
-					}
-				}while(!casoValidoConfirmacion);
-				
-				//Pedimos el nombre del cliente
-				String nombreCliente = null;
-				casoValido = false;
-				do {
-					System.out.println("Ingrese su nombre: ");
-					nombreCliente = sc.nextLine(); 
-					
-					//Confirmamos si el dato es correcto
-					do {
-						opcionMenu = 0;
-						try {
-							System.out.println("Su nombre es: " + nombreCliente + "\n1. Correcto \n2. Cambiar nombre");
-							opcionMenu = Integer.parseInt(sc.nextLine());
-						}catch(NumberFormatException e) {
-							System.out.println("Error, debe ingresar un único dato numérico");
-						}
-					}while(!(opcionMenu == 1 || opcionMenu == 2));
-					
-					switch(opcionMenu) {
-						case 1: casoValidoConfirmacion = true; break;
-						case 2: casoValidoConfirmacion = false; break;
-						default: casoValidoConfirmacion = false; System.out.println("Opción invalida");
-					}
-					
-				}while(!casoValidoConfirmacion);
-				
-				//Creamos un nuevo cliente con la información dada
-				clienteProceso = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
-				clienteProceso.setMetodosDePago(MetodoPago.asignarMetodosDePago(clienteProceso));
-				casoValido = true;
-			}
-			//En caso de que el cliente exista
-			else {
-				do {
-					opcionMenu = 0;
-					try {
-						System.out.println("¿Eres " + clienteProceso.getNombre() + "?\n1. SI\n2. NO");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-					}catch(NumberFormatException e) {
-						System.out.println("Error, debes ingresar un único dato numérico");
-					}
-					
-					switch(opcionMenu) {
-						case 1: 
-							System.out.println("\nEstos son sus datos personales: " + 
-							"\nNombre: " + cliente1.getNombre() + "\nIdentificacion: "+ cliente1.getDocumento() + "\nEdad: " + cliente1.getEdad());
-							casoValido = true;
-							casoValidoConfirmacion = true;
-							break;
-						case 2:
-							System.out.println("Verifica el numero de documento\n");
-							casoValidoConfirmacion = true;
-							break;
-						default: 
-							System.out.println("Digite una opción valida"); 
-							casoValidoConfirmacion = false;
-					}
-				}while(!casoValidoConfirmacion);
-			}
-		}while(!casoValido);
-		
-		
-		if (opcionMenu == 1) {ingresarSalaCine(clienteProceso);}
-		
-	}
-	
-	static void ingresarSalaCine(Cliente clienteProceso) {
-		//Mostramos el listado de las salas de cine disponibles para que el cliente elija una de estas
-				SalaCine salaDeCineProceso = null;
-				boolean casoValido = false;
-				boolean casoValidoConfirmacion = false;
-				int opcionMenu;
-				do {
-					do {
-						do {
-							opcionMenu = 0;
-							try {
-								if(clienteProceso.getTickets().size() > 0) {
-									System.out.println( "\nFecha actual: "+ SalaCine.getFecha().toLocalDate() 
-									+ "Hora actual: " + SalaCine.getFecha().toLocalTime() + "\n"
-									+ "Estos son los tickets que actualmente tienes disponibles: \n" 
-									+ clienteProceso.mostrarTicketsParaUsar() );
-								}else {
-									System.out.println("No has comprado ningún ticket, te redireccionaremos al menú principal");
-									inicio();
-								}
-								System.out.println("Este es el listado de las salas de cine disponibles: \n" 
-								+ Pelicula.mostrarSalaCine() + "\n" + (Integer.valueOf(Pelicula.getSalasDeCine().size()) + 1) 
-								+ ". Salir al menú principal");
-								opcionMenu = Integer.parseInt(sc.nextLine());
-							}catch(NumberFormatException e) {
-								System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
-							}
-						}while(!(opcionMenu > 0 & opcionMenu <= (Integer.valueOf(Pelicula.getSalasDeCine().size()) + 1) ) );
-						
-						if (opcionMenu == (Integer.valueOf(Pelicula.getSalasDeCine().size()) + 1)) {
-							inicio();
-						}else {
-							salaDeCineProceso = Pelicula.getSalasDeCine().get(opcionMenu - 1);
-						}
-						
-						do {
-							opcionMenu = 0;
-							try {
-								System.out.println("Has seleccionado la sala de cine número: " + salaDeCineProceso.getNumeroSala() 
-								+ "\n1. Correcto\n2. Cambiar sala de cine");
-								opcionMenu = Integer.parseInt(sc.nextLine());
-							}catch(NumberFormatException e) {
-								System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
-							}
-						}while(!(opcionMenu == 1 || opcionMenu == 2));
-						
-						casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
-						
-					}while(!casoValidoConfirmacion);
-					
-					//Realizamos la verificación y evaluamos si el cliente puede ingresar a la sala de cine
-					if (salaDeCineProceso.verificarTicket(clienteProceso)) {
-						
-						//Mostramos un dibujo en consola de la sala de cine 
-						
-				        System.out.println("\n" + salaDeCineProceso.mostrarPantallaSalaCine());
-
-				        
-
-				        System.out.println("\n¡Bienvenido al cine! 🎥🍿, Disfrute de la película");
-				        
-				        try {
-							Thread.sleep(3000);
-						}catch(InterruptedException e) {
-							e.printStackTrace();
-						}
-				        
-				        System.out.println("La película ha finalizado, muchas gracias por asistir le desamos un feliz resto de día" + 
-				        "\n(Redirigiendo a menú principal...)");
-				        
-				        try {
-							Thread.sleep(3000);
-						}catch(InterruptedException e) {
-							e.printStackTrace();
-						}
-				        
-				        casoValido = true;
-				        
-					}else {
-						System.out.println("No tienes un ticket válido para ingresar a esta sala de cine" 
-						+ "\nSerás redireccionado a la elección de salas de cine");
-						casoValido = false;
-					}
-					
-				}while(!casoValido);
-	}
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 	
-	static void comprarComida() {
+	//Bloque funcionalidad 1
+	
+	
+	
+	
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	static void comprarComida(Cliente clienteProceso) {
 	System.out.println("\nBienvenido al Servicio de Comida\n");
 		
 		
@@ -1258,7 +291,7 @@ public class Administrador {
 			}
 			switch (eleccionMenu) {
 				case 1: casoValido = false;break;
-				case 2: inicio(); casoValido = false; break;
+				case 2: inicio(clienteProceso); casoValido = false; break;
 				default: System.out.println("\nOpcion invalida\n"); break;
 			}
 			
@@ -1281,7 +314,7 @@ public class Administrador {
 		
 //******************************************************************************************************************************************	   
 	
-	static void comprarSouvenirs() {
+	static void comprarSouvenirs(Cliente clienteProceso) {
 		System.out.println("\n----------------Bienvenido a la tienda de souvenirs--------------\n");
 		
 		//Reiteramos la eleccion del usuario
@@ -1297,7 +330,7 @@ public class Administrador {
 			}
 			switch (opcionMenu) {
 				case 1: casoValido = false;break;
-				case 2: inicio(); casoValido = false; break;
+				case 2: inicio(clienteProceso); casoValido = false; break;
 				default: System.out.println("\nOpcion invalida\n"); break;
 			}
 			
@@ -1343,14 +376,14 @@ public class Administrador {
 		
 		
 
-	static void ingresoZonaJuegos() {
+	static void ingresoZonaJuegos(Cliente clienteProceso) {
 
 		System.out.println("\nPara entrar a los juegos es necesario tener la tarjeta cinemar\n¿Desea ingresar o volver?\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
 		int opcion = (int)readLong();
-		if (opcion==2) {inicio();}
+		if (opcion==2) {inicio(clienteProceso);}
 		else if (opcion==1) {}
 		else if (opcion==3) {salirDelSistema();}
-		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos();}
+		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(clienteProceso);}
 		TipoDeDocumento documentoCliente=null;
 		boolean casoValido = true;
 		do{
@@ -1360,8 +393,8 @@ public class Administrador {
 				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
 				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
 				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
-				case 4: ingresoZonaJuegos();casoValido=false;break;
-				case 5: inicio();casoValido=false;break;
+				case 4: ingresoZonaJuegos(clienteProceso);casoValido=false;break;
+				case 5: inicio(clienteProceso);casoValido=false;break;
 				case 6: salirDelSistema();
 				default: System.out.println("Opcion invalida");break;
 			}
@@ -1383,7 +416,7 @@ public class Administrador {
 					cliente.getCuenta().hacerPago(5000);
 					System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
 				}
-				else {System.out.println("\nLo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); inicio();}
+				else {System.out.println("\nLo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); inicio(clienteProceso);}
 				casoValido=true;
 			}
 			else {
@@ -1398,7 +431,7 @@ public class Administrador {
 							cliente.getCuenta().hacerPago(5000);
 							System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
 						}
-						else {System.out.println("Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); inicio();}
+						else {System.out.println("Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); inicio(clienteProceso);}
 					}
 					else {
 						System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
@@ -1545,7 +578,7 @@ public class Administrador {
 					switch (eleccion4) {
 					case 1: casoValido= false;finCiclo= true; break;
 					case 2: finCiclo= true; break;
-					case 3: inicio();
+					case 3: inicio(clienteProceso);
 					case 4: salirDelSistema();
 					default: finCiclo = false; break; 
 				}
@@ -1561,14 +594,14 @@ public class Administrador {
 					switch (eleccion4) {
 					case 1: casoValido= false;finCiclo= false; break;
 					case 2: finCiclo= false; break;
-					case 3: inicio();
+					case 3: inicio(clienteProceso);
 					case 4: salirDelSistema();
 					default: finCiclo = true; break; 
 					}
 				}
 			}
 			else if (eleccion1==3) {
-				inicio();
+				inicio(clienteProceso);
 			}
 			else if (eleccion1==4) {
 				salirDelSistema();
@@ -1619,8 +652,8 @@ public class Administrador {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)readLong();
 						switch(option) {
-						case 1: inicio();
-						case 2: ingresoZonaJuegos();
+						case 1: inicio(clienteProceso);
+						case 2: ingresoZonaJuegos(clienteProceso);
 						case 3: salirDelSistema();
 						default:  break;
 						}
@@ -1653,8 +686,8 @@ public class Administrador {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)readLong();
 						switch(option) {
-						case 1: inicio();
-						case 2: ingresoZonaJuegos();
+						case 1: inicio(clienteProceso);
+						case 2: ingresoZonaJuegos(clienteProceso);
 						case 3: salirDelSistema();
 						default:  break;
 						}
@@ -1688,8 +721,8 @@ public class Administrador {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)readLong();
 						switch(option) {
-						case 1: inicio();
-						case 2: ingresoZonaJuegos();
+						case 1: inicio(clienteProceso);
+						case 2: ingresoZonaJuegos(clienteProceso);
 						case 3: salirDelSistema();
 						default:  break;
 						}
@@ -1722,8 +755,8 @@ public class Administrador {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)readLong();
 						switch(option) {
-						case 1: inicio();
-						case 2: ingresoZonaJuegos();
+						case 1: inicio(clienteProceso);
+						case 2: ingresoZonaJuegos(clienteProceso);
 						case 3: salirDelSistema();
 						default:  break;
 						}
@@ -1756,8 +789,8 @@ public class Administrador {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)readLong();
 						switch(option) {
-						case 1: inicio();
-						case 2: ingresoZonaJuegos();
+						case 1: inicio(clienteProceso);
+						case 2: ingresoZonaJuegos(clienteProceso);
 						case 3: salirDelSistema();
 						default:  break;
 						}
@@ -1782,7 +815,7 @@ public class Administrador {
 		}while(!caso);
 	}
 	
-	static void adquirirMembresia() {
+	static void adquirirMembresia(Cliente clienteProceso) {
 		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla.");
 		//System.out.println(Membresia.mostrarCategoria() + "6. Volver");
 		boolean casoValido = false;
@@ -1798,7 +831,7 @@ public class Administrador {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: inicio(); casoValido = true; break;
+				case 2: inicio(clienteProceso); casoValido = true; break;
 				case 3: salirDelSistema(); casoValido = true; break;
 				default: System.out.println("Opcion invalida"); break;
 			}
@@ -1820,8 +853,8 @@ public class Administrador {
 				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
 				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
 				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
-				case 4: adquirirMembresia();casoValido=false;break;
-				case 5: inicio();casoValido=false;break;
+				case 4: adquirirMembresia(clienteProceso);casoValido=false;break;
+				case 5: inicio(clienteProceso);casoValido=false;break;
 				case 6: salirDelSistema();
 				default: System.out.println("Opcion invalida");break;
 			}
@@ -1915,7 +948,7 @@ public class Administrador {
 			System.out.print(Membresia.verificarMembresiaActual(cliente));
 			System.out.print(Membresia.mostrarCategoria(cliente) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
 			opcionMenu = (int) Integer.parseInt(sc.nextLine());
-			if (opcionMenu == 6) {inicio(); break;}
+			if (opcionMenu == 6) {inicio(clienteProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
 				if (cliente.getMembresia()!= null) {
 					int categoriaCliente = cliente.getMembresia().getCategoria();
@@ -1949,7 +982,7 @@ public class Administrador {
 			+ ". Por favor, seleccione el método de pago a usar:\n"
 			+ MetodoPago.mostrarMetodosDePago(cliente) + "5. Volver al inicio \nIngrese la opción: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
-			if (opcionMenu == 5) {inicio();}
+			if (opcionMenu == 5) {inicio(clienteProceso);}
 			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(cliente, opcionMenu);
 			try {
 				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {
@@ -2132,6 +1165,190 @@ public class Administrador {
 		}while(casoValido);
 		return null;
 	}
+	
+	public static Cliente iniciarSesion() {
+		//Pedimos el tipo de documento al usuario
+		TipoDeDocumento documentoCliente = null;
+		boolean casoValidoConfirmacion = false;
+		boolean casoValido = false;
+		int opcionMenu;
+		do{
+			opcionMenu = 0;
+			try {
+				System.out.println("Seleccione el tipo de documento:\n"+ TipoDeDocumento.mostrarTiposDeDocumento());
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e){
+				System.out.println("Error, debes ingresar un dato numérico");
+				continue;
+			}
+				
+			switch (opcionMenu) {
+				case 1: documentoCliente = TipoDeDocumento.CC; casoValido=true; break;
+				case 2: documentoCliente = TipoDeDocumento.TI; casoValido=true; break;
+				case 3: documentoCliente = TipoDeDocumento.CE; casoValido=true; break;
+				default: System.out.println("Opción invalida");
+			}
+				
+		}while(!casoValido);	
+				
+		//Obtenemos al cliente que hará el proceso de interactuar con las funcionalidades
+		Cliente clienteProceso = null;
+		
+		//Se pide al usuario su número de documento
+		long numeroDocumentoCliente = 0;
+		casoValido = false;
+		casoValidoConfirmacion = false;
+		do {
+			do {
+				try {
+					System.out.print("\nIngrese el número de documento: ");
+					numeroDocumentoCliente = Long.parseLong(sc.nextLine());
+				}catch(NumberFormatException e) {
+					System.out.println("Error, debes ingresar datos numéricos correspondientes a tu número de documento");
+					continue;
+				}
+				
+				//Confirmamos si es un dato correcto
+				do {
+					opcionMenu = 0;
+					try {
+						System.out.println("Tu número de documento es: " + numeroDocumentoCliente + " \n1. Correcto \n2. Cambiar número de documento");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch(NumberFormatException e) {
+						System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+					}
+				}while(!(opcionMenu == 1 || opcionMenu == 2));
+				
+				switch(opcionMenu) {
+					case 1: casoValidoConfirmacion = true; break;
+					case 2: casoValidoConfirmacion = false; break;
+					default: casoValidoConfirmacion = false; System.out.println("Opción invalida");
+				}
+				
+				}while(!casoValidoConfirmacion);
+				
+				//Se verficia si el cliente existe
+				clienteProceso = Cliente.revisarDatosCliente(numeroDocumentoCliente);
+				
+				//En caso de que no exista, lo creamos
+				if (clienteProceso == null) {
+					System.out.println("Hemos detectado que es la primera vez que visita nuestro cine, " +
+					"Por políticas de seguridad de nuestra compañia," + 
+					"le solicitamos que amablemente responda las siguientes preguntas para completar su registro");
+					
+					//Pedimos la edad del cliente
+					int edadCliente = 0;
+					casoValidoConfirmacion = false;
+					do{
+						try {
+							System.out.println("( Edad mínima para hacer uso de nuestras instalaciones: 5 )");
+							System.out.print("Ingrese su edad: ");
+							edadCliente = Integer.parseInt(sc.nextLine());
+						}catch (NumberFormatException e) {
+							System.out.println("Error, debes ingresar datos numéricos correspondientes a tu edad");
+							continue;
+						}
+						
+						//Verificamos si la edad seleccionada por el cliente es acorde a su número de documento
+						if ( (documentoCliente.equals(TipoDeDocumento.CC) && edadCliente < 18) || 
+						   ( (documentoCliente.equals(TipoDeDocumento.TI) && (edadCliente > 18 || edadCliente < 5) ) ) ||
+						   ( (documentoCliente.equals(TipoDeDocumento.CE) && edadCliente < 5) ) ){
+							System.out.println("Error, debes ingresar un edad apropiada para un documento tipo: " + documentoCliente.getNombre());
+							continue;
+						}
+						//Confirmamos si la edad ingresada es correcta
+						do {
+							opcionMenu = 0;
+							try {
+								System.out.println("Tu edad es: " + edadCliente + " \n 1. Correcto \n 2. Cambiar edad");
+								opcionMenu = Integer.parseInt(sc.nextLine());
+							}catch(NumberFormatException e) {
+								System.out.println("Error, debes ingresar un único dato numérico");
+							}
+							
+						}while(!(opcionMenu == 1 || opcionMenu == 2));
+						
+						switch(opcionMenu) {
+							case 1: casoValidoConfirmacion = true; break;
+							case 2: casoValidoConfirmacion = false; break;
+							default: casoValidoConfirmacion = false; System.out.println("Opción invalida");
+						}
+					}while(!casoValidoConfirmacion);
+					
+					//Pedimos el nombre del cliente
+					String nombreCliente = null;
+					casoValido = false;
+					do {
+						System.out.println("Ingrese su nombre: ");
+						nombreCliente = sc.nextLine(); 
+						
+						//Confirmamos si el nombre ingresado es correcto
+						do {
+							opcionMenu = 0;
+							try {
+								System.out.println("Su nombre es: " + nombreCliente + "\n1. Correcto \n2. Cambiar nombre");
+								opcionMenu = Integer.parseInt(sc.nextLine());
+							}catch(NumberFormatException e) {
+								System.out.println("Error, debe ingresar un único dato numérico");
+							}
+						}while(!(opcionMenu == 1 || opcionMenu == 2));
+						
+						switch(opcionMenu) {
+							case 1: casoValidoConfirmacion = true; break;
+							case 2: casoValidoConfirmacion = false; break;
+							default: casoValidoConfirmacion = false; System.out.println("Opción invalida");
+						}
+						
+					}while(!casoValidoConfirmacion);
+					
+					//Creamos un nuevo cliente con la información dada
+					clienteProceso = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
+					clienteProceso.setMetodosDePago(MetodoPago.asignarMetodosDePago(clienteProceso));
+					casoValido = true;
+					System.out.println("\nEstos son sus datos de registro: " 
+					+ "\nNombre: " + clienteProceso.getNombre() 
+					+ "\nIdentificacion: "+ clienteProceso.getDocumento() 
+					+ "\nEdad: " + clienteProceso.getEdad() + "\n");
+				}
+				//En caso de que el cliente exista
+				else {
+					do {
+						opcionMenu = 0;
+						try {
+							System.out.println("¿Eres " + clienteProceso.getNombre() + "?\n1. SI\n2. NO");
+							opcionMenu = Integer.parseInt(sc.nextLine());
+						}catch(NumberFormatException e) {
+							System.out.println("Error, debes ingresar un único dato numérico");
+						}
+						
+						switch(opcionMenu) {
+							case 1: 
+								System.out.println("\nEstos son sus datos de registro: " + 
+								"\nNombre: " + clienteProceso.getNombre() 
+								+ "\nIdentificacion: "+ clienteProceso.getDocumento() 
+								+ "\nEdad: " + clienteProceso.getEdad() + "\n");
+								casoValido = true;
+								casoValidoConfirmacion = true;
+								break;
+							case 2:
+								System.out.println("Verifica el numero de documento\n");
+								casoValidoConfirmacion = true;
+								casoValido = false;
+								break;
+							default: 
+								System.out.println("Digite una opción valida"); 
+								casoValidoConfirmacion = false;
+						}
+					}while(!casoValidoConfirmacion);
+				}
+		}while(!casoValido);	
+	
+		return clienteProceso;
+		
+	}
+	
+	
+	
 	
 }
 

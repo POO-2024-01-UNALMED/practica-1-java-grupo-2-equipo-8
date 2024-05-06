@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.Duration;
 import gestionAplicacion.proyecciones.Pelicula;
+import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Pedido;
 
@@ -142,6 +143,26 @@ public class Cliente {
 			i++;
 		}
 		return tickets;
+	}
+	
+	/**
+	 * Descripiton: Este método se encarga de eliminar los tickets cuyo horario, más la duración de la película para la cuál fue adquirido 
+	 * es menor a la fecha actual, para esto, creamos un array en el cuál almacenamos los tickets que cumplan la condición anterior y posteriormente
+	 * los eliminamos.
+	 * @return <b>void</b> : Este método no retorna nada (void), solo elimina los tickets caducados.
+	 * */
+	public void dropTicketsCaducados() {
+		ArrayList<Ticket> ticketsCaducados = new ArrayList<>();
+		
+		for (Ticket ticket : this.getTickets()) {
+			if( !(ticket.getHorario().plus(ticket.getPelicula().getDuracion()).isAfter(SalaCine.getFecha())) ){
+				ticketsCaducados.add(ticket);
+			}
+		}
+		
+		for (Ticket ticket : ticketsCaducados) {
+			this.getTickets().remove(ticket);
+		}
 	}
 
 	//Getters y setters

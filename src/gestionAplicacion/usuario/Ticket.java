@@ -82,20 +82,17 @@ public class Ticket implements IBuyable{
 	/**
 	 * @Override
 	 * Description: Este método se encarga de generar el último paso del proceso de pago, eliminando la referencia del
-	 * método de pago usado y la pasa a métodos de pago disponibles asociados al clienete 
-	 * y según el caso, se le pasa la referencia del pedido o ticket al usuario, además, en el caso del ticket, 
-	 * se crea una referencia de este en el arraylist de los tickets de la sala de cine asociada 
-	 * (Este método al igual que el anterior será ejecutado por un ticket o pedido).
+	 * método de pago usado y se vuelven a settear los metodos de pago que el cliente tendrá disponibles,
+	 * se le pasa la referencia del ticket al usuario y se crea una referencia de este en el arraylist de los tickets creados en el cine
+	 * (Este método al igual que el anterior será ejecutado por un ticket luego de ser verificado el pago).
 	 * @param cliente : Se pide como parámetro el cliente que realiza el pago, con el fin de pasarle la referencia del
 	 * ticket adquirido por este
 	 * @return <b>void</b> : Este método no retorna nada, solo crea y elimina referencias del método de pago en métodos de pago
 	 * disponibles y usados, y de ticket en la sala de cine asociada y en el cliente que compra el ticket
 	 */
 	public void procesarPagoRealizado(Cliente cliente) {
-		//Se crea la referencia del método en métodos de pago asociado al cliente del método de pago usado
-		for (MetodoPago metodoDePago : MetodoPago.getMetodosDePagoUsados()) {
-			cliente.getMetodosDePago().add(metodoDePago);
-		}
+		//Se reestablecen los métodos de pago disponibles del cliente
+		MetodoPago.asignarMetodosDePago(cliente);
 		
 		//Se eliminan las referencias de los métodosDePagoUsados
 		MetodoPago.getMetodosDePagoUsados().clear();

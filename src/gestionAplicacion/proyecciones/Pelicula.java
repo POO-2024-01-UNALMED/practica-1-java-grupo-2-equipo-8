@@ -2,6 +2,9 @@ package gestionAplicacion.proyecciones;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
+
+import gestionAplicacion.usuario.Cliente;
+
 import java.time.Duration;
 
 public class Pelicula{
@@ -225,6 +228,7 @@ public class Pelicula{
 	 * */
 	public String mostrarAsientosSalaVirtual(LocalDateTime fecha) {
 		StringBuilder resultado = new StringBuilder("Asientos de Cine\n");
+		resultado.append("\n(Fila: distribución horizontal de asientos)\n(Columna: distribución vertical de asientos)\n(Número de asiento: Intersección fila y columna)\n");
 		resultado.append("  --------------------------------- \n              Pantalla\n");
 	    resultado.append("    ");
 	    
@@ -298,35 +302,43 @@ public class Pelicula{
 	}
 	
 	/**
-	 * Description : Este método se encarga de filtar las películas en cartelera cuya categoría es para niños
+	 * Description : Este método se encarga de filtar las películas en cartelera cuya categoría es menor o igual la edad de un cliente, tiene al 
+	 * menos 1 horario en el cuál será presentada o se encuentra en presentación y no supera el límite de tiempo para comprar una película que se 
+	 * encuentra en presentación (15 minutos), con el fin de mostrar en pantalla, posteriormente, el array de las películas que cumplan este criterio 
+	 * @param clienteProceso : Este método recibe como parámetro un cliente (De tipo cliente), que se obtiene luego del proceso de login
 	 * @return <b>ArrayList</b> : Retorna una lista con las peliculas filtradas por el criterio anterior 
 	 * */
-	public ArrayList<Pelicula> mostrarCarteleraInfantil(){
-		ArrayList<Pelicula> carteleraInfantil = new ArrayList<Pelicula>();
-		for (Pelicula pelicula : cartelera) {
-			if ((Integer.parseInt(pelicula.clasificacion)) < 18) {
-				carteleraInfantil.add(pelicula);
+	public static ArrayList<Pelicula> filtrarCarteleraPorCliente(Cliente clienteProceso){
+		ArrayList<Pelicula> carteleraPersonalizada = new ArrayList<Pelicula>();
+		for (Pelicula pelicula : Pelicula.getCartelera()) {
+			if (pelicula.getHorarios().size() > 0 || (pelicula.IsPeliculaEnPresentacion()) && (SalaCine.getFecha().isBefore( pelicula.whereIsPeliculaEnPresentacion().getHorarioPeliculaEnPresentacion().plusMinutes(15)))) {
+				if ((Integer.parseInt(pelicula.getClasificacion())) <= clienteProceso.getEdad()) {
+					
+					carteleraPersonalizada.add(pelicula);
+				}
 			}
 		}
-		return carteleraInfantil;
+		return carteleraPersonalizada;
 	}
 	
 	/**
 	 * Description : Este método se encarga de crear un string que se imprimirá en pantalla para visualizar las 
 	 * películas en cartelera
-	 * @return <b>String</b> : Retorna un string con el nombre, duración y formato de las películas en cartelera
+	 * @param cartelera : Este método recibe como parámetro una cartelera (De tipo ArrayList<Pelicula>) para mostrar su contenido en pantalla
+	 * @return <b>String</b> : Retorna un string con el nombre, duración, formato y clasificacion de las películas en cartelera
 	 * */
-	public static String mostrarCartelera(){
+	public static String mostrarCartelera(ArrayList<Pelicula> cartelera){
 		String resultado = null;
 		int i = 1;
 		for (Pelicula pelicula : cartelera) {
 			if (resultado == null) {
 				resultado = i + ". Película: " + pelicula.getNombre() + "; Duración: " + pelicula.getDuracion().toMinutes() + " Minutos" 
-				+ "; Formato: " + pelicula.getTipoDeFormato() + "; Precio: " + pelicula.getPrecio() + "\n";
+				+ "; Formato: " + pelicula.getTipoDeFormato() + "; Precio: " + pelicula.getPrecio() 
+				+ "; Clasifiación: "+ pelicula.getClasificacion() + "\n";
 			}else {
 				resultado = resultado + i + ". Película: " + pelicula.getNombre() + "; Duración: " 
 				+ pelicula.getDuracion().toMinutes() + " Minutos"  + "; Formato: " + pelicula.getTipoDeFormato() + 
-				"; Precio: " + pelicula.getPrecio() + "\n";
+				"; Precio: " + pelicula.getPrecio() + "; Clasifiación: "+ pelicula.getClasificacion() + "\n";
 			}
 			i++;
 		}
@@ -377,6 +389,27 @@ public class Pelicula{
 	}
 	
 	/**
+	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
+	 * utilidad de este método radica en que retornará un boolean en caso de encontrarla y respecto a este, se ejecutará un menú determinado 
+	 * durante el proceso de la funcionalidad 1
+	 * @return <b>boolean</b> : Este método retorna un boolean, en caso de encontrar que la película se encuentra en presentación,
+	 * si la película no se encuentra en presentacion, retorna false.
+	 * */
+	public boolean IsPeliculaEnPresentacion() {
+		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
+			try {
+				if (salaDeCine.getPeliculaEnPresentacion().equals(this)) {
+					return true;
+				}
+			}catch(NullPointerException e) {
+				continue;
+			}
+			
+		}
+		return false;
+	}
+	
+	/**
 	 * Description: Este método se encarga de buscar la salaDeCine en el array de salasDeCine
 	 *  que tiene el mismo numero de sala de la película para luego retornarlo
 	 * @return : Este método retorna la salaDeCine que tiene el mismo número de sala.
@@ -402,8 +435,12 @@ public class Pelicula{
 	 * return: <b>void</b> : Este método no retorna nada, solo actualiza las salaDeCine
 	 * */
 	public static void actualizarSalasDeCine() {
+		//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
 		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
-			salaDeCine.actualizarPeliculasEnPresentacion();
+			if ( salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isBefore(SalaCine.getFecha())
+					|| (salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isEqual(SalaCine.getFecha())) ) {
+				salaDeCine.actualizarPeliculasEnPresentacion();
+			}
 		}
 	}
 	
@@ -412,11 +449,11 @@ public class Pelicula{
 	 * con el fin de que el usuario elija una de las opciones disponibles para ingresar
 	 * @return <b>String</b>: Retorna la lista de las salas de cine disponibles 
 	 * */
-	public static String mostrarSalaCine() {
+	public static String mostrarSalaCine(ArrayList<SalaCine> salasDeCine) {
 		String resultado = null;
 		int i = 1;
 		
-		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
+		for (SalaCine salaDeCine : salasDeCine) {
 			
 			if (salaDeCine.getPeliculaEnPresentacion() == null) {
 				continue;
@@ -439,5 +476,18 @@ public class Pelicula{
 		}
 		
 		return resultado;
+	}
+	
+	/***/
+	public static ArrayList<SalaCine> filtrarSalasDeCine (){
+		ArrayList<SalaCine> salasDeCineDisponibles = new ArrayList<>();
+		
+		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
+			if (salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SalaCine.getFecha())) {
+				salasDeCineDisponibles.add(salaDeCine);
+			}
+		}
+		
+		return salasDeCineDisponibles;
 	}
 }
