@@ -243,7 +243,7 @@ public class Administrador {
 			System.out.println("4. Realizar compra de souvenirs");
 			System.out.println("5. Ingresar a la zona de juegos");
 			System.out.println("6. Adquirir o actualizar membresia");
-			System.out.println("7. Sala de espera");
+			System.out.println("7. Ingresar a sala de espera");
 			System.out.println("8. Salir");
 			opcion = Integer.parseInt(sc.nextLine());
 		}catch(NumberFormatException e) {
@@ -729,6 +729,12 @@ public class Administrador {
 		return null;
 	}
 	
+	/**
+	 * Description : Este método se encarga de iniciar sesión, para esto se le pregunta al cliente el tipo de documento y el número de documento,
+	 * en caso de que se encuentre registrado, se verfica su nombre y se retorna ese cliente, en caso de que no, se crea un nuevo cliente, solicitando
+	 * su nombre y edad, luego se asignan sus métodos de pago y se retorna este nuevo cliente.
+	 * @return <b>Cliente</b> : Este método retorna el cliente que realizó este proceso de forma exitosa.
+	 * */
 	public static Cliente iniciarSesion() {
 		//Pedimos el tipo de documento al usuario
 		TipoDeDocumento documentoCliente = null;

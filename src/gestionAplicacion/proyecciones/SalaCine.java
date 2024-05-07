@@ -213,7 +213,6 @@ public class SalaCine {
 
 		//Ejecutamos esta operacion en caso de que se cambie la película en presentación
 		if (peliculaPresentacion != null) {
-			System.out.println(peliculaPresentacion.getNombre());
 			//Preparamos los asientos para ser actualizados
 			for (int i = 0; i < this.getAsientos().length; i++) {
 		        for (int j = 0; j < this.getAsientos()[i].length; j++) {

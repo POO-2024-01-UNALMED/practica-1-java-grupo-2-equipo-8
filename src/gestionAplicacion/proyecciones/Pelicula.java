@@ -21,6 +21,7 @@ public class Pelicula{
 	private int numeroDeSala;
 	private int idPelicula; 
 	private static ArrayList<SalaCine> salasDeCine = new ArrayList<>();
+	//private int ticketVendidos; (Para realizar el proceso de cambiar una película a otro cine según sus ventas)
 	
 	// Getters and Setters
 	public String getNombre() {
@@ -390,15 +391,23 @@ public class Pelicula{
 	
 	/**
 	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
-	 * utilidad de este método radica en que retornará un boolean en caso de encontrarla y respecto a este, se ejecutará un menú determinado 
+	 * utilidad de este método radica en que retornará un boolean en caso de encontrarla y no lleve más de 15 minutos en presentación,
+	 * respecto a este retorno, se ejecutará un menú determinado en el proceso de la funcionalidad 1 
 	 * durante el proceso de la funcionalidad 1
 	 * @return <b>boolean</b> : Este método retorna un boolean, en caso de encontrar que la película se encuentra en presentación,
 	 * si la película no se encuentra en presentacion, retorna false.
 	 * */
 	public boolean IsPeliculaEnPresentacion() {
+		boolean validarHorario = false;
 		for (SalaCine salaDeCine : Pelicula.getSalasDeCine()) {
 			try {
-				if (salaDeCine.getPeliculaEnPresentacion().equals(this)) {
+				try {
+					validarHorario = SalaCine.getFecha().isBefore(salaDeCine.getHorarioPeliculaEnPresentacion().plus(Duration.ofMinutes(15)));
+				}catch (NullPointerException e) {
+					validarHorario = false;
+				}
+				
+				if (salaDeCine.getPeliculaEnPresentacion().equals(this) && validarHorario) {
 					return true;
 				}
 			}catch(NullPointerException e) {
