@@ -3,6 +3,8 @@ package iuMain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.usuario.Cliente;
@@ -28,7 +30,7 @@ public class Funcionalidad1 {
 	 * @param cineProceso: Este método recibe como parámetro el cine que se seleccionó luego del proceso de login y con este
 	 * se hacen las busquedas para mostrar en pantalla las películas en cartelera y las salas de cine disponibles
 	 * */
-	static void reservarTicket(Cliente clienteProceso) {
+	static void reservarTicket(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		System.out.println("\nBienvenido al Sistema de Reserva de ticket para película");
 		
 		//Elección menu inicial
@@ -46,7 +48,7 @@ public class Funcionalidad1 {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
+				case 2: Administrador.inicio(clienteProceso, sucursalCineProceso); casoValido = true; break;
 				case 3: Administrador.salirDelSistema(); casoValido = true; break;
 				default: System.out.println("Opción invalida");
 			}
@@ -81,7 +83,7 @@ public class Funcionalidad1 {
 				}while(!(opcionMenu > 0 && opcionMenu <= carteleraPersonalizadaProceso.size() + 1));
 				
 				if (opcionMenu == Integer.valueOf(carteleraPersonalizadaProceso.size()) + 1) {
-					Administrador.inicio(clienteProceso);
+					Administrador.inicio(clienteProceso, sucursalCineProceso);
 				}
 				
 				peliculaProceso = carteleraPersonalizadaProceso.get(opcionMenu - 1);
@@ -141,7 +143,7 @@ public class Funcionalidad1 {
 				//Compra película en este horario
 				
 				//El cliente elige el asiento de la sala de cine que tiene la película seleccionada en presentación
-				numeroAsientoProceso = seleccionarAsiento(salaDeCineProceso);
+				numeroAsientoProceso = seleccionarAsiento(salaDeCineProceso, sucursalCineProceso);
 				
 				//Obtenemos el horario de la película seleccionada
 				horarioProceso = salaDeCineProceso.getHorarioPeliculaEnPresentacion();
@@ -151,14 +153,14 @@ public class Funcionalidad1 {
 					//Compra película en otro horario
 					
 					//El cliente elige el horario de la película seleccionada 
-					horarioProceso = seleccionarHorarioPelicula(clienteProceso, peliculaProceso);
+					horarioProceso = seleccionarHorarioPelicula(clienteProceso, peliculaProceso, sucursalCineProceso);
 					
 					//El cliente elige el asiento de la película seleccionada
-					numeroAsientoProceso = seleccionarAsiento(clienteProceso, horarioProceso, peliculaProceso);
+					numeroAsientoProceso = seleccionarAsiento(clienteProceso, horarioProceso, peliculaProceso, sucursalCineProceso);
 				}else {
 					System.out.println("La película seleccionada se encuentra únicamente en presentación" + 
 					", es decir, no tiene otros horarios disponibles.\n(Serás redireccionado al menú principal...)");
-					Administrador.inicio(clienteProceso);
+					Administrador.inicio(clienteProceso, sucursalCineProceso);
 				}
 			}
 			}else {
@@ -166,14 +168,14 @@ public class Funcionalidad1 {
 					//Compra película en otro horario
 					
 					//El cliente elige el horario de la película seleccionada 
-					horarioProceso = seleccionarHorarioPelicula(clienteProceso, peliculaProceso);
+					horarioProceso = seleccionarHorarioPelicula(clienteProceso, peliculaProceso, sucursalCineProceso);
 					
 					//El cliente elige el asiento de la película seleccionada
-					numeroAsientoProceso = seleccionarAsiento(clienteProceso, horarioProceso, peliculaProceso);
+					numeroAsientoProceso = seleccionarAsiento(clienteProceso, horarioProceso, peliculaProceso, sucursalCineProceso);
 				}else {
 					System.out.println("La película seleccionada se encuentra únicamente en presentación" + 
 					", es decir, no tiene otros horarios disponibles.\n(Serás redireccionado al menú inicial de este proceso...)");
-					reservarTicket(clienteProceso);
+					reservarTicket(clienteProceso, sucursalCineProceso);
 				}
 			}
 		
@@ -206,7 +208,7 @@ public class Funcionalidad1 {
 				}
 			}
 		}else {
-			Administrador.inicio(clienteProceso);
+			Administrador.inicio(clienteProceso, sucursalCineProceso);
 		}
 		
 		//Realizamos el pago, según si el cliente decidió comprar un asiento de una película en presentación o en otro horario distinto
@@ -443,7 +445,7 @@ public class Funcionalidad1 {
 	 * @param peliculaProceso : Este método recibe como parámetro una película (De tipo película) obtenido durante el proceso de la funcionalidad 1,
 	 * para que de allí podamos mostrar en pantalla las llaves de su diccionario de horarios.
 	 * */
-	static LocalDateTime seleccionarHorarioPelicula(Cliente clienteProceso, Pelicula peliculaProceso) {
+	static LocalDateTime seleccionarHorarioPelicula(Cliente clienteProceso, Pelicula peliculaProceso, SucursalCine sucursalCineProceso) {
 		boolean casoValido;
 		boolean casoValidoConfirmacion;
 		int opcionMenu;
@@ -467,7 +469,7 @@ public class Funcionalidad1 {
 			}while(!(opcionMenu > 0 && opcionMenu <= Integer.valueOf(peliculaProceso.getHorarios().size()) + 1));
 			
 			if(peliculaProceso.obtenerHorario(opcionMenu) == null) {
-				Administrador.inicio(clienteProceso);
+				Administrador.inicio(clienteProceso, sucursalCineProceso);
 			}else {
 				horarioProceso = peliculaProceso.obtenerHorario(opcionMenu);
 			}
@@ -506,7 +508,7 @@ public class Funcionalidad1 {
 	 * @param horarioProceso : Este método recibe como parámetro la película (De tipo Pelicula) seleccionada durante el proceso de la funcionalidad 1
 	 * @return <b>String</b> : Este método retorna un String que corresponde al número de asiento seleccionado por el cliente
 	 * */
-	static String seleccionarAsiento(Cliente clienteProceso, LocalDateTime horarioProceso, Pelicula peliculaProceso) {
+	static String seleccionarAsiento(Cliente clienteProceso, LocalDateTime horarioProceso, Pelicula peliculaProceso, SucursalCine sucursalCineProceso) {
 		boolean casoValido;
 		boolean casoValidoConfirmacion;
 		int opcionMenu;
@@ -610,7 +612,7 @@ public class Funcionalidad1 {
 	 * el proceso de la funcionalidad 1
 	 * @return <b>String</b> : Este método retorna un String que corresponde al número de asiento seleccionado por el cliente
 	 * */
-	static String seleccionarAsiento(SalaCine salaDeCinePresentacionProceso) {
+	static String seleccionarAsiento(SalaCine salaDeCinePresentacionProceso, SucursalCine sucursalCineProceso) {
 		
 		boolean casoValidoConfirmacion;
 		boolean casoValido = false;
@@ -707,7 +709,7 @@ public class Funcionalidad1 {
 	 * se pregunta al usuario si desea ingresar y luego ejecuta el método ingresarSalaCine()
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (Clase cliente) que realizó el proceso de login
 	 * */
-	static void ingresarSalaCineDesdeMenu(Cliente clienteProceso) {
+	static void ingresarSalaCineDesdeMenu(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		
 		System.out.println("\nBienvenido al sistema de ingreso a la sala de cine\n");
 		
@@ -725,14 +727,14 @@ public class Funcionalidad1 {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
+				case 2: Administrador.inicio(clienteProceso, sucursalCineProceso); casoValido = true; break;
 				case 3: Administrador.salirDelSistema(); casoValido = true; break;
 				default: System.out.println("Opción invalida");
 			}
 			
 		}while(!casoValido);
 		
-		if (opcionMenu == 1) {ingresarSalaCine(clienteProceso);}
+		if (opcionMenu == 1) {ingresarSalaCine(clienteProceso, sucursalCineProceso);}
 		
 	}
 	
@@ -748,7 +750,7 @@ public class Funcionalidad1 {
 	 * @param clienteProceso : Este método recibe como parámetro al cliente (De tipo Cliente), que ingresó desde el menú
 	 * principal o compró un ticket de una película en presentación y desea verla directamente 
 	 * */
-	static void ingresarSalaCine(Cliente clienteProceso) {
+	static void ingresarSalaCine(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		//Verificamos que el cliente tenga al menos un ticket asociado para continuar con el proceso
 		//Mostramos el listado de las salas de cine disponibles para que el cliente elija una de estas
 		SalaCine salaDeCineProceso = null;
@@ -771,7 +773,7 @@ public class Funcionalidad1 {
 							+ clienteProceso.mostrarTicketsParaUsar() );
 						}else {
 							System.out.println("No has comprado ningún ticket, te redireccionaremos al menú principal");
-							Administrador.inicio(clienteProceso);
+							Administrador.inicio(clienteProceso, sucursalCineProceso);
 						}
 						System.out.println("Este es el listado de las salas de cine disponibles: \n" 
 						+ Pelicula.mostrarSalaCine(salasDeCineDisponibles) + "\n" + (Integer.valueOf(salasDeCineDisponibles.size()) + 1) 
@@ -783,7 +785,7 @@ public class Funcionalidad1 {
 				}while(!(opcionMenu > 0 & opcionMenu <= (Integer.valueOf(salasDeCineDisponibles.size()) + 1) ) );
 				
 				if (opcionMenu == (Integer.valueOf(salasDeCineDisponibles.size()) + 1)) {
-					Administrador.inicio(clienteProceso);
+					Administrador.inicio(clienteProceso, sucursalCineProceso);
 				}else {
 					salaDeCineProceso = salasDeCineDisponibles.get(opcionMenu - 1);
 				}
@@ -853,7 +855,7 @@ public class Funcionalidad1 {
 	 * además antes de verficar eso, eliminamos los tickets que ya han caducado).
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente) que realizó el proceso de login
 	 * */
-	static void salaDeEspera(Cliente clienteProceso) {
+	static void salaDeEspera(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		System.out.println("\nBienvenido a la sala de espera,\n" 
 		+ "Aquí puedes esperar a que pase el tiempo para poder ingresar a la película de alguno de los tickets que adquriste\n");
 		
@@ -871,7 +873,7 @@ public class Funcionalidad1 {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
+				case 2: Administrador.inicio(clienteProceso, sucursalCineProceso); casoValido = true; break;
 				case 3: Administrador.salirDelSistema(); casoValido = true; break;
 				default: System.out.println("Opción invalida");
 			}
@@ -883,7 +885,7 @@ public class Funcionalidad1 {
 		
 		if (!(clienteProceso.getTickets().size() > 0)) {
 			System.out.println("Debes tener al menos un ticket para hacer uso de esta sala (Redireccionando al menú principal...)");
-			Administrador.inicio(clienteProceso);
+			Administrador.inicio(clienteProceso, sucursalCineProceso);
 		}
 		
 		//Mostramos en pantalla los tickets disponibles y el usuario selecciona uno de estos

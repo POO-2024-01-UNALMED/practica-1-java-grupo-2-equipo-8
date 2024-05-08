@@ -23,8 +23,34 @@ public class SucursalCine {
 	
 	//Methods
 	
+	/**
+	 * Description : Este método se encarga de crear un string que se imprimirá en pantalla para visualizar las 
+	 * sucursales de nuestra franquicia a nivel nacional
+	 * @return <b>String</b> : Retorna un string con el lugar de nuestras distintas dependencias, con el fin de que el cliente elija a cual de estas desea
+	 * ingresar
+	 * */
+	public static String mostrarSucursalCine(){
+		String resultado = null;
+		int i = 1;
+		for (SucursalCine sucursal : SucursalCine.getSucursalesCine()) {
+			if (resultado == null) {
+				resultado = "\n" + i + ". Sucursal Cinemar en "  + sucursal.getLugar();
+			}else {
+				resultado = resultado + "\n" + i + ". Sucursal Cinemar en "  + sucursal.getLugar();
+			}
+			i++;
+		}
+		return resultado;
+		
+	}
 	
 	//Constructor
+	
+	public SucursalCine(String lugar) {
+		this.lugar = lugar;
+		SucursalCine.getSucursalesCine().add(this);
+	}
+	
 	public SucursalCine(String lugar, LocalDateTime fechaActual, ArrayList<SalaCine> salasDeCine,
 			ArrayList<Pedido> inventarioCine, ArrayList<Pelicula> peliculasDisponibles,
 			ArrayList<Ticket> ticketsCreados, ArrayList<Bono> bonosCreados) {
@@ -36,6 +62,7 @@ public class SucursalCine {
 		this.cartelera = peliculasDisponibles;
 		this.ticketsCreados = ticketsCreados;
 		this.bonosCreados = bonosCreados;
+		SucursalCine.getSucursalesCine().add(this);
 	}
 	
 	//Getters and Setters

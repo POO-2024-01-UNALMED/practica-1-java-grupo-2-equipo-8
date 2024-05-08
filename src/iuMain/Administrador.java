@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.usuario.*;
@@ -20,6 +22,10 @@ public class Administrador {
 		sc.nextLine();
 		return sc.nextLine();
 	}
+	
+	static SucursalCine sucursalCine1 = new SucursalCine("Bucaramanga");
+	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
+	static SucursalCine sucursalCine3 = new SucursalCine("San Andrés");
 	
 	static ServicioEntretenimiento game1= new ServicioEntretenimiento("Hang Man", 15000, "Accion");
 	static ServicioEntretenimiento game2= new ServicioEntretenimiento("Hang Man", 20000, "Terror");
@@ -221,17 +227,17 @@ public class Administrador {
 		System.out.println("Iniciar sesión");
 		Cliente clienteProceso = iniciarSesion();
 		
-		System.out.println("\nSeleccione la ubicación de una de nuestras instalaciones: ");
-		//Implementar método
+		System.out.println("\nIngresar a una de nuestras sedes");
+		SucursalCine sucursalCineProceso = ingresarASucursal();
 		
 		System.out.println("Hola " + clienteProceso.getNombre() + " Bienvenido al cine de marinilla");
-		inicio(clienteProceso);
+		inicio(clienteProceso, sucursalCineProceso);
 		
 	}
 	
       
 	
-	public static void inicio(Cliente clienteProceso) {
+	public static void inicio(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 	int opcion = 0;
 	do {
 		try {
@@ -253,15 +259,15 @@ public class Administrador {
 	
 	
 	switch (opcion) {
-		case 1: Funcionalidad1.reservarTicket(clienteProceso);inicio(clienteProceso); break;
-		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso); inicio(clienteProceso); break;
-		case 3: comprarComida(clienteProceso); inicio(clienteProceso); break;
-		case 4: comprarSouvenirs(clienteProceso);inicio(clienteProceso); break;
-		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
-		case 6: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
-		case 7: Funcionalidad1.salaDeEspera(clienteProceso); inicio(clienteProceso); break;
+		case 1: Funcionalidad1.reservarTicket(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
+		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 3: comprarComida(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 4: comprarSouvenirs(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
+		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 6: adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 7: Funcionalidad1.salaDeEspera(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 8: salirDelSistema(); break;
-		default: System.out.println("Opción invalida"); inicio(clienteProceso);
+		default: System.out.println("Opción invalida"); inicio(clienteProceso, sucursalCineProceso);
 	  }
 	
 	}
@@ -275,7 +281,7 @@ public class Administrador {
 	
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 	
-	static void comprarComida(Cliente clienteProceso) {
+	static void comprarComida(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 	System.out.println("\nBienvenido al Servicio de Comida\n");
 		
 		
@@ -291,7 +297,7 @@ public class Administrador {
 			}
 			switch (eleccionMenu) {
 				case 1: casoValido = false;break;
-				case 2: inicio(clienteProceso); casoValido = false; break;
+				case 2: inicio(clienteProceso, sucursalCineProceso); casoValido = false; break;
 				default: System.out.println("\nOpcion invalida\n"); break;
 			}
 			
@@ -314,7 +320,7 @@ public class Administrador {
 		
 //******************************************************************************************************************************************	   
 	
-	static void comprarSouvenirs(Cliente clienteProceso) {
+	static void comprarSouvenirs(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		System.out.println("\n----------------Bienvenido a la tienda de souvenirs--------------\n");
 		
 		//Reiteramos la eleccion del usuario
@@ -330,7 +336,7 @@ public class Administrador {
 			}
 			switch (opcionMenu) {
 				case 1: casoValido = false;break;
-				case 2: inicio(clienteProceso); casoValido = false; break;
+				case 2: inicio(clienteProceso, sucursalCineProceso); casoValido = false; break;
 				default: System.out.println("\nOpcion invalida\n"); break;
 			}
 			
@@ -378,7 +384,7 @@ public class Administrador {
 
 //------------------------------------------------------------------------------------------------------------------		
 	
-	static void adquirirMembresia(Cliente clienteProceso) {
+	static void adquirirMembresia(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla.");
 		//System.out.println(Membresia.mostrarCategoria() + "6. Volver");
 		boolean casoValido = false;
@@ -394,7 +400,7 @@ public class Administrador {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: inicio(clienteProceso); casoValido = true; break;
+				case 2: inicio(clienteProceso, sucursalCineProceso); casoValido = true; break;
 				case 3: salirDelSistema(); casoValido = true; break;
 				default: System.out.println("Opcion invalida"); break;
 			}
@@ -416,8 +422,8 @@ public class Administrador {
 				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
 				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
 				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
-				case 4: adquirirMembresia(clienteProceso);casoValido=false;break;
-				case 5: inicio(clienteProceso);casoValido=false;break;
+				case 4: adquirirMembresia(clienteProceso, sucursalCineProceso);casoValido=false;break;
+				case 5: inicio(clienteProceso, sucursalCineProceso);casoValido=false;break;
 				case 6: salirDelSistema();
 				default: System.out.println("Opcion invalida");break;
 			}
@@ -511,7 +517,7 @@ public class Administrador {
 			System.out.print(Membresia.verificarMembresiaActual(cliente));
 			System.out.print(Membresia.mostrarCategoria(cliente) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
 			opcionMenu = (int) Integer.parseInt(sc.nextLine());
-			if (opcionMenu == 6) {inicio(clienteProceso); break;}
+			if (opcionMenu == 6) {inicio(clienteProceso, sucursalCineProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
 				if (cliente.getMembresia()!= null) {
 					int categoriaCliente = cliente.getMembresia().getCategoria();
@@ -545,7 +551,7 @@ public class Administrador {
 			+ ". Por favor, seleccione el método de pago a usar:\n"
 			+ MetodoPago.mostrarMetodosDePago(cliente) + "5. Volver al inicio \nIngrese la opción: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
-			if (opcionMenu == 5) {inicio(clienteProceso);}
+			if (opcionMenu == 5) {inicio(clienteProceso, sucursalCineProceso);}
 			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(cliente, opcionMenu);
 			try {
 				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {
@@ -637,7 +643,6 @@ public class Administrador {
 	}
 	
 	public static Cliente validarCliente() {
-		Scanner sc = new Scanner(System.in);
 		TipoDeDocumento documentoCliente = null;
 		boolean casoValido = true;
 		int opcionMenu;
@@ -914,6 +919,53 @@ public class Administrador {
 	
 		return clienteProceso;
 		
+	}
+	
+	
+	/**
+	 * Description : Este método se encarga de realizar el proceso de selección de alguna de nuestras dependencias según los datos 
+	 * ingresados por el cliente, para esto, mostramos en pantalla nuestras distintas sedes, el cliente elige una de estas y una vez confirmemos
+	 * su elección, retornamos la sucursal de nuestra cine a la cual desea acceder.
+	 * @return <b>SucursalCine</b> : Este método se encarga de retornar la sucursal de nuestro cine (De tipo SucursalCine) a la cuál el cliente
+	 * intenta acceder, con el fin de que el proceso de las funcionalidades ocurra en el contexto de alguna de nuestras sucursales.
+	 * */
+	static SucursalCine ingresarASucursal() {
+		
+		boolean casoValido = false;
+		int opcionMenu = 0;
+		
+		SucursalCine sucursalCineProceso = null;
+		
+		do {
+			do {
+				opcionMenu = 0;
+				try {
+					System.out.println("A continuación se presentará la ubicación de nuestras distintas sedes\n" + 
+				    "Por favor elige a cuál de las siguientes deseas acceder: " + SucursalCine.mostrarSucursalCine());
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				}catch(NumberFormatException e) {
+					System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+				}
+			}while(!(opcionMenu > 0 & opcionMenu < SucursalCine.getSucursalesCine().size() ) );
+			
+			sucursalCineProceso = SucursalCine.getSucursalesCine().get(opcionMenu - 1);
+			
+			do {
+				opcionMenu = 0;
+				try {
+					System.out.println("Usted ha seleccionado nuestra sede ubicada en " + sucursalCineProceso.getLugar() +
+					" ¿Es esto correcto?\n1. Correcto\n2. Cambiar sucursal");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				}catch(NumberFormatException e) {
+					System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+				}
+			}while(!(opcionMenu == 1 || opcionMenu == 2));
+			
+			casoValido = (opcionMenu == 1) ? true : false;
+			
+		}while(!casoValido);
+			
+		return sucursalCineProceso;
 	}
 	
 	
