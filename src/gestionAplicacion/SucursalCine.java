@@ -11,7 +11,7 @@ import gestionAplicacion.usuario.Ticket;
 
 public class SucursalCine {
 	private String lugar;
-	private LocalDateTime fechaActual;
+	private static LocalDateTime fechaActual;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
 	private ArrayList<Pedido> inventarioCine = new ArrayList<>();
 	private ArrayList<Pelicula> cartelera = new ArrayList<>();
@@ -19,6 +19,7 @@ public class SucursalCine {
 	//private ArrayList<Servicio> servicios = new ArrayList<>();
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
+	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	//private static ArrayList<Cliente> clientes = new ArrayList<>();
 	
 	//Methods
@@ -44,6 +45,28 @@ public class SucursalCine {
 		
 	}
 	
+	/**
+	 * Description : Este método se encarga de añadir las salas de cine a las sucursales de cine correspondientes
+	 * @return <b>void</b> : Este método no retorna nada, solo se encarga de añadir las salas de cine a las sucursales de cine correspondientes
+	 * */
+	public static void añadirSalasCineSede () {
+		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+			for (SalaCine salaCine : SalaCine.getSalasCine()) {
+				if (salaCine.getUbicacionSede().equals(sede)) {
+					sede.getSalasDeCine().add(salaCine);
+				}
+			}
+		}
+	}
+	
+	/***/
+	public static void actualizarPeliculasSalasDeCine() {
+		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+			Pelicula.actualizarSalasDeCine(sede);
+		}
+	}
+	
+	
 	//Constructor
 	
 	public SucursalCine(String lugar) {
@@ -56,7 +79,7 @@ public class SucursalCine {
 			ArrayList<Ticket> ticketsCreados, ArrayList<Bono> bonosCreados) {
 		super();
 		this.lugar = lugar;
-		this.fechaActual = fechaActual;
+		SucursalCine.fechaActual = fechaActual;
 		this.salasDeCine = salasDeCine;
 		this.inventarioCine = inventarioCine;
 		this.cartelera = peliculasDisponibles;
@@ -73,11 +96,11 @@ public class SucursalCine {
 	public void setLugar(String lugar) {
 		this.lugar = lugar;
 	}
-	public LocalDateTime getFechaActual() {
+	public static LocalDateTime getFechaActual() {
 		return fechaActual;
 	}
-	public void setFechaActual(LocalDateTime fechaActual) {
-		this.fechaActual = fechaActual;
+	public static void setFechaActual(LocalDateTime fechaActual) {
+		SucursalCine.fechaActual = fechaActual;
 	}
 	public ArrayList<SalaCine> getSalasDeCine() {
 		return salasDeCine;
@@ -115,7 +138,14 @@ public class SucursalCine {
 	public void setBonosCreados(ArrayList<Bono> bonosCreados) {
 		this.bonosCreados = bonosCreados;
 	}
-	
+
+	public static ArrayList<Pelicula> getPeliculasDisponibles() {
+		return peliculasDisponibles;
+	}
+
+	public static void setPeliculasDisponibles(ArrayList<Pelicula> peliculasDisponibles) {
+		SucursalCine.peliculasDisponibles = peliculasDisponibles;
+	}
 	
 	
 

@@ -1,6 +1,8 @@
 package gestionAplicacion.usuario;
 
 import java.time.LocalDateTime;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.ServicioEntretenimiento;
 
@@ -37,11 +39,11 @@ public class Ticket implements IBuyable{
 		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
 	}
 	
-	public Ticket(Cliente dueno, Pelicula pelicula, LocalDateTime horario, String numeroAsiento) {
+	public Ticket(Cliente dueno, Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalCine) {
 		this.dueno = dueno;
 		this.pelicula = pelicula;
 		this.idTicket = Ticket.cantidadTicketsCreados;
-		this.salaDeCine = pelicula.obtenerSalaDeCineConCodigo();
+		this.salaDeCine = pelicula.obtenerSalaDeCineConCodigo(sucursalCine);
 		Ticket.cantidadTicketsCreados++;
 		this.codigo = this.generarCodigoTicket();
 		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
@@ -128,7 +130,8 @@ public class Ticket implements IBuyable{
 	}
 	
 	private String generarCodigoTicket() {
-		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getSalaDeCine().getNumeroSala();
+		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getNumeroDeSala();
+
 		return codigoTicket;
 	}
 	

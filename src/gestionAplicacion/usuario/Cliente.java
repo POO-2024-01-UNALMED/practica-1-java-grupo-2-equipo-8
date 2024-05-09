@@ -2,6 +2,8 @@ package gestionAplicacion.usuario;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.Duration;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Bono;
@@ -137,7 +139,7 @@ public class Cliente {
 						+ ", Hora: " + ticket.getHorario() + "\n";
 			}else {
 				tickets = tickets + i + ". Película: " + ticket.getPelicula().getNombre() 
-						+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
+						+ ", Número sala de Cine: " + ticket.getPelicula().getNumeroDeSala() 
 						+ ", Hora: " + ticket.getHorario() + "\n";
 			}
 			i++;
@@ -155,7 +157,7 @@ public class Cliente {
 		ArrayList<Ticket> ticketsCaducados = new ArrayList<>();
 		
 		for (Ticket ticket : this.getTickets()) {
-			if( !(ticket.getHorario().plus(ticket.getPelicula().getDuracion()).isAfter(SalaCine.getFecha())) ){
+			if( !(ticket.getHorario().plus(ticket.getPelicula().getDuracion()).isAfter(SucursalCine.getFechaActual())) ){
 				ticketsCaducados.add(ticket);
 			}
 		}

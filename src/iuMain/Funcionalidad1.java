@@ -60,7 +60,7 @@ public class Funcionalidad1 {
 		//Aquí se puede añadir el caso en el que el cliente tenga membresía para mostrar la cartelera personalizada en caso de no poder evitar repetidos cambiar por LinkedHashSet
 		//Mostramos una cartelera personalizada de acuerdo a la edad del cliente, si la película tiene horarios disponibles o se encuentra en presentación y (futuramente la membresía)
 		ArrayList<Pelicula> carteleraPersonalizadaProceso = new ArrayList<>();
-		carteleraPersonalizadaProceso = Pelicula.filtrarCarteleraPorCliente(clienteProceso);
+		carteleraPersonalizadaProceso = Pelicula.filtrarCarteleraPorCliente(clienteProceso, sucursalCineProceso);
 		
 		//Seleccionamos una película
 		casoValido = false;
@@ -122,8 +122,8 @@ public class Funcionalidad1 {
 		
 		//Mostramos este menú en caso de que la película se encuentre en presentación en alguna sala de cine y 
 		//además la película no lleva más de 15 minutos en presentación
-		if (peliculaProceso.IsPeliculaEnPresentacion()) {
-			salaDeCineProceso = peliculaProceso.whereIsPeliculaEnPresentacion();
+		if (peliculaProceso.IsPeliculaEnPresentacion(sucursalCineProceso)) {
+			salaDeCineProceso = peliculaProceso.whereIsPeliculaEnPresentacion(sucursalCineProceso);
 			casoValido = false;
 			casoValidoConfirmacion = false;
 			
@@ -132,7 +132,7 @@ public class Funcionalidad1 {
 				try {
 					System.out.println("Hemos detectado que la película seleccionada se encuentra en presentación. \ninicio de proyección: " + 
 					salaDeCineProceso.getHorarioPeliculaEnPresentacion() + "\n¿Desea reservar un ticket para este horario? " +
-					" (Hora actual: " + SalaCine.getFecha() + ")\n1. Comprar en este horario\n2. Comprar en otro horario");
+					" (Hora actual: " + SucursalCine.getFechaActual() + ")\n1. Comprar en este horario\n2. Comprar en otro horario");
 					opcionMenu = Integer.parseInt(sc.nextLine());
 				}catch(NumberFormatException e){
 					System.out.println("Error, debes ingresar un único dato númerico entre los disponibles");
@@ -194,7 +194,7 @@ public class Funcionalidad1 {
 		Ticket ticketProceso = null;
 		if (opcionMenu == 1) {
 			//Creamos el ticket con su respectivo precio e informamos al cliente en caso de recibir un descuento
-			ticketProceso = new Ticket(clienteProceso, peliculaProceso, horarioProceso, numeroAsientoProceso);
+			ticketProceso = new Ticket(clienteProceso, peliculaProceso, horarioProceso, numeroAsientoProceso, sucursalCineProceso);
 			ticketProceso.asignarPrecio();
 			if(!(ticketProceso.getPrecio() == peliculaProceso.getPrecio())) {
 				if (peliculaProceso.getTipoDeFormato().equals("3D") || peliculaProceso.getTipoDeFormato().equals("4D") ) {
@@ -759,7 +759,7 @@ public class Funcionalidad1 {
 		int opcionMenu;
 		
 		//Tomamos las salas de cine que aún tienen películas en presentación y no han finalizado
-		ArrayList<SalaCine> salasDeCineDisponibles = Pelicula.filtrarSalasDeCine();
+		ArrayList<SalaCine> salasDeCineDisponibles = Pelicula.filtrarSalasDeCine(sucursalCineProceso);
 		do {
 			do {
 				do {
@@ -767,8 +767,8 @@ public class Funcionalidad1 {
 					try {
 						clienteProceso.dropTicketsCaducados();
 						if(clienteProceso.getTickets().size() > 0) {
-							System.out.println( "\nFecha actual: "+ SalaCine.getFecha().toLocalDate() 
-							+ "; Hora actual: " + SalaCine.getFecha().toLocalTime() + "\n\n"
+							System.out.println( "\nFecha actual: "+ SucursalCine.getFechaActual().toLocalDate() 
+							+ "; Hora actual: " + SucursalCine.getFechaActual().toLocalTime() + "\n\n"
 							+ "Estos son los tickets que actualmente tienes disponibles: \n" 
 							+ clienteProceso.mostrarTicketsParaUsar() );
 						}else {
@@ -833,8 +833,8 @@ public class Funcionalidad1 {
 		        
 		        casoValido = true;
 		        
-		        SalaCine.setFecha(salaDeCineProceso.getHorarioPeliculaEnPresentacion().plus(salaDeCineProceso.getPeliculaEnPresentacion().getDuracion()));
-		        Pelicula.actualizarSalasDeCine(); 
+		        SucursalCine.setFechaActual(salaDeCineProceso.getHorarioPeliculaEnPresentacion().plus(salaDeCineProceso.getPeliculaEnPresentacion().getDuracion()));
+		        SucursalCine.actualizarPeliculasSalasDeCine();
 		        
 			}else {
 				System.out.println("\nNo tienes un ticket válido o no cumple con los requisitos para ingresar a esta sala de cine" 
@@ -894,8 +894,8 @@ public class Funcionalidad1 {
 		do {
 			opcionMenu = 0;
 			try {
-				System.out.println( "\nFecha actual: "+ SalaCine.getFecha().toLocalDate() 
-				+ "; Hora actual: " + SalaCine.getFecha().toLocalTime() + "\n\n"
+				System.out.println( "\nFecha actual: "+ SucursalCine.getFechaActual().toLocalDate() 
+				+ "; Hora actual: " + SucursalCine.getFechaActual().toLocalTime() + "\n\n"
 				+ "Estos son los tickets que actualmente tienes disponibles: \n" 
 				+ clienteProceso.mostrarTicketsParaUsar() );
 				opcionMenu = Integer.parseInt(sc.nextLine());
@@ -917,7 +917,8 @@ public class Funcionalidad1 {
 				try {
 					System.out.println("El ticket seleccionado es para la película " + ticketParaUsar.getPelicula().getNombre()
 					+ "; El día " + ticketParaUsar.getHorario().getDayOfWeek() + ";\nfecha " + ticketParaUsar.getHorario().toLocalDate() 
-					+ "; A las " + ticketParaUsar.getHorario().toLocalTime() + "\n\n¿Es esto correcto?\n1. Correcto\n2. Cambiar ticket");
+					+ "; A las " + ticketParaUsar.getHorario().toLocalTime() + "\nTenga en cuenta que, en caso de tener un ticket en un horario que " 
+					+ "intenta omitir, este será eliminado" +"\n\n¿Es esto correcto?\n1. Correcto\n2. Cambiar ticket");
 					opcionMenu = Integer.parseInt(sc.nextLine());
 				}catch(NumberFormatException e) {
 					System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
@@ -933,8 +934,8 @@ public class Funcionalidad1 {
 		}while(!casoValido);
 		
 		//Adelantamos la hora actual al horario asignado al ticket seleccionado por el usuario
-		SalaCine.setFecha(ticketParaUsar.getHorario());
-		Pelicula.actualizarSalasDeCine();
+		SucursalCine.setFechaActual(ticketParaUsar.getHorario());
+		SucursalCine.actualizarPeliculasSalasDeCine();
 		
 		//Mostramos en pantalla el resultado del proceso
 		System.out.println("\nEsperando...");
@@ -943,7 +944,7 @@ public class Funcionalidad1 {
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("La fecha actual ha sido actualizada con éxito ( " + SalaCine.getFecha() + " )\n(Redireccionando al menú principal...)");
+		System.out.println("La fecha actual ha sido actualizada con éxito ( " + SucursalCine.getFechaActual() + " )\n(Redireccionando al menú principal...)");
 	}
 }
 	
@@ -953,11 +954,12 @@ public class Funcionalidad1 {
 // se encarga de validar que una película se encuentra en presentación y podemos comprar tickets (osea no superamos los 15 minutos de presentación)
 // evitando así el conflicto de validar una pelicula en presentación, cuando esta ya había finalizado (Posiblemente solución definitiva))
 
-// Idea : Implementar en el menú principal 7. Ingresar a Sala de Espera, donde el cliente aumenta el tiempo cierta cantidad, obviamente con restricciones
-// Ejemplo : Cliente tiene asociado un ticket ese ticket es para una película que es a las 2:30, al ingresar a esta parte, (Verificar restricciones)
-// se le pregunta si va a esperar a que se de cuál película de los tickets que tiene asociados, selecciona un ticket y se settea
-// la fecha actual con el horario de la película del ticket seleccionado.
 // Limpiar código
+
+//EN PROCESO DE REPARACIONES
+//1. Solucionar Problema de actualizar salas de cine, no hay ninguna película en presentación
+//2. Mejorar abstracción de métodos
+//3. Crear verificación para no mostrar en pantalla los tickets comprados para películas de otras sedes y no dejar ingresar a salas de cine ni sala de espera
 
 
 
