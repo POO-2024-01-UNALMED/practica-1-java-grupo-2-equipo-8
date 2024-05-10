@@ -59,7 +59,10 @@ public class SucursalCine {
 		}
 	}
 	
-	/***/
+	/**
+	 * Description : Este método se encarga de actualizar las salas de todas las sedes, para esto, iteramos sobre el ArrayList de las sedes y la pasamos
+	 * como parámetro al método actualizarSalasDeCine de la clase Película.
+	 * */
 	public static void actualizarPeliculasSalasDeCine() {
 		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
 			Pelicula.actualizarSalasDeCine(sede);

@@ -148,7 +148,7 @@ public class Cliente {
 	}
 	
 	/**
-	 * Descripiton: Este método se encarga de eliminar los tickets cuyo horario, más la duración de la película para la cuál fue adquirido 
+	 * Description: Este método se encarga de eliminar los tickets cuyo horario, más la duración de la película para la cuál fue adquirido 
 	 * es menor a la fecha actual, para esto, creamos un array en el cuál almacenamos los tickets que cumplan la condición anterior y posteriormente
 	 * los eliminamos.
 	 * @return <b>void</b> : Este método no retorna nada (void), solo elimina los tickets caducados.
@@ -165,6 +165,25 @@ public class Cliente {
 		for (Ticket ticket : ticketsCaducados) {
 			this.getTickets().remove(ticket);
 		}
+	}
+	
+	/**
+	 * Description : Este método se encarga de verificar si el cliente posee algún ticket correspondiente a alguna de las películas en cartelera
+	 * de la sede que se pasa como parámetro
+	 * @param sucursalCineProceso : Este método recibe como parámetro la sede (De tipo SucursalCine) desde la cuál el cliente esta accediendo a nuestros
+	 * servicios
+	 * @return <b>boolean</b> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
+	 * o a la sala de espera si este posee algún ticket válido.
+	 * */
+	public boolean disponibilidadTIcketParaSede(SucursalCine sucursalCineProceso) {
+		for (Ticket ticket : this.getTickets()) {
+			for (Pelicula peliculaCarteleraSede : sucursalCineProceso.getCartelera()) {
+				if(ticket.getPelicula().equals(peliculaCarteleraSede)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	//Getters y setters
