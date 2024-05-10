@@ -26,7 +26,6 @@ public class ServicioEntretenimiento extends Servicio{
 	
 	public ServicioEntretenimiento(String nombre, String horario, String nombreServicio, String horarioServicio,
 			double valorServicio, double puntuacionUsuario, String generoServicio) {
-		super(nombre, horario);
 		this.nombreServicio = nombreServicio;
 		this.horarioServicio = horarioServicio;
 		this.valorServicio = valorServicio;
@@ -51,8 +50,8 @@ public class ServicioEntretenimiento extends Servicio{
 	public void usarServicio() {}
 	public void leerFactura() {}
 	public boolean verificarPuntuacion() {return true;}
-	public Pedido obtenerBonoSouvenir() {return new Pedido();}
-	public Pedido obtenerBonoComida() {return new Pedido();}
+	public Producto obtenerBonoSouvenir() {return new Producto();}
+	public Producto obtenerBonoComida() {return new Producto();}
 	public boolean verificarRelacionPeliculaServicio() {return true;}
 	public String asignarPremio() {return "premio";}
 	public Bono crearBono() {return new Bono();}

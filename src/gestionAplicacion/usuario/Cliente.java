@@ -1,5 +1,4 @@
 package gestionAplicacion.usuario;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.Duration;
 
@@ -7,14 +6,14 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Bono;
-import gestionAplicacion.servicios.Pedido;
+import gestionAplicacion.servicios.Producto;
 
 public class Cliente {
 	
 	//Atributos
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
-	private ArrayList<Pedido> pedidos = new ArrayList<>();
+	private ArrayList<Producto> pedidos = new ArrayList<>();
 	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
@@ -26,6 +25,7 @@ public class Cliente {
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	private ArrayList<Bono> bonosCliente = new ArrayList<>();
+	private SucursalCine cine;
 	
 	
 	//Constructores
@@ -208,14 +208,6 @@ public class Cliente {
 		this.tickets = tickets;
 	}
 
-	public ArrayList<Pedido> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(ArrayList<Pedido> pedidos) {
-		this.pedidos = pedidos;
-	}
-
 	public ArrayList<String> getFacturas() {
 		return facturas;
 	}
@@ -278,6 +270,22 @@ public class Cliente {
 
 	public void setBonosCliente(ArrayList<Bono> bonosCliente) {
 		this.bonosCliente = bonosCliente;
+	}
+
+	public ArrayList<Producto> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(ArrayList<Producto> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public SucursalCine getCine() {
+		return cine;
+	}
+
+	public void setCine(SucursalCine cine) {
+		this.cine = cine;
 	}
 
 	

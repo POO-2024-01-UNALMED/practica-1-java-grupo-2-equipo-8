@@ -311,7 +311,6 @@ public class Membresia implements IBuyable{
 	@Override
 	public String factura(Cliente cliente) {
 		String factura = "=== Factura de compra ===\n" +
-				"Fecha de compra: " + SalaCine.getFecha() + "\n" +
 				"Nombre dueño: " + cliente.getNombre() + "\n" +
 				"Documento: " + cliente.getDocumento() + "\n" +
 				"Membresia: " + cliente.getMembresia().getNombre()+ "\n" +
@@ -319,7 +318,6 @@ public class Membresia implements IBuyable{
 				"Tipo: " + cliente.getMembresia().getTipoMembresia() + "\n" +
 				"Duración: " + cliente.getMembresia().getDuracionMembresiaDias()+ " dias.\n" +
 				"Precio de compra: " + cliente.getMembresia().getValorSuscripcionMensual() + "\n" +
-				"Valida hasta: " + SalaCine.getFecha().plusDays(this.duracionMembresiaDias);
 		cliente.getFacturas().add(factura);
 		return factura;
 	}

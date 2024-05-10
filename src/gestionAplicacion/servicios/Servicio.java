@@ -1,25 +1,55 @@
 package gestionAplicacion.servicios;
 
+import java.util.ArrayList;
+
 import gestionAplicacion.usuario.Cliente;
-import gestionAplicacion.usuario.TipoDeDocumento;
-import java.util.Scanner;
 
 public class Servicio {
 	
-	private static int idServicio;
 	private String nombre;
-	private String horario;
-	private static double valorGananciasTotales;
+	private Cliente cliente;
+	private ArrayList<Producto> inventario = new ArrayList<>();
 	
 	public Servicio(){}
 	
-	public Servicio(String nombre, String horario) {
-		super();
-		this.nombre = nombre;
-		this.horario = horario;
+	public Servicio(String nombre) {
+		this.setNombre(nombre);
 	}
 	
-	public boolean realizarPago() {return true;}
-	public String factura() {return "factura";}
-	public static void sumarValorGananciasTotales() {}
+	public String mostrarInventario() {
+		String productos = "----------Productos disponibles----------";
+		if(0 == inventario.size()) {
+			productos = "NO HAY PRODUCTOS DISPONIBLES :(";
+		}
+		for(int i=0;i<inventario.size();i++) {
+			productos = productos + "\n" + inventario.get(i).getNombre() + " " + inventario.get(i).getTamaño();
+		}
+		return productos;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
+	public ArrayList<Producto> getInventario() {
+		return inventario;
+	}
+	
+	public void setInventario(ArrayList<Producto> inventario) {
+		this.inventario = inventario;
+	}
+	
+	
 }

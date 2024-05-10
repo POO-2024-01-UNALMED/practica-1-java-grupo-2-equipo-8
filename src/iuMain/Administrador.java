@@ -2,6 +2,7 @@ package iuMain;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
@@ -26,6 +27,13 @@ public class Administrador {
 	static SucursalCine sucursalCine1 = new SucursalCine("Bucaramanga");
 	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
 	static SucursalCine sucursalCine3 = new SucursalCine("San Andrés");
+	
+	static ArrayList<Producto> inventarioBucaramanga = new ArrayList<Producto>();
+	static ArrayList<Producto> inventarioMarinilla = new ArrayList<Producto>();
+	static ArrayList<Producto> inventarioSanAndrés = new ArrayList<Producto>();
+	
+	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,50);
+	static Producto producto2 = new Producto("Hamburguesa","Pequeña","comida",15000,50);
 	
 	static ServicioEntretenimiento game1= new ServicioEntretenimiento("Hang Man", 15000, "Accion");
 	static ServicioEntretenimiento game2= new ServicioEntretenimiento("Hang Man", 20000, "Terror");
@@ -99,23 +107,16 @@ public class Administrador {
 	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 150000, 0.15);
 	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",500000, 0);
 	
-	static Inventario camisas = new Inventario ("camisa",50,40000,"XL","Souvenirs",11);
-	static Inventario camisas1 = new Inventario ("camisa",50,33000,"L","Souvenirs",11);
-	static Inventario crispetas1= new Inventario("crispeta",60,20000,"Grande","Comida",21);
-	
 	static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000,false, cliente4);
 	
 	public static void main(String[] args) {
 		
-//		Bono pruevaBono = new Bono(1234,"Peluche","A","Souvenir");
-//		Bono pruevaBono1 = new Bono(1235,"Peluche","A","Souvenir");
-//		ArrayList<Bono> Bonosss = new ArrayList<>();
-//		Bonosss.add(pruevaBono);
-//		Bonosss.add(pruevaBono1);
-//		Cliente Rusbel = new Cliente();
-//		Rusbel.setBonosCliente(Bonosss);
-//		Rusbel.setNombre("Rusbel");
-//		Rusbel.setDocumento(1037886240);
+		inventarioMarinilla.add(producto1);
+		inventarioMarinilla.add(producto2);
+		
+		sucursalCine1.setInventarioCine(inventarioBucaramanga);
+		sucursalCine2.setInventarioCine(inventarioMarinilla);
+		sucursalCine3.setInventarioCine(inventarioSanAndrés);
 		
 		//Llamados métodos de instancias para hacer pruebas
 		{
@@ -354,12 +355,11 @@ public class Administrador {
 	switch (opcion) {
 		case 1: Funcionalidad1.reservarTicket(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
 		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 3: comprarComida(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 4: comprarSouvenirs(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
+		case 3: Funcionalidad2.compras(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 4: calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
 		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 6: adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 7: Funcionalidad1.salaDeEspera(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 8: salirDelSistema(); break;
 		default: System.out.println("Opción invalida"); inicio(clienteProceso, sucursalCineProceso);
 	  }
 	
@@ -374,100 +374,19 @@ public class Administrador {
 	
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 	
-	static void comprarComida(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
-	System.out.println("\nBienvenido al Servicio de Comida\n");
 		
 		
-		boolean casoValido = true;
-		int eleccionMenu = 0;
-		do {
-			try {
-				System.out.print("Estas seguro de acceder al servicio de comida?:\n1.SI.\n2.NO.\nSeleccina una opcion:");
-				eleccionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e) {
-				System.out.println("\nError, debes ingresar un dato numérico\n");
-				continue;
-			}
-			switch (eleccionMenu) {
-				case 1: casoValido = false;break;
-				case 2: inicio(clienteProceso, sucursalCineProceso); casoValido = false; break;
-				default: System.out.println("\nOpcion invalida\n"); break;
-			}
-			
-		}while(casoValido);
-		
-		
-		ServicioComida serviC = new ServicioComida();
-		
-		//Creacion o validacion del cliente
-		serviC.setCliente(validarCliente());
-		
-	
-		
-		
-	} 
-		
-		
+	//Bloque funcionalidad 2
 	
 	
 		
 //******************************************************************************************************************************************	   
 	
-	static void comprarSouvenirs(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
-		System.out.println("\n----------------Bienvenido a la tienda de souvenirs--------------\n");
+	//Bloque funcionalidad 3
+	
+	static void calificacion(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		
-		//Reiteramos la eleccion del usuario
-		boolean casoValido = true;
-		int opcionMenu = 0;
-		do {
-			try {
-				System.out.print("Estas seguro de acceder al servicio de souvenir:\n1.SI.\n2.NO.\nSeleccina una opcion:");
-				opcionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e) {
-				System.out.println("\nError, debes ingresar un dato numérico\n");
-				continue;
-			}
-			switch (opcionMenu) {
-				case 1: casoValido = false;break;
-				case 2: inicio(clienteProceso, sucursalCineProceso); casoValido = false; break;
-				default: System.out.println("\nOpcion invalida\n"); break;
-			}
-			
-		}while(casoValido);
-		
-		
-		ServicioSouvenirs servicioSouvenirs = new ServicioSouvenirs();
-		
-		//Creacion o validacion del cliente
-		servicioSouvenirs.setCliente(validarCliente());
-
-		
-		//Interaccion #1 de la funcionalidad 3 la cual es una busqueda de los procutos disponibles
-		servicioSouvenirs.generarOrden(servicioSouvenirs.getCliente());
-			
-		casoValido = true;
-		do {
-			//Interaccion #1 de la funcionalidad 3 la cual es una busqueda de los procutos disponibles
-			System.out.println(servicioSouvenirs.generarOrden(servicioSouvenirs.getCliente()));
-			do {
-				try {
-					System.out.println("\n¿Deseas hacer otro pedido?\n1.SI\n2.No");
-					opcionMenu = Integer.parseInt(sc.nextLine());
-				}catch(NumberFormatException e) {
-					System.out.println("\nError, debes ingresar un dato numérico\n");
-					continue;
-				}
-				switch (opcionMenu) {
-					case 1: casoValido = false;break;
-					case 2: casoValido = false;break;
-					default: System.out.println("\nOpcion invalida\n");break;
-			}
-			}while(casoValido);
-			
-		}while(opcionMenu != 2);
-
-		
-}	
+	}
 	 
 		
 		

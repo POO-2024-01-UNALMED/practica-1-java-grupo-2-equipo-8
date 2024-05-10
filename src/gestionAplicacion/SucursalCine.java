@@ -6,17 +6,18 @@ import java.util.ArrayList;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Bono;
-import gestionAplicacion.servicios.Pedido;
+import gestionAplicacion.servicios.Producto;
+import gestionAplicacion.servicios.Servicio;
 import gestionAplicacion.usuario.Ticket;
 
 public class SucursalCine {
 	private String lugar;
 	private static LocalDateTime fechaActual;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
-	private ArrayList<Pedido> inventarioCine = new ArrayList<>();
+	private ArrayList<Producto> inventarioCine = new ArrayList<>();
 	private ArrayList<Pelicula> cartelera = new ArrayList<>();
 	private ArrayList<Ticket> ticketsCreados = new ArrayList<>();
-	//private ArrayList<Servicio> servicios = new ArrayList<>();
+	private ArrayList<Servicio> servicios = new ArrayList<>();
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
@@ -75,13 +76,13 @@ public class SucursalCine {
 	}
 	
 	public SucursalCine(String lugar, LocalDateTime fechaActual, ArrayList<SalaCine> salasDeCine,
-			ArrayList<Pedido> inventarioCine, ArrayList<Pelicula> peliculasDisponibles,
+			ArrayList<Producto> inventarioCine, ArrayList<Pelicula> peliculasDisponibles,
 			ArrayList<Ticket> ticketsCreados, ArrayList<Bono> bonosCreados) {
 		super();
 		this.lugar = lugar;
 		SucursalCine.fechaActual = fechaActual;
 		this.salasDeCine = salasDeCine;
-		this.inventarioCine = inventarioCine;
+		this.setInventarioCine(inventarioCine);
 		this.cartelera = peliculasDisponibles;
 		this.ticketsCreados = ticketsCreados;
 		this.bonosCreados = bonosCreados;
@@ -108,12 +109,7 @@ public class SucursalCine {
 	public void setSalasDeCine(ArrayList<SalaCine> salasDeCine) {
 		this.salasDeCine = salasDeCine;
 	}
-	public ArrayList<Pedido> getInventarioCine() {
-		return inventarioCine;
-	}
-	public void setInventarioCine(ArrayList<Pedido> inventarioCine) {
-		this.inventarioCine = inventarioCine;
-	}
+
 	public ArrayList<Pelicula> getCartelera() {
 		return cartelera;
 	}
@@ -146,6 +142,22 @@ public class SucursalCine {
 	public static void setPeliculasDisponibles(ArrayList<Pelicula> peliculasDisponibles) {
 		SucursalCine.peliculasDisponibles = peliculasDisponibles;
 	}
+	public ArrayList<Producto> getInventarioCine() {
+		return inventarioCine;
+	}
+
+	public void setInventarioCine(ArrayList<Producto> inventarioCine) {
+		this.inventarioCine = inventarioCine;
+	}
+
+	public ArrayList<Servicio> getServicios() {
+		return servicios;
+	}
+
+	public void setServicios(ArrayList<Servicio> servicios) {
+		this.servicios = servicios;
+	}
+	
 	
 	
 
