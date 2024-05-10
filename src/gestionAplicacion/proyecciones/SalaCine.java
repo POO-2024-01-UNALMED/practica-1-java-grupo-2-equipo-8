@@ -61,6 +61,7 @@ public class SalaCine {
 	 * */
 	public String mostrarAsientos() {
 	    StringBuilder resultado = new StringBuilder("Asientos de Cine\n");
+	    resultado.append("\n(Fila: distribución horizontal de asientos)\n(Columna: distribución vertical de asientos)\n(Número de asiento: Intersección fila y columna)\n");
 	    resultado.append("  --------------------------------- \n              Pantalla\n");
 	    resultado.append("    ");
 	    // Agregar números de columnas
@@ -277,7 +278,6 @@ public class SalaCine {
 	 * */
 	public String mostrarAsientosParaPantalla() {
 		StringBuilder resultado = new StringBuilder();
-		resultado.append("\n(Fila: distribución horizontal de asientos)\n(Columna: distribución vertical de asientos)\n(Número de asiento: Intersección fila y columna)\n");
 	    resultado.append("  -------------------------------------------------------------- \n                           Pantalla\n");
 	    resultado.append("    ");
 	    resultado.append("\n");

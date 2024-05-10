@@ -441,7 +441,7 @@ public class Pelicula{
 					salaDeCine.actualizarPeliculasEnPresentacion(sucursalCine);
 				}
 			}catch(NullPointerException e) {
-				continue;
+				salaDeCine.actualizarPeliculasEnPresentacion(sucursalCine);
 			}
 		}
 	}

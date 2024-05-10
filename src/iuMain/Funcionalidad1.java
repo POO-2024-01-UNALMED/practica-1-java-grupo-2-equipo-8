@@ -215,7 +215,7 @@ public class Funcionalidad1 {
 		if (peliculaProceso.getHorarios().get(horarioProceso) == null) {
 			pagarTicket(clienteProceso, salaDeCineProceso, numeroAsientoProceso, ticketProceso);
 		}else {
-			pagarTicket(clienteProceso, peliculaProceso, horarioProceso, numeroAsientoProceso, ticketProceso);
+			pagarTicket(clienteProceso, peliculaProceso, horarioProceso, numeroAsientoProceso, ticketProceso, sucursalCineProceso);
 		}
 	}
 	
@@ -304,6 +304,7 @@ public class Funcionalidad1 {
 			if (metodoPagoProceso.realizarPago(precioTicketProceso, clienteProceso) == 0) {
 				System.out.println("Pago realizado, La compra de su ticket fue exitosa");
 				ticketProceso.procesarPagoRealizado(clienteProceso);
+				ticketProceso.setSalaDeCine(salaDeCineProceso);
 				ticketProceso.factura(clienteProceso);
 				salaDeCineProceso.cambiarDisponibilidadAsientoLibre(numeroAsientoProceso);
 				System.out.println( clienteProceso.getFacturas().get(Integer.valueOf(clienteProceso.getFacturas().size()) - 1) );
@@ -342,8 +343,10 @@ public class Funcionalidad1 {
 	 * en esa posición.
 	 * @param ticketProceso : Este método recibe como parámetro un ticket (De tipo Ticket), que corresponde al ticket generado durante el proceso de la
 	 * funcionalidad 1, del cuál se obtendrá el valor a pagar, se realizará el proceso de pago y una vez verificado, se le asociará al cliente   
+	 * @param sucursalCineProceso : Este método recibe como parámetro la sede (De tipo SucursalCine), que corresponde al lugar desde donde el cliente
+	 * esta realizando la compra, con el fin de asignarle a este ticket la sala de cine correspondiente a su película
 	 * */
-	static void pagarTicket(Cliente clienteProceso, Pelicula peliculaProceso, LocalDateTime horarioProceso, String numeroAsientoProceso, Ticket ticketProceso) {
+	static void pagarTicket(Cliente clienteProceso, Pelicula peliculaProceso, LocalDateTime horarioProceso, String numeroAsientoProceso, Ticket ticketProceso, SucursalCine sucursalCineProceso) {
 		
 		boolean casoValido = false;
 		boolean casoValidoConfirmacion = false;
@@ -413,6 +416,7 @@ public class Funcionalidad1 {
 			if (metodoPagoProceso.realizarPago(precioTicketProceso, clienteProceso) == 0) {
 				System.out.println("Pago realizado, La compra de su ticket fue exitosa");
 				ticketProceso.procesarPagoRealizado(clienteProceso);
+				ticketProceso.setSalaDeCine(peliculaProceso.obtenerSalaDeCineConCodigo(sucursalCineProceso));
 				ticketProceso.factura(clienteProceso);
 				//Generamos la fila y la columna a partir del número de asiento seleccionado
 				int filaProceso = Character.getNumericValue(numeroAsientoProceso.charAt(0));
@@ -446,6 +450,7 @@ public class Funcionalidad1 {
 	 * para que de allí podamos mostrar en pantalla las llaves de su diccionario de horarios.
 	 * */
 	static LocalDateTime seleccionarHorarioPelicula(Cliente clienteProceso, Pelicula peliculaProceso, SucursalCine sucursalCineProceso) {
+		
 		boolean casoValido;
 		boolean casoValidoConfirmacion;
 		int opcionMenu;
@@ -766,13 +771,13 @@ public class Funcionalidad1 {
 					opcionMenu = 0;
 					try {
 						clienteProceso.dropTicketsCaducados();
-						if(clienteProceso.getTickets().size() > 0) {
+						if(clienteProceso.getTickets().size() > 0 && clienteProceso.disponibilidadTIcketParaSede(sucursalCineProceso)) {
 							System.out.println( "\nFecha actual: "+ SucursalCine.getFechaActual().toLocalDate() 
 							+ "; Hora actual: " + SucursalCine.getFechaActual().toLocalTime() + "\n\n"
 							+ "Estos son los tickets que actualmente tienes disponibles: \n" 
 							+ clienteProceso.mostrarTicketsParaUsar() );
 						}else {
-							System.out.println("No has comprado ningún ticket, te redireccionaremos al menú principal");
+							System.out.println("No has comprado ningún ticket o no tienes un ticket de una película de esta sede, te redireccionaremos al menú principal");
 							Administrador.inicio(clienteProceso, sucursalCineProceso);
 						}
 						System.out.println("Este es el listado de las salas de cine disponibles: \n" 
@@ -883,8 +888,8 @@ public class Funcionalidad1 {
 		//Validamos si el cliente tiene tickets disponibles
 		clienteProceso.dropTicketsCaducados();
 		
-		if (!(clienteProceso.getTickets().size() > 0)) {
-			System.out.println("Debes tener al menos un ticket para hacer uso de esta sala (Redireccionando al menú principal...)");
+		if (!(clienteProceso.getTickets().size() > 0 && clienteProceso.disponibilidadTIcketParaSede(sucursalCineProceso))) {
+			System.out.println("Debes tener al menos un ticket de alguna película de esta sede para hacer uso de esta sala (Redireccionando al menú principal...)");
 			Administrador.inicio(clienteProceso, sucursalCineProceso);
 		}
 		
@@ -954,12 +959,10 @@ public class Funcionalidad1 {
 // se encarga de validar que una película se encuentra en presentación y podemos comprar tickets (osea no superamos los 15 minutos de presentación)
 // evitando así el conflicto de validar una pelicula en presentación, cuando esta ya había finalizado (Posiblemente solución definitiva))
 
-// Limpiar código
-
-//EN PROCESO DE REPARACIONES
-//1. Solucionar Problema de actualizar salas de cine, no hay ninguna película en presentación
+//0. Automatizar la creación de horarios consecutivos de una película determinada y que no colisionen con los de otra película en presentación de la misma sala
+//1. Limpiar código en Funcionalidad1 y Administrador(A la hora de crear los objetos)
 //2. Mejorar abstracción de métodos
-//3. Crear verificación para no mostrar en pantalla los tickets comprados para películas de otras sedes y no dejar ingresar a salas de cine ni sala de espera
+//3. Hacer Tests
 
 
 
