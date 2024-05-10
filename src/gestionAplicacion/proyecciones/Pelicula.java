@@ -312,7 +312,7 @@ public class Pelicula{
 	public static ArrayList<Pelicula> filtrarCarteleraPorCliente(Cliente clienteProceso){
 		ArrayList<Pelicula> carteleraPersonalizada = new ArrayList<Pelicula>();
 		for (Pelicula pelicula : Pelicula.getCartelera()) {
-			if (pelicula.getHorarios().size() > 0 || (pelicula.IsPeliculaEnPresentacion()) && (SalaCine.getFecha().isBefore( pelicula.whereIsPeliculaEnPresentacion().getHorarioPeliculaEnPresentacion().plusMinutes(15)))) {
+			if (pelicula.getHorarios().size() > 0 || (pelicula.IsPeliculaEnPresentacion()) && (SalaCine.getFecha().isBefore(pelicula.whereIsPeliculaEnPresentacion().getHorarioPeliculaEnPresentacion().plusMinutes(15)))) {
 				if ((Integer.parseInt(pelicula.getClasificacion())) <= clienteProceso.getEdad()) {
 					
 					carteleraPersonalizada.add(pelicula);

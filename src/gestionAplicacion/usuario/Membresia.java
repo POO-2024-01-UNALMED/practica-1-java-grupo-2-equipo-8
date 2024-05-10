@@ -17,7 +17,6 @@ public class Membresia implements IBuyable{
 	private ArrayList<Cliente> clientes = new ArrayList<>();
 	private double descuentoAsociado;
 	private int valorSuscripcionMensual;
-	private int valorDescuentoAplicado;
 	private int duracionMembresiaDias;
 	private int tipoMembresia;
 	
@@ -36,13 +35,12 @@ public class Membresia implements IBuyable{
 	}
 	
 	public Membresia(String nombre, int categoria, ArrayList<Cliente> clientes, double descuentoAsociado,
-			int valorSuscripcionMensual, int valorDescuentoAplicado, int duracionMembresiaDias, int tipo) {
+			int valorSuscripcionMensual, int duracionMembresiaDias, int tipo) {
 		this.nombre = nombre;
 		this.categoria = categoria;
 		this.clientes = clientes;
 		this.descuentoAsociado = descuentoAsociado;
 		this.valorSuscripcionMensual = valorSuscripcionMensual;
-		this.valorDescuentoAplicado = valorDescuentoAplicado;
 		this.duracionMembresiaDias = duracionMembresiaDias;
 		this.tipoMembresia = tipo;
 		tiposDeMembresia.add(this);
@@ -298,6 +296,8 @@ public class Membresia implements IBuyable{
 		//Se asigna la referencia de la membresia adquirida en el cliente y se actualizan sus métodos de pago.
 		cliente.setMembresia(this);
 		cliente.setDuracionMembresiaDias(Duration.ofDays(this.duracionMembresiaDias));
+		
+		//Al adquirir la membresia, se crea y asigna un método de pago único que permite acumular puntos canjeables con compras en el cine.
 		MetodoPago.asignarMetodosDePago(cliente);
 		//Se eliminan las referencias de los métodosDePagoUsados
 		MetodoPago.getMetodosDePagoUsados().clear();
