@@ -2,6 +2,8 @@ package gestionAplicacion.proyecciones;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.Ticket;
 
@@ -9,24 +11,23 @@ public class SalaCine {
 	
 	private int numeroSala;
 	private String tipoDeSala;
-	private static LocalDateTime fecha;
 	private LocalDateTime horarioPeliculaEnPresentacion;
 	private Asiento[][] asientos;
 	private Pelicula peliculaEnPresentacion;
-	//private ArrayList<Pelicula> peliculas = new ArrayList<>(); Posiblemente sea innecesario
 	private static ArrayList<SalaCine> salasCine = new ArrayList<>();
 	private static ArrayList<Ticket> ticketsCreados = new ArrayList<>();
+	private SucursalCine ubicacionSede;
 	
 	//Constructors
 	public SalaCine(){
-		Pelicula.getSalasDeCine().add(this);
 		SalaCine.getSalasCine().add(this);
 	}
 	
-	public SalaCine(int nSala, String tipoDeSala){
+	public SalaCine(int nSala, String tipoDeSala, SucursalCine ubicacionSede){
 		this();
 		this.numeroSala = nSala;
 		this.tipoDeSala = tipoDeSala;
+		this.ubicacionSede = ubicacionSede;
 	}
 	
 	public SalaCine(int numeroSala, String tipoDeSala, Asiento[][] asientos, Pelicula peliculaEnPresentacion, ArrayList<Ticket> ticketsCreados) {
@@ -60,6 +61,7 @@ public class SalaCine {
 	 * */
 	public String mostrarAsientos() {
 	    StringBuilder resultado = new StringBuilder("Asientos de Cine\n");
+	    resultado.append("\n(Fila: distribución horizontal de asientos)\n(Columna: distribución vertical de asientos)\n(Número de asiento: Intersección fila y columna)\n");
 	    resultado.append("  --------------------------------- \n              Pantalla\n");
 	    resultado.append("    ");
 	    // Agregar números de columnas
@@ -154,7 +156,7 @@ public class SalaCine {
 				verificacionPelicula = ticket.getPelicula().equals(this.peliculaEnPresentacion);
 				
 				verificacionHorario = ticket.getHorario().equals(this.getHorarioPeliculaEnPresentacion()) &
-				SalaCine.getFecha().isBefore(this.getHorarioPeliculaEnPresentacion().plus( this.getPeliculaEnPresentacion().getDuracion() ) ); 
+				SucursalCine.getFechaActual().isBefore(this.getHorarioPeliculaEnPresentacion().plus( this.getPeliculaEnPresentacion().getDuracion() ) ); 
 				
 			}catch(NullPointerException e) {
 				verificacion = false;
@@ -184,17 +186,19 @@ public class SalaCine {
 	 * una vez hecho esto, limpiamos los asientos de la sala de cine, cambiando su disponibilidad a libre, y
 	 * por último actualizamos la información de la disponibilidad de los asientos, tomando la información del array de la sala virtual que 
 	 * coincidió en fecha y hora de la película en presentación, además modificamos el atributo horarioPeliculaEnPresentacion de la salaDeCine
+	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), con el fin de actualizar, únicamente, las salas de cine
+	 * con las películas propias de esta sucursal.
 	 * @return (void): Este método no retorna nada, solo actualiza los asientos de la sala de cine y de la película en presentación
 	 * */
-	public void actualizarPeliculasEnPresentacion() {
+	public void actualizarPeliculasEnPresentacion(SucursalCine sucursalCine) {
 		Pelicula peliculaPresentacion = null;
 		LocalDateTime horarioPresentacion = null;
 		//Actualizamos la película
 		try {
-			for (Pelicula pelicula : Pelicula.getCartelera()) {
+			for (Pelicula pelicula : sucursalCine.getCartelera()) {
 				if ( (pelicula.getNumeroDeSala() == this.getNumeroSala() ) & (pelicula.getTipoDeFormato().equals(this.getTipoDeSala())) ) {
 					for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
-						if (!(horario.isAfter(SalaCine.getFecha()))){
+						if (!(horario.isAfter(SucursalCine.getFechaActual()))){
 							horarioPresentacion = horario;
 							this.setPeliculaEnPresentacion(pelicula);
 							peliculaPresentacion = this.getPeliculaEnPresentacion();
@@ -274,7 +278,6 @@ public class SalaCine {
 	 * */
 	public String mostrarAsientosParaPantalla() {
 		StringBuilder resultado = new StringBuilder();
-		resultado.append("\n(Fila: distribución horizontal de asientos)\n(Columna: distribución vertical de asientos)\n(Número de asiento: Intersección fila y columna)\n");
 	    resultado.append("  -------------------------------------------------------------- \n                           Pantalla\n");
 	    resultado.append("    ");
 	    resultado.append("\n");
@@ -332,15 +335,6 @@ public class SalaCine {
 	public void setTipoDeSala(String tipoDeSala) {
 		this.tipoDeSala = tipoDeSala;
 	}
-
-	public static LocalDateTime getFecha() {
-		return fecha;
-	}
-
-	public static void setFecha(LocalDateTime fecha) {
-		SalaCine.fecha = fecha;
-	}
-
 	
 	public Asiento[][] getAsientos() {
 		return asientos;
@@ -384,6 +378,17 @@ public class SalaCine {
 
 	public static void setTicketsCreados(ArrayList<Ticket> ticketsCreados) {
 		SalaCine.ticketsCreados = ticketsCreados;
-	}	
+	}
+
+	public SucursalCine getUbicacionSede() {
+		return ubicacionSede;
+	}
+
+	public void setUbicacionSede(SucursalCine ubicacionSede) {
+		this.ubicacionSede = ubicacionSede;
+	}
+
+	
+	
 	
 }

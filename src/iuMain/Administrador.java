@@ -2,6 +2,7 @@ package iuMain;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
@@ -27,6 +28,13 @@ public class Administrador {
 	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
 	static SucursalCine sucursalCine3 = new SucursalCine("San Andrés");
 	
+	static ArrayList<Producto> inventarioBucaramanga = new ArrayList<Producto>();
+	static ArrayList<Producto> inventarioMarinilla = new ArrayList<Producto>();
+	static ArrayList<Producto> inventarioSanAndrés = new ArrayList<Producto>();
+	
+	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,50);
+	static Producto producto2 = new Producto("Hamburguesa","Pequeña","comida",15000,50);
+	
 	static ServicioEntretenimiento game1= new ServicioEntretenimiento("Hang Man", 15000, "Accion");
 	static ServicioEntretenimiento game2= new ServicioEntretenimiento("Hang Man", 20000, "Terror");
 	static ServicioEntretenimiento game3= new ServicioEntretenimiento("Hang Man", 10000, "POO");
@@ -47,13 +55,37 @@ public class Administrador {
 	static Pelicula pelicula2 = new Pelicula("Oppenheimer", 15000, "Drama", Duration.ofMinutes(120), "+18", "2D", 1); 
 	static Pelicula pelicula3 = new Pelicula("BNHA temporada 7 movie", 18000, "Acción", Duration.ofMinutes(60), "+18", "3D", 2);
 	static Pelicula pelicula4 = new Pelicula("Código Enigma", 12000, "Historia", Duration.ofMinutes(180), "+18", "2D", 1);
-	static Pelicula pelicula5 = new Pelicula("Spy x Familiy Código: Blanco", 25000, "Comedia", Duration.ofMinutes(105), "+8", "4D", 3);
+	static Pelicula pelicula5 = new Pelicula("Garfield", 17000, "Infantil", Duration.ofMinutes(105), "+5", "3D", 4);
 	static Pelicula pelicula6 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "3D", 4);
 	
-	static SalaCine salaDeCine1 = new SalaCine(1, "2D");
-	static SalaCine salaDeCine2 = new SalaCine(2, "3D");
-	static SalaCine salaDeCine3 = new SalaCine(3, "4D");
-	static SalaCine salaDeCine4 = new SalaCine(4, "3D");
+	static Pelicula pelicula7 = new Pelicula("Jujutsu Kaisen Cero", 30000, "Acción", Duration.ofMinutes(60), "+12", "4D", 3); 
+	static Pelicula pelicula8 = new Pelicula("El pájaro loco", 15000, "Infantil", Duration.ofMinutes(120), "+5", "2D", 1); 
+	static Pelicula pelicula9 = new Pelicula("Challengers", 18000, "Drama", Duration.ofMinutes(132), "+12", "3D", 2);
+	static Pelicula pelicula10 = new Pelicula("The First Omen", 12000, "Terror", Duration.ofMinutes(114), "+18", "2D", 1);
+	static Pelicula pelicula11 = new Pelicula("One Life", 25000, "Historia", Duration.ofMinutes(110), "+8", "4D", 3);
+	static Pelicula pelicula12 = new Pelicula("Civil War", 17000, "Acción", Duration.ofMinutes(109), "+18", "3D", 4);
+	
+	static Pelicula pelicula13 = new Pelicula("Star Wars: Episode 1", 30000, "Aventura", Duration.ofMinutes(90), "+7", "4D", 3); 
+	static Pelicula pelicula14 = new Pelicula("El conjuro 3", 20000, "Terror", Duration.ofMinutes(120), "+18", "3D", 4); 
+	static Pelicula pelicula15 = new Pelicula("Godzilla x Kong", 18000, "Ciencia ficción", Duration.ofMinutes(125), "+7", "3D", 2);
+	static Pelicula pelicula16 = new Pelicula("Misión Imposible 4", 32000, "Acción", Duration.ofMinutes(150), "+18", "3D", 2);
+	static Pelicula pelicula17 = new Pelicula("Your name", 15000, "Romance", Duration.ofMinutes(120), "+8", "2D", 1);
+	static Pelicula pelicula18 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(105), "+5", "3D", 4); 
+	
+	static SalaCine salaDeCine1 = new SalaCine(1, "2D", sucursalCine1);
+	static SalaCine salaDeCine2 = new SalaCine(2, "3D", sucursalCine1);
+	static SalaCine salaDeCine3 = new SalaCine(3, "4D", sucursalCine1);
+	static SalaCine salaDeCine4 = new SalaCine(4, "3D", sucursalCine1);
+	
+	static SalaCine salaDeCine5 = new SalaCine(1, "2D", sucursalCine2);
+	static SalaCine salaDeCine6 = new SalaCine(2, "3D", sucursalCine2);
+	static SalaCine salaDeCine7 = new SalaCine(3, "4D", sucursalCine2);
+	static SalaCine salaDeCine8 = new SalaCine(4, "3D", sucursalCine2);
+	
+	static SalaCine salaDeCine9 = new SalaCine(1, "2D", sucursalCine3);
+	static SalaCine salaDeCine10 = new SalaCine(2, "3D", sucursalCine3);
+	static SalaCine salaDeCine11 = new SalaCine(3, "4D", sucursalCine3);
+	static SalaCine salaDeCine12 = new SalaCine(4, "3D", sucursalCine3);
 
 	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
 	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);
@@ -66,7 +98,7 @@ public class Administrador {
 	static Ticket ticket3 = new Ticket();
 	static Ticket ticket4 = new Ticket();
 	static Ticket ticket5 = new Ticket(cliente4, salaDeCine3, 50000,  pelicula1, LocalDateTime.of(2024, 4, 28, 12, 0, 0), "4-8");
-	static Ticket ticket6 = new Ticket(cliente1, pelicula4, LocalDateTime.of(2024, 4, 28, 13, 30, 00), "2-2");
+	static Ticket ticket6 = new Ticket(cliente1, pelicula4, LocalDateTime.of(2024, 4, 28, 13, 30, 00), "2-2", sucursalCine1);
 	static Ticket ticket7 = new Ticket();
 	static Ticket ticket8 = new Ticket();
 	
@@ -75,44 +107,46 @@ public class Administrador {
 	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 150000, 0.15);
 	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",500000, 0);
 	
-	static Inventario camisas = new Inventario ("camisa",50,40000,"XL","Souvenirs",11);
-	static Inventario camisas1 = new Inventario ("camisa",50,33000,"L","Souvenirs",11);
-	static Inventario crispetas1= new Inventario("crispeta",60,20000,"Grande","Comida",21);
-	
 	static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000,false, cliente4);
 	
 	public static void main(String[] args) {
 		
-//		Bono pruevaBono = new Bono(1234,"Peluche","A","Souvenir");
-//		Bono pruevaBono1 = new Bono(1235,"Peluche","A","Souvenir");
-//		ArrayList<Bono> Bonosss = new ArrayList<>();
-//		Bonosss.add(pruevaBono);
-//		Bonosss.add(pruevaBono1);
-//		Cliente Rusbel = new Cliente();
-//		Rusbel.setBonosCliente(Bonosss);
-//		Rusbel.setNombre("Rusbel");
-//		Rusbel.setDocumento(1037886240);
+		inventarioMarinilla.add(producto1);
+		inventarioMarinilla.add(producto2);
+		
+		sucursalCine1.setInventarioCine(inventarioBucaramanga);
+		sucursalCine2.setInventarioCine(inventarioMarinilla);
+		sucursalCine3.setInventarioCine(inventarioSanAndrés);
 		
 		//Llamados métodos de instancias para hacer pruebas
 		{
-			SalaCine.setFecha(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			SucursalCine.setFechaActual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			salaDeCine1.crearAsientosSalaDeCine();
 			salaDeCine2.crearAsientosSalaDeCine();
 			salaDeCine3.crearAsientosSalaDeCine();
 			salaDeCine4.crearAsientosSalaDeCine(); 
 			
+			salaDeCine5.crearAsientosSalaDeCine();
+			salaDeCine6.crearAsientosSalaDeCine();
+			salaDeCine7.crearAsientosSalaDeCine();
+			salaDeCine8.crearAsientosSalaDeCine(); 
+			
+			salaDeCine9.crearAsientosSalaDeCine();
+			salaDeCine10.crearAsientosSalaDeCine();
+			salaDeCine11.crearAsientosSalaDeCine();
+			salaDeCine12.crearAsientosSalaDeCine(); 
+			
+			SucursalCine.añadirSalasCineSede();
+			
 			pelicula1.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula1.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 2, 30, 00));
 			pelicula1.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 5, 30, 00));
-			pelicula1.setNumeroDeSala(3);
 			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 16, 30, 00));
 			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 20, 30, 00));
-			pelicula2.setNumeroDeSala(1);
 			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
 			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 16, 30, 00));
-			pelicula3.setNumeroDeSala(2);
 
 			pelicula4.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
 			pelicula5.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 11, 00, 00));
@@ -120,19 +154,67 @@ public class Administrador {
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 17, 30, 00));
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 21, 30, 00));
-			pelicula6.setNumeroDeSala(4);
 			
+			sucursalCine3.getCartelera().add(pelicula1);
+			sucursalCine3.getCartelera().add(pelicula2);
+			sucursalCine3.getCartelera().add(pelicula3);
+			sucursalCine3.getCartelera().add(pelicula4);
+			sucursalCine3.getCartelera().add(pelicula5);
+			sucursalCine3.getCartelera().add(pelicula6);
+			
+			pelicula7.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			pelicula7.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 2, 30, 00));
+			pelicula7.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 5, 30, 00));
+			pelicula8.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			pelicula8.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 16, 30, 00));
+			pelicula8.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 20, 30, 00));
+			pelicula10.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			pelicula10.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
+			pelicula10.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 16, 30, 00));
 
-			salaDeCine3.actualizarPeliculasEnPresentacion();
-			salaDeCine1.actualizarPeliculasEnPresentacion();
-			salaDeCine2.actualizarPeliculasEnPresentacion();
-			salaDeCine4.actualizarPeliculasEnPresentacion();
+			pelicula12.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
+			pelicula11.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 11, 00, 00));
 
-			Pelicula.actualizarSalasDeCine();
+			pelicula9.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			pelicula9.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 17, 30, 00));
+			pelicula9.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 21, 30, 00));
+			
+			sucursalCine2.getCartelera().add(pelicula7);
+			sucursalCine2.getCartelera().add(pelicula8);
+			sucursalCine2.getCartelera().add(pelicula9);
+			sucursalCine2.getCartelera().add(pelicula10);
+			sucursalCine2.getCartelera().add(pelicula11);
+			sucursalCine2.getCartelera().add(pelicula12);
+			
+			pelicula13.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			pelicula13.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 2, 30, 00));
+			pelicula13.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 5, 30, 00));
+			pelicula16.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			pelicula16.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 16, 30, 00));
+			pelicula16.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 20, 30, 00));
+			pelicula17.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			pelicula17.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
+			pelicula17.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 16, 30, 00));
+
+			pelicula14.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
+			pelicula15.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 11, 00, 00));
+
+			pelicula18.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
+			pelicula18.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 17, 30, 00));
+			pelicula18.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 21, 30, 00));
+			
+			sucursalCine1.getCartelera().add(pelicula13);
+			sucursalCine1.getCartelera().add(pelicula14);
+			sucursalCine1.getCartelera().add(pelicula15);
+			sucursalCine1.getCartelera().add(pelicula16);
+			sucursalCine1.getCartelera().add(pelicula17);
+			sucursalCine1.getCartelera().add(pelicula18);
+
+			SucursalCine.actualizarPeliculasSalasDeCine();
 			
 			ticket1.setPelicula(pelicula1);
 			ticket1.asignarPrecio();
-			ticket1.setSalaDeCine(salaDeCine3);
+			ticket1.setSalaDeCine(salaDeCine11);
 			ticket1.setDueno(cliente1);
 			ticket1.setHorario(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			ticket1.setNumeroAsiento("4-4");
@@ -148,7 +230,7 @@ public class Administrador {
 			ticket2.setSalaDeCine(salaDeCine3);
 			ticket2.setDueno(cliente2);
 			ticket2.setNumeroAsiento("1-4");
-			ticket2.setHorario(SalaCine.getFecha());
+			ticket2.setHorario(SucursalCine.getFechaActual());
 			precio = ticket2.getPrecio();
 			metodoPago2.realizarPago(precio, cliente2);
 			ticket2.procesarPagoRealizado(cliente2);
@@ -160,6 +242,8 @@ public class Administrador {
 			
 			ticket4.setPelicula(pelicula1);
 			ticket4.asignarPrecio();
+			
+			ticket6.setSalaDeCine(ticket6.getPelicula().obtenerSalaDeCineConCodigo(sucursalCine1));
 			
 			cliente4.setCuenta(tarjeta1);
 			Membresia.asignarTipoMembresia();
@@ -180,7 +264,7 @@ public class Administrador {
 //			/*cliente1.setMembresia(membresia1)*/
 			
 			//System.out.println();
-			SalaCine.setFecha(SalaCine.getFecha().plusMinutes(14));
+			SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusMinutes(14));
 			
 //			//cliente1.setMembresia(membresia4);
 //			MetodoPago pago = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", cliente1);
@@ -219,6 +303,7 @@ public class Administrador {
 //			}
 			
 			//Print tests
+			System.out.println();
 			System.out.println();
 			
 		}
@@ -261,12 +346,11 @@ public class Administrador {
 	switch (opcion) {
 		case 1: Funcionalidad1.reservarTicket(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
 		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 3: comprarComida(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 4: comprarSouvenirs(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
+		case 3: Funcionalidad2.compras(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 4: calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
 		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 6: adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 7: Funcionalidad1.salaDeEspera(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 8: salirDelSistema(); break;
 		default: System.out.println("Opción invalida"); inicio(clienteProceso, sucursalCineProceso);
 	  }
 	
@@ -281,100 +365,19 @@ public class Administrador {
 	
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 	
-	static void comprarComida(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
-	System.out.println("\nBienvenido al Servicio de Comida\n");
 		
 		
-		boolean casoValido = true;
-		int eleccionMenu = 0;
-		do {
-			try {
-				System.out.print("Estas seguro de acceder al servicio de comida?:\n1.SI.\n2.NO.\nSeleccina una opcion:");
-				eleccionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e) {
-				System.out.println("\nError, debes ingresar un dato numérico\n");
-				continue;
-			}
-			switch (eleccionMenu) {
-				case 1: casoValido = false;break;
-				case 2: inicio(clienteProceso, sucursalCineProceso); casoValido = false; break;
-				default: System.out.println("\nOpcion invalida\n"); break;
-			}
-			
-		}while(casoValido);
-		
-		
-		ServicioComida serviC = new ServicioComida();
-		
-		//Creacion o validacion del cliente
-		serviC.setCliente(validarCliente());
-		
-	
-		
-		
-	} 
-		
-		
+	//Bloque funcionalidad 2
 	
 	
 		
 //******************************************************************************************************************************************	   
 	
-	static void comprarSouvenirs(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
-		System.out.println("\n----------------Bienvenido a la tienda de souvenirs--------------\n");
+	//Bloque funcionalidad 3
+	
+	static void calificacion(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		
-		//Reiteramos la eleccion del usuario
-		boolean casoValido = true;
-		int opcionMenu = 0;
-		do {
-			try {
-				System.out.print("Estas seguro de acceder al servicio de souvenir:\n1.SI.\n2.NO.\nSeleccina una opcion:");
-				opcionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e) {
-				System.out.println("\nError, debes ingresar un dato numérico\n");
-				continue;
-			}
-			switch (opcionMenu) {
-				case 1: casoValido = false;break;
-				case 2: inicio(clienteProceso, sucursalCineProceso); casoValido = false; break;
-				default: System.out.println("\nOpcion invalida\n"); break;
-			}
-			
-		}while(casoValido);
-		
-		
-		ServicioSouvenirs servicioSouvenirs = new ServicioSouvenirs();
-		
-		//Creacion o validacion del cliente
-		servicioSouvenirs.setCliente(validarCliente());
-
-		
-		//Interaccion #1 de la funcionalidad 3 la cual es una busqueda de los procutos disponibles
-		servicioSouvenirs.generarOrden(servicioSouvenirs.getCliente());
-			
-		casoValido = true;
-		do {
-			//Interaccion #1 de la funcionalidad 3 la cual es una busqueda de los procutos disponibles
-			System.out.println(servicioSouvenirs.generarOrden(servicioSouvenirs.getCliente()));
-			do {
-				try {
-					System.out.println("\n¿Deseas hacer otro pedido?\n1.SI\n2.No");
-					opcionMenu = Integer.parseInt(sc.nextLine());
-				}catch(NumberFormatException e) {
-					System.out.println("\nError, debes ingresar un dato numérico\n");
-					continue;
-				}
-				switch (opcionMenu) {
-					case 1: casoValido = false;break;
-					case 2: casoValido = false;break;
-					default: System.out.println("\nOpcion invalida\n");break;
-			}
-			}while(casoValido);
-			
-		}while(opcionMenu != 2);
-
-		
-}	
+	}
 	 
 		
 		
@@ -946,7 +949,7 @@ public class Administrador {
 				}catch(NumberFormatException e) {
 					System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
 				}
-			}while(!(opcionMenu > 0 & opcionMenu < SucursalCine.getSucursalesCine().size() ) );
+			}while(!(opcionMenu > 0 & opcionMenu < Integer.valueOf(SucursalCine.getSucursalesCine().size()) + 1 ) );
 			
 			sucursalCineProceso = SucursalCine.getSucursalesCine().get(opcionMenu - 1);
 			
