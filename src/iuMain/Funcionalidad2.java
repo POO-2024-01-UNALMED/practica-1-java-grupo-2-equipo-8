@@ -38,7 +38,7 @@ public class Funcionalidad2 {
 			System.out.print("Bienvenido al servicio de Comida");
 			comida.setCliente(clienteProceso);
 			comida.setInventario(comida.actualizarInventario());
-			comida.mostrarInventario();
+			System.out.print(comida.mostrarInventario());
 		}
 		else {
 			System.out.print("Bienvenido al servicio de Souvenirs");
