@@ -2,6 +2,7 @@ package iuMain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
 
 import gestionAplicacion.SucursalCine;
@@ -62,20 +63,24 @@ public class Funcionalidad1 {
 		ArrayList<Pelicula> carteleraPersonalizadaProceso = new ArrayList<>();
 		carteleraPersonalizadaProceso = Pelicula.filtrarCarteleraPorCliente(clienteProceso, sucursalCineProceso);
 		
+		LinkedHashSet<String> nombresPeliculasCarteleraPersonalizadaProceso = new LinkedHashSet<>();
+		nombresPeliculasCarteleraPersonalizadaProceso = Pelicula.filtrarNombrePeliculas(carteleraPersonalizadaProceso);
+		
 		//Seleccionamos una película
 		casoValido = false;
 		boolean casoValidoConfirmacion = false;
 		Pelicula peliculaProceso = null;
 		do {
-			System.out.println("\nHola " + clienteProceso.getNombre() + ", Bienvenido al sistema de reserva de ticket");
-			System.out.println("=====================================================================================");
-			//Mostramos las películas en cartelera y le pedimos al usuario elegir una de estas
 			do {
+				//Mostramos los nombres de las películas en cartelera y le pedimos al usuario elegir una de estas
 				do {
 					opcionMenu = 0;
 					try {
-						System.out.println("Este es el listado de las películas en cartelera, elige una de las siguientes opciones\n" 
-						+ Pelicula.mostrarCartelera(carteleraPersonalizadaProceso) + ( Integer.valueOf(carteleraPersonalizadaProceso.size()) + 1 ) + ". Salir al menú principal");
+						System.out.println("\nHola " + clienteProceso.getNombre() + ", Bienvenido al sistema de reserva de ticket");
+						System.out.println("=====================================================================================");
+						System.out.println("Este es el listado de los nombres de las películas en cartelera, elige una de las siguientes opciones\n" 
+						+ Pelicula.showNombrePeliculas(nombresPeliculasCarteleraPersonalizadaProceso) + "\n"
+						+ ( Integer.valueOf(carteleraPersonalizadaProceso.size()) + 1 ) + ". Salir al menú principal");
 						opcionMenu = Integer.parseInt(sc.nextLine());
 					}catch (NumberFormatException e) {
 						System.out.println("Error, debes ingresar un único dato numérico");
@@ -86,19 +91,47 @@ public class Funcionalidad1 {
 					Administrador.inicio(clienteProceso, sucursalCineProceso);
 				}
 				
-				peliculaProceso = carteleraPersonalizadaProceso.get(opcionMenu - 1);
+				ArrayList<String> ArrayNombresPeliculasCarteleraProceso = new ArrayList<>(nombresPeliculasCarteleraPersonalizadaProceso);
+				String nombrePelicula = ArrayNombresPeliculasCarteleraProceso.get(opcionMenu - 1);
+				
+				ArrayList<Pelicula> peliculasProceso = new ArrayList<>();
+				peliculasProceso = Pelicula.filtrarPorNombreDePelicula(nombrePelicula, sucursalCineProceso);
+				
+				//Mostramos en pantalla los formatos del nombre de la película seleccionada
+				do {
+					opcionMenu = 0;
+					
+					try {
+						System.out.println("Este es el listado de los formatos de la película " + nombrePelicula
+						+ ", elige una de las siguientes opciones\n" 
+						+ Pelicula.showTiposFormatoPeliculaSeleccionada(peliculasProceso)+ "\n"
+						+ ( Integer.valueOf(peliculasProceso.size()) + 1 ) + ". Seleccionar otra película");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch (NumberFormatException e) {
+						System.out.println("Error, debes ingresar un único dato numérico");
+					}
+					
+				}while( !( opcionMenu > 0 && opcionMenu <= Integer.valueOf(peliculasProceso.size()) + 1 ) );
+				
+				if (opcionMenu == Integer.valueOf(peliculasProceso.size()) + 1) {
+					continue;
+				}
+				
+				peliculaProceso = peliculasProceso.get(opcionMenu - 1);
 				
 				//Validamos si el cliente puede ver la película seleccionada
 				if (Integer.valueOf(peliculaProceso.getClasificacion()) > clienteProceso.getEdad()) {
-					System.out.println("Error, no tienes la edad suficiente, para ver esta película" 
-				    + ", elige otra película a la que si tengas acceso");
-					//continue SelecPeli;
+					System.out.println("Error, no tienes la edad suficiente, para ver esta película" );
+					//continue SelecPeli
+					reservarTicket(clienteProceso, sucursalCineProceso);
 				}
 				
 				do {
 					opcionMenu = 0;
 					try {
-						System.out.println("Has elegido la película " + peliculaProceso.getNombre() + "\n1.Correcto \n2.Cambiar Pelicula");
+						System.out.println("Has elegido la película " + peliculaProceso.getNombre() 
+						+ " en formato " + peliculaProceso.getTipoDeFormato()
+						+ "\n1.Correcto \n2.Cambiar Pelicula");
 						opcionMenu = Integer.parseInt(sc.nextLine());
 					}catch(NumberFormatException e) {
 						System.out.println("Error, debes ingresar un único dato numérico");
@@ -130,7 +163,7 @@ public class Funcionalidad1 {
 			do {
 				opcionMenu = 0;
 				try {
-					System.out.println("Hemos detectado que la película seleccionada se encuentra en presentación. \ninicio de proyección: " + 
+					System.out.println("\nHemos detectado que la película seleccionada se encuentra en presentación. \ninicio de proyección: " + 
 					salaDeCineProceso.getHorarioPeliculaEnPresentacion() + "\n¿Desea reservar un ticket para este horario? " +
 					" (Hora actual: " + SucursalCine.getFechaActual() + ")\n1. Comprar en este horario\n2. Comprar en otro horario");
 					opcionMenu = Integer.parseInt(sc.nextLine());
@@ -249,7 +282,7 @@ public class Funcionalidad1 {
 				opcionMenu = 0;
 				try {
 					System.out.println("\nEl valor a pagar por el ticket es: " + ticketProceso.getPrecio()
-					+ "\nEste es el listado de los métodos de pago disponibles:\n" 
+					+ "\nEste es el listado de los métodos de pago disponibles:" 
 					+ MetodoPago.mostrarMetodosDePago(clienteProceso));
 					opcionMenu = Integer.parseInt(sc.nextLine());
 				}catch(NumberFormatException e) {
@@ -302,7 +335,7 @@ public class Funcionalidad1 {
 			}
 			
 			if (metodoPagoProceso.realizarPago(precioTicketProceso, clienteProceso) == 0) {
-				System.out.println("Pago realizado, La compra de su ticket fue exitosa");
+				System.out.println("Pago realizado, La compra de su ticket fue exitosa\n");
 				ticketProceso.procesarPagoRealizado(clienteProceso);
 				ticketProceso.setSalaDeCine(salaDeCineProceso);
 				ticketProceso.factura(clienteProceso);
@@ -362,7 +395,7 @@ public class Funcionalidad1 {
 				opcionMenu = 0;
 				try {
 					System.out.println("\nEl valor a pagar por el ticket es: " + ticketProceso.getPrecio() 
-					+ "\nEste es el listado de los métodos de pago disponibles:\n" 
+					+ "\nEste es el listado de los métodos de pago disponibles:" 
 					+ MetodoPago.mostrarMetodosDePago(clienteProceso));
 					opcionMenu = Integer.parseInt(sc.nextLine());
 				}catch(NumberFormatException e) {
@@ -922,8 +955,8 @@ public class Funcionalidad1 {
 				try {
 					System.out.println("El ticket seleccionado es para la película " + ticketParaUsar.getPelicula().getNombre()
 					+ "; El día " + ticketParaUsar.getHorario().getDayOfWeek() + ";\nfecha " + ticketParaUsar.getHorario().toLocalDate() 
-					+ "; A las " + ticketParaUsar.getHorario().toLocalTime() + "\nTenga en cuenta que, en caso de tener un ticket en un horario que " 
-					+ "intenta omitir, este será eliminado" +"\n\n¿Es esto correcto?\n1. Correcto\n2. Cambiar ticket");
+					+ "; A las " + ticketParaUsar.getHorario().toLocalTime() + "\nADVERTENCIA: Si tiene un ticket entre el horario que " 
+					+ "intenta omitir y el actual, este será eliminado" +"\n\n¿Es esto correcto?\n1. Correcto\n2. Cambiar ticket");
 					opcionMenu = Integer.parseInt(sc.nextLine());
 				}catch(NumberFormatException e) {
 					System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
@@ -960,6 +993,8 @@ public class Funcionalidad1 {
 // evitando así el conflicto de validar una pelicula en presentación, cuando esta ya había finalizado (Posiblemente solución definitiva))
 
 //0. Automatizar la creación de horarios consecutivos de una película determinada y que no colisionen con los de otra película en presentación de la misma sala
+//0.1. Error al no tener disponibilidad de asientos en sala virtual o presencial, no se puede devolver, crear un camino para regresar o evaluar luego de seleccionar la película
+//0.2. Filtrar por nombre(Hacer recomendación membresía), luego por formato y luego obtener la película deseada
 //1. Limpiar código en Funcionalidad1 y Administrador(A la hora de crear los objetos)
 //2. Mejorar abstracción de métodos
 //3. Hacer Tests

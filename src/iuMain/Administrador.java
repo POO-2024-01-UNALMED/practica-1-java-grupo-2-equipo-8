@@ -315,7 +315,7 @@ public class Administrador {
 		System.out.println("\nIngresar a una de nuestras sedes");
 		SucursalCine sucursalCineProceso = ingresarASucursal();
 		
-		System.out.println("Hola " + clienteProceso.getNombre() + " Bienvenido al cine de marinilla");
+		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido al cine de marinilla");
 		inicio(clienteProceso, sucursalCineProceso);
 		
 	}
@@ -818,7 +818,8 @@ public class Administrador {
 					casoValidoConfirmacion = false;
 					do{
 						try {
-							System.out.println("( Edad mínima para hacer uso de nuestras instalaciones: 5 )");
+							System.out.println("( Edad mínima para hacer uso de nuestras instalaciones: 5 )" + "\n"
+							+ "( Edad máxima para hacer uso de nuestras instalaciones : 100 )");
 							System.out.print("Ingrese su edad: ");
 							edadCliente = Integer.parseInt(sc.nextLine());
 						}catch (NumberFormatException e) {
@@ -829,8 +830,9 @@ public class Administrador {
 						//Verificamos si la edad seleccionada por el cliente es acorde a su número de documento
 						if ( (documentoCliente.equals(TipoDeDocumento.CC) && edadCliente < 18) || 
 						   ( (documentoCliente.equals(TipoDeDocumento.TI) && (edadCliente > 18 || edadCliente < 5) ) ) ||
-						   ( (documentoCliente.equals(TipoDeDocumento.CE) && edadCliente < 5) ) ){
-							System.out.println("Error, debes ingresar un edad apropiada para un documento tipo: " + documentoCliente.getNombre());
+						   ( (documentoCliente.equals(TipoDeDocumento.CE) && edadCliente < 5) ) ||
+						   ( (edadCliente > 100) ) ){
+							System.out.println("Error, debes ingresar una edad válida o una apropiada para un documento tipo: " + documentoCliente.getNombre());
 							continue;
 						}
 						//Confirmamos si la edad ingresada es correcta

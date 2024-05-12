@@ -60,7 +60,8 @@ public class SalaCine {
 	 * pueda interactuar con la funcionalidad
 	 * */
 	public String mostrarAsientos() {
-	    StringBuilder resultado = new StringBuilder("Asientos de Cine\n");
+		StringBuilder resultado = new StringBuilder("\n");
+		resultado.append("Asientos de Cine\n");
 	    resultado.append("\n(Fila: distribución horizontal de asientos)\n(Columna: distribución vertical de asientos)\n(Número de asiento: Intersección fila y columna)\n");
 	    resultado.append("  --------------------------------- \n              Pantalla\n");
 	    resultado.append("    ");
