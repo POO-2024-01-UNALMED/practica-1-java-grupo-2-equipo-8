@@ -264,26 +264,6 @@ public class Pelicula{
 //	}
 	
 	/**
-	 * Description : Este método se encarga de mostrar un listado con los horarios disponibles de la pelicula 
-	 * solicitada cabe destacar que la pelicula es quien se ejecuta su método.
-	 * @return <b>String</b> : Retorna un string con las llaves del diccionario enumeradas de 1 a N.
-	 * */
-	public String mostrarHorarioPelicula() {
-		String horarios = null;
-		int i = 1;
-		for (LocalDateTime Horario : this.getHorarios().keySet()) {
-			
-			if (horarios == null) {
-				horarios = i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + "\n";
-			}else {
-				horarios = horarios + i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + "\n";
-			}
-			i++;
-		}
-		return horarios;
-	}
-	
-	/**
 	 * Description : Este método se encarga de verificar si la pelicula seleccionada se encuentra en presentación
 	 * y en caso de que sí, retorna el objeto salaCine que la esta presentando
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza este proceso
@@ -381,6 +361,50 @@ public class Pelicula{
 	}
 	
 	/**
+	 * Description : Este método se encarga de filtrar los horarios de la película que no han sido presentados aún y, además, 
+	 * tienen asientos disponibles
+	 * @return <b>ArrayList<LocalDateTime></b> : Este método se encarga de retornar los horarios que cumplen los criterios de filtrado
+	 * */
+	public ArrayList<LocalDateTime> filtrarHorariosPelicula(){
+		ArrayList<LocalDateTime> horariosPelicula = new ArrayList<>();
+		boolean isAsientosDisponibles = false;
+		
+		for (LocalDateTime horario : this.getHorarios().keySet()) {
+			for (int[] filaAsientos : this.getHorarios().get(horario)) {
+				for (int asiento : filaAsientos) {
+					if (asiento == 0) {
+						isAsientosDisponibles = true;
+					}
+				}
+			}
+			if (SucursalCine.getFechaActual().isBefore(horario) && isAsientosDisponibles) {
+				horariosPelicula.add(horario);
+			}
+		}
+		
+		return horariosPelicula;
+	}
+	
+	/**
+	 * Description : Este método se encarga de mostrar un listado con los horarios disponibles de la pelicula 
+	 * solicitada por el cliente.
+	 * @return <b>String</b> : Retorna un string que contiene los horarios disponibles de la película de forma enumerada y organizada.
+	 * */
+	public String mostrarHorarioPelicula(ArrayList<LocalDateTime> horariosPelicula) {
+		String horarios = null;
+		int i = 1;
+		for (LocalDateTime Horario : horariosPelicula) {
+			if (horarios == null) {
+				horarios = i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + "\n";
+			}else {
+				horarios = horarios + i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + "\n";
+			}
+			i++;
+		}
+		return horarios;
+	}
+	
+	/**
 	 * Description : Este método se encarga de retornar la llave del LinkedHashMap
 	 * a partir de la posición pasada como parámetro
 	 * @param posicion : Recibe un entero que representa la posición del horario 
@@ -425,24 +449,23 @@ public class Pelicula{
 	
 	/**
 	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
-	 * utilidad de este método radica en que retornará un boolean en caso de encontrarla y no lleve más de 15 minutos en presentación,
-	 * respecto a este retorno, se ejecutará un menú determinado en el proceso de la funcionalidad 1
+	 * utilidad de este método radica en que retornará true en caso de encontrarla, no lleve más de 15 minutos en presentación 
+	 * y tenga algún asiento disponible, respecto a este retorno, se ejecutará un menú determinado en el proceso de la funcionalidad 1
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza este proceso
 	 * @return <b>boolean</b> : Este método retorna un boolean, en caso de encontrar que la película se encuentra en presentación,
 	 * si la película no se encuentra en presentacion, retorna false.
 	 * */
-	public boolean IsPeliculaEnPresentacion(SucursalCine sucursalCine) {
-		boolean validarHorario = false;
+	public boolean IsPeliculaEnPresentacion(SucursalCine sucursalCine) {;
 		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
 			try {
-				try {
-					validarHorario = SucursalCine.getFechaActual().isBefore(salaDeCine.getHorarioPeliculaEnPresentacion().plus(Duration.ofMinutes(15)));
-				}catch (NullPointerException e) {
-					validarHorario = false;
-				}
-				
-				if (salaDeCine.getPeliculaEnPresentacion().equals(this) && validarHorario) {
-					return true;
+				if (salaDeCine.getPeliculaEnPresentacion().equals(this) && SucursalCine.getFechaActual().isBefore(salaDeCine.getHorarioPeliculaEnPresentacion().plus(Duration.ofMinutes(15)))) {
+					for (Asiento[] filaAsientos : salaDeCine.getAsientos()) {
+						for (Asiento asiento : filaAsientos) {
+							if (asiento.isDisponibilidad()) {
+								return true;
+							}
+						}
+					}
 				}
 			}catch(NullPointerException e) {
 				continue;
@@ -471,27 +494,27 @@ public class Pelicula{
 		}
 		return null;
 	}
-	
-	/**
-	 * Description: Este método se encarga de actualizarPeliculasEnPresentación de todas las sala de cine implementadas,
-	 * para ver más a detalle como se realiza este proceso se recomienda leer la documentación de actualizarPeliculasEnPresentacion 
-	 * en la clase SalaCine
-	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), para actualizar las salas de cine propias de esta sede
-	 * @return: <b>void</b> : Este método no retorna nada, solo actualiza las salaDeCine
-	 * */
-	public static void actualizarSalasDeCine(SucursalCine sucursalCine) {
-		//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
-		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
-			try {
-				if ( salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isBefore(SucursalCine.getFechaActual())
-						|| (salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isEqual(SucursalCine.getFechaActual())) ) {
-					salaDeCine.actualizarPeliculasEnPresentacion(sucursalCine);
-				}
-			}catch(NullPointerException e) {
-				salaDeCine.actualizarPeliculasEnPresentacion(sucursalCine);
-			}
-		}
-	}
+
+//Esto fue implementado directamente desde la clase SucursalCine
+//	/**
+//	 * Description: Este método se encarga de actualizarPeliculasEnPresentación de todas las sala de cine implementadas,
+//	 * para ver más a detalle como se realiza este proceso se recomienda leer la documentación de actualizarPeliculasEnPresentacion 
+//	 * en la clase SalaCine
+//	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), para actualizar las salas de cine propias de esta sede
+//	 * @return: <b>void</b> : Este método no retorna nada, solo actualiza las salaDeCine
+//	 * */
+//	public static void actualizarSalasDeCine(SucursalCine sucursalCine) {
+//		//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
+//		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
+//			try {
+//				if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SucursalCine.getFechaActual()) ) ) {
+//					salaDeCine.actualizarPeliculasEnPresentacion(sucursalCine);
+//				}
+//			}catch(NullPointerException e) {
+//				salaDeCine.actualizarPeliculasEnPresentacion(sucursalCine);
+//			}
+//		}
+//	}
 	
 	/**
 	 * Description : Este método se encarga de generar un listado de la salas de cine con información relevante de estas,

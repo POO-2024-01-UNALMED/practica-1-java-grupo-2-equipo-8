@@ -1,7 +1,9 @@
 package gestionAplicacion;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Set;
 
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
@@ -61,14 +63,64 @@ public class SucursalCine {
 	}
 	
 	/**
-	 * Description : Este método se encarga de actualizar las salas de todas las sedes, para esto, iteramos sobre el ArrayList de las sedes y la pasamos
-	 * como parámetro al método actualizarSalasDeCine de la clase Película.
+	 * Description : Este método se encarga de actualizar las salas de todas las sedes, para esto, iteramos sobre el ArrayList de las sedes,
+	 * luego iteramos sobre el ArrayList de las salas de cine de cada sala y la sede la pasamos
+	 * como parámetro al método actualizarPeliculasEnPresentacion de la clase SalaCine.
 	 * */
 	public static void actualizarPeliculasSalasDeCine() {
+		
 		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
-			Pelicula.actualizarSalasDeCine(sede);
+			//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
+			for (SalaCine salaDeCine : sede.getSalasDeCine()) {
+				try {
+					if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SucursalCine.getFechaActual()) ) ) {
+						salaDeCine.actualizarPeliculasEnPresentacion(sede);
+					}
+				}catch(NullPointerException e) {
+					salaDeCine.actualizarPeliculasEnPresentacion(sede);
+				}
+			}
 		}
 	}
+	
+	/**
+	 * Description : Este método se encarga de eliminar los horarios que ya no pueden ser presentados luego de un salto de tiempo (Usar la sala de espera)
+	 * de todas las películas, para esto, obtenemos la película con la mayor duración, con la idea de no eliminar una película que aún puede ser
+	 * presentada, luego, iteramos sobre los horarios de todas las películas y comparamos si es menor al horario actual luego de 
+	 * que le restamos a este la duración máxima obtenida anteriormente, en caso de que sí, lo eliminamos.  
+	 * */
+	public static void dropHorariosVencidos() {
+		Duration maxDuration = Duration.ofSeconds(0);
+		Duration auxMaxDuration = Duration.ofSeconds(0);
+		int comparacionDuraciones = 0;
+		
+		//Obtenemos la película con la duración máxima
+		for (Pelicula pelicula : SucursalCine.getPeliculasDisponibles()) {
+			auxMaxDuration = pelicula.getDuracion();
+			comparacionDuraciones = auxMaxDuration.compareTo(maxDuration);
+			
+			if(comparacionDuraciones > 0) {
+				maxDuration = auxMaxDuration;
+			}
+			
+		}
+		
+		ArrayList<LocalDateTime> horariosPeliculaAEliminar = new ArrayList<>();
+		//Eliminamos con certeza todos los horarios que fueron omitidos
+		for (Pelicula pelicula : SucursalCine.getPeliculasDisponibles()) {
+			for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
+				if (horario.isBefore(fechaActual.minus(maxDuration))) {
+					horariosPeliculaAEliminar.add(horario);
+				}
+			}
+			for (LocalDateTime horarioAEliminar : horariosPeliculaAEliminar) {
+				pelicula.getHorarios().remove(horarioAEliminar);
+			}
+			
+			horariosPeliculaAEliminar.clear();
+		}
+	}
+	
 	
 	
 	//Constructor

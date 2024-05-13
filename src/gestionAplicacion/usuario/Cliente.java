@@ -136,11 +136,11 @@ public class Cliente {
 			if (tickets == null) {
 				tickets = i + ". Película: " + ticket.getPelicula().getNombre() 
 						+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
-						+ ", Hora: " + ticket.getHorario() + "\n";
+						+ ", Hora: " + ticket.getHorario();
 			}else {
-				tickets = tickets + i + ". Película: " + ticket.getPelicula().getNombre() 
+				tickets = tickets + "\n" + i + ". Película: " + ticket.getPelicula().getNombre() 
 						+ ", Número sala de Cine: " + ticket.getPelicula().getNumeroDeSala() 
-						+ ", Hora: " + ticket.getHorario() + "\n";
+						+ ", Hora: " + ticket.getHorario();
 			}
 			i++;
 		}

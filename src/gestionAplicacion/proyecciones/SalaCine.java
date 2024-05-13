@@ -195,8 +195,8 @@ public class SalaCine {
 		Pelicula peliculaPresentacion = null;
 		LocalDateTime horarioPresentacion = null;
 		//Actualizamos la película
-		try {
-			for (Pelicula pelicula : sucursalCine.getCartelera()) {
+		for (Pelicula pelicula : sucursalCine.getCartelera()) {
+			try {
 				if ( (pelicula.getNumeroDeSala() == this.getNumeroSala() ) & (pelicula.getTipoDeFormato().equals(this.getTipoDeSala())) ) {
 					for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
 						if (!(horario.isAfter(SucursalCine.getFechaActual()))){
@@ -208,12 +208,12 @@ public class SalaCine {
 						}
 					}
 				continue;
+				}
+			}catch (NullPointerException e) {
+				continue;
 			}
 		}
-			
-		}catch(NullPointerException e) {
-			//Continua con el siguiente proceso
-		}
+	
 		
 
 		//Ejecutamos esta operacion en caso de que se cambie la película en presentación
