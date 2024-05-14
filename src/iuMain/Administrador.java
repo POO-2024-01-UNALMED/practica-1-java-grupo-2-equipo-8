@@ -159,7 +159,7 @@ public class Administrador {
 			pelicula1.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 5, 30, 00));
 			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 16, 30, 00));
-			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 20, 30, 00));
+			pelicula2.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 19, 30, 00));
 			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 13, 30, 00));
 			pelicula3.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 16, 30, 00));
@@ -311,6 +311,20 @@ public class Administrador {
 			MetodoPago.asignarMetodosDePago(cliente2);
 			MetodoPago.asignarMetodosDePago(cliente3);
 			MetodoPago.asignarMetodosDePago(cliente4);
+			
+			cliente1.getHistorialDePeliculas().add(pelicula14);
+			cliente1.getHistorialDePeliculas().add(pelicula14);
+			cliente1.getHistorialDePeliculas().add(pelicula14);
+			cliente1.getHistorialDePeliculas().add(pelicula7);
+			cliente1.getHistorialDePeliculas().add(pelicula12);
+			cliente1.getHistorialDePeliculas().add(pelicula12);
+			cliente1.getHistorialDePeliculas().add(pelicula1);
+			cliente1.getHistorialDePeliculas().add(pelicula13);
+			cliente1.getHistorialDePeliculas().add(pelicula14);
+			cliente1.getHistorialDePeliculas().add(pelicula7);
+			cliente1.getHistorialDePeliculas().add(pelicula7);
+			cliente1.getHistorialDePeliculas().add(pelicula7);
+			cliente1.getHistorialDePeliculas().add(pelicula7);
 			
 			
 			

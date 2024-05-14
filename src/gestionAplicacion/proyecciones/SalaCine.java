@@ -1,5 +1,6 @@
 package gestionAplicacion.proyecciones;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -194,18 +195,46 @@ public class SalaCine {
 	public void actualizarPeliculasEnPresentacion(SucursalCine sucursalCine) {
 		Pelicula peliculaPresentacion = null;
 		LocalDateTime horarioPresentacion = null;
+		LocalDateTime horarioMasCercanoAlActual = null;
+		LocalDateTime auxHorarioMasCercanoAlActual = null;
+		int comparacionHorario = 0;
+		int auxComparacionHorario = 0;
+		boolean firstTimeComparacionHorario = false;
+		
 		//Actualizamos la película
 		for (Pelicula pelicula : sucursalCine.getCartelera()) {
 			try {
-				if ( (pelicula.getNumeroDeSala() == this.getNumeroSala() ) & (pelicula.getTipoDeFormato().equals(this.getTipoDeSala())) ) {
+				if ( (pelicula.getNumeroDeSala() == this.getNumeroSala() ) & ( pelicula.getTipoDeFormato().equals(this.getTipoDeSala()) ) ) {
+
+					horarioMasCercanoAlActual = SucursalCine.getFechaActual().plus(Duration.ofSeconds(1));
+					firstTimeComparacionHorario = true;
+					
 					for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
-						if (!(horario.isAfter(SucursalCine.getFechaActual()))){
-							horarioPresentacion = horario;
-							this.setPeliculaEnPresentacion(pelicula);
-							peliculaPresentacion = this.getPeliculaEnPresentacion();
-							this.setHorarioPeliculaEnPresentacion(horario);
-							break;
+						
+						auxHorarioMasCercanoAlActual = horario;
+						auxComparacionHorario = horario.compareTo(SucursalCine.getFechaActual());
+						
+						if (firstTimeComparacionHorario) {
+							horarioMasCercanoAlActual = horario;
+							comparacionHorario = horario.compareTo(SucursalCine.getFechaActual());
+							firstTimeComparacionHorario = false;
 						}
+						
+						if ( (auxComparacionHorario >= comparacionHorario) & (auxComparacionHorario <= 0) & auxHorarioMasCercanoAlActual.isAfter(horarioMasCercanoAlActual)) {
+							comparacionHorario = auxComparacionHorario;
+							horarioMasCercanoAlActual = horario;
+							if(auxComparacionHorario == 0) {
+								break;
+								
+							}
+						}
+					}
+					
+					if (!(horarioMasCercanoAlActual.isAfter(SucursalCine.getFechaActual()))){
+						horarioPresentacion = horarioMasCercanoAlActual;
+						this.setPeliculaEnPresentacion(pelicula);
+						peliculaPresentacion = this.getPeliculaEnPresentacion();
+						this.setHorarioPeliculaEnPresentacion(horarioMasCercanoAlActual);
 					}
 				continue;
 				}
@@ -213,9 +242,7 @@ public class SalaCine {
 				continue;
 			}
 		}
-	
 		
-
 		//Ejecutamos esta operacion en caso de que se cambie la película en presentación
 		if (peliculaPresentacion != null) {
 			//Preparamos los asientos para ser actualizados

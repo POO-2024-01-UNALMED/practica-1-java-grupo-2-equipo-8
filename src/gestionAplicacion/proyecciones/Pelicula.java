@@ -1,13 +1,13 @@
 package gestionAplicacion.proyecciones;
+
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.time.Duration;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
-
-import java.time.Duration;
 
 public class Pelicula{
 	
@@ -143,6 +143,23 @@ public class Pelicula{
 	}
 	
 	/**
+	 * Description : Este método genera una lista filtrada según el nombre de las películas que coinciden con determinado género, sin repetición.
+	 * @param filtroPeliculasPorCliente : Este método recibe como parámetro las peliculas (De tipo ArrayList<Pelicula>) resultantes de realizar el filtro
+	 * por cliente (Edad y tiempo en presentación).
+	 * @param genero : Este método recibe como parámetro el género (De tipo String) más visualizado por el cliente 
+	 * @return filtroNombrePeliculas : Retorna una lista de nombres de las películas distintos entre sí, cuyo género es igual.
+	 * */
+	public static LinkedHashSet<String> filtrarPorGenero(ArrayList<Pelicula> filtroPeliculasPorCliente, String genero){
+		LinkedHashSet<String> filtroNombrePeliculas = new LinkedHashSet<>();
+		for (Pelicula pelicula : filtroPeliculasPorCliente){
+			if (pelicula.getGenero().equals(genero)) {
+				filtroNombrePeliculas.add(pelicula.getNombre());
+			}
+		}
+		return filtroNombrePeliculas;
+	}
+	
+	/**
 	 * Description : Este método se encarga de mostrar en pantalla el nombre de las películas obtenidas luego de realizar el filtro por nombre
 	 * de peliculas
 	 * @param filtroNombrePeliculas : Este método recibe como parámetro los nombres de las películas sin repetición (De tipo LinkedHashSet<Stirng>)
@@ -150,16 +167,39 @@ public class Pelicula{
 	 * @return <b>String</b> : Este método retorna una lista de los nombres de las películas para ser presentadas por pantalla, con el fin de que 
 	 * el usuario elija una de estas
 	 * */
-	public static String showNombrePeliculas(LinkedHashSet<String> filtroNombrePeliculas) {
+	public static String showNombrePeliculas(LinkedHashSet<String> filtroNombrePeliculas, Cliente clienteProceso, LinkedHashSet<String> peliculasRecomendadas) {
 		String nombrePeliculas = null;
 		int i = 1;
-		for (String nombrePelicula : filtroNombrePeliculas) {
-			if (nombrePeliculas == null) {
-				nombrePeliculas = i + ". " + nombrePelicula;
-			}else {
-				nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
+		if(clienteProceso.getMembresia() != null) {
+			for(String nombrePelicula : filtroNombrePeliculas) {
+				for(String nombrePeliculaRecomendada : peliculasRecomendadas) {
+					if (nombrePeliculaRecomendada.equals(nombrePelicula)) {
+						if (nombrePeliculas == null) {
+							nombrePeliculas = i + ". RECOMENDADA: " + nombrePelicula;
+						}else {
+							nombrePeliculas = nombrePeliculas + "\n" + i + ". RECOMENDADA: " + nombrePelicula;
+						}
+						i++;
+					}else {
+						if (nombrePeliculas == null) {
+							nombrePeliculas = i + ". " + nombrePelicula;
+						}else {
+							nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
+						}
+						i++;
+					}	
+				}
 			}
-			i++;
+			
+		}else {
+			for (String nombrePelicula : filtroNombrePeliculas) {
+				if (nombrePeliculas == null) {
+					nombrePeliculas = i + ". " + nombrePelicula;
+				}else {
+					nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
+				}
+				i++;
+			}
 		}
 		return nombrePeliculas;
 	}

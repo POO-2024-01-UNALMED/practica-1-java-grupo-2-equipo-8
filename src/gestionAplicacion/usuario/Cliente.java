@@ -1,10 +1,11 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.time.Duration;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
-import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 
@@ -184,6 +185,45 @@ public class Cliente {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Description : Este método se encarga de encontrar el género más visto por un cliente, para realizar este proceso, iteramos sobre su historial
+	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en un LinkedHashMap, por último,
+	 * evaluamos cual género tiene más visualizaciones y se retorna este, en caso de coincidir en visualizaciones con otro género, retornamos el
+	 * género más reciente.
+	 * @return <b>String</b> : Este método retorna el género (De tipo String) con más visualizaciones.  
+	 * */
+	public String generoMasVisto() {
+		LinkedHashMap<String, Integer> historialGenero = new LinkedHashMap<>();
+		for(Pelicula pelicula : this.getHistorialDePeliculas()) {
+			if (historialGenero.containsKey(pelicula.getGenero())) {
+				historialGenero.put(pelicula.getGenero(), historialGenero.get(pelicula.getGenero()) + 1);
+			}else {
+				historialGenero.put(pelicula.getGenero(), 1);
+			}
+		}
+
+		boolean firstEntry = true;
+		String generoMasVisto = null;
+		int valorGeneroMasVisto = 0;
+		for(Map.Entry<String, Integer> entrada : historialGenero.entrySet() ) {
+			String auxGeneroMasVisto = entrada.getKey();
+			int auxValorGeneroMasVisto = entrada.getValue();
+			
+			if (firstEntry) {
+				generoMasVisto = auxGeneroMasVisto;
+				valorGeneroMasVisto =  auxValorGeneroMasVisto;
+				firstEntry = false;
+			}
+			
+			if(auxValorGeneroMasVisto >= valorGeneroMasVisto) {
+				generoMasVisto = auxGeneroMasVisto;
+			}
+
+		}
+		
+		return generoMasVisto;
 	}
 
 	//Getters y setters
