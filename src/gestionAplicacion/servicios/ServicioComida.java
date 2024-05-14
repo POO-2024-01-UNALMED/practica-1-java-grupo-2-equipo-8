@@ -4,7 +4,7 @@ import gestionAplicacion.usuario.Cliente;
 
 public class ServicioComida extends Servicio{
 	
-	private ArrayList<Producto> ordenComida;
+	
 	private double valorPedido;
 	
 	public ServicioComida(){}
@@ -12,9 +12,15 @@ public class ServicioComida extends Servicio{
 	public ServicioComida(String nombre, Cliente cliente, ArrayList<Producto> ordenComida,
 			double valorPedido) {
 		super(nombre);
-		this.ordenComida = ordenComida;
 		this.valorPedido = valorPedido;
 	}
+	
+	/**
+	*Description: Este metodo filtra y actualiza los productos que hay en el inventerio dependiendo de la
+	*sucursal de cine y del tipo del producto
+	*@return <b>inventarii</b> : Genera un inventario con los productos disponibles del servicio segun su 
+	*localidad para tener una carta mas eficiente a la hora de mostrarla al cliente
+	*/
 	
 	public ArrayList<Producto> actualizarInventario(){
 		ArrayList<Producto> inventarioGeneral = getCliente().getCine().getInventarioCine();
@@ -27,13 +33,8 @@ public class ServicioComida extends Servicio{
 		return inventario;
 	}
 	
-	public ArrayList<Producto> getOrdenComida() {
-		return ordenComida;
-	}
-
-	public void setOrdenComida(ArrayList<Producto> ordenComida) {
-		this.ordenComida = ordenComida;
-	}
+	
+	
 
 	public double getValorPedido() {
 		return valorPedido;

@@ -11,6 +11,12 @@ public class Producto {
 	//Constructores
 	public Producto() {}
 	
+	public Producto(String nombre,String tamaño,int cantidad) {
+		this.nombre = nombre;
+		this.tamaño = tamaño;
+		this.cantidad = cantidad;
+	}
+	
 	public Producto(String nombre,String tamaño,String tipoProducto,int precio,int cantidad) {
 		this.nombre = nombre;
 		this.precio = precio;
