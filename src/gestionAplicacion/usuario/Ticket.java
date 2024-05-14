@@ -1,6 +1,8 @@
 package gestionAplicacion.usuario;
 
 import java.time.LocalDateTime;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.ServicioEntretenimiento;
 
@@ -37,11 +39,10 @@ public class Ticket implements IBuyable{
 		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
 	}
 	
-	public Ticket(Cliente dueno, Pelicula pelicula, LocalDateTime horario, String numeroAsiento) {
+	public Ticket(Cliente dueno, Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalCine) {
 		this.dueno = dueno;
 		this.pelicula = pelicula;
 		this.idTicket = Ticket.cantidadTicketsCreados;
-		this.salaDeCine = pelicula.obtenerSalaDeCineConCodigo();
 		Ticket.cantidadTicketsCreados++;
 		this.codigo = this.generarCodigoTicket();
 		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
@@ -118,17 +119,20 @@ public class Ticket implements IBuyable{
 				"Nombre dueño : " + this.getDueno().getNombre() + "\n" +
 				"Documento : " + this.getDueno().getDocumento() + "\n" +
 				"Pelicula : " + this.getPelicula().getNombre() + "\n" +
-				"Número de sala : " + this.getPelicula().getNumeroDeSala() + "\n" +
+				"Número de sala : " + this.getSalaDeCine().getNumeroSala() + "\n" +
 				"Número de asiento : " + this.getNumeroAsiento() + "\n" +
-				"Fecha: " + this.getHorario().toLocalDate() + "\n" +
-				"Hora: " + this.getHorario().toLocalTime();
+				"Fecha Presentación: " + this.getHorario().toLocalDate() + "\n" +
+				"Hora Presentación: " + this.getHorario().toLocalTime() + "\n" + 
+				"Valor ticket (IVA incluido): " + this.getPrecio() + "\n" + 
+				"Fecha de compra: " + SucursalCine.getFechaActual();
 				
 		cliente.getFacturas().add(factura);
 		return factura;
 	}
 	
 	private String generarCodigoTicket() {
-		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getSalaDeCine().getNumeroSala();
+		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getNumeroDeSala();
+
 		return codigoTicket;
 	}
 	

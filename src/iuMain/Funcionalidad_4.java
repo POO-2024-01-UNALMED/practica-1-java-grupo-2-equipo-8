@@ -2,6 +2,7 @@ package iuMain;
 
 import java.util.Scanner;
 
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.ServicioEntretenimiento;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
@@ -9,16 +10,14 @@ import gestionAplicacion.usuario.TipoDeDocumento;
 
 public class Funcionalidad_4 {
 	
-	static void ingresoZonaJuegos(Cliente ClienteActual) {
-		System.out.println("\n-----------------------------------------------------------------------------");
-        System.out.println("•Recuerde que para entrar a los juegos es necesario tener la tarjeta cinemar•");
-        System.out.println("-----------------------------------------------------------------------------");
-		System.out.println("\nDesea: \n1.Ingresar a los juegos\n2.Volver al menú principal\n3.Salir");
+	static void ingresoZonaJuegos(Cliente ClienteActual, SucursalCine sucursalCineProceso) {
+
+		System.out.println("\nRecuerde que para entrar a los juegos es necesario tener la tarjeta cinemar\n¿Desea Continuar o volver?\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
 		int opcion = (int)Administrador.readLong();
-		if (opcion==2) {barraCarga("Volviendo");Administrador.inicio(ClienteActual);}
-		else if (opcion==1) {barraCarga("Ingresando");}
-		else if (opcion==3) {barraCarga("Saliendo");Administrador.salirDelSistema();}
-		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual);}
+		if (opcion==2) {Administrador.inicio(ClienteActual, sucursalCineProceso);}
+		else if (opcion==1) {}
+		else if (opcion==3) {Administrador.salirDelSistema();}
+		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual, sucursalCineProceso);}
 		boolean casoValido = true;	
 			
 		do {
@@ -344,8 +343,8 @@ public class Funcionalidad_4 {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: Administrador.inicio(ClienteActual);
-						case 2: ingresoZonaJuegos(ClienteActual);
+						case 1: Administrador.inicio(ClienteActual, sucursalCineProceso);
+						case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
 						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}
@@ -378,8 +377,8 @@ public class Funcionalidad_4 {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: Administrador.inicio(ClienteActual);
-						case 2: ingresoZonaJuegos(ClienteActual);
+						case 1: Administrador.inicio(ClienteActual, sucursalCineProceso);
+						case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
 						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}
@@ -413,8 +412,8 @@ public class Funcionalidad_4 {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: Administrador.inicio(ClienteActual);
-						case 2: ingresoZonaJuegos(ClienteActual);
+						case 1: Administrador.inicio(ClienteActual, sucursalCineProceso);
+						case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
 						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}
@@ -447,8 +446,8 @@ public class Funcionalidad_4 {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: Administrador.inicio(ClienteActual);
-						case 2: ingresoZonaJuegos(ClienteActual);
+						case 1: Administrador.inicio(ClienteActual, sucursalCineProceso);
+						case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
 						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}
@@ -481,8 +480,8 @@ public class Funcionalidad_4 {
 					System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 					int option = (int)Administrador.readLong();
 						switch(option) {
-						case 1: Administrador.inicio(ClienteActual);
-						case 2: ingresoZonaJuegos(ClienteActual);
+						case 1: Administrador.inicio(ClienteActual, sucursalCineProceso);
+						case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
 						case 3: Administrador.salirDelSistema();
 						default:  break;
 						}

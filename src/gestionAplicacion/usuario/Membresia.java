@@ -3,8 +3,11 @@ import java.util.ArrayList;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
+import gestionAplicacion.servicios.Producto;
 import iuMain.Administrador;
 import gestionAplicacion.proyecciones.SalaCine;
 
@@ -17,7 +20,6 @@ public class Membresia implements IBuyable{
 	private ArrayList<Cliente> clientes = new ArrayList<>();
 	private double descuentoAsociado;
 	private int valorSuscripcionMensual;
-	private int valorDescuentoAplicado;
 	private int duracionMembresiaDias;
 	private int tipoMembresia;
 	
@@ -36,13 +38,12 @@ public class Membresia implements IBuyable{
 	}
 	
 	public Membresia(String nombre, int categoria, ArrayList<Cliente> clientes, double descuentoAsociado,
-			int valorSuscripcionMensual, int valorDescuentoAplicado, int duracionMembresiaDias, int tipo) {
+			int valorSuscripcionMensual, int duracionMembresiaDias, int tipo) {
 		this.nombre = nombre;
 		this.categoria = categoria;
 		this.clientes = clientes;
 		this.descuentoAsociado = descuentoAsociado;
 		this.valorSuscripcionMensual = valorSuscripcionMensual;
-		this.valorDescuentoAplicado = valorDescuentoAplicado;
 		this.duracionMembresiaDias = duracionMembresiaDias;
 		this.tipoMembresia = tipo;
 		tiposDeMembresia.add(this);
@@ -127,7 +128,6 @@ public class Membresia implements IBuyable{
 	public void recargarRegaloTarjetaCinemar() {
 		
 	}
-	
 	/**
 	*<b>Description</b>: Este método se encarga de mostrar las categorias de membresias disponibles
 	*@param none : No se pide parametros
@@ -225,6 +225,33 @@ public class Membresia implements IBuyable{
 		}
 		return membresiaNueva;
 	}
+	/**
+	*<b>Description</b>: Este método se encarga de añadir al inventario de cada sucursal de cine, 
+	*los productos de tipo Membresia que se usarán para limitar las membresias que se puede adquirir en cada sucursal.
+	*Por cada sucursal de cine en el lista, se crean los productos que corresponden a cada membresia con una cantidad limitada.
+	*Esto se usa para tener un control sobre el número de membresia que se pueden adquirir en cada cine.
+	*@param sucursalesCine : Se pide la lista que contiene las sucursales de cine creadas para acceder a su inventario
+	*/
+	public static void stockMembresia(ArrayList<SucursalCine> sucursalesCine) {
+		int i = 50;
+		int precio = 5000;
+		//Se revisa la lista de las sucursales de cine creadas.
+		for (SucursalCine sucursalCine : sucursalesCine) {
+			//Por cada membresia, se crea un producto de este tipo y se añade al inventario de la sucursal.
+			for (Membresia membresia : Membresia.getTiposDeMembresia()) {
+				if (membresia.getNombre() == "Básico") {
+					continue;
+				} else {
+					Producto membresiaSucursal = new Producto("Membresia", membresia.getNombre(), precio, i);
+					sucursalCine.getInventarioCine().add(membresiaSucursal);
+					precio+=5000;
+					i-=10;
+				}
+			}
+			//Se reinicia el contador de cantidad cada vez que se itere a una nueva sucursal de la lista.	
+			i = 50;
+		}
+	}
 
 	//Getters and Setters
 	public String getNombre() {
@@ -298,6 +325,8 @@ public class Membresia implements IBuyable{
 		//Se asigna la referencia de la membresia adquirida en el cliente y se actualizan sus métodos de pago.
 		cliente.setMembresia(this);
 		cliente.setDuracionMembresiaDias(Duration.ofDays(this.duracionMembresiaDias));
+		
+		//Al adquirir la membresia, se crea y asigna un método de pago único que permite acumular puntos canjeables con compras en el cine.
 		MetodoPago.asignarMetodosDePago(cliente);
 		//Se eliminan las referencias de los métodosDePagoUsados
 		MetodoPago.getMetodosDePagoUsados().clear();
@@ -310,8 +339,8 @@ public class Membresia implements IBuyable{
 
 	@Override
 	public String factura(Cliente cliente) {
-		String factura = "=== Factura de compra ===\n" +
-				"Fecha de compra: " + SalaCine.getFecha() + "\n" +
+		String factura = null;
+		factura = "=== Factura de compra ===\n" +
 				"Nombre dueño: " + cliente.getNombre() + "\n" +
 				"Documento: " + cliente.getDocumento() + "\n" +
 				"Membresia: " + cliente.getMembresia().getNombre()+ "\n" +
@@ -319,7 +348,6 @@ public class Membresia implements IBuyable{
 				"Tipo: " + cliente.getMembresia().getTipoMembresia() + "\n" +
 				"Duración: " + cliente.getMembresia().getDuracionMembresiaDias()+ " dias.\n" +
 				"Precio de compra: " + cliente.getMembresia().getValorSuscripcionMensual() + "\n" +
-				"Valida hasta: " + SalaCine.getFecha().plusDays(this.duracionMembresiaDias);
 		cliente.getFacturas().add(factura);
 		return factura;
 	}

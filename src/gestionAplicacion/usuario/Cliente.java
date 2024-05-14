@@ -1,18 +1,20 @@
 package gestionAplicacion.usuario;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.time.Duration;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
-import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Bono;
-import gestionAplicacion.servicios.Pedido;
+import gestionAplicacion.servicios.Producto;
 
 public class Cliente {
 	
 	//Atributos
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
-	private ArrayList<Pedido> pedidos = new ArrayList<>();
+	private ArrayList<Producto> pedidos = new ArrayList<>();
 	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
@@ -24,6 +26,7 @@ public class Cliente {
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	private ArrayList<Bono> bonosCliente = new ArrayList<>();
+	private SucursalCine cine;
 	
 	
 	//Constructores
@@ -134,11 +137,11 @@ public class Cliente {
 			if (tickets == null) {
 				tickets = i + ". Película: " + ticket.getPelicula().getNombre() 
 						+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
-						+ ", Hora: " + ticket.getHorario() + "\n";
+						+ ", Hora: " + ticket.getHorario();
 			}else {
-				tickets = tickets + i + ". Película: " + ticket.getPelicula().getNombre() 
-						+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
-						+ ", Hora: " + ticket.getHorario() + "\n";
+				tickets = tickets + "\n" + i + ". Película: " + ticket.getPelicula().getNombre() 
+						+ ", Número sala de Cine: " + ticket.getPelicula().getNumeroDeSala() 
+						+ ", Hora: " + ticket.getHorario();
 			}
 			i++;
 		}
@@ -146,7 +149,7 @@ public class Cliente {
 	}
 	
 	/**
-	 * Descripiton: Este método se encarga de eliminar los tickets cuyo horario, más la duración de la película para la cuál fue adquirido 
+	 * Description: Este método se encarga de eliminar los tickets cuyo horario, más la duración de la película para la cuál fue adquirido 
 	 * es menor a la fecha actual, para esto, creamos un array en el cuál almacenamos los tickets que cumplan la condición anterior y posteriormente
 	 * los eliminamos.
 	 * @return <b>void</b> : Este método no retorna nada (void), solo elimina los tickets caducados.
@@ -155,7 +158,7 @@ public class Cliente {
 		ArrayList<Ticket> ticketsCaducados = new ArrayList<>();
 		
 		for (Ticket ticket : this.getTickets()) {
-			if( !(ticket.getHorario().plus(ticket.getPelicula().getDuracion()).isAfter(SalaCine.getFecha())) ){
+			if( !(ticket.getHorario().plus(ticket.getPelicula().getDuracion()).isAfter(SucursalCine.getFechaActual())) ){
 				ticketsCaducados.add(ticket);
 			}
 		}
@@ -163,6 +166,64 @@ public class Cliente {
 		for (Ticket ticket : ticketsCaducados) {
 			this.getTickets().remove(ticket);
 		}
+	}
+	
+	/**
+	 * Description : Este método se encarga de verificar si el cliente posee algún ticket correspondiente a alguna de las películas en cartelera
+	 * de la sede que se pasa como parámetro
+	 * @param sucursalCineProceso : Este método recibe como parámetro la sede (De tipo SucursalCine) desde la cuál el cliente esta accediendo a nuestros
+	 * servicios
+	 * @return <b>boolean</b> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
+	 * o a la sala de espera si este posee algún ticket válido.
+	 * */
+	public boolean disponibilidadTIcketParaSede(SucursalCine sucursalCineProceso) {
+		for (Ticket ticket : this.getTickets()) {
+			for (Pelicula peliculaCarteleraSede : sucursalCineProceso.getCartelera()) {
+				if(ticket.getPelicula().equals(peliculaCarteleraSede)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Description : Este método se encarga de encontrar el género más visto por un cliente, para realizar este proceso, iteramos sobre su historial
+	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en un LinkedHashMap, por último,
+	 * evaluamos cual género tiene más visualizaciones y se retorna este, en caso de coincidir en visualizaciones con otro género, retornamos el
+	 * género más reciente.
+	 * @return <b>String</b> : Este método retorna el género (De tipo String) con más visualizaciones.  
+	 * */
+	public String generoMasVisto() {
+		LinkedHashMap<String, Integer> historialGenero = new LinkedHashMap<>();
+		for(Pelicula pelicula : this.getHistorialDePeliculas()) {
+			if (historialGenero.containsKey(pelicula.getGenero())) {
+				historialGenero.put(pelicula.getGenero(), historialGenero.get(pelicula.getGenero()) + 1);
+			}else {
+				historialGenero.put(pelicula.getGenero(), 1);
+			}
+		}
+
+		boolean firstEntry = true;
+		String generoMasVisto = null;
+		int valorGeneroMasVisto = 0;
+		for(Map.Entry<String, Integer> entrada : historialGenero.entrySet() ) {
+			String auxGeneroMasVisto = entrada.getKey();
+			int auxValorGeneroMasVisto = entrada.getValue();
+			
+			if (firstEntry) {
+				generoMasVisto = auxGeneroMasVisto;
+				valorGeneroMasVisto =  auxValorGeneroMasVisto;
+				firstEntry = false;
+			}
+			
+			if(auxValorGeneroMasVisto >= valorGeneroMasVisto) {
+				generoMasVisto = auxGeneroMasVisto;
+			}
+
+		}
+		
+		return generoMasVisto;
 	}
 
 	//Getters y setters
@@ -204,14 +265,6 @@ public class Cliente {
 
 	public void setTickets(ArrayList<Ticket> tickets) {
 		this.tickets = tickets;
-	}
-
-	public ArrayList<Pedido> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(ArrayList<Pedido> pedidos) {
-		this.pedidos = pedidos;
 	}
 
 	public ArrayList<String> getFacturas() {
@@ -276,6 +329,22 @@ public class Cliente {
 
 	public void setBonosCliente(ArrayList<Bono> bonosCliente) {
 		this.bonosCliente = bonosCliente;
+	}
+
+	public ArrayList<Producto> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(ArrayList<Producto> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public SucursalCine getCine() {
+		return cine;
+	}
+
+	public void setCine(SucursalCine cine) {
+		this.cine = cine;
 	}
 
 	
