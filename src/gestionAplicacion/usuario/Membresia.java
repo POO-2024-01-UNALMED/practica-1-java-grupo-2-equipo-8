@@ -3,8 +3,11 @@ import java.util.ArrayList;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
+import gestionAplicacion.servicios.Producto;
 import iuMain.Administrador;
 import gestionAplicacion.proyecciones.SalaCine;
 
@@ -125,7 +128,6 @@ public class Membresia implements IBuyable{
 	public void recargarRegaloTarjetaCinemar() {
 		
 	}
-	
 	/**
 	*<b>Description</b>: Este método se encarga de mostrar las categorias de membresias disponibles
 	*@param none : No se pide parametros
@@ -223,6 +225,33 @@ public class Membresia implements IBuyable{
 		}
 		return membresiaNueva;
 	}
+	/**
+	*<b>Description</b>: Este método se encarga de añadir al inventario de cada sucursal de cine, 
+	*los productos de tipo Membresia que se usarán para limitar las membresias que se puede adquirir en cada sucursal.
+	*Por cada sucursal de cine en el lista, se crean los productos que corresponden a cada membresia con una cantidad limitada.
+	*Esto se usa para tener un control sobre el número de membresia que se pueden adquirir en cada cine.
+	*@param sucursalesCine : Se pide la lista que contiene las sucursales de cine creadas para acceder a su inventario
+	*/
+	public static void stockMembresia(ArrayList<SucursalCine> sucursalesCine) {
+		int i = 50;
+		int precio = 5000;
+		//Se revisa la lista de las sucursales de cine creadas.
+		for (SucursalCine sucursalCine : sucursalesCine) {
+			//Por cada membresia, se crea un producto de este tipo y se añade al inventario de la sucursal.
+			for (Membresia membresia : Membresia.getTiposDeMembresia()) {
+				if (membresia.getNombre() == "Básico") {
+					continue;
+				} else {
+					Producto membresiaSucursal = new Producto("Membresia", membresia.getNombre(), precio, i);
+					sucursalCine.getInventarioCine().add(membresiaSucursal);
+					precio+=5000;
+					i-=10;
+				}
+			}
+			//Se reinicia el contador de cantidad cada vez que se itere a una nueva sucursal de la lista.	
+			i = 50;
+		}
+	}
 
 	//Getters and Setters
 	public String getNombre() {
@@ -310,7 +339,8 @@ public class Membresia implements IBuyable{
 
 	@Override
 	public String factura(Cliente cliente) {
-		String factura = "=== Factura de compra ===\n" +
+		String factura = null;
+		factura = "=== Factura de compra ===\n" +
 				"Nombre dueño: " + cliente.getNombre() + "\n" +
 				"Documento: " + cliente.getDocumento() + "\n" +
 				"Membresia: " + cliente.getMembresia().getNombre()+ "\n" +

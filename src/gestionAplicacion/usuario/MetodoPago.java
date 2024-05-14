@@ -61,7 +61,7 @@ public class MetodoPago{
 					resultado = i + ". "+ metodoPago.getNombre()+ " Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "%" +"\n";
 				}else {
 					if (metodoPago.getNombre() == "Puntos") {
-						resultado = resultado + i + ". "+ metodoPago.getNombre() + " Saldo: " + (int)(metodoPago.getLimiteMaximoPago()) + "\n";
+						resultado = resultado + i + ". "+ metodoPago.getNombre() + " Saldo: " + (int)(metodoPago.getLimiteMaximoPago());
 						continue;}
 					resultado = resultado + i + ". " + metodoPago.getNombre() +" Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100)+ "%" + "\n";
 					
@@ -106,16 +106,28 @@ public class MetodoPago{
 	public static ArrayList<MetodoPago> asignarMetodosDePago(Cliente cliente) {
 		//Se limpia la lista de métodos de pago, esto en caso de que el cliente haya adquirido una
 		//membresia.
+		MetodoPago puntos = null;
+		for (MetodoPago metodoPagoCliente : cliente.getMetodosDePago()) {
+			if (metodoPagoCliente.getNombre() == "Puntos") {
+				puntos = metodoPagoCliente;
+			}
+		}
 		cliente.getMetodosDePago().clear();
 		
 		//Se revisa si el cliente posee una membresia y de ser el caso, se asigna el canje de puntos.
 		//como método de pago. Luego de eso, se eliminar 
 		Membresia tipoMembresia = cliente.getMembresia();
-		MetodoPago puntos = null;
 		int tipoMembresiaInt= 0;
 		if (tipoMembresia != null) {
 			tipoMembresiaInt = tipoMembresia.getTipoMembresia();
-			puntos = new MetodoPago("Puntos", 0.0, 5000, tipoMembresiaInt);
+			if (puntos == null) {
+				switch (tipoMembresiaInt) {
+				case 1: puntos = new MetodoPago("Puntos", 0.0, 5000, tipoMembresiaInt);break;
+				case 2: puntos = new MetodoPago("Puntos", 0.0, 10000, tipoMembresiaInt);break;
+				}
+			} else {
+				MetodoPago.getMetodosDePagoDisponibles().add(puntos);
+			}
 		}
 		
 		//Se realiza un ciclo para filtrar los métodos de pago por el tipoMembresia del cliente
@@ -194,12 +206,22 @@ public class MetodoPago{
 		}
 				
 		//Cuando el método usado sea efectivo o Puntos, no se pasará a usados
-		if (this.getNombre().equals("Efectivo") || this.getNombre().equals("Puntos")) {
+		if (this.getNombre().equals("Efectivo")) {
+			return valorPagar;
+		}
+		
+		if (this.getNombre().equals("Puntos")) {
+			this.setLimiteMaximoPago(this.getLimiteMaximoPago()- precio);
+			if (this.getLimiteMaximoPago() < 0) {
+				this.setLimiteMaximoPago(0);
+			}
 			return valorPagar;
 		}
 		
 		//Se verifica si el cliente tiene membresia para realizar la acumulación de puntos
-		if (cliente.getMembresia() != null && !(this.getNombre().equals("Puntos"))) {
+		Membresia membresia = cliente.getMembresia();
+		double saldoPuntos = 0.0;
+		if (membresia != null && !this.getNombre().equals("Puntos")) {
 			int tipoMembresia = cliente.getMembresia().getTipoMembresia();
 			MetodoPago puntos = null;
 			for (MetodoPago metodoPago: cliente.getMetodosDePago()) {
@@ -208,7 +230,7 @@ public class MetodoPago{
 						break;
 				}
 			}
-			double saldoPuntos = puntos.getLimiteMaximoPago();			
+			saldoPuntos = puntos.getLimiteMaximoPago();			
 			switch (tipoMembresia) {
 			
 			case 1: puntos.setLimiteMaximoPago(saldoPuntos + (precio * 0.05)); break;

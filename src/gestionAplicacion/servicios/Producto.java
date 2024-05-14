@@ -1,12 +1,14 @@
 package gestionAplicacion.servicios;
 
 public class Producto {
+	//Atributos
 	private String tipoProducto;
 	private String nombre;
 	private String tamaño;
 	private int precio;
 	private int cantidad;
-
+	
+	//Constructores
 	public Producto() {}
 	
 	public Producto(String nombre,String tamaño,String tipoProducto,int precio,int cantidad) {
@@ -17,6 +19,14 @@ public class Producto {
 		this.cantidad = cantidad;
 	}
 	
+	//Constructor para objetos de Membresia.
+	public Producto(String tipoProducto, String nombre, int precio, int cantidad) {
+		this.tipoProducto = tipoProducto;
+		this.nombre = nombre;
+		this.precio = precio;
+		this.cantidad = cantidad;
+	}
+
 	public String getTipoProducto() {
 		return tipoProducto;
 	}
