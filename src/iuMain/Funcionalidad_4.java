@@ -1,5 +1,7 @@
 package iuMain;
 
+import java.util.Scanner;
+
 import gestionAplicacion.servicios.ServicioEntretenimiento;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
@@ -8,42 +10,60 @@ import gestionAplicacion.usuario.TipoDeDocumento;
 public class Funcionalidad_4 {
 	
 	static void ingresoZonaJuegos(Cliente ClienteActual) {
-
-		System.out.println("\nRecuerde que para entrar a los juegos es necesario tener la tarjeta cinemar\n¿Desea Continuar o volver?\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
+		System.out.println("\n-----------------------------------------------------------------------------");
+        System.out.println("•Recuerde que para entrar a los juegos es necesario tener la tarjeta cinemar•");
+        System.out.println("-----------------------------------------------------------------------------");
+		System.out.println("\nDesea: \n1.Ingresar a los juegos\n2.Volver al menú principal\n3.Salir");
 		int opcion = (int)Administrador.readLong();
-		if (opcion==2) {Administrador.inicio(ClienteActual);}
-		else if (opcion==1) {}
-		else if (opcion==3) {Administrador.salirDelSistema();}
+		if (opcion==2) {barraCarga("Volviendo");Administrador.inicio(ClienteActual);}
+		else if (opcion==1) {barraCarga("Ingresando");}
+		else if (opcion==3) {barraCarga("Saliendo");Administrador.salirDelSistema();}
 		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual);}
 		boolean casoValido = true;	
 			
-	
-		if (!ClienteActual.verificarCuenta()) {
-			if (ServicioEntretenimiento.verificarTarjetasEnInventario()) {
-				System.out.println("\nEl precio de la tarjeta Cinemar es de 5000 pesos\nEste valor sera descontado al saldo de su tarjeta");
-				ServicioEntretenimiento.asociarTarjetaCliente(ClienteActual);
-				ClienteActual.getCuenta().hacerPago(5000);
-				System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+ClienteActual.getCuenta().getDueno().getNombre()+"\nSaldo: $"+ClienteActual.getCuenta().getSaldo());
+		do {
+			if (!ClienteActual.verificarCuenta()) {
+				System.out.println("\n•No tienes una Tarjeta Cinemar asociada, ¿Deseas Adquirirla?\n1.Si\n2.No");
+				espera(1000);
+				int option = (int)Administrador.readLong();
+				if (option==1) {
+					if (ServicioEntretenimiento.verificarTarjetasEnInventario()) {
+						System.out.println("\n•El precio de la tarjeta Cinemar es de $5000\n•Este valor sera descontado al saldo de su tarjeta");
+						espera(2000);
+						barraCarga("Adquiriendo tarjeta");
+						ServicioEntretenimiento.asociarTarjetaCliente(ClienteActual);
+						ClienteActual.getCuenta().hacerPago(5000);
+						imprimirTarjeta(ClienteActual.getCuenta().getDueno().getNombre(),ClienteActual.getCuenta().getSaldo());
+					}
+					else {System.out.println("\n•Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); Administrador.inicio(ClienteActual);}
+					casoValido=false;
+				}
+				else if (option ==2) {ingresoZonaJuegos(ClienteActual);}
 			}
-			else {System.out.println("\nLo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); Administrador.inicio(ClienteActual);}
-			casoValido=true;
-		}
-		else {
-			System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+ClienteActual.getCuenta().getDueno().getNombre()+"\nSaldo: $"+ClienteActual.getCuenta().getSaldo());
-		}
+			else {
+				System.out.println("\n•Su tarjeta:");
+				espera(1000);
+				imprimirTarjeta(ClienteActual.getCuenta().getDueno().getNombre(),ClienteActual.getCuenta().getSaldo());
+				casoValido = false;
+			}
+		}while(casoValido);
 		
 			
 
-
-		System.out.println(ClienteActual.getNombre()+"\n"+ClienteActual.getDocumento()+"\n");
 		do {
-			System.out.println("¿Deseas recargar la tarjeta?");
+			System.out.println("•¿Deseas recargar la tarjeta?");
 			System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir");
 			int eleccion1 = (int)Administrador.readLong();
 			boolean finCiclo = true;
 			if (eleccion1==1) {
 				
-				System.out.println("Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago");
+				double recargaMaxima = 0;
+				for (MetodoPago metodo : ClienteActual.getMetodosDePago()) {
+					recargaMaxima+= metodo.getLimiteMaximoPago();
+				}
+				
+				System.out.println("•El valor maximo a recargar por proceso es: $"+recargaMaxima+" intente no superar este valor");
+				System.out.println("•Ademas Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago para completar la recarga");
 				MetodoPago.asignarMetodosDePago(ClienteActual);
 				double maximo = ClienteActual.getMetodosDePago().get(0).getLimiteMaximoPago();
 				double maximo2 = ClienteActual.getMetodosDePago().get(1).getLimiteMaximoPago();
@@ -51,106 +71,178 @@ public class Funcionalidad_4 {
 				double maximo4 = ClienteActual.getMetodosDePago().get(3).getLimiteMaximoPago();
 				System.out.println(MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
 				int eleccion2 = (int)Administrador.readLong();
-				System.out.println("¿Cuanto desea recargar?\n");
-				double eleccion3 = (double)Administrador.readLong();
+				System.out.print("•¿Cuanto desea recargar?: ");
+				double montoRecarga = (double)Administrador.readLong();
+				if (montoRecarga>recargaMaxima) {System.out.println("•El valor a recargar no puede superar $"+recargaMaxima+"\n•Se recargarán solo $"+recargaMaxima+", para recargar mas vuelva a hacer el proceso\n");montoRecarga = recargaMaxima;}
+				espera(2000);
 				while (finCiclo) {
 					
 					switch (eleccion2) {
 					
 					case 1:
-						System.out.print("Ingrese contraseña (4 digitos): ");
-						int clave = (int) Administrador.readLong();
 						
 						MetodoPago metodoPagoCliente = ServicioEntretenimiento.encontrarMetodoPagoCliente("Bancolombia", ClienteActual.getMetodosDePago());
 						
-						if (eleccion3>metodoPagoCliente.getLimiteMaximoPago()) {
+						if (metodoPagoCliente.getLimiteMaximoPago()==0) {
+							System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente.getLimiteMaximoPago())+" restantes");
+							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
+							eleccion2 = (int)Administrador.readLong();
+							break;
+						}
+						
+						boolean Break = true;
+						int issue = 0;
+						do {
+							System.out.println("•Por favor confirma el pago\n1.Confirmar\n2.Cancelar");
+							int confirmacion = (int) Administrador.readLong();
+							if (confirmacion==1) {Break = false;}
+							else if (confirmacion==2) {barraCarga("Cancelando");Break= false;finCiclo = false;issue=1;}
+							else {System.out.println("•Opcion invalida");}
+						}while(Break);
+						if (issue==1) {break;}
+						barraCarga("Procesando recarga");
+						
+						if (montoRecarga>metodoPagoCliente.getLimiteMaximoPago()) {
 							ClienteActual.getCuenta().ingresarSaldo(metodoPagoCliente.getLimiteMaximoPago());
-							System.out.println("\nSe han recargado: $"+metodoPagoCliente.getLimiteMaximoPago()+" exitosamente,\nSin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente.getNombre()+
-									"\nPor favor otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente.getLimiteMaximoPago())+
+							System.out.println("\n•Se han recargado: $"+metodoPagoCliente.getLimiteMaximoPago()+" exitosamente\n•Sin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente.getNombre()+
+									"\n•Por favor escoja otro metodo de pago para pagar los $"+(montoRecarga-metodoPagoCliente.getLimiteMaximoPago())+
 									" restantes");
 							
-							eleccion3 = (double)eleccion3-metodoPagoCliente.getLimiteMaximoPago();
+							montoRecarga = (double)montoRecarga-metodoPagoCliente.getLimiteMaximoPago();
 							metodoPagoCliente.setLimiteMaximoPago(0);
 							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
 							eleccion2 = (int)Administrador.readLong();
 						}
 						else {
-							ClienteActual.getCuenta().ingresarSaldo(eleccion3);
-							System.out.println("\nSe han recargado: $"+eleccion3+" exitosamente");
+							ClienteActual.getCuenta().ingresarSaldo(montoRecarga);
+							System.out.println("\n•Se han recargado: $"+montoRecarga+" exitosamente");
 							finCiclo = false;
 						}
 						break;
 					case 2:
-						System.out.print("Ingrese contraseña (4 digitos): ");
-						int clave2 = (int) Administrador.readLong();
 						
 						MetodoPago metodoPagoCliente2 = ServicioEntretenimiento.encontrarMetodoPagoCliente("AV Villas", ClienteActual.getMetodosDePago());
 						
-						if (eleccion3>metodoPagoCliente2.getLimiteMaximoPago()) {
+						if (metodoPagoCliente2.getLimiteMaximoPago()==0) {
+							System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente2.getLimiteMaximoPago())+" restantes");
+							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
+							eleccion2 = (int)Administrador.readLong();
+							break;
+						}
+						
+						boolean Break2 = true;
+						int issue2 = 0;
+						do {
+							System.out.println("•Por favor confirma el pago\n1.Confirmar\n2.Cancelar");
+							int confirmacion = (int) Administrador.readLong();
+							if (confirmacion==1) {Break2 = false;}
+							else if (confirmacion==2) {barraCarga("Cancelando");Break2= false;finCiclo = false;issue2=1;}
+							else {System.out.println("•Opcion invalida");}
+						}while(Break2);
+						if (issue2==1) {break;}
+						barraCarga("Procesando recarga");
+						
+						if (montoRecarga>metodoPagoCliente2.getLimiteMaximoPago()) {
 							ClienteActual.getCuenta().ingresarSaldo(metodoPagoCliente2.getLimiteMaximoPago());
-							System.out.println("\nSe han recargado: $"+metodoPagoCliente2.getLimiteMaximoPago()+" exitosamente,\nSin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente2.getNombre()+
-									"\nPor favor otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente2.getLimiteMaximoPago())+
+							System.out.println("\n•Se han recargado: $"+metodoPagoCliente2.getLimiteMaximoPago()+" exitosamente\n•Sin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente2.getNombre()+
+									"\n•Por favor escoja otro metodo de pago para pagar los $"+(montoRecarga-metodoPagoCliente2.getLimiteMaximoPago())+
 									" restantes");
 							
-							eleccion3 = (double)eleccion3-metodoPagoCliente2.getLimiteMaximoPago();
+							montoRecarga = (double)montoRecarga-metodoPagoCliente2.getLimiteMaximoPago();
 							metodoPagoCliente2.setLimiteMaximoPago(0);
 							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
 							eleccion2 = (int)Administrador.readLong();
 						}
 						else {
-							ClienteActual.getCuenta().ingresarSaldo(eleccion3);
-							System.out.println("\nSe han recargado: $"+eleccion3+" exitosamente");
+							ClienteActual.getCuenta().ingresarSaldo(montoRecarga);
+							System.out.println("\n•Se han recargado: $"+montoRecarga+" exitosamente");
 							finCiclo = false;
 						}
 						break;
 					case 3:
-						System.out.print("Ingrese contraseña (4 digitos): ");
-						int clave3 = (int) Administrador.readLong();
+
 						
 						MetodoPago metodoPagoCliente3 = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", ClienteActual.getMetodosDePago());
 						
-						if (eleccion3>metodoPagoCliente3.getLimiteMaximoPago()) {
+						if (metodoPagoCliente3.getLimiteMaximoPago()==0) {
+							System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente3.getLimiteMaximoPago())+" restantes");
+							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
+							eleccion2 = (int)Administrador.readLong();
+							break;
+						}
+						
+						boolean Break3 = true;
+						int issue3 = 0;
+						do {
+							System.out.println("•Por favor confirma el pago\n1.Confirmar\n2.Cancelar");
+							int confirmacion = (int) Administrador.readLong();
+							if (confirmacion==1) {Break3 = false;}
+							else if (confirmacion==2) {barraCarga("Cancelando");Break3= false;finCiclo = false;issue3=1;}
+							else {System.out.println("•Opcion invalida");}
+						}while(Break3);
+						if (issue3==1) {break;}
+						barraCarga("Procesando recarga");
+						
+						if (montoRecarga>metodoPagoCliente3.getLimiteMaximoPago()) {
 							ClienteActual.getCuenta().ingresarSaldo(metodoPagoCliente3.getLimiteMaximoPago());
-							System.out.println("\nSe han recargado: $"+metodoPagoCliente3.getLimiteMaximoPago()+" exitosamente,\nSin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente3.getNombre()+
-									"\nPor favor otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente3.getLimiteMaximoPago())+
+							System.out.println("\n•Se han recargado: $"+metodoPagoCliente3.getLimiteMaximoPago()+" exitosamente\n•Sin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente3.getNombre()+
+									"\n•Por favor escoja otro metodo de pago para pagar los $"+(montoRecarga-metodoPagoCliente3.getLimiteMaximoPago())+
 									" restantes");
 							
-							eleccion3 = (double)eleccion3-metodoPagoCliente3.getLimiteMaximoPago();
+							montoRecarga = (double)montoRecarga-metodoPagoCliente3.getLimiteMaximoPago();
 							metodoPagoCliente3.setLimiteMaximoPago(0);
 							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
 							eleccion2 = (int)Administrador.readLong();
 						}
 						else {
-							ClienteActual.getCuenta().ingresarSaldo(eleccion3);
-							System.out.println("\nSe han recargado: $"+eleccion3+" exitosamente");
+							ClienteActual.getCuenta().ingresarSaldo(montoRecarga);
+							System.out.println("\n•Se han recargado: $"+montoRecarga+" exitosamente");
 							finCiclo = false;
 						}
 						break;
 					case 4:
-						System.out.print("Ingrese contraseña (4 digitos): ");
-						int clave4 = (int) Administrador.readLong();
+
 						
 						MetodoPago metodoPagoCliente4 = ServicioEntretenimiento.encontrarMetodoPagoCliente("Efectivo", ClienteActual.getMetodosDePago());
 						
-						if (eleccion3>metodoPagoCliente4.getLimiteMaximoPago()) {
+						if (metodoPagoCliente4.getLimiteMaximoPago()==0) {
+							System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente4.getLimiteMaximoPago())+" restantes");
+							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
+							eleccion2 = (int)Administrador.readLong();
+							break;
+						}
+						
+						boolean Break4 = true;
+						int issue4 = 0;
+						do {
+							System.out.println("•Por favor confirma el pago\n1.Confirmar\n2.Cancelar");
+							int confirmacion = (int) Administrador.readLong();
+							if (confirmacion==1) {Break4 = false;}
+							else if (confirmacion==2) {barraCarga("Cancelando");Break4= false;finCiclo = false;issue4=1;}
+							else {System.out.println("•Opcion invalida");}
+						}while(Break4);
+						if (issue4==1) {break;}
+						barraCarga("Procesando recarga");
+						
+						if (montoRecarga>metodoPagoCliente4.getLimiteMaximoPago()) {
 							ClienteActual.getCuenta().ingresarSaldo(metodoPagoCliente4.getLimiteMaximoPago());
-							System.out.println("\nSe han recargado: $"+metodoPagoCliente4.getLimiteMaximoPago()+" exitosamente,\nSin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente4.getNombre()+
-									"\nPor favor otro metodo de pago para pagar los $"+(eleccion3-metodoPagoCliente4.getLimiteMaximoPago())+
+							System.out.println("\n•Se han recargado: $"+metodoPagoCliente4.getLimiteMaximoPago()+" exitosamente\n•Sin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente4.getNombre()+
+									"\n•Por favor escoja otro metodo de pago para pagar los $"+(montoRecarga-metodoPagoCliente4.getLimiteMaximoPago())+
 									" restantes");
 							
-							eleccion3 = (double)eleccion3-metodoPagoCliente4.getLimiteMaximoPago();
+							montoRecarga = (double)montoRecarga-metodoPagoCliente4.getLimiteMaximoPago();
 							metodoPagoCliente4.setLimiteMaximoPago(0);
 							System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
 							eleccion2 = (int)Administrador.readLong();
 						}
 						else {
-							ClienteActual.getCuenta().ingresarSaldo(eleccion3);
-							System.out.println("\nSe han recargado: $"+eleccion3+" exitosamente");
+							ClienteActual.getCuenta().ingresarSaldo(montoRecarga);
+							System.out.println("\n•Se han recargado: $"+montoRecarga+" exitosamente");
 							finCiclo = false;
 						}
 						break;
 					default:
-						System.out.println("Opcion invalida");
+						System.out.println("•Metodo de pago invalido");
 						finCiclo = false;
 						break;
 					}
@@ -160,40 +252,50 @@ public class Funcionalidad_4 {
 				}
 				
 				ClienteActual.restablecerLimiteMaximo(maximo, maximo2, maximo3, maximo4);
-				System.out.println("\nEl saldo de su tarjeta cinemar es: "+ClienteActual.getCuenta().getSaldo());
+				System.out.println("\n•Su tarjeta:");
+				espera(2000);
+				imprimirTarjeta(ClienteActual.getNombre(),ClienteActual.getCuenta().getSaldo());
+
 				while(!finCiclo) {
-					System.out.println("Desea ingresar a los juegos, Volver a recargar la tarjeta, volver al inicio o Salir");
+					System.out.println("Desea: ");
 					System.out.println("1.Ingresar\n2.Recargar tarjeta cinemar\n3.Volver al menu principal\n4.Salir");
 					int eleccion4 = (int)Administrador.readLong();
 					switch (eleccion4) {
-					case 1: casoValido= false;finCiclo= true; break;
-					case 2: finCiclo= true; break;
-					case 3: Administrador.inicio(ClienteActual);
-					case 4: Administrador.salirDelSistema();
+					case 1: barraCarga("Ingresando");casoValido= false;finCiclo= true; break;
+					case 2: barraCarga("Redirigiendo");casoValido = true ; finCiclo= true; break;
+					case 3: barraCarga("Volviendo");Administrador.inicio(ClienteActual);
+					case 4: barraCarga("Saliendo");Administrador.salirDelSistema();
 					default: finCiclo = false; break; 
 				}
 				}
 				
 			}
 			else if (eleccion1==2) {
-				System.out.println("Recuerde que debe tener saldo para acceder a los diferentes juegos\nSu saldo en Tarjeta Cinemar: "+ClienteActual.getCuenta().getSaldo());
+				System.out.println("\n-----------------------------------------------------------------------------");
+		        System.out.println("•Recuerde que debe tener saldo para acceder a los diferentes juegos•");
+		        System.out.println("-----------------------------------------------------------------------------");
+		        System.out.println("\n•Su tarjeta:");
+		        espera(2000);
+				imprimirTarjeta(ClienteActual.getNombre(),ClienteActual.getCuenta().getSaldo());
 				while(finCiclo) {
-					System.out.println("Desea ingresar a los juegos, recargar la tarjeta, volver al inicio o Salir");
+					System.out.println("\nDesea: ");
 					System.out.println("1.Ingresar\n2.Recargar tarjeta cinemar\n3.Volver al menu principal\n4.Salir");
 					int eleccion4 = (int)Administrador.readLong();
 					switch (eleccion4) {
-					case 1: casoValido= false;finCiclo= false; break;
-					case 2: finCiclo= false; break;
-					case 3: Administrador.inicio(ClienteActual);
-					case 4: Administrador.salirDelSistema();
+					case 1: barraCarga("Ingresando");casoValido= false;finCiclo= false; break;
+					case 2: barraCarga("Redirigiendo");casoValido = true;finCiclo= false; break;
+					case 3: barraCarga("Volviendo");Administrador.inicio(ClienteActual);
+					case 4: barraCarga("Saliendo");Administrador.salirDelSistema();
 					default: finCiclo = true; break; 
 					}
 				}
 			}
 			else if (eleccion1==3) {
+				barraCarga("Volviendo");
 				Administrador.inicio(ClienteActual);
 			}
 			else if (eleccion1==4) {
+				barraCarga("Saliendo");
 				Administrador.salirDelSistema();
 			}
 			else {System.out.println("Opcion invalida");}
@@ -233,7 +335,7 @@ public class Funcionalidad_4 {
 				if (ClienteActual.getCuenta().getSaldo()>=Administrador.game1.getValorServicio()) {
 					ClienteActual.getCuenta().hacerPago(Administrador.game1.getValorServicio());
 					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game1.getGeneroServicio());
-					ServicioEntretenimiento.juego(new String[]{"ARMA", "COMBATE", "EXPLOSION","GUERRA","ADRENALINA"});
+					juego(new String[]{"BUM"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
 				}
 				else {
@@ -267,7 +369,7 @@ public class Funcionalidad_4 {
 				if (ClienteActual.getCuenta().getSaldo()>=Administrador.game2.getValorServicio()) {
 					ClienteActual.getCuenta().hacerPago(Administrador.game2.getValorServicio());
 					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game2.getGeneroServicio());
-					ServicioEntretenimiento.juego(new String[]{"FANTASMA", "MOUNSTRUO", "MUERTE","ZOMBI","CEMENTERIO"});
+					juego(new String[]{"BOO"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
 				}
 				else {
@@ -302,7 +404,7 @@ public class Funcionalidad_4 {
 				if (ClienteActual.getCuenta().getSaldo()>=Administrador.game3.getValorServicio()) {
 					ClienteActual.getCuenta().hacerPago(Administrador.game3.getValorServicio());
 					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game3.getGeneroServicio());
-					ServicioEntretenimiento.juego(new String[]{"OBJETO", "GUZMAN", "HERENCIA","CONSTRUCTOR","JAVA"});
+					juego(new String[]{"POO"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
 				}
 				else {
@@ -336,7 +438,7 @@ public class Funcionalidad_4 {
 				if (ClienteActual.getCuenta().getSaldo()>=Administrador.game4.getValorServicio()) {
 					ClienteActual.getCuenta().hacerPago(Administrador.game4.getValorServicio());
 					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game4.getGeneroServicio());
-					ServicioEntretenimiento.juego(new String[]{"DIVERSION", "RISAS", "CHISTE","PAYASO","GRACIOSO"});
+					juego(new String[]{"JAJA"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
 				}
 				else {
@@ -370,7 +472,7 @@ public class Funcionalidad_4 {
 				if (ClienteActual.getCuenta().getSaldo()>=Administrador.game5.getValorServicio()) {
 					ClienteActual.getCuenta().hacerPago(Administrador.game5.getValorServicio());
 					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game5.getGeneroServicio());
-					ServicioEntretenimiento.juego(new String[]{"SHOW", "EMOCIONES", "MUJERES","LAGRIMAS","CONMOVEDOR"});
+					juego(new String[]{"CRY"});
 					System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
 				}
 				else {
@@ -400,8 +502,129 @@ public class Funcionalidad_4 {
 					}
 				}	
 				break;
+			case 6: barraCarga("Volviendo"); Administrador.inicio(ClienteActual); break;
+			case 7 : barraCarga("Saliendo"); Administrador.salirDelSistema(); break;
 			default: break;
 			}	
 		}while(!caso);
 	}
+	
+	
+	
+	
+	
+	public static void barraCarga(String word) {
+		System.out.println("               "+word+"....");
+        
+        for (int i=0;i<42 ;i++ ) {
+        	try {
+                Thread.sleep(19);
+                System.out.print("|");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(" ");
+	}
+	
+	public static void imprimirTarjeta(String nombre, double saldo) {
+    	System.out.println("\n        ╔══════════════════════════╗");
+        System.out.println("        ║      Tarjeta Cinemar     ║");
+        System.out.println("        ╠══════════════════════════╣");
+        String linea = "        ║ Dueño: "+nombre;
+        for (int i = linea.length();i<36; i++) {
+        	if (i ==35) {
+        		linea = linea+"║";
+        	}
+        	else {linea = linea+" ";} 
+        }
+        System.out.println(linea);
+        String line = "        ║ Saldo: $"+saldo;
+        for (int i = line.length();i<38; i++) {
+        	if (i ==35) {
+        		line = line+"║";
+        	}
+        	else {line = line+" ";} 
+        }
+        System.out.println(line);
+        System.out.println("        ╚══════════════════════════╝\n");
+    }
+	
+	public static void espera(int i) {
+		try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	
+	public static void juego(String[] PALABRAS) {
+        Scanner scanner = new Scanner(System.in);
+        String palabraSecreta = PALABRAS[(int) (Math.random() * PALABRAS.length)];
+        char[] palabraAdivinada = new char[palabraSecreta.length()];
+        boolean[] letrasUsadas = new boolean[26]; // Para rastrear letras ya usadas
+        int intentosRestantes = 7;
+
+        for (int i = 0; i < palabraAdivinada.length; i++) {
+            palabraAdivinada[i] = '_';
+        }
+
+        while (intentosRestantes > 0 && !adivinado(palabraAdivinada)) {
+            System.out.println("Intentos restantes: " + intentosRestantes);
+            System.out.print("Palabra: ");
+            for (char c : palabraAdivinada) {
+                System.out.print(c + " ");
+            }
+            System.out.println();
+
+            System.out.print("Ingresa una letra: ");
+            String input = scanner.nextLine().toUpperCase();
+            if (input.length() != 1 || !Character.isLetter(input.charAt(0))) {
+                System.out.println("Carácter inválido. Intenta otra vez.");
+                intentosRestantes--;
+                continue;
+            }
+
+            char letra = input.charAt(0);
+
+            // Verificar si la letra ya fue usada
+            if (letrasUsadas[letra - 'A']) {
+                System.out.println("Ya has usado esa letra. Intenta otra.");
+                continue;
+            }
+
+            letrasUsadas[letra - 'A'] = true;
+
+            if (palabraSecreta.indexOf(letra) >= 0) {
+                for (int i = 0; i < palabraSecreta.length(); i++) {
+                    if (palabraSecreta.charAt(i) == letra) {
+                        palabraAdivinada[i] = letra;
+                    }
+                }
+            } else {
+                System.out.println("¡Incorrecto! La letra '" + letra + "' no está en la palabra.");
+                intentosRestantes--;
+            }
+        }
+
+        if (adivinado(palabraAdivinada)) {
+            System.out.println("¡Felicidades! ¡Has adivinado la palabra!");
+        } else {
+            System.out.println("¡Oh no! Te has quedado sin intentos. La palabra era: " + palabraSecreta);
+        }
+    }
+	
+	private static boolean adivinado(char[] palabraAdivinada) {
+        for (char c : palabraAdivinada) {
+            if (c == '_') {
+                return false;
+            }
+        }
+        return true;
+    }
 }
+
+
+
+

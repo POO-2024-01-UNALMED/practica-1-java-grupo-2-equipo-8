@@ -2,6 +2,7 @@ package iuMain;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import gestionAplicacion.proyecciones.*;
@@ -14,7 +15,7 @@ public class Administrador {
 //	private static final boolean True = false;
 	static Scanner sc = new Scanner(System.in);
 	
-	static long readLong() { return sc.nextLong();}
+	static long readLong() {return sc.nextLong();}
 	
 	static String readLn () {
 		sc.nextLine();
@@ -35,7 +36,7 @@ public class Administrador {
 	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
-	static Cliente cliente4 = new Cliente("Juanjo", 18 ,1013458547, TipoDeDocumento.CC);
+	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
 	
 	static Pelicula pelicula1 = new Pelicula("KNJ temporada 4 movie", 30000, "Aventura", Duration.ofMinutes(60), "+12", "4D", 3); 
 	static Pelicula pelicula2 = new Pelicula("Oppenheimer", 15000, "Drama", Duration.ofMinutes(120), "+18", "2D", 1); 
@@ -197,20 +198,8 @@ public class Administrador {
 			
 			
 			
-			//System.out.println(ticket6.getCodigo());
-			
-//			for (MetodoPago pago : cliente1.getMetodosDePago()) {
-//				System.out.println(pago.getNombre()+"\n"+pago.getLimiteMaximoPago()+"\n"+pago.getDescuentoAsociado()+"\n"+pago.getTipo());
-//			}
 
-			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
-					
 
-		
-			
-//			for (ServicioEntretenimiento juego : ServicioEntretenimiento.getJuegos()) {
-//				System.out.println(juego.getGeneroServicio());
-//			}
 			
 			//Print tests
 			System.out.println();
@@ -235,7 +224,7 @@ public class Administrador {
 	int opcion = 0;
 	do {
 		try {
-			opcion = 0;
+			//opcion = 0;
 			System.out.println("\n¿Qué operacion desea realizar?");
 			System.out.println("1. Reservar ticket de pelicula");
 			System.out.println("2. Ingresar a la sala de cine");
@@ -245,9 +234,14 @@ public class Administrador {
 			System.out.println("6. Adquirir o actualizar membresia");
 			System.out.println("7. Sala de espera");
 			System.out.println("8. Salir");
-			opcion = Integer.parseInt(sc.nextLine());
-		}catch(NumberFormatException e) {
+			//opcion = Integer.parseInt(sc.nextLine());
+			//NumberFormatException e							aca dejo esto por si lo queres modificar de nuevo
+			//!(opcion > 0 & opcion <= 8)
+			opcion = (int)readLong(); //edi cambie esto ya que cuando llamaba el metodo en mi funcionalidad me saltaba el error y se me imprimia el menu 2 veces no se porque, pero asi funciona melo.
+		}catch(InputMismatchException e) {
 			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+			sc.nextLine(); // Consumir el input incorrecto
+		    opcion = 0; // Asignar un valor válido para evitar el bucle infinito
 		}
 	}while(!(opcion > 0 & opcion <= 8));
 	
@@ -257,7 +251,7 @@ public class Administrador {
 		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso); inicio(clienteProceso); break;
 		case 3: comprarComida(clienteProceso); inicio(clienteProceso); break;
 		case 4: comprarSouvenirs(clienteProceso);inicio(clienteProceso); break;
-		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
+		case 5: Funcionalidad_4.barraCarga("Ingresando");Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
 		case 6: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
 		case 7: Funcionalidad1.salaDeEspera(clienteProceso); inicio(clienteProceso); break;
 		case 8: salirDelSistema(); break;
@@ -843,7 +837,7 @@ public class Administrador {
 					casoValido = false;
 					do {
 						System.out.println("Ingrese su nombre: ");
-						nombreCliente = sc.nextLine(); 
+						nombreCliente = stringMayuscula(sc.nextLine()); 
 						
 						//Confirmamos si el nombre ingresado es correcto
 						do {
@@ -910,7 +904,20 @@ public class Administrador {
 		
 	}
 	
-	
+	public static String stringMayuscula(String input) {
+        StringBuilder result = new StringBuilder();
+        String[] words = input.split("\\s+");
+        
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                result.append(Character.toUpperCase(word.charAt(0)))
+                      .append(word.substring(1))
+                      .append(" ");
+            }
+        }
+        
+        return result.toString().trim();
+    }
 	
 	
 }
