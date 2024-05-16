@@ -3,7 +3,7 @@ package iuMain;
 import java.util.Scanner;
 
 import gestionAplicacion.SucursalCine;
-import gestionAplicacion.servicios.ServicioEntretenimiento;
+import gestionAplicacion.servicios.Arkade;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
 import gestionAplicacion.usuario.TipoDeDocumento;
@@ -12,11 +12,11 @@ public class Funcionalidad_4 {
 	
 	static void ingresoZonaJuegos(Cliente ClienteActual, SucursalCine sucursalCineProceso) {
 
-		System.out.println("\nRecuerde que para entrar a los juegos es necesario tener la tarjeta cinemar\n¿Desea Continuar o volver?\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
+		System.out.println("\nRecuerde que para entrar a los juegos es necesario tener la tarjeta cinemar\nDesea:\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
 		int opcion = (int)Administrador.readLong();
-		if (opcion==2) {Administrador.inicio(ClienteActual, sucursalCineProceso);}
-		else if (opcion==1) {}
-		else if (opcion==3) {Administrador.salirDelSistema();}
+		if (opcion==2) {barraCarga("Volviendo");Administrador.inicio(ClienteActual, sucursalCineProceso);}
+		else if (opcion==1) {barraCarga("Ingresando");}
+		else if (opcion==3) {barraCarga("Saliendo");Administrador.salirDelSistema();}
 		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual, sucursalCineProceso);}
 		boolean casoValido = true;	
 			
@@ -26,18 +26,18 @@ public class Funcionalidad_4 {
 				espera(1000);
 				int option = (int)Administrador.readLong();
 				if (option==1) {
-					if (ServicioEntretenimiento.verificarTarjetasEnInventario()) {
+					if (Arkade.verificarTarjetasEnInventario()) {
 						System.out.println("\n•El precio de la tarjeta Cinemar es de $5000\n•Este valor sera descontado al saldo de su tarjeta");
 						espera(2000);
 						barraCarga("Adquiriendo tarjeta");
-						ServicioEntretenimiento.asociarTarjetaCliente(ClienteActual);
+						Arkade.asociarTarjetaCliente(ClienteActual);
 						ClienteActual.getCuenta().hacerPago(5000);
 						imprimirTarjeta(ClienteActual.getCuenta().getDueno().getNombre(),ClienteActual.getCuenta().getSaldo());
 					}
-					else {System.out.println("\n•Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); Administrador.inicio(ClienteActual);}
+					else {System.out.println("\n•Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde"); Administrador.inicio(ClienteActual, sucursalCineProceso);}
 					casoValido=false;
 				}
-				else if (option ==2) {ingresoZonaJuegos(ClienteActual);}
+				else if (option ==2) {ingresoZonaJuegos(ClienteActual, sucursalCineProceso);}
 			}
 			else {
 				System.out.println("\n•Su tarjeta:");
@@ -80,7 +80,7 @@ public class Funcionalidad_4 {
 					
 					case 1:
 						
-						MetodoPago metodoPagoCliente = ServicioEntretenimiento.encontrarMetodoPagoCliente("Bancolombia", ClienteActual.getMetodosDePago());
+						MetodoPago metodoPagoCliente = Arkade.encontrarMetodoPagoCliente("Bancolombia", ClienteActual.getMetodosDePago());
 						
 						if (metodoPagoCliente.getLimiteMaximoPago()==0) {
 							System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente.getLimiteMaximoPago())+" restantes");
@@ -120,7 +120,7 @@ public class Funcionalidad_4 {
 						break;
 					case 2:
 						
-						MetodoPago metodoPagoCliente2 = ServicioEntretenimiento.encontrarMetodoPagoCliente("AV Villas", ClienteActual.getMetodosDePago());
+						MetodoPago metodoPagoCliente2 = Arkade.encontrarMetodoPagoCliente("AV Villas", ClienteActual.getMetodosDePago());
 						
 						if (metodoPagoCliente2.getLimiteMaximoPago()==0) {
 							System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente2.getLimiteMaximoPago())+" restantes");
@@ -161,7 +161,7 @@ public class Funcionalidad_4 {
 					case 3:
 
 						
-						MetodoPago metodoPagoCliente3 = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", ClienteActual.getMetodosDePago());
+						MetodoPago metodoPagoCliente3 = Arkade.encontrarMetodoPagoCliente("Banco Agrario", ClienteActual.getMetodosDePago());
 						
 						if (metodoPagoCliente3.getLimiteMaximoPago()==0) {
 							System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente3.getLimiteMaximoPago())+" restantes");
@@ -202,7 +202,7 @@ public class Funcionalidad_4 {
 					case 4:
 
 						
-						MetodoPago metodoPagoCliente4 = ServicioEntretenimiento.encontrarMetodoPagoCliente("Efectivo", ClienteActual.getMetodosDePago());
+						MetodoPago metodoPagoCliente4 = Arkade.encontrarMetodoPagoCliente("Efectivo", ClienteActual.getMetodosDePago());
 						
 						if (metodoPagoCliente4.getLimiteMaximoPago()==0) {
 							System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente4.getLimiteMaximoPago())+" restantes");
@@ -262,7 +262,7 @@ public class Funcionalidad_4 {
 					switch (eleccion4) {
 					case 1: barraCarga("Ingresando");casoValido= false;finCiclo= true; break;
 					case 2: barraCarga("Redirigiendo");casoValido = true ; finCiclo= true; break;
-					case 3: barraCarga("Volviendo");Administrador.inicio(ClienteActual);
+					case 3: barraCarga("Volviendo");Administrador.inicio(ClienteActual, sucursalCineProceso);
 					case 4: barraCarga("Saliendo");Administrador.salirDelSistema();
 					default: finCiclo = false; break; 
 				}
@@ -283,7 +283,7 @@ public class Funcionalidad_4 {
 					switch (eleccion4) {
 					case 1: barraCarga("Ingresando");casoValido= false;finCiclo= false; break;
 					case 2: barraCarga("Redirigiendo");casoValido = true;finCiclo= false; break;
-					case 3: barraCarga("Volviendo");Administrador.inicio(ClienteActual);
+					case 3: barraCarga("Volviendo");Administrador.inicio(ClienteActual, sucursalCineProceso);
 					case 4: barraCarga("Saliendo");Administrador.salirDelSistema();
 					default: finCiclo = true; break; 
 					}
@@ -291,7 +291,7 @@ public class Funcionalidad_4 {
 			}
 			else if (eleccion1==3) {
 				barraCarga("Volviendo");
-				Administrador.inicio(ClienteActual);
+				Administrador.inicio(ClienteActual, sucursalCineProceso);
 			}
 			else if (eleccion1==4) {
 				barraCarga("Saliendo");
@@ -307,9 +307,9 @@ public class Funcionalidad_4 {
 			if (eleccion6==1) {
 				System.out.println("\nIngrese el codigo asociado a la factura de su ticket\nRecuerde que el codigo es el formato de la pelicula pegado a su tipo de documento y el numero de la salaDecine de el tiquete\nEjemplo: 4DCC12 (Todo en mayuscula)");
 				String codigo = Administrador.readLn();
-				if (ServicioEntretenimiento.comprobarCodigo(codigo)) {
+				if (Arkade.comprobarCodigo(codigo)) {
 					System.out.println("Codigo correcto, Se le asignó un descuento a el precio de los juegos");
-					ServicioEntretenimiento.AplicarDescuentoJuegos();
+					Arkade.AplicarDescuentoJuegos();
 					caso = false;
 				}
 				else {System.out.println("Codigo incorrecto, verifique el codigo");}
@@ -327,7 +327,7 @@ public class Funcionalidad_4 {
 		}while(caso);
 		
 		do {
-			System.out.println(ServicioEntretenimiento.mostrarJuegos());
+			System.out.println(Arkade.mostrarJuegos());
 			int eleccion7 =(int)Administrador.readLong();
 			switch(eleccion7) {
 			case 1:
@@ -501,7 +501,7 @@ public class Funcionalidad_4 {
 					}
 				}	
 				break;
-			case 6: barraCarga("Volviendo"); Administrador.inicio(ClienteActual); break;
+			case 6: barraCarga("Volviendo"); Administrador.inicio(ClienteActual, sucursalCineProceso); break;
 			case 7 : barraCarga("Saliendo"); Administrador.salirDelSistema(); break;
 			default: break;
 			}	

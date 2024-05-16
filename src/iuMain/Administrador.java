@@ -36,11 +36,11 @@ public class Administrador {
 	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,50);
 	static Producto producto2 = new Producto("Hamburguesa","Pequeña","comida",15000,50);
 	
-	static ServicioEntretenimiento game1= new ServicioEntretenimiento("Hang Man", 15000, "Accion");
-	static ServicioEntretenimiento game2= new ServicioEntretenimiento("Hang Man", 20000, "Terror");
-	static ServicioEntretenimiento game3= new ServicioEntretenimiento("Hang Man", 10000, "POO");
-	static ServicioEntretenimiento game4= new ServicioEntretenimiento("Hang Man", 30000, "Comedia");
-	static ServicioEntretenimiento game5= new ServicioEntretenimiento("Hang Man", 5000, "Drama");
+	static Arkade game1= new Arkade("Hang Man", 15000, "Accion");
+	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
+	static Arkade game3= new Arkade("Hang Man", 10000, "POO");
+	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
+	static Arkade game5= new Arkade("Hang Man", 5000, "Drama");
 	
 	static TarjetaCinemar cuenta1 = new TarjetaCinemar();
 	static TarjetaCinemar cuenta2 = new TarjetaCinemar();

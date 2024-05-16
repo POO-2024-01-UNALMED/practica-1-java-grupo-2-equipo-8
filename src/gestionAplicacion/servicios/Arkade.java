@@ -6,14 +6,13 @@ import java.util.Scanner;
 import gestionAplicacion.usuario.*;
 
 
-public class ServicioEntretenimiento extends Servicio{
+public class Arkade {
 	
 	//Atributos
 	private String nombreServicio;
-	//private int idServicio;
 	private String horarioServicio;
 	private static ArrayList<TarjetaCinemar> tarjetasEnInventario = new ArrayList<>();
-	private static ArrayList<ServicioEntretenimiento> juegos = new ArrayList<>();
+	private static ArrayList<Arkade> juegos = new ArrayList<>();
 	private double valorServicio;
 	private static ArrayList<String> codigosGenerados = new ArrayList<>();;
 	private static ArrayList<String> codigosUsados= new ArrayList<>();;
@@ -22,9 +21,9 @@ public class ServicioEntretenimiento extends Servicio{
 	private String generoServicio;
 	
 	//Constructores
-	public ServicioEntretenimiento(){juegos.add(this);}
+	public Arkade(){juegos.add(this);}
 	
-	public ServicioEntretenimiento(String nombre, String horario, String nombreServicio, String horarioServicio,
+	public Arkade(String nombre, String horario, String nombreServicio, String horarioServicio,
 			double valorServicio, double puntuacionUsuario, String generoServicio) {
 		this.nombreServicio = nombreServicio;
 		this.horarioServicio = horarioServicio;
@@ -35,7 +34,7 @@ public class ServicioEntretenimiento extends Servicio{
 	}
 	
 	
-	public ServicioEntretenimiento(String nombreServicio, double valorServicio, String generoServicio) {
+	public Arkade(String nombreServicio, double valorServicio, String generoServicio) {
 		super();
 		this.nombreServicio = nombreServicio;
 		this.valorServicio = valorServicio;
@@ -120,7 +119,7 @@ public class ServicioEntretenimiento extends Servicio{
 	public static String mostrarJuegos(){
 		String juegos = null;
 		int i = 1;
-		for (ServicioEntretenimiento juego : ServicioEntretenimiento.juegos) {
+		for (Arkade juego : Arkade.juegos) {
 			if (juegos == null) {
 				juegos = i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
 				i++;
@@ -135,7 +134,7 @@ public class ServicioEntretenimiento extends Servicio{
 	}
 	
 	public static void AplicarDescuentoJuegos() {
-		for (ServicioEntretenimiento juego : ServicioEntretenimiento.juegos) {
+		for (Arkade juego : Arkade.juegos) {
 			juego.setValorServicio(juego.getValorServicio()-(juego.getValorServicio()*20/100));
 		}
 	}
@@ -147,7 +146,7 @@ public class ServicioEntretenimiento extends Servicio{
 	}
 
 	public static void setTarjetasEnInventario(ArrayList<TarjetaCinemar> tarjetasEnInventario) {
-		ServicioEntretenimiento.tarjetasEnInventario = tarjetasEnInventario;
+		Arkade.tarjetasEnInventario = tarjetasEnInventario;
 	}
 
 	public String getNombreServicio() {
@@ -195,11 +194,11 @@ public class ServicioEntretenimiento extends Servicio{
 	}
 
 	public static void setCodigosGenerados(ArrayList<String> codigosGenerados) {
-		ServicioEntretenimiento.codigosGenerados = codigosGenerados;
+		Arkade.codigosGenerados = codigosGenerados;
 	}
 
 	public static void setCodigosUsados(ArrayList<String> codigosUsados) {
-		ServicioEntretenimiento.codigosUsados = codigosUsados;
+		Arkade.codigosUsados = codigosUsados;
 	}
 
 	public void setPuntuacionUsuario(double puntuacionUsuario) {
@@ -210,12 +209,12 @@ public class ServicioEntretenimiento extends Servicio{
 		this.generoServicio = generoServicio;
 	}
 
-	public static ArrayList<ServicioEntretenimiento> getJuegos() {
+	public static ArrayList<Arkade> getJuegos() {
 		return juegos;
 	}
 
-	public static void setJuegos(ArrayList<ServicioEntretenimiento> juegos) {
-		ServicioEntretenimiento.juegos = juegos;
+	public static void setJuegos(ArrayList<Arkade> juegos) {
+		Arkade.juegos = juegos;
 	}
 
 	
