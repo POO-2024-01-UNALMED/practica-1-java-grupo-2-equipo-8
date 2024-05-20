@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
-import gestionAplicacion.servicios.ServicioEntretenimiento;
+import gestionAplicacion.servicios.Arkade;
 
 public class Ticket implements IBuyable{
 	
@@ -36,7 +36,7 @@ public class Ticket implements IBuyable{
 		Ticket.cantidadTicketsCreados++;
 		this.idTicket = Ticket.cantidadTicketsCreados;
 		this.codigo = this.generarCodigoTicket();
-		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
+		Arkade.getCodigosGenerados().add(this.codigo);
 	}
 	
 	public Ticket(Cliente dueno, Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalCine) {
@@ -45,7 +45,7 @@ public class Ticket implements IBuyable{
 		this.idTicket = Ticket.cantidadTicketsCreados;
 		Ticket.cantidadTicketsCreados++;
 		this.codigo = this.generarCodigoTicket();
-		ServicioEntretenimiento.getCodigosGenerados().add(this.codigo);
+		Arkade.getCodigosGenerados().add(this.codigo);
 		this.numeroAsiento = numeroAsiento;
 		this.horario = horario;
 

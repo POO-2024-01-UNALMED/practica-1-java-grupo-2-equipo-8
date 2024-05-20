@@ -115,11 +115,14 @@ public class Cliente {
 		return value;
 	}
 	
-	public void restablecerLimiteMaximo(double max, double max2, double max3, double max4) {
+	public void restablecerLimiteMaximo(double max, double max2, double max3, double max4,double max5) {
 		this.getMetodosDePago().get(0).setLimiteMaximoPago(max);
 		this.getMetodosDePago().get(1).setLimiteMaximoPago(max2);
 		this.getMetodosDePago().get(2).setLimiteMaximoPago(max3);
 		this.getMetodosDePago().get(3).setLimiteMaximoPago(max4);
+		if (this.getMetodosDePago().size()>4) {
+			this.getMetodosDePago().get(4).setLimiteMaximoPago(max5);
+		}
 	}
 	
 	/**

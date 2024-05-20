@@ -1,6 +1,6 @@
 package gestionAplicacion.usuario;
 
-import gestionAplicacion.servicios.ServicioEntretenimiento;
+import gestionAplicacion.servicios.Arkade;
 
 public class TarjetaCinemar implements IBuyable {
 	
@@ -11,14 +11,14 @@ public class TarjetaCinemar implements IBuyable {
 	
 	
 	//constructores
-	public TarjetaCinemar(){ServicioEntretenimiento.getTarjetasEnInventario().add(this);}
+	public TarjetaCinemar(){Arkade.getTarjetasEnInventario().add(this);}
 	
 	public TarjetaCinemar(int saldo, boolean estado, Cliente dueno) {
 		super();
 		this.saldo = saldo;
 		this.estado = estado;
 		this.dueno = dueno;
-		ServicioEntretenimiento.getTarjetasEnInventario().add(this);
+		Arkade.getTarjetasEnInventario().add(this);
 	}
 	
 	//metodos

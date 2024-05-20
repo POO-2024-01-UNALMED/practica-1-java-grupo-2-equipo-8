@@ -42,9 +42,9 @@ public class Administrador {
 	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
 	static Arkade game5= new Arkade("Hang Man", 5000, "Drama");
 	
-	static TarjetaCinemar cuenta1 = new TarjetaCinemar();
-	static TarjetaCinemar cuenta2 = new TarjetaCinemar();
-	static TarjetaCinemar cuenta3 = new TarjetaCinemar();
+	//static TarjetaCinemar cuenta1 = new TarjetaCinemar();
+	//static TarjetaCinemar cuenta2 = new TarjetaCinemar();
+	//static TarjetaCinemar cuenta3 = new TarjetaCinemar();
 	
 	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
 	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
@@ -302,7 +302,7 @@ public class Administrador {
 
 			
 			
-			cliente4.setMembresia(membresia5);
+			//cliente4.setMembresia(membresia5);
 			cliente3.setMembresia(membresia2);
 			cliente4.getTickets().add(ticket5);
 //			ticket5.setDueno(cliente4);
@@ -334,8 +334,12 @@ public class Administrador {
 
 			
 			//Print tests
-			System.out.println();
-			System.out.println();
+			//System.out.println();
+			//System.out.println();
+			
+			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
+				//System.out.println(tarjeta.getSaldo());
+			//}
 			
 		}
 		
@@ -357,7 +361,7 @@ public class Administrador {
 	int opcion = 0;
 	do {
 		try {
-			//opcion = 0;
+			opcion = 0;
 			System.out.println("\n¿Qué operacion desea realizar?");
 			System.out.println("1. Reservar ticket de pelicula");
 			System.out.println("2. Ingresar a la sala de cine");
@@ -367,14 +371,13 @@ public class Administrador {
 			System.out.println("6. Adquirir o actualizar membresia");
 			System.out.println("7. Ingresar a sala de espera");
 			System.out.println("8. Salir");
-			//opcion = Integer.parseInt(sc.nextLine());
+			opcion = Integer.parseInt(sc.nextLine());
 			//NumberFormatException e							aca dejo esto por si lo queres modificar de nuevo
-			//!(opcion > 0 & opcion <= 8)
-			opcion = (int)readLong(); //edi cambie esto ya que cuando llamaba el metodo en mi funcionalidad me saltaba el error y se me imprimia el menu 2 veces no se porque, pero asi funciona melo.
-		}catch(InputMismatchException e) {
+			//opcion = (int)readLong(); //edi cambie esto ya que cuando llamaba el metodo en mi funcionalidad me saltaba el error y se me imprimia el menu 2 veces no se porque, pero asi funciona melo.
+		}catch(NumberFormatException e) {
 			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-			sc.nextLine(); // Consumir el input incorrecto
-		    opcion = 0; // Asignar un valor válido para evitar el bucle infinito
+			//sc.nextLine(); // Consumir el input incorrecto
+		    //opcion = 0; // Asignar un valor válido para evitar el bucle infinito
 		}
 	}while(!(opcion > 0 & opcion <= 8));
 	
