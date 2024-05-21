@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.Map.Entry;
 
 import gestionAplicacion.SucursalCine;
-import gestionAplicacion.servicios.ServicioEntretenimiento;
+import gestionAplicacion.servicios.Arkade;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.Membresia;
 import gestionAplicacion.usuario.MetodoPago;
@@ -250,7 +250,7 @@ public class Funcionalidad5 {
 				}catch (NumberFormatException e){
 					System.out.print("Error. Por favor, escriba un dato numérico");}
 				if (opcionMenu == 1) {
-					ServicioEntretenimiento.asociarTarjetaCliente(cliente);
+					Arkade.asociarTarjetaCliente(cliente);
 					cliente.getCuenta().ingresarSaldo(saldoCuenta);
 					System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+cliente.getCuenta().getDueno().getNombre()+"\nSaldo: $"+cliente.getCuenta().getSaldo());
 					System.out.print("\nGracias por su compra. Redirigiendo al menú principal.");

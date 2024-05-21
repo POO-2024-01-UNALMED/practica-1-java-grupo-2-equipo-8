@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
@@ -33,8 +30,12 @@ public class Administrador {
 	static ArrayList<Producto> inventarioMarinilla = new ArrayList<Producto>();
 	static ArrayList<Producto> inventarioSanAndrés = new ArrayList<Producto>();
 	
-	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,50);
-	static Producto producto2 = new Producto("Hamburguesa","Pequeña","comida",15000,50);
+	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,50,null);
+	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",30000,50,"Comedia");
+	
+	
+	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+	static Bono bono1 = new Bono(1234,productoBono,"comida");
 	
 	static Arkade game1= new Arkade("Hang Man", 15000, "Accion");
 	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");

@@ -103,7 +103,131 @@ public class Funcionalidad2 {
 				}
 			}while(verificacion);
 			
+			//////////// Espacio para descuento por genero con horario para hacer con Andy///////////////////////
+			
+			
+			
+			
+			/////////////////////////////////////////////////////////////////////////////////
+			
+			//Validacion de los bonos
+			verificacion = true;
+			do {
+				try {
+					System.out.print("¿Tienes algun bono de comida para reclamar?\n1.SI\n2.NO\nSeleccione una opcion:");
+					servicio = Integer.parseInt(sc.nextLine());
+					if (servicio != 1 && servicio != 2) {
+						System.out.println("Error, Debes de seleccionar una de las dos opciones");
+						continue;
+					}
+				}catch(NumberFormatException e) {
+					System.out.println("\nError, debes ingresar un dato numérico\n");
+					continue;
+				}
+				verificacion = false;
+			}while(verificacion);
+			
+			verificacion = true;
+			if(servicio == 1) {
+				Producto productoBono = new Producto();
+				do {
+					try {
+						System.out.println("\n🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁 REGALOS CON BONOS 🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁\\n");
+						System.out.print("Ingrese el codigo del bono: ");
+						servicio = Integer.parseInt(sc.nextLine());
+					}catch(NumberFormatException e) {
+						System.out.println("\nError, debes ingresar un dato numérico\n");
+						continue;
+					}
+					productoBono = comida.validarBono(servicio, "Comida");
+					if (productoBono == null) {
+						System.out.println("Codigo invalido porfavor verificar el codigo");
+						
+						do {
+							try {
+								System.out.print("\n¿Que deseas hacer?\n1.Salir\n2.Volver a intentar\nSeleccione una opcion: ");
+								servicio = Integer.parseInt(sc.nextLine());
+							}catch(NumberFormatException e) {
+								System.out.println("\nError, debes ingresar un dato numérico\n");
+								continue;
+							}
+							if (servicio == 1) {
+								verificacion = false;
+								break;
+							}
+							else if (servicio != 2) {
+								System.out.print("\nSELECCIONE UNA OPCION VALIDA\n");
+							}
+						}while(servicio != 1 && servicio != 2);
+						
+					}
+					else {
+						System.out.println("\nBono validado con exito🎉🎉🎉🎉");
+						System.out.print("El bono es de: "+productoBono.getNombre()+" "+productoBono.getTamaño());
+						
+						if(productoBono.comprobarBonoEnOrden(comida)) {
+							verificacion = true;
+							do {
+								try {
+									System.out.print("\n\\n¿Que deseas hacer con el producto?\n1.Desea agregarlo al pedido"+
+											"\n2.Desea descontarlo del pedido\nSelecciona una opcion:");
+									servicio = Integer.parseInt(sc.nextLine());
+								}catch(NumberFormatException e) {
+									System.out.println("\nError, debes ingresar un dato numérico\n");
+									continue;
+								}
+
+								if (servicio == 1) {
+									productoBono.setPrecio(0);
+									productoBono.setNombre("Regalo de Bono "+productoBono.getNombre());
+									comida.getOrden().add(productoBono);
+									System.out.print(comida.mostrarOrden());
+									verificacion = false;
+								}
+								else if (servicio == 2){
+									comida.descontarProducto(productoBono);
+									System.out.print(comida.mostrarOrden());
+									verificacion = false;
+								}
+								else {
+									System.out.print("\n\\nSELECCIONE UNA OPCION VALIDA\\n\n");
+								}
+							}while(verificacion);
+						}
+						else if (productoBono != null){
+							productoBono.setPrecio(0);
+							productoBono.setNombre("Regalo de bono "+productoBono.getNombre());
+							comida.getOrden().add(productoBono);
+							System.out.print(comida.mostrarOrden());
+						}
+						verificacion = true;
+						do {
+							try {
+								
+								System.out.print("\n¿Deseas reclamar otro Bono?\n1.SI\n2.NO\nSelecciona una opcion:");
+								servicio = Integer.parseInt(sc.nextLine());
+							}catch(NumberFormatException e) {
+								System.out.println("\nError, debes ingresar un dato numérico\n");
+								continue;
+							}
+							if (servicio == 1) {
+							}
+							else if (servicio == 2) {
+								verificacion = false;
+							}
+							else if (servicio != 2) {
+								System.out.print("\nSELECCIONE UNA OPCION VALIDA\n");
+							}
+						}while(servicio != 1 && servicio != 2);
+					}
+				}while(verificacion);
+				
+				System.out.print("\nSALIO DEL SISTEMA DE BONOS\n");
+				
 			}
+			
+			
+		}
 		else {
 			System.out.print("Bienvenido al servicio de Souvenirs");
 		}

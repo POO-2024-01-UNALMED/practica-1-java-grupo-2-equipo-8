@@ -3,10 +3,27 @@ package gestionAplicacion.servicios;
 public class Producto {
 	//Atributos
 	private String tipoProducto;
+	private String genero;
 	private String nombre;
 	private String tamaño;
 	private int precio;
 	private int cantidad;
+	
+	public void descontarPrecioDeBono() {
+		
+	}
+	
+	public boolean comprobarBonoEnOrden(Servicio servicio) {
+		boolean verificacion = false;
+		for(int i = 0; i < servicio.getOrden().size();i++) {
+			if(servicio.getOrden().get(i).getNombre() == this.getNombre() && servicio.getOrden().get(i).getTamaño() == this.getTamaño()) {
+				verificacion = true;
+				break;
+			}
+		}
+		return verificacion;
+		
+	}
 	
 	//Constructores
 	public Producto() {}
@@ -17,7 +34,8 @@ public class Producto {
 		this.cantidad = cantidad;
 	}
 	
-	public Producto(String nombre,String tamaño,String tipoProducto,int precio,int cantidad) {
+	public Producto(String nombre,String tamaño,String tipoProducto,int precio,int cantidad,String genero) {
+		this.genero= genero;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.tamaño = tamaño;
@@ -71,6 +89,14 @@ public class Producto {
 
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
 	}
 	
 }

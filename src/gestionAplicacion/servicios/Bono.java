@@ -5,10 +5,17 @@ public class Bono {
 	
 	private int codigo;
 	private static ArrayList<Bono> bonosCreados = new ArrayList<>();
-	private static ArrayList<Bono> bonosUsados = new ArrayList<>();
-	private String producto;
-	private String tamaño;
+	private Producto producto;
 	private String tipoServicio;
+	
+	public Bono(){}
+	
+	public Bono(int codigo, Producto producto, String tipoServicio) {
+		this.codigo = codigo;
+		this.producto = producto;
+		this.tipoServicio = tipoServicio;
+		bonosCreados.add(this);
+	}
 	
 	public int getCodigo() {
 		return codigo;
@@ -26,29 +33,6 @@ public class Bono {
 		Bono.bonosCreados = bonosCreados;
 	}
 
-	public static ArrayList<Bono> getBonosUsados() {
-		return bonosUsados;
-	}
-
-	public static void setBonosUsados(ArrayList<Bono> bonosUsados) {
-		Bono.bonosUsados = bonosUsados;
-	}
-
-	public String getProducto() {
-		return producto;
-	}
-
-	public void setProducto(String producto) {
-		this.producto = producto;
-	}
-
-	public String getTamaño() {
-		return tamaño;
-	}
-
-	public void setTamaño(String tamaño) {
-		this.tamaño = tamaño;
-	}
 
 	public String getTipoServicio() {
 		return tipoServicio;
@@ -58,28 +42,16 @@ public class Bono {
 		this.tipoServicio = tipoServicio;
 	}
 
-	public Bono(){}
-	
-	public Bono(int codigo, String producto, String tamaño, String tipoServicio) {
-		super();
-		this.codigo = codigo;
-		this.producto = producto;
-		this.tamaño = tamaño;
-		this.tipoServicio = tipoServicio;
-		bonosCreados.add(this);
+	public Producto getProducto() {
+		return producto;
 	}
 
-
-
-	public boolean validarbono() {
-		for (int i=0;i<bonosCreados.size();i++) {
-			if (bonosCreados.get(i).getCodigo() == this.getCodigo()) {
-				bonosCreados.remove(i);
-				bonosUsados.add(this);
-				return true;
-			}
-		}
-		return false;
-		}
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
 
 }
+
+
+
+

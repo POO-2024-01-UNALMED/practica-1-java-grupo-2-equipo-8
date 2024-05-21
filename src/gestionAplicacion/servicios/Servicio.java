@@ -17,6 +17,26 @@ public class Servicio {
 		this.nombre=nombre;
 	}
 	
+	public void descontarProducto (Producto producto) {
+		for(int i=0; i< orden.size(); i++) {
+			if(orden.get(i).getNombre() == producto.getNombre() && orden.get(i).getTamaño() == producto.getTamaño()) {
+				orden.get(i).setPrecio(orden.get(i).getPrecio()-producto.getPrecio());
+				break;
+			}
+		}
+	}
+	
+	public Producto validarBono(int codigo , String servicio){
+		Producto producto = new Producto();
+		for (int i=0; i < Bono.getBonosCreados().size();i++) {
+			if (Bono.getBonosCreados().get(i).getCodigo() == codigo && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio)) {
+				producto = Bono.getBonosCreados().get(i).getProducto();
+				Bono.getBonosCreados().remove(i);
+				return producto;
+			}
+		}
+		return null;
+	}
 	
 	/**
 	*Description: Recorre el ArrayList y muestra todos los pedidos que 
