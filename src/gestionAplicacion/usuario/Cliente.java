@@ -115,6 +115,16 @@ public class Cliente {
 		return value;
 	}
 	
+	
+	/**
+	*Description: Reestablece los limites de pago de cada metodo de pago que el cliente tenga asociado
+	*@param max : limite de pago 1
+	*@param max2 : limite de pago 2
+	*@param max3 : limite de pago 3
+	*@param max4 : limite de pago 4
+	*@param max5 : limite de pago 5
+	*@return <b>void</b> :  No hay retorno
+	*/
 	public void restablecerLimiteMaximo(double max, double max2, double max3, double max4,double max5) {
 		this.getMetodosDePago().get(0).setLimiteMaximoPago(max);
 		this.getMetodosDePago().get(1).setLimiteMaximoPago(max2);

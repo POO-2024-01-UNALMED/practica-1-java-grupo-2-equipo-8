@@ -23,21 +23,24 @@ public class TarjetaCinemar implements IBuyable {
 	
 	//metodos
 	/**
-	*Description: suma al saldo de la tarjeta Cinemar
-	*@param saldo :  Es el valor a sumar en la tarjeta
-	*/
+	 * Description : Este método se encarga de ingresar el saldo dado a la tarjeta cinemar
+	 * @param saldo : Este método recibe como parámetro el saldo a ingresar
+	 * (De tipo double)
+	 * @return <b>void</b> : No hay retorno
+	 * */
 	public void ingresarSaldo(double saldo) {this.saldo+=saldo;}
 	
-	private void mostarSaldo() {}
 	
 	/**
 	*Description: se le descuenta a la tarjeta cinemar el monto pasado en el parametro
 	*@param saldo : se le pasa el monto a ser descontado
+	*(De tipo double)
+	*@return <b>void</b> : No hay retorno
 	*/
 	public void hacerPago(double saldo) {
 		this.saldo-=saldo;
 	}
-	private static TarjetaCinemar crearTarjeta() {return new TarjetaCinemar();}
+	//private static TarjetaCinemar crearTarjeta() {return new TarjetaCinemar();}
 
 	//getters y setters
 	public double getSaldo() {

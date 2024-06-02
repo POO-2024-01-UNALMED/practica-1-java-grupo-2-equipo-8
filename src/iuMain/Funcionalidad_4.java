@@ -11,6 +11,16 @@ import gestionAplicacion.usuario.MetodoPago;
 
 public class Funcionalidad_4 {
 	
+	
+	
+	/**
+	 * Description : Este método se encarga de toda la gestion de la funcionalidad 4, que incluye adquisicion y recarga de la tarjeta cinemar, ingreso a zona de juegos, ejecucion de juegos, generacion de bonos, etc.
+	 * @param clienteActual : Este método recibe como parámetro el cliente actual que esta ejecutando el programa
+	 * (De tipo Cliente)
+	 * @param sucursalCineProceso : Este método recibe como parámetro la sucursal de cine en la que se esta ejecutando el programa
+	 * (De tipo SucursalCine)
+	 * @return <b>void</b> : No hay retorno
+	 * */
 	static void ingresoZonaJuegos(Cliente ClienteActual, SucursalCine sucursalCineProceso) {
 		
 		
@@ -630,7 +640,12 @@ public class Funcionalidad_4 {
 	
 	
 	
-	
+	/**
+	 * Description : Este método se encarga de simular una barra de carga haciendo una serie de prints por pantalla
+	 * @param word : Este método recibe como parámetro una palabra que se muestra en la barra de carga
+	 * (De tipo String)
+	 * @return <b>void</b> : No hay retorno
+	 * */
 	public static void barraCarga(String word) {
 		System.out.println("               "+word+"....");
         
@@ -645,6 +660,15 @@ public class Funcionalidad_4 {
         System.out.println(" ");
 	}
 	
+	
+	/**
+	 * Description : Este método se encarga de imprimir por pantalla la tarjetaCinemar del usuario, con su nombre y saldo correspondiente
+	 * @param nombre : Este método recibe como parámetro el nombre del usuario
+	 * (De tipo String)
+	 * @param saldo : Este método recibe como parámetro el saldo de la tarjeta del usuario
+	 * (De tipo double)
+	 * @return <b>void</b> : No hay retorno
+	 * */
 	public static void imprimirTarjeta(String nombre, double saldo) {
     	System.out.println("\n        ╔══════════════════════════╗");
         System.out.println("        ║      Tarjeta Cinemar     ║");
@@ -668,15 +692,27 @@ public class Funcionalidad_4 {
         System.out.println("        ╚══════════════════════════╝\n");
     }
 	
-	public static void espera(int i) {
+	
+	/**
+	 * Description : Este método se encarga de retrasar determinado tiempo la ejecucion del programa mediante una espera
+	 * @param time : Este método recibe como parámetro el numero de milisegundos a esperar
+	 * (De tipo int)
+	 * @return <b>void</b> : No hay retorno
+	 * */
+	public static void espera(int time) {
 		try {
-            Thread.sleep(i);
+            Thread.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 	}
 	
-	
+	/**
+	 * Description : Este método se encarga de ejecutar el juego de la funcionalidad 4, el cual es un HangMan en donde se escoje una palabra aleatoria del parametro
+	 * @param PALABRAS : Este método recibe como parámetro una lista de la palabras con las que se jugara para adivinarlas
+	 * (De tipo String)
+	 * @return <b>boolean</b> : Este método retorna un boolean true or false dependiendo de si el usuario acertó palabra o no
+	 * */
 	public static String juego(String[] PALABRAS) {
         String match = null;
    
@@ -738,6 +774,14 @@ public class Funcionalidad_4 {
         return match;
     }
 	
+	
+	
+	/**
+	 * Description : Este método se encarga verificar si la lista de char dada en el parametro no contiene el caracter "_" para verificar si la palabra fue adivinada
+	 * @param palabraAdivinada : Este método recibe como parámetro una lista
+	 * (De tipo char)
+	 * @return <b>boolean</b> : Este método retorna un boolean true or false dependiendo de si cumple la condicion
+	 * */
 	private static boolean adivinado(char[] palabraAdivinada) {
         for (char c : palabraAdivinada) {
             if (c == '_') {
@@ -747,9 +791,16 @@ public class Funcionalidad_4 {
         return true;
     }
 	
-	public static boolean esLetraValida(char c) {
-        // Verifica si es una letra del alfabeto español, incluyendo ñ
-        return (c >= 'A' && c <= 'Z') || c == 'Ñ';
+	
+	/**
+	 * Description : Este método se encarga verificar si el parametro es una letra del alfabeto español, incluyendo ñ
+	 * @param caracter : Este método recibe como parámetro un caracter que es ingresado por el usuario
+	 * (De tipo char)
+	 * @return <b>boolean</b> : Este método retorna un boolean true or false dependiendo de si cumple la condicion de ser una letra del alfabeto
+	 * */
+	public static boolean esLetraValida(char caracter) {
+       
+        return (caracter >= 'A' && caracter <= 'Z') || caracter == 'Ñ';
     }
 }
 

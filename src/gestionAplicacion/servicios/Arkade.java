@@ -43,9 +43,9 @@ public class Arkade {
 	}
 
 	//metodos
-	public void ingresarSaldo(int saldo) {
+	//public void ingresarSaldo(int saldo) {
 		
-	}
+	//}
 	public void usarServicio() {}
 	public void leerFactura() {}
 	public boolean verificarPuntuacion() {return true;}
@@ -101,7 +101,12 @@ public class Arkade {
 		return metodoPagoCliente;
 	}
 	
-	
+	/**
+	*Description: Buscando el el array de codigos generados se verifica si el codigo pasado coincide con alguno de los generados, en caso de que si,
+	*se añade a codigos usados y se quita de codigos generados
+	*@param codigo :  Es el String del codigo a verificar
+	*@return <b>boolean</b> :  se retorna true si el codigo existe y false si no existe.
+	*/
 	public static boolean comprobarCodigo(String codigo) {
 		boolean existencia = false;
 		for (String code : codigosGenerados) {
@@ -115,7 +120,10 @@ public class Arkade {
 	}
 	
 	
-	
+	/**
+	*Description: Este metodo se encarga de mostrar los diferentes juegos por pantalla
+	*@return <b>String</b> :  Se retorna un string con los juegos a mostrar al usuario
+	*/
 	public static String mostrarJuegos(){
 		String juegos = null;
 		int i = 1;
@@ -133,6 +141,10 @@ public class Arkade {
 		return "¿Cual juego desea jugar?\n"+juegos;
 	}
 	
+	/**
+	*Description: Este metodo se encarga de aplicar un descuento del 20% al valor de los juegos 
+	*@return <b>void</b> :  No hay retorno
+	*/
 	public static void AplicarDescuentoJuegos() {
 		for (Arkade juego : Arkade.juegos) {
 			juego.setValorServicio(juego.getValorServicio()-(juego.getValorServicio()*20/100));
