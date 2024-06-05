@@ -7,6 +7,7 @@ import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.ServicioComida;
 import gestionAplicacion.servicios.ServicioSouvenirs;
 import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.MetodoPago;
 
 public class Funcionalidad2 {
 	public static void compras(Cliente clienteProceso,SucursalCine sucursalCineProceso){
@@ -59,8 +60,11 @@ public class Funcionalidad2 {
 			do {
 				try {
 					System.out.print(comida.mostrarInventario());
-					System.out.print("\n\nSelecciones una opcion de los productos: ");	
+					System.out.print("\n\nSelecciones una opcion de los productos: ");
 					servicio = Integer.parseInt(sc.nextLine());
+					if (servicio == 0) {
+						break;
+					}
 					if (servicio > comida.getInventario().size() || servicio < 1) {
 						System.out.print("ERROR EN LA SELECCION DEL PRODUCTO");
 						continue;
@@ -82,8 +86,8 @@ public class Funcionalidad2 {
 							comida.getInventario().get(servicio).getCantidad());
 				}
 				else {
-					System.out.print("\n🎉🎉El pedido fue realizado con exito🎉🎉\n");
-					comida.getOrden().add(producto);
+					System.out.print("\n 🎉🎉El pedido fue realizado con exito🎉🎉 \n");
+					comida.agregarOrden(producto);
 					System.out.print(comida.mostrarOrden());
 					do {
 						try {
@@ -132,7 +136,7 @@ public class Funcionalidad2 {
 				Producto productoBono = new Producto();
 				do {
 					try {
-						System.out.println("\n🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁 REGALOS CON BONOS 🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁\\n");
+						System.out.println("\n🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁 REGALOS CON BONOS 🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁\n");
 						System.out.print("Ingrese el codigo del bono: ");
 						servicio = Integer.parseInt(sc.nextLine());
 					}catch(NumberFormatException e) {
@@ -162,7 +166,7 @@ public class Funcionalidad2 {
 						
 					}
 					else {
-						System.out.println("\nBono validado con exito🎉🎉🎉🎉");
+						System.out.println("\n\nBono validado con exito🎉🎉🎉🎉\n\n");
 						System.out.print("El bono es de: "+productoBono.getNombre()+" "+productoBono.getTamaño());
 						
 						if(productoBono.comprobarBonoEnOrden(comida)) {
@@ -231,6 +235,12 @@ public class Funcionalidad2 {
 		else {
 			System.out.print("Bienvenido al servicio de Souvenirs");
 		}
+		
+		System.out.println("\nMETODOS DE PEGO DISPONIBLES:\n");
+		System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso.getMetodosDePago()));
+		System.out.print("Seleccione una opcion: ");
+		servicio = Integer.parseInt(sc.nextLine());
+		
 		
 	}
 	

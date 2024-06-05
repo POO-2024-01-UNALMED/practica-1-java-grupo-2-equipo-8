@@ -17,6 +17,25 @@ public class Servicio {
 		this.nombre=nombre;
 	}
 	
+	public void agregarOrden (Producto producto) {
+		if(0 < orden.size()) {
+			for (int i = 0; i < orden.size(); i++) {
+				if ((producto.getNombre() == orden.get(i).getNombre()) && (producto.getTamaño() == orden.get(i).getTamaño())) {
+					orden.get(i).setCantidad(orden.get(i).getCantidad() + producto.getCantidad());
+					orden.get(i).setPrecio(orden.get(i).getPrecio() + producto.getPrecio() );
+					break;
+				}
+				else if ((i+1) == orden.size()) {
+					orden.add(producto);
+					break;
+				}
+			}
+		}
+		else {
+			orden.add(producto);
+		}
+	}
+	
 	public void descontarProducto (Producto producto) {
 		for(int i=0; i< orden.size(); i++) {
 			if(orden.get(i).getNombre() == producto.getNombre() && orden.get(i).getTamaño() == producto.getTamaño()) {
@@ -46,13 +65,17 @@ public class Servicio {
 	*/
 	
 	public String mostrarOrden() {
-		String pedido = "\n🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒\n";
+		String pedido = "\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n";
 		int r;
+		float total = 0;
 		for(int i =0;i<orden.size();i++) {
 			r = i+1;
 			pedido = pedido + "\n" + " -- " +orden.get(i).getCantidad()+" " + orden.get(i).getNombre() + " " + orden.get(i).getTamaño() +
 					" : $" + orden.get(i).getPrecio();
+			total = total + orden.get(i).getPrecio();
 		}
+		
+		pedido = pedido + "\n Total a pagar: $" + total;
 		return pedido;
 	}
 	
@@ -64,14 +87,19 @@ public class Servicio {
 	
 	
 	public String mostrarInventario() {
-		String productos = "\n----------Productos disponibles----------";
+		String productos = "\n----------Productos disponibles----------\n0. Ningun producto";
 		int r;
 		if(0 == inventario.size()) {
 			productos = "\nNO HAY PRODUCTOS DISPONIBLES :(\n";
 		}
 		for(int i=0;i<inventario.size();i++) {
 			r = i + 1;
-			productos = productos + "\n" + r +". "+ inventario.get(i).getNombre() + " " + inventario.get(i).getTamaño();
+			if (inventario.get(i).getCantidad()==0) {
+				productos = productos + "\n" + r +". "+ inventario.get(i).getNombre() + " " + inventario.get(i).getTamaño() + " $" + inventario.get(i).getPrecio() + "NO HAY EN EL MOMENTO DE ESTE PRODUCTO";
+			}
+			else {
+				productos = productos + "\n" + r +". "+ inventario.get(i).getNombre() + " " + inventario.get(i).getTamaño() + " $" + inventario.get(i).getPrecio();
+			}
 		}
 		return productos;
 	}
