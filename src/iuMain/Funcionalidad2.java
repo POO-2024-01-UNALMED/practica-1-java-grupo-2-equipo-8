@@ -230,16 +230,61 @@ public class Funcionalidad2 {
 				
 			}
 			
+			double total = comida.calcularTotal();
+			verificacion = true;
+			boolean descuento = true;
+			do {
+				try {
+					
+					System.out.println("\nMETODOS DE PEGO DISPONIBLES:\n");
+					System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso.getMetodosDePago()));
+					System.out.print("Seleccione una opcion: ");
+					servicio = Integer.parseInt(sc.nextLine());
+					
+				}catch(NumberFormatException e) {
+					System.out.println("\nError, debes ingresar un dato numérico\n");
+					continue;
+				}
+				
+				MetodoPago metodoDePago = MetodoPago.usarMetodopago(clienteProceso, servicio);
+				
+				if (!metodoDePago.getNombre().equalsIgnoreCase("Efectivo")) {
+					for(int i = 0; i < comida.getOrden().size(); i++) {
+						if (comida.getOrden().get(i).getTamaño().equalsIgnoreCase("Cangreburger") && (comida.getOrden().get(i).getPrecio() > 100000) && descuento) {
+							descuento = false;
+							total = total - (total*0.05);
+							System.out.println("Felicidades tenes un descuento por del 5% por comprar mas de $100.000 en Cangreburgers");
+							System.out.println("El valor a pagar ahora es de: $"+total);
+						}
+					}
+				}
+				
+				total = metodoDePago.realizarPago(total,clienteProceso);
+				
+				if (total == 0) {
+					System.out.println("La cuota fue cubierta en su totalidad");
+					verificacion = false;
+				}
+				else {
+					System.out.println("\nFALTA POR TERMINAR DE PAGAR : $" + total + " (╥_╥)(╥_╥)(╥_╥)");
+					continue;
+				}
+				
+				
+			}while(verificacion);
+			
+			
 			
 		}
 		else {
 			System.out.print("Bienvenido al servicio de Souvenirs");
+			
+			float total = souvenir.calcularTotal();
 		}
 		
-		System.out.println("\nMETODOS DE PEGO DISPONIBLES:\n");
-		System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso.getMetodosDePago()));
-		System.out.print("Seleccione una opcion: ");
-		servicio = Integer.parseInt(sc.nextLine());
+		
+		
+		
 		
 		
 	}

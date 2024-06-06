@@ -30,8 +30,14 @@ public class Administrador {
 	static ArrayList<Producto> inventarioMarinilla = new ArrayList<Producto>();
 	static ArrayList<Producto> inventarioSanAndrés = new ArrayList<Producto>();
 	
-	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,50,null);
-	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",30000,50,"Comedia");
+	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,200,null);
+	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",30000,200,"Comedia");
+	static Producto producto3 = new Producto("Perro caliente","Grande","comida",20000,200,null);
+	static Producto producto4 = new Producto("Perro caliente","Don salchica","comida",30000,200,"Comedia");
+	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",15000,200,"Accion");
+	static Producto producto6 = new Producto("Crispetas","Grandes","comida",16000,200,null);
+	static Producto producto7 = new Producto("Gaseosa","Grande","comida",6000,200,null);
+	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",3000,200,null);
 	
 	
 	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
@@ -133,6 +139,12 @@ public class Administrador {
 			
 			inventarioMarinilla.add(producto1);
 			inventarioMarinilla.add(producto2);
+			inventarioMarinilla.add(producto3);
+			inventarioMarinilla.add(producto4);
+			inventarioMarinilla.add(producto5);
+			inventarioMarinilla.add(producto6);
+			inventarioMarinilla.add(producto7);
+			inventarioMarinilla.add(producto8);
 			
 			sucursalCine1.setInventarioCine(inventarioBucaramanga);
 			sucursalCine2.setInventarioCine(inventarioMarinilla);

@@ -17,6 +17,14 @@ public class Servicio {
 		this.nombre=nombre;
 	}
 	
+	public float calcularTotal() {
+		float total = 0;
+		for(int i = 0; i < orden.size();i++) {
+			total = total + orden.get(i).getPrecio();
+		}
+		return total;
+	}
+	
 	public void agregarOrden (Producto producto) {
 		if(0 < orden.size()) {
 			for (int i = 0; i < orden.size(); i++) {
