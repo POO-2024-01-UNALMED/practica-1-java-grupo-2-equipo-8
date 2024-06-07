@@ -2,6 +2,7 @@ package gestionAplicacion.servicios;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import iuMain.Administrador;
 
 import gestionAplicacion.usuario.*;
 
@@ -151,7 +152,13 @@ public class Arkade {
 		}
 	}
 	
-	
+	public static void reestablecerPrecioJuegos() {
+		juegos.get(0).setValorServicio(15000);
+		juegos.get(1).setValorServicio(20000);
+		juegos.get(2).setValorServicio(10000);
+		juegos.get(3).setValorServicio(30000);
+		juegos.get(4).setValorServicio(7500);
+	}
 	//getters y setters
 	public static ArrayList<TarjetaCinemar> getTarjetasEnInventario() {
 		return tarjetasEnInventario;
@@ -172,7 +179,8 @@ public class Arkade {
 	public double getValorServicio() {
 		return valorServicio;
 	}
-
+	
+	
 	public static ArrayList<String> getCodigosGenerados() {
 		return codigosGenerados;
 	}
@@ -228,7 +236,8 @@ public class Arkade {
 	public static void setJuegos(ArrayList<Arkade> juegos) {
 		Arkade.juegos = juegos;
 	}
-
+	
+	
 	
 	
 	

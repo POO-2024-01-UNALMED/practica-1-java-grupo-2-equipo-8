@@ -25,7 +25,7 @@ public class Cliente {
 	private TarjetaCinemar cuenta;
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
-	private ArrayList<Bono> bonosCliente = new ArrayList<>();
+	private ArrayList<String> codigosDescuento = new ArrayList<>();
 	private SucursalCine cine;
 	
 	
@@ -45,7 +45,7 @@ public class Cliente {
 	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Ticket> ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, Duration duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
-			ArrayList<Bono> bonosCliente) {
+			ArrayList<String> codigosDescuento) {
 		this();
 		this.nombre = nombre;
 		this.historialDePeliculas = historialDePeliculas;
@@ -58,7 +58,8 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 		this.cuenta = cuenta;
 		this.metodosDePago = metodosDePago;
-		this.setBonosCliente(bonosCliente);
+		//this.setBonosCliente(bonosCliente);
+		this.setCodigosDescuento(codigosDescuento);
 	}
 	
 	//Methods
@@ -238,7 +239,18 @@ public class Cliente {
 		
 		return generoMasVisto;
 	}
-
+	
+	
+	public void mostrarCodigosDescuento() {
+		
+		for (int i = 0; i < this.codigosDescuento.size(); i++) {
+            System.out.println((i + 1) + ". " + this.codigosDescuento.get(i));
+            
+        }
+		
+		System.out.println((this.codigosDescuento.size()+1)+". Ninguno");
+		System.out.println((this.codigosDescuento.size()+2)+". Salir");
+	}
 	//Getters y setters
 	public String getNombre() {
 		return nombre;
@@ -336,13 +348,6 @@ public class Cliente {
 		this.metodosDePago = metodosDePago;
 	}
 
-	public ArrayList<Bono> getBonosCliente() {
-		return bonosCliente;
-	}
-
-	public void setBonosCliente(ArrayList<Bono> bonosCliente) {
-		this.bonosCliente = bonosCliente;
-	}
 
 	public ArrayList<Producto> getPedidos() {
 		return pedidos;
@@ -360,6 +365,15 @@ public class Cliente {
 		this.cine = cine;
 	}
 
+	public ArrayList<String> getCodigosDescuento() {
+		return codigosDescuento;
+	}
+
+	public void setCodigosDescuento(ArrayList<String> codigosDescuento) {
+		this.codigosDescuento = codigosDescuento;
+	}
+	
+	
 	
 	
 	

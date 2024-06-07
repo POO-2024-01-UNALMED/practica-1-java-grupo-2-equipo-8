@@ -47,7 +47,7 @@ public class Administrador {
 	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
 	static Arkade game3= new Arkade("Hang Man", 10000, "POO");
 	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
-	static Arkade game5= new Arkade("Hang Man", 5000, "Drama");
+	static Arkade game5= new Arkade("Hang Man", 7500, "Drama");
 	
 	//static TarjetaCinemar cuenta1 = new TarjetaCinemar();
 	//static TarjetaCinemar cuenta2 = new TarjetaCinemar();

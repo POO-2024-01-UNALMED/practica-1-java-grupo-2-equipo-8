@@ -393,28 +393,40 @@ public class Funcionalidad_4 {
 		}while(casoValido);
 		
 		boolean caso = true;
+		
 		do {
 			
+			
 			try {
-				System.out.println("\n¿Has realizado alguna compra de un tiquete de cine y no has redimido su codigo?\n1.SI\n2.NO\n3.Salir");
-				int eleccion6 = (int)Administrador.readLong();
-				if (eleccion6==1) {
-					System.out.println("\nIngrese el codigo asociado a la factura de su ticket\nRecuerde que el codigo es el formato de la pelicula pegado a su tipo de documento y el numero de la salaDecine de el tiquete\nEjemplo: 4DCC12 (Todo en mayuscula)");
-					String codigo = Administrador.readLn();
-					if (Arkade.comprobarCodigo(codigo)) {
-						System.out.println("Codigo correcto, Se le asignó un descuento a el precio de los juegos");
-						Arkade.AplicarDescuentoJuegos();
-						caso = false;
-					}
-					else {System.out.println("Codigo incorrecto, verifique el codigo");}
-					
+				
+				Arkade.reestablecerPrecioJuegos();
+				if (ClienteActual.getCodigosDescuento().size()==0){
+					System.out.println("\n•No tienes codigos de descuento asociados\n");
+					caso = false;
+					break;
 				}
-				else if (eleccion6==2) {
+				System.out.println("\n•Estos son los codigos de descuento que tienes por la compra de tiquetes en nuestro cine\n¿Cual deseas redimir?\n");
+				ClienteActual.mostrarCodigosDescuento();
+				int eleccion6 = (int)Administrador.readLong();
+				
+				
+				if (eleccion6 > 0 && eleccion6 <= ClienteActual.getCodigosDescuento().size()) {
+					ClienteActual.getCodigosDescuento().remove(eleccion6-1);
+					System.out.println("•Perfeto, se le asignará un descuento del 20% al precio de los juegos");
+					espera(2500);
+					barraCarga("Aplicando descuento");
+					Arkade.AplicarDescuentoJuegos();
 					caso = false;
 				}
-				else if (eleccion6==3) {
+				else if (eleccion6 == (ClienteActual.getCodigosDescuento().size()+1)) {
+					barraCarga("Ingresando a juegos");
+					caso = false;
+				}
+				else if (eleccion6 == (ClienteActual.getCodigosDescuento().size()+2)){
+					barraCarga("Saliendo");
 					Administrador.salirDelSistema();
 				}
+
 				else {
 					System.out.println("Opcion invalida");
 				}
