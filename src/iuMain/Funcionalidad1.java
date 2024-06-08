@@ -2,7 +2,6 @@ package iuMain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.Scanner;
 
 import gestionAplicacion.SucursalCine;
@@ -58,15 +57,13 @@ public class Funcionalidad1 {
 		
 		//Funcionalidad reserva de ticket
 		
-		//Aquí se puede añadir el caso en el que el cliente tenga membresía para mostrar la cartelera personalizada en caso de no poder evitar repetidos cambiar por LinkedHashSet
-		//Mostramos una cartelera personalizada de acuerdo a la edad del cliente, si la película tiene horarios disponibles o se encuentra en presentación y (futuramente la membresía)
-		ArrayList<Pelicula> carteleraPersonalizadaProceso = new ArrayList<>();
-		carteleraPersonalizadaProceso = Pelicula.filtrarCarteleraPorCliente(clienteProceso, sucursalCineProceso);
+		//Mostramos una cartelera personalizada de acuerdo a la edad del cliente, si la película tiene horarios disponibles o se encuentra en presentación 
+		// Y las recomendaciones en caso de que el cliente tenga membresía(futuramente la membresía)
+		ArrayList<Pelicula>carteleraPersonalizadaProceso = Pelicula.filtrarCarteleraPorCliente(clienteProceso, sucursalCineProceso);
 		
-		LinkedHashSet<String> nombresPeliculasCarteleraPersonalizadaProceso = new LinkedHashSet<>();
-		nombresPeliculasCarteleraPersonalizadaProceso = Pelicula.filtrarNombrePeliculas(carteleraPersonalizadaProceso);
-		
-		LinkedHashSet<String> peliculasRecomendadas = Pelicula.filtrarPorGenero(carteleraPersonalizadaProceso, clienteProceso.generoMasVisto());
+		ArrayList<String> nombresPeliculasCarteleraPersonalizadaProceso = Pelicula.filtrarNombrePeliculas(carteleraPersonalizadaProceso);
+
+		ArrayList<String> peliculasRecomendadas = Pelicula.filtrarPorGenero(carteleraPersonalizadaProceso, clienteProceso.generoMasVisto());
 		
 		//Seleccionamos una película
 		casoValido = false;

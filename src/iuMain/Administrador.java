@@ -130,7 +130,7 @@ public class Administrador {
 	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 150000, 0.15);
 	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",500000, 0);
 	
-	static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000,false, cliente4);
+	static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000, false, cliente4);
 	
 	public static void main(String[] args) {
 		
@@ -185,6 +185,25 @@ public class Administrador {
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 17, 30, 00));
 			pelicula6.crearSalaVirtual(LocalDateTime.of(2024, 4, 29, 21, 30, 00));
 			
+//			pelicula19.crearSalaVirtual(LocalDateTime.of(2024, 5, 27, 10, 00, 00));
+//			pelicula19.crearSalaVirtual(LocalDateTime.of(2024, 5, 28, 2, 30, 00));
+//			pelicula19.crearSalaVirtual(LocalDateTime.of(2024, 5, 29, 5, 30, 00));
+//			pelicula20.crearSalaVirtual(LocalDateTime.of(2024, 5, 27, 10, 00, 00));
+//			pelicula20.crearSalaVirtual(LocalDateTime.of(2024, 5, 28, 16, 30, 00));
+//			pelicula20.crearSalaVirtual(LocalDateTime.of(2024, 5, 29, 19, 30, 00));
+//			pelicula21.crearSalaVirtual(LocalDateTime.of(2024, 5, 27, 10, 00, 00));
+//			pelicula21.crearSalaVirtual(LocalDateTime.of(2024, 5, 28, 13, 30, 00));
+//			pelicula21.crearSalaVirtual(LocalDateTime.of(2024, 5, 29, 16, 30, 00));
+//
+//			pelicula22.crearSalaVirtual(LocalDateTime.of(2024, 5, 28, 13, 30, 00));
+//			pelicula22.crearSalaVirtual(LocalDateTime.of(2024, 5, 27, 11, 00, 00));
+//
+//			pelicula23.crearSalaVirtual(LocalDateTime.of(2024, 5, 27, 10, 00, 00));
+//			pelicula23.crearSalaVirtual(LocalDateTime.of(2024, 5, 28, 17, 30, 00));
+//			pelicula23.crearSalaVirtual(LocalDateTime.of(2024, 5, 29, 21, 30, 00));
+//			
+//			pelicula24.crearSalaVirtual(LocalDateTime.of(2024, 5, 29, 21, 30, 00));
+			
 			sucursalCine3.getCartelera().add(pelicula1);
 			sucursalCine3.getCartelera().add(pelicula2);
 			sucursalCine3.getCartelera().add(pelicula3);
@@ -192,6 +211,11 @@ public class Administrador {
 			sucursalCine3.getCartelera().add(pelicula5);
 			sucursalCine3.getCartelera().add(pelicula6);
 //			sucursalCine3.getCartelera().add(pelicula19);
+//			sucursalCine3.getCartelera().add(pelicula20);
+//			sucursalCine3.getCartelera().add(pelicula21);
+//			sucursalCine3.getCartelera().add(pelicula22);
+//			sucursalCine3.getCartelera().add(pelicula23);
+//			sucursalCine3.getCartelera().add(pelicula24);
 
 			pelicula7.crearSalaVirtual(LocalDateTime.of(2024, 4, 27, 10, 00, 00));
 			pelicula7.crearSalaVirtual(LocalDateTime.of(2024, 4, 28, 2, 30, 00));

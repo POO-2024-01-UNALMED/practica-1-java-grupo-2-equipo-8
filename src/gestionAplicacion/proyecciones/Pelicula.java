@@ -3,7 +3,6 @@ package gestionAplicacion.proyecciones;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.time.Duration;
 
 import gestionAplicacion.SucursalCine;
@@ -17,6 +16,7 @@ public class Pelicula{
 	private Duration duracion;
 	private String clasificacion;
 	//private ArrayList<Horario> horarios = new ArrayList<>();
+	//private ArrayList<int[][]> asientos = new ArrayList<>();
 	private LinkedHashMap<LocalDateTime, int[][]> horarios = new LinkedHashMap<>();
 	private String tipoDeFormato;
 	private int numeroDeSala;
@@ -134,10 +134,12 @@ public class Pelicula{
 	 * por cliente (Edad y tiempo en presentación). 
 	 * @return filtroNombrePeliculas : Retorna una lista de nombres de las películas distintos entre sí.
 	 * */
-	public static LinkedHashSet<String> filtrarNombrePeliculas(ArrayList<Pelicula> filtroPeliculasPorCliente){
-		LinkedHashSet<String> filtroNombrePeliculas = new LinkedHashSet<>();
+	public static ArrayList<String> filtrarNombrePeliculas(ArrayList<Pelicula> filtroPeliculasPorCliente){
+		ArrayList<String> filtroNombrePeliculas = new ArrayList<>();
 		for (Pelicula pelicula : filtroPeliculasPorCliente){
-			filtroNombrePeliculas.add(pelicula.getNombre());
+			if (!filtroNombrePeliculas.contains(pelicula.getNombre())) {
+				filtroNombrePeliculas.add(pelicula.getNombre());
+			}
 		}
 		return filtroNombrePeliculas;
 	}
@@ -149,11 +151,13 @@ public class Pelicula{
 	 * @param genero : Este método recibe como parámetro el género (De tipo String) más visualizado por el cliente 
 	 * @return filtroNombrePeliculas : Retorna una lista de nombres de las películas distintos entre sí, cuyo género es igual.
 	 * */
-	public static LinkedHashSet<String> filtrarPorGenero(ArrayList<Pelicula> filtroPeliculasPorCliente, String genero){
-		LinkedHashSet<String> filtroNombrePeliculas = new LinkedHashSet<>();
+	public static ArrayList<String> filtrarPorGenero(ArrayList<Pelicula> filtroPeliculasPorCliente, String genero){
+		ArrayList<String> filtroNombrePeliculas = new ArrayList<>();
 		for (Pelicula pelicula : filtroPeliculasPorCliente){
 			if (pelicula.getGenero().equals(genero)) {
-				filtroNombrePeliculas.add(pelicula.getNombre());
+				if (!filtroNombrePeliculas.contains(pelicula.getNombre())) {
+					filtroNombrePeliculas.add(pelicula.getNombre());
+				}
 			}
 		}
 		return filtroNombrePeliculas;
@@ -167,35 +171,39 @@ public class Pelicula{
 	 * @return <b>String</b> : Este método retorna una lista de los nombres de las películas para ser presentadas por pantalla, con el fin de que 
 	 * el usuario elija una de estas
 	 * */
-	public static String showNombrePeliculas(LinkedHashSet<String> filtroNombrePeliculas, Cliente clienteProceso, LinkedHashSet<String> peliculasRecomendadas) {
+	public static String showNombrePeliculas(ArrayList<String> filtroNombrePeliculas, Cliente clienteProceso, ArrayList<String> nombrePeliculasRecomendadas) {
 		String nombrePeliculas = null;
 		int i = 1;
 		if(clienteProceso.getMembresia() != null) {
 			for(String nombrePelicula : filtroNombrePeliculas) {
-				for(String nombrePeliculaRecomendada : peliculasRecomendadas) {
-					if (nombrePeliculaRecomendada.equals(nombrePelicula)) {
-						if (nombrePeliculas == null) {
-							nombrePeliculas = i + ". RECOMENDADA: " + nombrePelicula;
-						}else {
+				try {
+					if (!nombrePeliculas.contains(nombrePelicula)) {
+						if (nombrePeliculasRecomendadas.contains(nombrePelicula)) {
 							nombrePeliculas = nombrePeliculas + "\n" + i + ". RECOMENDADA: " + nombrePelicula;
-						}
-						i++;
-					}else {
-						if (nombrePeliculas == null) {
-							nombrePeliculas = i + ". " + nombrePelicula;
+							i++;
 						}else {
 							nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
-						}
+							i++;
+						}	
+					}
+				}catch (NullPointerException e) {
+					if (nombrePeliculasRecomendadas.contains(nombrePelicula)) {
+						nombrePeliculas = nombrePeliculas + "\n" + i + ". RECOMENDADA: " + nombrePelicula;
+						i++;
+					}else {
+						nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
 						i++;
 					}	
 				}
 			}
 			
+			
 		}else {
 			for (String nombrePelicula : filtroNombrePeliculas) {
 				if (nombrePeliculas == null) {
 					nombrePeliculas = i + ". " + nombrePelicula;
-				}else {
+				}
+				if (!nombrePeliculas.contains(nombrePelicula)) {
 					nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
 				}
 				i++;
