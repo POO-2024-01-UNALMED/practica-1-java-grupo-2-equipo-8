@@ -43,7 +43,7 @@ public class Administrador {
 	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
 	static Bono bono1 = new Bono(1234,productoBono,"comida");
 	
-	static Arkade game1= new Arkade("Hang Man", 15000, "Accion");
+	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
 	static Arkade game3= new Arkade("Hang Man", 10000, "POO");
 	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");

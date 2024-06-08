@@ -7,6 +7,7 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.Arkade;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
+import gestionAplicacion.usuario.Ticket;
 
 
 public class Funcionalidad_4 {
@@ -393,12 +394,15 @@ public class Funcionalidad_4 {
 		}while(casoValido);
 		
 		boolean caso = true;
+		boolean redimioCodigo = false;
+		String generoCodigoPelicula = null;
 		
 		do {
 			
 			
 			try {
-				
+				redimioCodigo = false;
+				generoCodigoPelicula = null;
 				Arkade.reestablecerPrecioJuegos();
 				if (ClienteActual.getCodigosDescuento().size()==0){
 					System.out.println("\n•No tienes codigos de descuento asociados\n");
@@ -411,12 +415,14 @@ public class Funcionalidad_4 {
 				
 				
 				if (eleccion6 > 0 && eleccion6 <= ClienteActual.getCodigosDescuento().size()) {
+					generoCodigoPelicula = Ticket.encontrarGeneroCodigoPelicula(ClienteActual.getCodigosDescuento().get(eleccion6-1));
 					ClienteActual.getCodigosDescuento().remove(eleccion6-1);
 					System.out.println("•Perfeto, se le asignará un descuento del 20% al precio de los juegos");
 					espera(2500);
 					barraCarga("Aplicando descuento");
 					Arkade.AplicarDescuentoJuegos();
 					caso = false;
+					redimioCodigo = true;
 				}
 				else if (eleccion6 == (ClienteActual.getCodigosDescuento().size()+1)) {
 					barraCarga("Ingresando a juegos");
@@ -439,10 +445,12 @@ public class Funcionalidad_4 {
 		
 		
 		String game = null;
+		String generoJuego = null;
 		do {
 			
 			try {
 				
+				generoJuego = null;
 				System.out.println(Arkade.mostrarJuegos());
 				int eleccion7 =(int)Administrador.readLong();
 				switch(eleccion7) {
@@ -452,6 +460,7 @@ public class Funcionalidad_4 {
 						System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game1.getGeneroServicio());
 						game = juego(new String[]{"BUM"});
 						System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
+						generoJuego = Administrador.game1.getGeneroServicio();
 					}
 					else {
 						boolean finWhile = true;
@@ -486,6 +495,7 @@ public class Funcionalidad_4 {
 						System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game2.getGeneroServicio());
 						game = juego(new String[]{"BOO"});
 						System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
+						generoJuego = Administrador.game2.getGeneroServicio();
 					}
 					else {
 						boolean finWhile = true;
@@ -521,6 +531,7 @@ public class Funcionalidad_4 {
 						System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game3.getGeneroServicio());
 						game = juego(new String[]{"POO"});
 						System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
+						generoJuego = Administrador.game3.getGeneroServicio();
 					}
 					else {
 						boolean finWhile = true;
@@ -555,6 +566,7 @@ public class Funcionalidad_4 {
 						System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game4.getGeneroServicio());
 						game = juego(new String[]{"JAJA"});
 						System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
+						generoJuego = Administrador.game4.getGeneroServicio();
 					}
 					else {
 						boolean finWhile = true;
@@ -589,6 +601,7 @@ public class Funcionalidad_4 {
 						System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+Administrador.game5.getGeneroServicio());
 						game = juego(new String[]{"CRY"});
 						System.out.println("\nEl nuevo saldo de tu tajeta cinemar es: $"+ClienteActual.getCuenta().getSaldo());
+						generoJuego = Administrador.game5.getGeneroServicio();
 					}
 					else {
 						boolean finWhile = true;
@@ -646,7 +659,34 @@ public class Funcionalidad_4 {
 		
 		System.out.println("•Tu puntuacion es: "+puntuacion);
 		
+//		Administrador.sc.nextLine();
+//		
+//		if (redimioCodigo) {
+//			System.out.println("\n•Redimiste un codigo, por eso eres gay");
+//		}
+//		
+//		System.out.println(generoJuego+"-"+generoCodigoPelicula);
+		
+		if (puntuacion==10.0) {
+			if (redimioCodigo) {
+				if (generoJuego.equals(generoCodigoPelicula)) {
+					System.out.println("\nGanas un bono de comida por obtener la puntuacion maxima en un juego de tipo "+generoJuego+" y redimir un codigo de pelicula del mismo genero");
+				}
+				else {
+					System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima");
+				}
+			}
+			else {
+				System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima");
+			}
+		}
+		
+			
+		System.out.println("\n☻☻☻Gracias por jugar con nosotros☻☻☻\n");
+		barraCarga("Redireccionando al menú principal");
 		Administrador.sc.nextLine();
+		Administrador.inicio(ClienteActual, sucursalCineProceso);
+		
 	}
 	
 	

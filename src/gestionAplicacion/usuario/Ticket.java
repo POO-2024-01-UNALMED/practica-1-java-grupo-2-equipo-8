@@ -133,11 +133,22 @@ public class Ticket implements IBuyable{
 	}
 	
 	private String generarCodigoTicket() {
-		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getNumeroDeSala();
+		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getNumeroDeSala()+"-"+this.getPelicula().getGenero();
 
 		return codigoTicket;
 	}
 	
+	public static String encontrarGeneroCodigoPelicula(String codigo) {
+		int indiceGuion = codigo.indexOf("-");
+
+        if (indiceGuion != -1 && indiceGuion != codigo.length() - 1) {
+
+            return codigo.substring(indiceGuion + 1);
+        } else {
+
+            return "";
+        }
+	}
 	/*public String toString() {
 		return "=== Factura de Ticket ===\n" +
 		"Nombre dueño : " + this.getDueno().getNombre() + "\n" +
