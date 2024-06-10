@@ -406,8 +406,9 @@ public class Administrador {
 			System.out.println("4. Realizar compra de souvenirs");
 			System.out.println("5. Ingresar a la zona de juegos");
 			System.out.println("6. Adquirir o actualizar membresia");
-			System.out.println("7. Ingresar a sala de espera");
-			System.out.println("8. Salir");
+			System.out.println("7.Hacer calificacion");
+			System.out.println("8. Ingresar a sala de espera");
+			System.out.println("9. Salir");
 			opcion = Integer.parseInt(sc.nextLine());
 			//NumberFormatException e							aca dejo esto por si lo queres modificar de nuevo
 			//opcion = (int)readLong(); //edi cambie esto ya que cuando llamaba el metodo en mi funcionalidad me saltaba el error y se me imprimia el menu 2 veces no se porque, pero asi funciona melo.
@@ -416,14 +417,14 @@ public class Administrador {
 			//sc.nextLine(); // Consumir el input incorrecto
 		    //opcion = 0; // Asignar un valor válido para evitar el bucle infinito
 		}
-	}while(!(opcion > 0 & opcion <= 8));
+	}while(!(opcion > 0 & opcion <= 9));
 	
 	
 	switch (opcion) {
 		case 1: Funcionalidad1.reservarTicket(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
 		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 3: Funcionalidad2.compras(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 4: calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
+		case 4: Funcionalidad3.calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
 		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		//case 6: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 7: Funcionalidad1.salaDeEspera(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
