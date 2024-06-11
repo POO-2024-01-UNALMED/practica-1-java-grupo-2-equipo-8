@@ -2,6 +2,7 @@ package gestionAplicacion;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import gestionAplicacion.proyecciones.Pelicula;
@@ -13,7 +14,7 @@ import gestionAplicacion.usuario.Ticket;
 
 public class SucursalCine {
 	private String lugar;
-	private static LocalDateTime fechaActual;
+	private static LocalDateTime fechaActual = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0);
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
 	private ArrayList<Producto> inventarioCine = new ArrayList<>();
 	private ArrayList<Pelicula> cartelera = new ArrayList<>();
@@ -120,6 +121,68 @@ public class SucursalCine {
 		}
 	}
 	
+	/***/
+	public void crearHorariosPeliculasPorSala() {
+		
+		ArrayList<Pelicula> peliculasDeSalaDeCine = new ArrayList<>();
+		
+		final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(22, 0);
+		final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 0);
+		final Duration LIMPIEZA_DE_SALA = Duration.ofMinutes(30);
+		
+		for(SalaCine salaDeCine : this.salasDeCine) {
+			
+			LocalDateTime horarioParaPresentar = SucursalCine.fechaActual;
+			LocalDateTime auxHorarioParaPresentar = SucursalCine.fechaActual.plusDays(1);
+			
+			for(Pelicula pelicula : this.cartelera) {
+				if (salaDeCine.getNumeroSala() == pelicula.getNumeroDeSala()) {
+					peliculasDeSalaDeCine.add(pelicula);
+				}
+			}
+			
+			for (int i = 1; i <= 20; i++) {
+				
+				for (Pelicula pelicula : peliculasDeSalaDeCine) {
+					
+					if (horarioParaPresentar.toLocalTime().isBefore(FIN_HORARIO_LABORAL) &&
+							horarioParaPresentar.toLocalTime().isAfter(INICIO_HORARIO_LABORAL)) {
+						
+						pelicula.crearSalaVirtual(horarioParaPresentar);
+						horarioParaPresentar = horarioParaPresentar.plus(pelicula.getDuracion());
+						horarioParaPresentar = horarioParaPresentar.plus(LIMPIEZA_DE_SALA);
+						
+					}else {
+						
+						if (horarioParaPresentar.toLocalDate().isEqual(auxHorarioParaPresentar.toLocalDate())) {
+							horarioParaPresentar = horarioParaPresentar.withHour(INICIO_HORARIO_LABORAL.getHour())
+									.withMinute(INICIO_HORARIO_LABORAL.getMinute());
+						}else {
+							horarioParaPresentar = horarioParaPresentar.plusDays(1);
+							horarioParaPresentar = horarioParaPresentar.withHour(INICIO_HORARIO_LABORAL.getHour())
+									.withMinute(INICIO_HORARIO_LABORAL.getMinute());
+						}
+						
+						auxHorarioParaPresentar = horarioParaPresentar.plusDays(1);
+						pelicula.crearSalaVirtual(horarioParaPresentar);
+						horarioParaPresentar = horarioParaPresentar.plus(pelicula.getDuracion());
+						horarioParaPresentar = horarioParaPresentar.plus(LIMPIEZA_DE_SALA);
+						
+					}
+				}
+			}
+			
+			peliculasDeSalaDeCine.clear();
+			
+		}
+		
+	}
+	
+	public static void crearHorariosPeliculasPorSucursal() {
+		for (SucursalCine sede : SucursalCine.sucursalesCine) {
+			sede.crearHorariosPeliculasPorSala();
+		}
+	}
 	
 	
 	//Constructor

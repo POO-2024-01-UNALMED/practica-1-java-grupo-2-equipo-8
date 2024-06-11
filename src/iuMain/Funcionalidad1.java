@@ -77,7 +77,7 @@ public class Funcionalidad1 {
 					try {
 						System.out.println("\nHola " + clienteProceso.getNombre() + ", Bienvenido al sistema de reserva de ticket");
 						System.out.println("=====================================================================================");
-						System.out.println("Este es el listado de los nombres de las películas en cartelera, elige una de las siguientes opciones\n" 
+						System.out.println("Este es el listado de los nombres de las películas en cartelera, elige una de las siguientes opciones:" 
 						+ Pelicula.showNombrePeliculas(nombresPeliculasCarteleraPersonalizadaProceso, clienteProceso, peliculasRecomendadas) + "\n"
 						+ ( Integer.valueOf(nombresPeliculasCarteleraPersonalizadaProceso.size()) + 1 ) + ". Salir al menú principal");
 						opcionMenu = Integer.parseInt(sc.nextLine());
@@ -1039,11 +1039,17 @@ public class Funcionalidad1 {
 
 //1. Automatizar el proceso de actualizar las salas de cine automáticamente, acompañado del método de avanzar la hora automáticamente (Hablar con David)
 
-//0. Automatizar la creación de horarios consecutivos de una película determinada y que no colisionen con los de otra película en presentación de la misma sala
-//1. Limpiar código en Funcionalidad1 y Administrador(A la hora de crear los objetos)
-//2. Mejorar abstracción de métodos
+//0. Automatizar la creación de horarios consecutivos de una película determinada y que no colisionen con los de otra película en presentación de la misma sala en todas las sucursales(Hecho, Terminar documentación)
+//0.1. Restringir la creación de un horario que exceda el horario de cierre de las instalaciones
+//0.2. Restringir el ingreso a las salas de cine en un horario que no se encuentra entre el horario laboral del cine (Además que no permita el ingreso cuando es nulo)
+//0.3. Automatizar el añadir películas a la cartelera creando un atributo que se llame SucursalCine y que por medio de este, el mismo objeto ingrese a la cartelera
+//0.4. Cambiar el map de Horarios por un Array
+
+//1. Limpiar código en Funcionalidad1 y Administrador (A la hora de crear los objetos) y mejorar la vista por consola
+//2. Mejorar abstracción de métodos, revisar todo el código hecho y mejorar documentación
 //3. Hacer Tests
-//4. Revisar y mejorar documentación
+//4. Serializar
+//5. Empezar el Google Document con el manual de usuario y la documentación
 
 
 

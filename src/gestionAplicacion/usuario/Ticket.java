@@ -23,7 +23,6 @@ public class Ticket implements IBuyable{
 	//Constructors
 	public Ticket(){
 		Ticket.cantidadTicketsCreados++;
-		
 	}
 	
 	public Ticket(Cliente dueno, SalaCine salaDeCine, double precio, Pelicula pelicula, LocalDateTime horario, String numeroAsiento) {

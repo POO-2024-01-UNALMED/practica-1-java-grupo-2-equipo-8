@@ -29,6 +29,7 @@ public class SalaCine {
 		this.numeroSala = nSala;
 		this.tipoDeSala = tipoDeSala;
 		this.ubicacionSede = ubicacionSede;
+		this.asientos = this.crearAsientosSalaDeCine();
 	}
 	
 	public SalaCine(int numeroSala, String tipoDeSala, Asiento[][] asientos, Pelicula peliculaEnPresentacion, ArrayList<Ticket> ticketsCreados) {
@@ -44,14 +45,14 @@ public class SalaCine {
 	 * crear una sala de cine
 	 * @return : Este método no retorna nada (void), solo actualiza los asientos de la sala de cine
 	 * */
-	public void crearAsientosSalaDeCine() {
+	public Asiento[][] crearAsientosSalaDeCine() {
 		Asiento[][] DistribucionAsientosSalaDeCine = new Asiento[8][8];
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				DistribucionAsientosSalaDeCine[i][j] = new Asiento(i,j);
 			}
 		}
-		this.asientos = DistribucionAsientosSalaDeCine;
+		return DistribucionAsientosSalaDeCine;
 	}
 	
 	/**

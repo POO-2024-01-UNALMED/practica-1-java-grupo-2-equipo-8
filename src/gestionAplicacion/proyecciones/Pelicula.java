@@ -172,7 +172,7 @@ public class Pelicula{
 	 * el usuario elija una de estas
 	 * */
 	public static String showNombrePeliculas(ArrayList<String> filtroNombrePeliculas, Cliente clienteProceso, ArrayList<String> nombrePeliculasRecomendadas) {
-		String nombrePeliculas = null;
+		String nombrePeliculas = "\n";
 		int i = 1;
 		if(clienteProceso.getMembresia() != null) {
 			for(String nombrePelicula : filtroNombrePeliculas) {
@@ -411,7 +411,7 @@ public class Pelicula{
 	/**
 	 * Description : Este método se encarga de filtrar los horarios de la película que no han sido presentados aún y, además, 
 	 * tienen asientos disponibles
-	 * @return <b>ArrayList<LocalDateTime></b> : Este método se encarga de retornar los horarios que cumplen los criterios de filtrado
+	 * @return <b>ArrayList<LocalDateTime></b> : Este método se encarga de retornar los primeros 7 horarios que cumplen los criterios de filtrado
 	 * */
 	public ArrayList<LocalDateTime> filtrarHorariosPelicula(){
 		ArrayList<LocalDateTime> horariosPelicula = new ArrayList<>();
@@ -425,7 +425,7 @@ public class Pelicula{
 					}
 				}
 			}
-			if (SucursalCine.getFechaActual().isBefore(horario) && isAsientosDisponibles) {
+			if (SucursalCine.getFechaActual().isBefore(horario) && isAsientosDisponibles && horariosPelicula.size() < 7) {
 				horariosPelicula.add(horario);
 			}
 		}
@@ -443,9 +443,9 @@ public class Pelicula{
 		int i = 1;
 		for (LocalDateTime Horario : horariosPelicula) {
 			if (horarios == null) {
-				horarios = i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + "\n";
+				horarios = i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + ", Duración: " + this.duracion.toMinutes() + " Minutos" + "\n";
 			}else {
-				horarios = horarios + i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + "\n";
+				horarios = horarios + i + ". Día: " + Horario.getDayOfWeek() + ", Fecha : " + Horario.toLocalDate() + ", Hora: " + Horario.toLocalTime() + ", Duración: " + this.duracion.toMinutes() + " Minutos" + "\n";
 			}
 			i++;
 		}
@@ -620,4 +620,5 @@ public class Pelicula{
 		
 		return salasDeCineDisponibles;
 	}
+	
 }
