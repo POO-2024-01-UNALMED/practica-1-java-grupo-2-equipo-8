@@ -3,25 +3,25 @@ import java.util.ArrayList;
 
 public class Bono {
 	
-	private int codigo;
+	private String codigo;
 	private static ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private Producto producto;
 	private String tipoServicio;
 	
 	public Bono(){}
 	
-	public Bono(int codigo, Producto producto, String tipoServicio) {
+	public Bono(String codigo, Producto producto, String tipoServicio) {
 		this.codigo = codigo;
 		this.producto = producto;
 		this.tipoServicio = tipoServicio;
 		bonosCreados.add(this);
 	}
 	
-	public int getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(int codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 

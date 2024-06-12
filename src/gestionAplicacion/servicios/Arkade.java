@@ -1,9 +1,10 @@
 package gestionAplicacion.servicios;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
 import iuMain.Administrador;
-
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.*;
 
 
@@ -159,6 +160,67 @@ public class Arkade {
 		juegos.get(3).setValorServicio(30000);
 		juegos.get(4).setValorServicio(7500);
 	}
+	
+	public static Bono generarBonoComidaJuegos(SucursalCine sucursal) {
+	    ArrayList<Producto> productosComida = new ArrayList<>();
+	    for (Producto producto : sucursal.getInventarioCine()) {
+	        if (producto.getTipoProducto().equals("comida")) {
+	            productosComida.add(producto);
+	        }
+	    }
+	    
+	    if (productosComida.isEmpty()) {
+	        System.out.println("•Error al generar bono, no hay productos de comida disponibles, lo sentimos.");
+	        return null;
+	    }
+
+	    Random random = new Random();
+
+	    
+	    int numeroAleatorio = random.nextInt(productosComida.size());
+	    String code = generarCodigoAleatorio(7);
+	    Bono bono = new Bono(code,productosComida.get(numeroAleatorio),productosComida.get(numeroAleatorio).getTipoProducto());
+	    productosComida.get(numeroAleatorio).setCantidad(productosComida.get(numeroAleatorio).getCantidad()-1);
+	    
+	    System.out.println("\n        ╔══════════════════════════╗");
+	    System.out.println("        ║        Bono Comida       ║");
+	    System.out.println("        ╠══════════════════════════╣");
+	    String linea = "        ║ Producto: " + productosComida.get(numeroAleatorio).getNombre();
+	    for (int i = linea.length(); i < 36; i++) {
+	        if (i == 35) {
+	            linea = linea + "║";
+	        } else {
+	            linea = linea + " ";
+	        }
+	    }
+	    System.out.println(linea);
+	    String line = "        ║ Codigo:   " + code;
+	    for (int i = line.length(); i < 38; i++) {
+	        if (i == 35) {
+	            line = line + "║";
+	        } else {
+	            line = line + " ";
+	        }
+	    }
+	    System.out.println(line);
+	    System.out.println("        ╚══════════════════════════╝\n");
+	    
+	    return bono;
+	}
+	
+	public static String generarCodigoAleatorio(int longitud) {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder codigo = new StringBuilder(longitud);
+
+        for (int i = 0; i < longitud; i++) {
+            int index = random.nextInt(caracteres.length());
+            codigo.append(caracteres.charAt(index));
+        }
+
+        return codigo.toString();
+    }
+	
 	//getters y setters
 	public static ArrayList<TarjetaCinemar> getTarjetasEnInventario() {
 		return tarjetasEnInventario;
