@@ -830,6 +830,16 @@ public class Funcionalidad1 {
 		
 		//Tomamos las salas de cine que aún tienen películas en presentación y no han finalizado
 		ArrayList<SalaCine> salasDeCineDisponibles = Pelicula.filtrarSalasDeCine(sucursalCineProceso);
+		
+		//Evaluamos si la hora a la que el usuario intenta acceder se encuentra en nuestro horario de atención
+		//Administrador.evaluarRestriccionHoraria(clienteProceso);
+		
+		//En caso de no encontrar salas de cine, regresamos al menú principal
+		if (salasDeCineDisponibles.isEmpty()) {
+			System.out.println("\nNo hay películas en presentación, redireccionando al menú principal...");
+			Administrador.inicio(clienteProceso, sucursalCineProceso);
+		}
+		
 		do {
 			do {
 				do {
@@ -1037,14 +1047,9 @@ public class Funcionalidad1 {
 	}
 }
 
-//1. Automatizar el proceso de actualizar las salas de cine automáticamente, acompañado del método de avanzar la hora automáticamente (Hablar con David)
+//1. Automatizar el proceso de actualizar las salas de cine automáticamente, acompañado del método de avanzar la hora automáticamente (Investigar el uso de threads y Hablar con David)
 
-//0. Automatizar la creación de horarios consecutivos de una película determinada y que no colisionen con los de otra película en presentación de la misma sala en todas las sucursales(Hecho, Terminar documentación)
-//0.1. Restringir la creación de un horario que exceda el horario de cierre de las instalaciones
-//0.2. Restringir el ingreso a las salas de cine en un horario que no se encuentra entre el horario laboral del cine (Además que no permita el ingreso cuando es nulo)
-//0.3. Automatizar el añadir películas a la cartelera creando un atributo que se llame SucursalCine y que por medio de este, el mismo objeto ingrese a la cartelera
-//0.4. Cambiar el map de Horarios por un Array
-
+//0. Mejorar la vista en consola de cada uno de los procesos de la funcionalidad (Obligatorio) y Cambiar el map de Horarios por un Array (Posiblemente)
 //1. Limpiar código en Funcionalidad1 y Administrador (A la hora de crear los objetos) y mejorar la vista por consola
 //2. Mejorar abstracción de métodos, revisar todo el código hecho y mejorar documentación
 //3. Hacer Tests

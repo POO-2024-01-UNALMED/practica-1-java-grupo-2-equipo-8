@@ -102,7 +102,7 @@ public class Pelicula{
 	}
 
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
-			String tipoDeFormato, int numeroDeSala) {
+			String tipoDeFormato, int numeroDeSala, SucursalCine sucursalCine) {
 		this();
 		this.nombre = nombre;
 		this.precio = precio;
@@ -111,6 +111,7 @@ public class Pelicula{
 		this.clasificacion = clasificacion;
 		this.tipoDeFormato = tipoDeFormato;
 		this.numeroDeSala = numeroDeSala;
+		sucursalCine.getCartelera().add(this);
 	}
 
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
