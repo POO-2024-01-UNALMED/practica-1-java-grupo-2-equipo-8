@@ -33,7 +33,7 @@ public class Administrador {
 	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,200,null);
 	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",30000,200,"Comedia");
 	static Producto producto3 = new Producto("Perro caliente","Grande","comida",20000,200,null);
-	static Producto producto4 = new Producto("Perro caliente","Don salchica","comida",30000,200,"Comedia");
+	static Producto producto4 = new Producto("Perro caliente","Don salchicha","comida",30000,200,"Comedia");
 	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",15000,200,"Accion");
 	static Producto producto6 = new Producto("Crispetas","Grandes","comida",16000,200,null);
 	static Producto producto7 = new Producto("Gaseosa","Grande","comida",6000,200,null);
@@ -41,7 +41,7 @@ public class Administrador {
 	
 	
 	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-	static Bono bono1 = new Bono(1234,productoBono,"comida");
+	static Bono bono1 = new Bono("1234",productoBono,"comida");
 	
 	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
@@ -307,7 +307,7 @@ public class Administrador {
 		case 1: Funcionalidad1.reservarTicket(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
 		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 3: Funcionalidad2.compras(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 4: Funcionalidad3.calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
+		//case 4: Funcionalidad3.calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
 		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		//case 6: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 7: Funcionalidad1.salaDeEspera(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;

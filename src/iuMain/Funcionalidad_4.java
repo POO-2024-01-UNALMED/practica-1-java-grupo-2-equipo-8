@@ -5,6 +5,8 @@ import java.util.Scanner;
 import java.util.Random;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.Arkade;
+import gestionAplicacion.servicios.Bono;
+import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
 import gestionAplicacion.usuario.Ticket;
@@ -659,18 +661,28 @@ public class Funcionalidad_4 {
 		
 		System.out.println("•Tu puntuacion es: "+puntuacion);
 		
-//		Administrador.sc.nextLine();
-//		
-//		if (redimioCodigo) {
-//			System.out.println("\n•Redimiste un codigo, por eso eres gay");
+//		for(Producto p: sucursalCineProceso.getInventarioCine()) {
+//			
+//			System.out.println(p.getNombre()+"-"+p.getTamaño()+"-"+p.getTipoProducto()+"-"+p.getPrecio()+"-"+p.getCantidad()+"-"+p.getGenero());
 //		}
-//		
-//		System.out.println(generoJuego+"-"+generoCodigoPelicula);
+		
+		Bono bonoCliente = null;
+		String codigoBono = null;
 		
 		if (puntuacion==10.0) {
 			if (redimioCodigo) {
 				if (generoJuego.equals(generoCodigoPelicula)) {
 					System.out.println("\nGanas un bono de comida por obtener la puntuacion maxima en un juego de tipo "+generoJuego+" y redimir un codigo de pelicula del mismo genero");
+					barraCarga("Generando bono");
+					espera(3000);
+					bonoCliente = Arkade.generarBonoComidaJuegos(sucursalCineProceso);
+					codigoBono = bonoCliente.getCodigo();
+					ClienteActual.getCodigosBonos().add(codigoBono);
+					ClienteActual.getBonos().add(bonoCliente);
+					Bono.getBonosCreados().add(bonoCliente);
+					
+					System.out.println("•Reclama el bono con el codigo en nuestro servicio de comida");
+					
 				}
 				else {
 					System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima");
@@ -681,7 +693,12 @@ public class Funcionalidad_4 {
 			}
 		}
 		
-			
+		
+//		for(Producto p: sucursalCineProceso.getInventarioCine()) {
+//			
+//			System.out.println(p.getNombre()+"-"+p.getTamaño()+"-"+p.getTipoProducto()+"-"+p.getPrecio()+"-"+p.getCantidad()+"-"+p.getGenero());
+//		}
+		
 		System.out.println("\n☻☻☻Gracias por jugar con nosotros☻☻☻\n");
 		barraCarga("Redireccionando al menú principal");
 		Administrador.sc.nextLine();

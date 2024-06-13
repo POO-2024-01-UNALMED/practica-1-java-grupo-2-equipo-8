@@ -26,6 +26,8 @@ public class Cliente {
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	private ArrayList<String> codigosDescuento = new ArrayList<>();
+	private ArrayList<String> codigosBonos = new ArrayList<>();
+	private ArrayList<Bono> bonos = new ArrayList<>();
 	private SucursalCine cine;
 	
 	
@@ -371,6 +373,22 @@ public class Cliente {
 
 	public void setCodigosDescuento(ArrayList<String> codigosDescuento) {
 		this.codigosDescuento = codigosDescuento;
+	}
+
+	public ArrayList<String> getCodigosBonos() {
+		return codigosBonos;
+	}
+
+	public void setCodigosBonos(ArrayList<String> codigosBonos) {
+		this.codigosBonos = codigosBonos;
+	}
+
+	public ArrayList<Bono> getBonos() {
+		return bonos;
+	}
+
+	public void setBonos(ArrayList<Bono> bonos) {
+		this.bonos = bonos;
 	}
 	
 	
