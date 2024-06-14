@@ -14,7 +14,6 @@ public class Cliente {
 	//Atributos
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
-	private ArrayList<Producto> pedidos = new ArrayList<>();
 	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
@@ -348,15 +347,6 @@ public class Cliente {
 
 	public void setMetodosDePago(ArrayList<MetodoPago> metodosDePago) {
 		this.metodosDePago = metodosDePago;
-	}
-
-
-	public ArrayList<Producto> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(ArrayList<Producto> pedidos) {
-		this.pedidos = pedidos;
 	}
 
 	public SucursalCine getCine() {

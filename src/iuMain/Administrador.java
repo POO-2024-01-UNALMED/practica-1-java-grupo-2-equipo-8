@@ -1,9 +1,6 @@
 package iuMain;
 
-import java.time.LocalDateTime;
 import java.util.Scanner;
-import java.util.InputMismatchException;
-import java.util.ArrayList;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
@@ -22,13 +19,12 @@ public class Administrador {
 		return sc.nextLine();
 	}
 	
+	static ServicioComida servicioComidaM = new ServicioComida("servicio comida 🍔🍔🍔🍔🍔");
+	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("servicio souvenir 👕👕👕👕👕");
+	
 	static SucursalCine sucursalCine1 = new SucursalCine("Bucaramanga");
 	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
 	static SucursalCine sucursalCine3 = new SucursalCine("Medellín");
-	
-	static ArrayList<Producto> inventarioBucaramanga = new ArrayList<Producto>();
-	static ArrayList<Producto> inventarioMarinilla = new ArrayList<Producto>();
-	static ArrayList<Producto> inventarioSanAndrés = new ArrayList<Producto>();
 	
 	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,200,null);
 	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",30000,200,"Comedia");
@@ -39,6 +35,11 @@ public class Administrador {
 	static Producto producto7 = new Producto("Gaseosa","Grande","comida",6000,200,null);
 	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",3000,200,null);
 	
+	static Producto producto1S = new Producto("Camisa","XL","souvenir",19000,200,null);
+	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",30000,200,"Comedia");
+	static Producto producto3S = new Producto("Gorra","L","souvenir",12000,200,null);
+	static Producto producto4S = new Producto("Llavero","Catana","souvenir",30000,200,"Accion");
+	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",30000,200,"comedia");
 	
 	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
 	static Bono bono1 = new Bono("1234",productoBono,"comida");
@@ -177,18 +178,23 @@ public class Administrador {
 		//Llamados métodos de instancias para hacer pruebas
 		{
 			
-			inventarioMarinilla.add(producto1);
-			inventarioMarinilla.add(producto2);
-			inventarioMarinilla.add(producto3);
-			inventarioMarinilla.add(producto4);
-			inventarioMarinilla.add(producto5);
-			inventarioMarinilla.add(producto6);
-			inventarioMarinilla.add(producto7);
-			inventarioMarinilla.add(producto8);
+			sucursalCine2.getServicios().add(servicioComidaM);
+			sucursalCine2.getServicios().add(servicioSouvenirsM);
 			
-			sucursalCine1.setInventarioCine(inventarioBucaramanga);
-			sucursalCine2.setInventarioCine(inventarioMarinilla);
-			sucursalCine3.setInventarioCine(inventarioSanAndrés);
+			sucursalCine2.getInventarioCine().add(producto1);
+			sucursalCine2.getInventarioCine().add(producto2);
+			sucursalCine2.getInventarioCine().add(producto3);
+			sucursalCine2.getInventarioCine().add(producto4);
+			sucursalCine2.getInventarioCine().add(producto5);
+			sucursalCine2.getInventarioCine().add(producto6);
+			sucursalCine2.getInventarioCine().add(producto7);
+			sucursalCine2.getInventarioCine().add(producto8);
+			
+			sucursalCine2.getInventarioCine().add(producto1S);
+			sucursalCine2.getInventarioCine().add(producto2S);
+			sucursalCine2.getInventarioCine().add(producto3S);
+			sucursalCine2.getInventarioCine().add(producto4S);
+			sucursalCine2.getInventarioCine().add(producto5S);
 			
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 			//Funcionalidad 1 

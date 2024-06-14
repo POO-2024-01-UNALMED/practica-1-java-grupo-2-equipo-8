@@ -10,8 +10,8 @@ public class Bono {
 	
 	public Bono(){}
 	
-	public Bono(String codigo, Producto producto, String tipoServicio) {
-		this.codigo = codigo;
+	public Bono(String code, Producto producto, String tipoServicio) {
+		this.codigo = code;
 		this.producto = producto;
 		this.tipoServicio = tipoServicio;
 		bonosCreados.add(this);

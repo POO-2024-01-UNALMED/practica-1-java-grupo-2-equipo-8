@@ -4,18 +4,25 @@ import java.util.ArrayList;
 
 import gestionAplicacion.usuario.Cliente;
 
-public class Servicio {
-	
-	private String nombre;
-	private Cliente cliente;
-	private ArrayList<Producto> inventario = new ArrayList<>();
-	private ArrayList<Producto> orden = new ArrayList<>();
+public abstract class Servicio {
+
+	protected String nombre;
+	protected Cliente cliente;
+	protected ArrayList<Producto> inventario = new ArrayList<>();
+	protected ArrayList<Producto> orden = new ArrayList<>();
+	private double valorPedido;
 	
 	public Servicio(){}
 	
 	public Servicio(String nombre) {
-		this.nombre=nombre;
+		this.nombre = nombre;
 	}
+	
+	// Metodos abstractos
+	
+	public abstract ArrayList<Producto> actualizarInventario();
+	
+	// Metodos
 	
 	public float calcularTotal() {
 		float total = 0;
@@ -53,10 +60,10 @@ public class Servicio {
 		}
 	}
 	
-	public Producto validarBono(int codigo , String servicio){
+	public Producto validarBono(String codigo , Servicio servicio){
 		Producto producto = new Producto();
 		for (int i=0; i < Bono.getBonosCreados().size();i++) {
-			if (Bono.getBonosCreados().get(i).getCodigo() == codigo && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio)) {
+			if (Bono.getBonosCreados().get(i).getCodigo() == codigo && Bono.getBonosCreados().get(i).getTipoServicio().equals(servicio)) {
 				producto = Bono.getBonosCreados().get(i).getProducto();
 				Bono.getBonosCreados().remove(i);
 				return producto;
@@ -164,6 +171,14 @@ public class Servicio {
 
 	public void setOrden(ArrayList<Producto> orden) {
 		this.orden = orden;
+	}
+
+	public double getValorPedido() {
+		return valorPedido;
+	}
+
+	public void setValorPedido(double valorPedido) {
+		this.valorPedido = valorPedido;
 	}
 	
 	
