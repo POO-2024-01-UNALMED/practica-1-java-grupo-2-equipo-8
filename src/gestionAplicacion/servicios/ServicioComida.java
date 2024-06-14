@@ -4,15 +4,10 @@ import gestionAplicacion.usuario.Cliente;
 
 public class ServicioComida extends Servicio{
 	
-	
-	private double valorPedido;
-	
 	public ServicioComida(){}
 	
-	public ServicioComida(String nombre, Cliente cliente, ArrayList<Producto> ordenComida,
-			double valorPedido) {
+	public ServicioComida(String nombre) {
 		super(nombre);
-		this.valorPedido = valorPedido;
 	}
 	
 	/**
@@ -22,6 +17,7 @@ public class ServicioComida extends Servicio{
 	*localidad para tener una carta mas eficiente a la hora de mostrarla al cliente
 	*/
 	
+	@Override
 	public ArrayList<Producto> actualizarInventario(){
 		ArrayList<Producto> inventarioGeneral = getCliente().getCine().getInventarioCine();
 		ArrayList<Producto> inventario = new ArrayList<Producto>();
@@ -33,15 +29,5 @@ public class ServicioComida extends Servicio{
 		return inventario;
 	}
 	
-	
-	
-
-	public double getValorPedido() {
-		return valorPedido;
-	}
-
-	public void setValorPedido(double valorPedido) {
-		this.valorPedido = valorPedido;
-	}
 
 }

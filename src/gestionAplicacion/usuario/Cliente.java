@@ -352,15 +352,6 @@ public class Cliente {
 		this.metodosDePago = metodosDePago;
 	}
 
-
-	public ArrayList<Producto> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(ArrayList<Producto> pedidos) {
-		this.pedidos = pedidos;
-	}
-
 	public SucursalCine getCine() {
 		return cine;
 	}
