@@ -12,7 +12,6 @@ public class Ticket implements IBuyable{
 	private int idTicket;
 	private Cliente dueno;
 	private SalaCine salaDeCine;
-	//private Asiento asiento; Ver la forma de asociar el objeto o eliminar este atributo (Eliminar atributo)
 	private double precio;
 	private Pelicula pelicula;
 	private LocalDateTime horario;

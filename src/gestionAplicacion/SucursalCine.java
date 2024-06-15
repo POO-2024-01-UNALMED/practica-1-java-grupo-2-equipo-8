@@ -23,7 +23,7 @@ public class SucursalCine {
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
-	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(21, 00);
+	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
 	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 0);
 	//private static ArrayList<Cliente> clientes = new ArrayList<>();
 	
@@ -110,7 +110,7 @@ public class SucursalCine {
 		ArrayList<LocalDateTime> horariosPeliculaAEliminar = new ArrayList<>();
 		//Eliminamos con certeza todos los horarios que fueron omitidos
 		for (Pelicula pelicula : SucursalCine.getPeliculasDisponibles()) {
-			for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
+			for (LocalDateTime horario : pelicula.getHorarios()) {
 				if (horario.isBefore(fechaActual.minus(maxDuration))) {
 					horariosPeliculaAEliminar.add(horario);
 				}
