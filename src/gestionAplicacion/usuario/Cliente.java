@@ -12,6 +12,8 @@ public class Cliente {
 	//Atributos
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
+	private ArrayList<Pelicula> historialDePedidos = new ArrayList<>();
+	private ArrayList<Producto> pedidos = new ArrayList<>();
 	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
@@ -41,13 +43,14 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 	}
 	
-	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Ticket> ticket, ArrayList<String> facturas,
+	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Pelicula> historialDePedidos, ArrayList<Ticket> ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, Duration duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<String> codigosDescuento) {
 		this();
 		this.nombre = nombre;
 		this.historialDePeliculas = historialDePeliculas;
+		this.historialDePedidos = historialDePedidos;
 		this.tickets = ticket;
 		this.facturas = facturas;
 		this.edad = edad;
@@ -384,6 +387,14 @@ public class Cliente {
 
 	public void setBonos(ArrayList<Bono> bonos) {
 		this.bonos = bonos;
+	}
+
+	public ArrayList<Pelicula> getHistorialDePedidos() {
+		return historialDePedidos;
+	}
+
+	public void setHistorialDePedidos(ArrayList<Pelicula> historialDePedidos) {
+		this.historialDePedidos = historialDePedidos;
 	}
 	
 	
