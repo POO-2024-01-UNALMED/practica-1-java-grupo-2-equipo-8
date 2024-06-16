@@ -23,6 +23,8 @@ public class SucursalCine {
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
+	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
+	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 0);
 	//private static ArrayList<Cliente> clientes = new ArrayList<>();
 	
 	//Methods
@@ -108,7 +110,7 @@ public class SucursalCine {
 		ArrayList<LocalDateTime> horariosPeliculaAEliminar = new ArrayList<>();
 		//Eliminamos con certeza todos los horarios que fueron omitidos
 		for (Pelicula pelicula : SucursalCine.getPeliculasDisponibles()) {
-			for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
+			for (LocalDateTime horario : pelicula.getHorarios()) {
 				if (horario.isBefore(fechaActual.minus(maxDuration))) {
 					horariosPeliculaAEliminar.add(horario);
 				}
@@ -121,13 +123,16 @@ public class SucursalCine {
 		}
 	}
 	
-	/***/
+	/**
+	 * Description : Este método se ecanrga de crear 20 horarios por cada película en cartelera de la sucursal de cine, teniendo en cuenta los siguientes
+	 * criterios: 1. El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras instalaciones
+	 * 2. La hora a la que termina la película es menor a la hora de cierre.
+	 * @return <b>void</b>: Este método no retorna nada.
+	 * */
 	public void crearHorariosPeliculasPorSala() {
 		
 		ArrayList<Pelicula> peliculasDeSalaDeCine = new ArrayList<>();
 		
-		final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(22, 0);
-		final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 0);
 		final Duration LIMPIEZA_DE_SALA = Duration.ofMinutes(30);
 		
 		for(SalaCine salaDeCine : this.salasDeCine) {
@@ -146,7 +151,9 @@ public class SucursalCine {
 				for (Pelicula pelicula : peliculasDeSalaDeCine) {
 					
 					if (horarioParaPresentar.toLocalTime().isBefore(FIN_HORARIO_LABORAL) &&
-							horarioParaPresentar.toLocalTime().isAfter(INICIO_HORARIO_LABORAL)) {
+							horarioParaPresentar.toLocalTime().isAfter(INICIO_HORARIO_LABORAL) &&
+							horarioParaPresentar.plus(pelicula.getDuracion()).toLocalTime().isBefore(FIN_HORARIO_LABORAL) &&
+							horarioParaPresentar.plus(pelicula.getDuracion()).toLocalDate().equals(horarioParaPresentar.toLocalDate()) ) {
 						
 						pelicula.crearSalaVirtual(horarioParaPresentar);
 						horarioParaPresentar = horarioParaPresentar.plus(pelicula.getDuracion());
@@ -178,6 +185,11 @@ public class SucursalCine {
 		
 	}
 	
+	/**
+	 * Description : Este método se encarga de iterar sobre el array de Sucursales, con el fin de que cada sucursal se encargue de llamar al método 
+	 * crearHorarioPeliculasPorSala().
+	 * @return <b>void</b> : Este método no retorna nada. 
+	 * */
 	public static void crearHorariosPeliculasPorSucursal() {
 		for (SucursalCine sede : SucursalCine.sucursalesCine) {
 			sede.crearHorariosPeliculasPorSala();

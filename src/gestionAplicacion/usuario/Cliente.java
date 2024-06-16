@@ -1,7 +1,5 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.time.Duration;
 
 import gestionAplicacion.SucursalCine;
@@ -14,6 +12,7 @@ public class Cliente {
 	//Atributos
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
+	private ArrayList<Pelicula> historialDePedidos = new ArrayList<>();
 	private ArrayList<Producto> pedidos = new ArrayList<>();
 	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<String> facturas = new ArrayList<>();
@@ -44,13 +43,14 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 	}
 	
-	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Ticket> ticket, ArrayList<String> facturas,
+	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Pelicula> historialDePedidos, ArrayList<Ticket> ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, Duration duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<String> codigosDescuento) {
 		this();
 		this.nombre = nombre;
 		this.historialDePeliculas = historialDePeliculas;
+		this.historialDePedidos = historialDePedidos;
 		this.tickets = ticket;
 		this.facturas = facturas;
 		this.edad = edad;
@@ -192,7 +192,7 @@ public class Cliente {
 	 * @return <b>boolean</b> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
 	 * o a la sala de espera si este posee algún ticket válido.
 	 * */
-	public boolean disponibilidadTIcketParaSede(SucursalCine sucursalCineProceso) {
+	public boolean disponibilidadTicketParaSede(SucursalCine sucursalCineProceso) {
 		for (Ticket ticket : this.getTickets()) {
 			for (Pelicula peliculaCarteleraSede : sucursalCineProceso.getCartelera()) {
 				if(ticket.getPelicula().equals(peliculaCarteleraSede)) {
@@ -205,27 +205,34 @@ public class Cliente {
 	
 	/**
 	 * Description : Este método se encarga de encontrar el género más visto por un cliente, para realizar este proceso, iteramos sobre su historial
-	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en un LinkedHashMap, por último,
-	 * evaluamos cual género tiene más visualizaciones y se retorna este, en caso de coincidir en visualizaciones con otro género, retornamos el
-	 * género más reciente.
+	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en distintos arraylists, conservando
+	 * el mismo índice, por último, evaluamos cual género tiene más visualizaciones y se retorna este, en caso de coincidir en visualizaciones con 
+	 * otro género, retornamos el género más reciente.
 	 * @return <b>String</b> : Este método retorna el género (De tipo String) con más visualizaciones.  
 	 * */
 	public String generoMasVisto() {
-		LinkedHashMap<String, Integer> historialGenero = new LinkedHashMap<>();
+		
+		ArrayList<String> generosVistos = new ArrayList<>();
+		ArrayList<Integer> cantidadVisualizaciones = new ArrayList<>();
+		
 		for(Pelicula pelicula : this.getHistorialDePeliculas()) {
-			if (historialGenero.containsKey(pelicula.getGenero())) {
-				historialGenero.put(pelicula.getGenero(), historialGenero.get(pelicula.getGenero()) + 1);
+			if (generosVistos.contains(pelicula.getGenero())) {
+				
+				int indiceGenero = generosVistos.indexOf(pelicula.getGenero());
+				cantidadVisualizaciones.set(indiceGenero, cantidadVisualizaciones.get(indiceGenero) + 1);
+				
 			}else {
-				historialGenero.put(pelicula.getGenero(), 1);
+				generosVistos.add(pelicula.getGenero());
+				cantidadVisualizaciones.add(1);
 			}
 		}
 
 		boolean firstEntry = true;
 		String generoMasVisto = null;
 		int valorGeneroMasVisto = 0;
-		for(Map.Entry<String, Integer> entrada : historialGenero.entrySet() ) {
-			String auxGeneroMasVisto = entrada.getKey();
-			int auxValorGeneroMasVisto = entrada.getValue();
+		for( String genero : generosVistos ) {
+			String auxGeneroMasVisto = genero;
+			int auxValorGeneroMasVisto = cantidadVisualizaciones.get(generosVistos.indexOf(auxGeneroMasVisto));
 			
 			if (firstEntry) {
 				generoMasVisto = auxGeneroMasVisto;
@@ -350,15 +357,6 @@ public class Cliente {
 		this.metodosDePago = metodosDePago;
 	}
 
-
-	public ArrayList<Producto> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(ArrayList<Producto> pedidos) {
-		this.pedidos = pedidos;
-	}
-
 	public SucursalCine getCine() {
 		return cine;
 	}
@@ -389,6 +387,14 @@ public class Cliente {
 
 	public void setBonos(ArrayList<Bono> bonos) {
 		this.bonos = bonos;
+	}
+
+	public ArrayList<Pelicula> getHistorialDePedidos() {
+		return historialDePedidos;
+	}
+
+	public void setHistorialDePedidos(ArrayList<Pelicula> historialDePedidos) {
+		this.historialDePedidos = historialDePedidos;
 	}
 	
 	

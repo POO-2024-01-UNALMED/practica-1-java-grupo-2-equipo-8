@@ -198,9 +198,9 @@ public class SalaCine {
 		LocalDateTime horarioPresentacion = null;
 		LocalDateTime horarioMasCercanoAlActual = null;
 		LocalDateTime auxHorarioMasCercanoAlActual = null;
-		int comparacionHorario = 0;
-		int auxComparacionHorario = 0;
-		boolean firstTimeComparacionHorario = false;
+		double comparacionHorario = 0;
+		double auxComparacionHorario = 0;
+		boolean firstTimeComparacionHorario = true;
 		
 		//Actualizamos la película
 		for (Pelicula pelicula : sucursalCine.getCartelera()) {
@@ -208,9 +208,8 @@ public class SalaCine {
 				if ( (pelicula.getNumeroDeSala() == this.getNumeroSala() ) & ( pelicula.getTipoDeFormato().equals(this.getTipoDeSala()) ) ) {
 
 					horarioMasCercanoAlActual = SucursalCine.getFechaActual().plus(Duration.ofSeconds(1));
-					firstTimeComparacionHorario = true;
 					
-					for (LocalDateTime horario : pelicula.getHorarios().keySet()) {
+					for (LocalDateTime horario : pelicula.getHorarios()) {
 						
 						auxHorarioMasCercanoAlActual = horario;
 						auxComparacionHorario = horario.compareTo(SucursalCine.getFechaActual());
@@ -225,8 +224,7 @@ public class SalaCine {
 							comparacionHorario = auxComparacionHorario;
 							horarioMasCercanoAlActual = horario;
 							if(auxComparacionHorario == 0) {
-								break;
-								
+								break;	
 							}
 						}
 					}
@@ -263,7 +261,9 @@ public class SalaCine {
 		    }
 			
 			//Eliminamos la sala de cine virtual
+			this.getPeliculaEnPresentacion().getAsientos().remove(this.getPeliculaEnPresentacion().getHorarios().indexOf(horarioPresentacion));
 			this.getPeliculaEnPresentacion().getHorarios().remove(horarioPresentacion);
+			
 		}
 		
 	}
@@ -302,7 +302,7 @@ public class SalaCine {
 	/**
 	 * Description : Este método se encarga de generar un string que se imprimirá en pantalla para visualizar los
 	 * asientos y su número de asiento
-	 * @return : (String Resultado) : Este método retorna un string que será impreso en pantalla para que el cliente 
+	 * @return (String Resultado) : Este método retorna un string que será impreso en pantalla para que el cliente 
 	 * pueda visualizar de mejor forma el proceso de entrada a la sala de cine
 	 * */
 	public String mostrarAsientosParaPantalla() {

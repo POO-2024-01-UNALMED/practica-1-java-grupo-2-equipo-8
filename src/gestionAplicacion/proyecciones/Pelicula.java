@@ -2,7 +2,6 @@ package gestionAplicacion.proyecciones;
 
 import java.util.ArrayList;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.time.Duration;
 
 import gestionAplicacion.SucursalCine;
@@ -15,9 +14,9 @@ public class Pelicula{
 	private String genero;
 	private Duration duracion;
 	private String clasificacion;
-	//private ArrayList<Horario> horarios = new ArrayList<>();
-	//private ArrayList<int[][]> asientos = new ArrayList<>();
-	private LinkedHashMap<LocalDateTime, int[][]> horarios = new LinkedHashMap<>();
+	private ArrayList<LocalDateTime> horarios = new ArrayList<>();
+	private ArrayList<int[][]> asientos = new ArrayList<>();
+	//private LinkedHashMap<LocalDateTime, int[][]> horarios = new LinkedHashMap<>();
 	private String tipoDeFormato;
 	private int numeroDeSala;
 	private int idPelicula; 
@@ -64,14 +63,6 @@ public class Pelicula{
 		this.clasificacion = clasificacion;
 	}
 
-	public LinkedHashMap<LocalDateTime, int[][]> getHorarios() {
-		return horarios;
-	}
-
-	public void setHorarios(LinkedHashMap<LocalDateTime, int[][]> horarios) {
-		this.horarios = horarios;
-	}
-
 	public String getTipoDeFormato() {
 		return tipoDeFormato;
 	}
@@ -96,13 +87,29 @@ public class Pelicula{
 		this.idPelicula = idPelicula;
 	}
 
+	public ArrayList<LocalDateTime> getHorarios() {
+		return horarios;
+	}
+
+	public void setHorarios(ArrayList<LocalDateTime> horarios) {
+		this.horarios = horarios;
+	}
+
+	public ArrayList<int[][]> getAsientos() {
+		return asientos;
+	}
+
+	public void setAsientos(ArrayList<int[][]> asientos) {
+		this.asientos = asientos;
+	}
+
 	// Constructor
 	public Pelicula(){
 		SucursalCine.getPeliculasDisponibles().add(this);
 	}
 
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
-			String tipoDeFormato, int numeroDeSala) {
+			String tipoDeFormato, int numeroDeSala, SucursalCine sucursalCine) {
 		this();
 		this.nombre = nombre;
 		this.precio = precio;
@@ -111,20 +118,7 @@ public class Pelicula{
 		this.clasificacion = clasificacion;
 		this.tipoDeFormato = tipoDeFormato;
 		this.numeroDeSala = numeroDeSala;
-	}
-
-	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
-			LinkedHashMap<LocalDateTime, int[][]> horarios, String tipoDeFormato, int numeroDeSala, int idPelicula) {
-		this();
-		this.nombre = nombre;
-		this.precio = precio;
-		this.genero = genero;
-		this.duracion = duracion;
-		this.clasificacion = clasificacion;
-		this.horarios = horarios;
-		this.tipoDeFormato = tipoDeFormato;
-		this.numeroDeSala = numeroDeSala;
-		this.idPelicula = idPelicula;
+		sucursalCine.getCartelera().add(this);
 	}
 
 	//Methods
@@ -209,6 +203,7 @@ public class Pelicula{
 				i++;
 			}
 		}
+		
 		return nombrePeliculas;
 	}
 	
@@ -340,17 +335,17 @@ public class Pelicula{
 	    resultado.append("    ");
 	    
 	    // Agregar números de columnas
-	    for (int i = 0; i < this.getHorarios().get(fecha).length; i++) {
+	    for (int i = 0; i < this.asientos.get(this.horarios.indexOf(fecha)).length; i++) {
 	        resultado.append(String.format("%-4d", i + 1));
 	    }
 	    resultado.append("\n");
 
 	    // Mostrar asientos
-	    for (int i = 0; i < this.getHorarios().get(fecha).length; i++) {
+	    for (int i = 0; i < this.asientos.get(this.horarios.indexOf(fecha)).length; i++) {
 	        resultado.append(String.format("%-2d ", i + 1));
-	        for (int j = 0; j < this.getHorarios().get(fecha).length; j++) {
+	        for (int j = 0; j < this.asientos.get(this.horarios.indexOf(fecha)).length; j++) {
 	            resultado.append("[");
-	            resultado.append((this.getHorarios().get(fecha)[i][j] == 1) ? "X" : "O");
+	            resultado.append((this.asientos.get(this.horarios.indexOf(fecha))[i][j] == 1) ? "X" : "O");
 	            resultado.append("] ");
 	        }
 	        resultado.append("\n");
@@ -367,10 +362,10 @@ public class Pelicula{
 	 * */
 	public void modificarSalaVirtual(LocalDateTime fecha, int fila, int columna) {
 	    
-		if (this.getHorarios().get(fecha)[fila - 1][columna - 1] == 0) {
-			this.getHorarios().get(fecha)[fila - 1][columna - 1] = 1;	
+		if (this.asientos.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] == 0) {
+			this.asientos.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] = 1;	
 		}else {
-			this.getHorarios().get(fecha)[fila - 1][columna - 1] = 0;	
+			this.asientos.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] = 0;	
 		}	
 	}
 	
@@ -382,7 +377,7 @@ public class Pelicula{
 	 * */
 	public boolean isDisponibilidadAsientoSalaVirtual(LocalDateTime fecha, int fila, int columna) {
 	    
-		if (this.getHorarios().get(fecha)[fila - 1][columna - 1] == 0) {
+		if (this.asientos.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] == 0) {
 			return true;	
 		}else {
 			return false;	
@@ -404,7 +399,8 @@ public class Pelicula{
 			}
 		}
 		
-		this.getHorarios().put(fecha, nuevaSalaVirtual);
+		this.horarios.add(fecha);
+		this.asientos.add(nuevaSalaVirtual);
 		
 	}
 	
@@ -417,8 +413,8 @@ public class Pelicula{
 		ArrayList<LocalDateTime> horariosPelicula = new ArrayList<>();
 		boolean isAsientosDisponibles = false;
 		
-		for (LocalDateTime horario : this.getHorarios().keySet()) {
-			for (int[] filaAsientos : this.getHorarios().get(horario)) {
+		for (LocalDateTime horario : this.horarios) {
+			for (int[] filaAsientos : this.asientos.get(horarios.indexOf(horario))) {
 				for (int asiento : filaAsientos) {
 					if (asiento == 0) {
 						isAsientosDisponibles = true;
@@ -452,26 +448,26 @@ public class Pelicula{
 		return horarios;
 	}
 	
-	/**
-	 * Description : Este método se encarga de retornar la llave del LinkedHashMap
-	 * a partir de la posición pasada como parámetro
-	 * @param posicion : Recibe un entero que representa la posición del horario 
-	 * seleccionado por el usuario luego de mostrarHorarios de esta película
-	 * @return <b>LocalDateTime</b> : Retorna la localDateTime correspondiente a la elcción hecha por el usuario
-	 * el formato LinkedHashMap garantiza que siempre retorna la localDateTime deseada
-	 * */
-	public LocalDateTime obtenerHorario(int posicion){
-		int i = 0;
-		LocalDateTime horarioDeseado = null;
-		for (LocalDateTime horario : this.getHorarios().keySet()) {
-			if (i == (posicion - 1)) {
-				horarioDeseado = horario;
-			}
-			i++;
-		}
-		
-		return horarioDeseado;
-	}
+//	/**
+//	 * Description : Este método se encarga de retornar la llave del LinkedHashMap
+//	 * a partir de la posición pasada como parámetro
+//	 * @param posicion : Recibe un entero que representa la posición del horario 
+//	 * seleccionado por el usuario luego de mostrarHorarios de esta película
+//	 * @return <b>LocalDateTime</b> : Retorna la localDateTime correspondiente a la elcción hecha por el usuario
+//	 * el formato LinkedHashMap garantiza que siempre retorna la localDateTime deseada
+//	 * */
+//	public LocalDateTime obtenerHorario(int posicion){
+//		int i = 0;
+//		LocalDateTime horarioDeseado = null;
+//		for (LocalDateTime horario : this.getHorarios().keySet()) {
+//			if (i == (posicion - 1)) {
+//				horarioDeseado = horario;
+//			}
+//			i++;
+//		}
+//		
+//		return horarioDeseado;
+//	}
 	
 	/**
 	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
