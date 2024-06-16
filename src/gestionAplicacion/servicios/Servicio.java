@@ -53,7 +53,7 @@ public class Servicio {
 		}
 	}
 	
-	public Producto validarBono(int codigo , String servicio){
+	public Producto validarBono(String codigo , String servicio){
 		Producto producto = new Producto();
 		for (int i=0; i < Bono.getBonosCreados().size();i++) {
 			if (Bono.getBonosCreados().get(i).getCodigo() == codigo && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio)) {
