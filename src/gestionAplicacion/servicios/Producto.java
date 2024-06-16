@@ -13,6 +13,8 @@ public class Producto {
 		
 	}
 	
+	//Ligadura Estatica
+	
 	public boolean comprobarBonoEnOrden(Servicio servicio) {
 		boolean verificacion = false;
 		for(int i = 0; i < servicio.getOrden().size();i++) {

@@ -19,8 +19,8 @@ public class Administrador {
 		return sc.nextLine();
 	}
 	
-	static ServicioComida servicioComidaM = new ServicioComida("servicio comida 🍔🍔🍔🍔🍔");
-	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("servicio souvenir 👕👕👕👕👕");
+	static ServicioComida servicioComidaM = new ServicioComida("comida");
+	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("souvenir");
 	
 	static SucursalCine sucursalCine1 = new SucursalCine("Bucaramanga");
 	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
@@ -38,7 +38,7 @@ public class Administrador {
 	static Producto producto1S = new Producto("Camisa","XL","souvenir",19000,200,null);
 	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",30000,200,"Comedia");
 	static Producto producto3S = new Producto("Gorra","L","souvenir",12000,200,null);
-	static Producto producto4S = new Producto("Llavero","Catana","souvenir",30000,200,"Accion");
+	static Producto producto4S = new Producto("Llavero","Katana","souvenir",30000,200,"Accion");
 	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",30000,200,"comedia");
 	
 	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
@@ -178,8 +178,12 @@ public class Administrador {
 		//Llamados métodos de instancias para hacer pruebas
 		{
 			
+			sucursalCine1.getServicios().add(servicioComidaM);
+			
 			sucursalCine2.getServicios().add(servicioComidaM);
 			sucursalCine2.getServicios().add(servicioSouvenirsM);
+			
+			sucursalCine3.getServicios().add(servicioSouvenirsM);
 			
 			sucursalCine2.getInventarioCine().add(producto1);
 			sucursalCine2.getInventarioCine().add(producto2);
