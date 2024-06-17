@@ -59,13 +59,11 @@ public abstract class Servicio {
 		}
 	}
 	
-<<<<<<< Updated upstream
-	public Producto validarBono(String codigo , String servicio){
-=======
+
 	//Ligadura Estatica
 	
 	public Producto validarBono(String codigo , Servicio servicio){
->>>>>>> Stashed changes
+
 		Producto producto = new Producto();
 		for (int i=0; i < Bono.getBonosCreados().size();i++) {
 			if (Bono.getBonosCreados().get(i).getCodigo() == codigo && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
