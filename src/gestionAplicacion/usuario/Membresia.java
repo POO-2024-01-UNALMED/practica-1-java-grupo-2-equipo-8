@@ -328,8 +328,8 @@ public class Membresia implements IBuyable{
 		
 		//Al adquirir la membresia, se crea y asigna un método de pago único que permite acumular puntos canjeables con compras en el cine.
 		MetodoPago.asignarMetodosDePago(cliente);
-		//Se eliminan las referencias de los métodosDePagoUsados
-		MetodoPago.getMetodosDePagoUsados().clear();
+//		//Se eliminan las referencias de los métodosDePagoUsados
+//		MetodoPago.getMetodosDePagoUsados().clear();
 		//Se pasa la referencia de la membresia al cliente que lo compró y se agrega este último al array de clientes en Membresia
 		this.getClientes().add(cliente);
 	}

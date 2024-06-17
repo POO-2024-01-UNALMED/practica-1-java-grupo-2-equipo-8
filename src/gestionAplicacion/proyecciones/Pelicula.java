@@ -15,12 +15,12 @@ public class Pelicula{
 	private Duration duracion;
 	private String clasificacion;
 	private ArrayList<LocalDateTime> horarios = new ArrayList<>();
-	private ArrayList<int[][]> asientos = new ArrayList<>();
-	//private LinkedHashMap<LocalDateTime, int[][]> horarios = new LinkedHashMap<>();
+	private ArrayList<int[][]> asientosVirtuales = new ArrayList<>();
 	private String tipoDeFormato;
 	private int numeroDeSala;
 	private int idPelicula; 
-	//private int ticketVendidos; (Para realizar el proceso de cambiar una película a otro cine según sus ventas)
+	private double valoracion;
+	private int totalEncuestasDeValoracionRealizadas;
 	
 	// Getters and Setters
 	public String getNombre() {
@@ -95,12 +95,28 @@ public class Pelicula{
 		this.horarios = horarios;
 	}
 
-	public ArrayList<int[][]> getAsientos() {
-		return asientos;
+	public ArrayList<int[][]> getAsientosVirtuales() {
+		return asientosVirtuales;
 	}
 
-	public void setAsientos(ArrayList<int[][]> asientos) {
-		this.asientos = asientos;
+	public void setAsientosVirtuales(ArrayList<int[][]> asientos) {
+		this.asientosVirtuales = asientos;
+	}
+	
+	public double getValoracion() {
+		return valoracion;
+	}
+
+	public void setValoracion(double valoracion) {
+		this.valoracion = valoracion;
+	}
+
+	public int getTotalEncuestasDeValoracionRealizadas() {
+		return totalEncuestasDeValoracionRealizadas;
+	}
+
+	public void setTotalEncuestasDeValoracionRealizadas(int totalEncuestasDeValoracionRealizadas) {
+		this.totalEncuestasDeValoracionRealizadas = totalEncuestasDeValoracionRealizadas;
 	}
 
 	// Constructor
@@ -158,29 +174,22 @@ public class Pelicula{
 	}
 	
 	/**
-	 * Description : Este método se encarga de mostrar en pantalla el nombre de las películas obtenidas luego de realizar el filtro por nombre
-	 * de peliculas
-	 * @param filtroNombrePeliculas : Este método recibe como parámetro los nombres de las películas sin repetición (De tipo LinkedHashSet<Stirng>)
-	 * obtenidos de realizar el filtro de peliculas por nombre
+	 * Description : Este método se encarga de mostrar en pantalla el nombre de las películas en cartelera, luego de realizar el filtro por nombre
+	 * de peliculas. En caso de que el cliente tenga membresía se realiza la recomendación de las películas.
+	 * @param filtroNombrePeliculas : Este método recibe como parámetro los nombres de las películas sin repetición (De tipo ArrayList<Stirng>)
+	 * obtenidos de realizar el filtro de peliculas por nombre.
+	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente), con el fin de determinar si tiene o no membresía.
+	 * @param nombrePeliculaRecomendadas : Este método recibe como parámetro los nombres de las películas sin repeteción (De tipo ArrayList<String>)
+	 * obtenidos luego de realizar el filtro por género de película más visto por el cliente
 	 * @return <b>String</b> : Este método retorna una lista de los nombres de las películas para ser presentadas por pantalla, con el fin de que 
-	 * el usuario elija una de estas
+	 * el usuario elija una de estas (En caso de que el cliente tenga membresía se realiza una recomendación según el género de película que más ha visto).
 	 * */
 	public static String showNombrePeliculas(ArrayList<String> filtroNombrePeliculas, Cliente clienteProceso, ArrayList<String> nombrePeliculasRecomendadas) {
 		String nombrePeliculas = "\n";
 		int i = 1;
 		if(clienteProceso.getMembresia() != null) {
 			for(String nombrePelicula : filtroNombrePeliculas) {
-				try {
-					if (!nombrePeliculas.contains(nombrePelicula)) {
-						if (nombrePeliculasRecomendadas.contains(nombrePelicula)) {
-							nombrePeliculas = nombrePeliculas + "\n" + i + ". RECOMENDADA: " + nombrePelicula;
-							i++;
-						}else {
-							nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
-							i++;
-						}	
-					}
-				}catch (NullPointerException e) {
+				if (!nombrePeliculas.contains(nombrePelicula)) {
 					if (nombrePeliculasRecomendadas.contains(nombrePelicula)) {
 						nombrePeliculas = nombrePeliculas + "\n" + i + ". RECOMENDADA: " + nombrePelicula;
 						i++;
@@ -188,9 +197,8 @@ public class Pelicula{
 						nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
 						i++;
 					}	
-				}
+				}	
 			}
-			
 			
 		}else {
 			for (String nombrePelicula : filtroNombrePeliculas) {
@@ -208,12 +216,12 @@ public class Pelicula{
 	}
 	
 	/**
-	 * Description : Este método se encarga de retornar las películas cuyo nombre coincide con el nombre de la película seleccionada por el cliente
-	 * @param nombrePelicula : Este método recibe como parámetro el nombre de la película (De tipo String) con el cuál se realizará el filtrado
+	 * Description : Este método se encarga de retornar las películas cuyo nombre coincide con el nombre de la película seleccionada por el cliente.
+	 * @param nombrePelicula : Este método recibe como parámetro el nombre de la película (De tipo String) con el cuál se realizará el filtrado.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) desde la cuál se está realizando el proceso de reserva
-	 * del ticket
+	 * del ticket para acceder a la cartelera.
 	 * @return <b>ArrayList<Pelicula></b> : Este método retorna un ArrayList de las películas cuyo nombre coinciden con el nombre seleccionado 
-	 * por el cliente
+	 * por el cliente.
 	 * */
 	public static ArrayList<Pelicula> filtrarPorNombreDePelicula(String nombrePelicula, SucursalCine sucursalCine){
 		ArrayList<Pelicula> peliculasEncontradas = new ArrayList<>();
@@ -228,9 +236,10 @@ public class Pelicula{
 	}
 	
 	/**
-	 * Description : Este método retorna un string con los distintos formatos disponibles, según el nombre de la película seleccionada por el cliente 
-	 * @param peliculasFiltradasPorNombre : Este método recibe como parámetro Lista de películas (De tipo ArrayList<Pelicula>) 
-	 * filtradas previamente filtradas por el nombre seleccionado por el usuario 
+	 * Description : Este método retorna un string con los formatos disponibles de las películas que coinciden con el nombre de la película
+	 * seleccionada por el cliente.
+	 * @param peliculasFiltradasPorNombre : Este método recibe como parámetro una lista de películas (De tipo ArrayList<Pelicula>) 
+	 * filtradas previamente por el nombre de la película seleccionado por el usuario 
 	 * @return <b>String</b> : Este método retorna un String que contiene los formatos de la película seleccionada por el usuario, 
 	 * este será mostrado en pantalla con el fin de que el usuario selecccione uno de estos formatos
 	 * */
@@ -249,19 +258,19 @@ public class Pelicula{
 	}
 
 	/**
-	 * Description : Este método se encarga de filtar las películas en cartelera cuya categoría es menor o igual la edad de un cliente, tiene al 
-	 * menos 1 horario en el cuál será presentada o se encuentra en presentación y no supera el límite de tiempo para comprar una película que se 
-	 * encuentra en presentación (15 minutos), con el fin de mostrar en pantalla, posteriormente, el array de las películas que cumplan este criterio 
-	 * @param clienteProceso : Este método recibe como parámetro un cliente (De tipo cliente), que se obtiene luego del proceso de login
-	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), que se obtiene luego del proceso de seleccionar sede
+	 * Description : Este método se encarga de filtar las películas en cartelera con los siguientes criterios:  1. Su categoría es menor o igual a 
+	 * la edad de un cliente 2. La película tiene al menos 1 horario en el cuál será presentada o se encuentra en presentación y no supera el 
+	 * límite de tiempo para comprar un ticket de una película que se encuentra en presentación (15 minutos). Con el fin de mostrar en pantalla, 
+	 * posteriormente, el array de las películas que cumplan estos criterios. 
+	 * @param clienteProceso : Este método recibe como parámetro un cliente (De tipo cliente), que realizará el proceso de reserva de ticket
+	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), para acceder a la cartelera de esta misma
 	 * @return <b>ArrayList</b> : Retorna una lista con las peliculas filtradas por el criterio anterior 
 	 * */
 	public static ArrayList<Pelicula> filtrarCarteleraPorCliente(Cliente clienteProceso, SucursalCine sucursalCine){
 		ArrayList<Pelicula> carteleraPersonalizada = new ArrayList<Pelicula>();
 		for (Pelicula pelicula : sucursalCine.getCartelera()) {
-			if (pelicula.getHorarios().size() > 0 || (pelicula.IsPeliculaEnPresentacion(sucursalCine)) && (SucursalCine.getFechaActual().isBefore( pelicula.whereIsPeliculaEnPresentacion(sucursalCine).getHorarioPeliculaEnPresentacion().plusMinutes(15)))) {
+			if (pelicula.getHorarios().size() > 0 || pelicula.IsPeliculaEnPresentacion(sucursalCine) ) {
 				if ((Integer.parseInt(pelicula.getClasificacion())) <= clienteProceso.getEdad()) {
-					
 					carteleraPersonalizada.add(pelicula);
 				}
 			}
@@ -269,115 +278,81 @@ public class Pelicula{
 		return carteleraPersonalizada;
 	}
 	
-//	
 //	/**
-//	 * Description : Este método se encarga de crear un string que se imprimirá en pantalla para visualizar las 
-//	 * películas en cartelera
-//	 * @param cartelera : Este método recibe como parámetro una cartelera (De tipo ArrayList<Pelicula>) para mostrar su contenido en pantalla
-//	 * @return <b>String</b> : Retorna un string con el nombre, duración, formato y clasificacion de las películas en cartelera
+//	 * Description : Este método se encarga de verificar si la pelicula seleccionada se encuentra en presentación
+//	 * y en caso de que sí, retorna la sala de cine que la esta presentando
+//	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), para acceder a sus salas de cine
+//	 * @return <b>SalaDeCine</b> : Retorna el objeto de sala de cine que coincide con la pelicula
 //	 * */
-//	public static String mostrarCartelera(ArrayList<Pelicula> cartelera){
-//		String resultado = null;
-//		int i = 1;
-//		for (Pelicula pelicula : cartelera) {
-//			if (resultado == null) {
-//				resultado = i + ". Película: " + pelicula.getNombre() + "; Duración: " + pelicula.getDuracion().toMinutes() + " Minutos" 
-//				+ "; Formato: " + pelicula.getTipoDeFormato() + "; Precio: " + pelicula.getPrecio() 
-//				+ "; Clasifiación: "+ pelicula.getClasificacion() + "\n";
-//			}else {
-//				resultado = resultado + i + ". Película: " + pelicula.getNombre() + "; Duración: " 
-//				+ pelicula.getDuracion().toMinutes() + " Minutos"  + "; Formato: " + pelicula.getTipoDeFormato() + 
-//				"; Precio: " + pelicula.getPrecio() + "; Clasifiación: "+ pelicula.getClasificacion() + "\n";
-//			}
-//			i++;
-//		}
-//		return resultado;
-//		
-//	}
-//	
-//	//Este método es una versión resumida de los dos anteriores
-//	
-//	public Pelicula seleccionarPeliculaSolicitada(String nombrePelicula, String TipoDeFormato) {
-//		for (Pelicula pelicula : cartelera){
-//			if (pelicula.getNombre().equals(nombrePelicula) & pelicula.getTipoDeFormato().equals(TipoDeFormato)) {
-//				return pelicula;
+//	public SalaCine obtenerSalaDePeliculaEnPresentacion(SucursalCine sucursalCine) {
+//		for (SalaCine SalaDecine : sucursalCine.getSalasDeCine()) {
+//			if (this.equals(SalaDecine.getPeliculaEnPresentacion())){
+//				return SalaDecine;
 //			}
 //		}
 //		return null;
 //	}
 	
 	/**
-	 * Description : Este método se encarga de verificar si la pelicula seleccionada se encuentra en presentación
-	 * y en caso de que sí, retorna el objeto salaCine que la esta presentando
-	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza este proceso
-	 * @return <b>SalaDeCine</b> : Retorna el objeto de sala de cine que coincide con la pelicula
-	 * */
-	public SalaCine obtenerSalaDePeliculaEnPresentacion(SucursalCine sucursalCine) {
-		for (SalaCine SalaDecine : sucursalCine.getSalasDeCine()) {
-			if (this.equals(SalaDecine.getPeliculaEnPresentacion())){
-				return SalaDecine;
-			}
-		}
-		return null;
-	}
-	
-	/**
 	 * Description : Este método se encarga de generar un String que se imprimirá en pantalla con el fin de visualizar
-	 * el estado de de los asientos en la sala virtual
-	 * @param fecha : Recibe un LocalDateTime que corresponde a la llave de horarios que seleccionó el cliente
-	 * @return <b>resultado</b> : Retorna un string con las posiciones de los asientos y su disponibilidad
+	 * el estado de de los asientos en la sala virtual.
+	 * @param fecha : Recibe una fecha (De tipo LocalDateTime), que corresponde al horario que seleccionó el cliente, 
+	 * para buscar sus asientos y mostrarlos en pantalla
+	 * @return <b>String</b> : Retorna un string con las posiciones de los asientos y su disponibilidad
 	 * */
 	public String mostrarAsientosSalaVirtual(LocalDateTime fecha) {
-		StringBuilder resultado = new StringBuilder("\n");
-		resultado.append("Asientos de Cine\n");
-		resultado.append("\n(Fila: distribución horizontal de asientos)\n(Columna: distribución vertical de asientos)\n(Número de asiento: Intersección fila y columna)\n");
-		resultado.append("  --------------------------------- \n              Pantalla\n");
-	    resultado.append("    ");
+		String resultado = "\n";
+		resultado = resultado + ("Asientos de Cine\n");
+		resultado = resultado + ("\n(Fila: distribución horizontal de asientos)\n(Columna: distribución vertical de asientos)\n(Número de asiento: Intersección fila y columna)\n");
+		resultado = resultado + ("  --------------------------------- \n              Pantalla\n");
+	    resultado = resultado + ("    ");
 	    
 	    // Agregar números de columnas
-	    for (int i = 0; i < this.asientos.get(this.horarios.indexOf(fecha)).length; i++) {
-	        resultado.append(String.format("%-4d", i + 1));
+	    for (int i = 0; i < this.asientosVirtuales.get(this.horarios.indexOf(fecha)).length; i++) {
+	        resultado = resultado + (String.format("%-4d", i + 1));
 	    }
-	    resultado.append("\n");
+	    resultado = resultado + ("\n");
 
 	    // Mostrar asientos
-	    for (int i = 0; i < this.asientos.get(this.horarios.indexOf(fecha)).length; i++) {
-	        resultado.append(String.format("%-2d ", i + 1));
-	        for (int j = 0; j < this.asientos.get(this.horarios.indexOf(fecha)).length; j++) {
-	            resultado.append("[");
-	            resultado.append((this.asientos.get(this.horarios.indexOf(fecha))[i][j] == 1) ? "X" : "O");
-	            resultado.append("] ");
+	    for (int i = 0; i < this.asientosVirtuales.get(this.horarios.indexOf(fecha)).length; i++) {
+	        resultado = resultado + (String.format("%-2d ", i + 1));
+	        for (int j = 0; j < this.asientosVirtuales.get(this.horarios.indexOf(fecha)).length; j++) {
+	            resultado = resultado + ("[");
+	            resultado = resultado + ((this.asientosVirtuales.get(this.horarios.indexOf(fecha))[i][j] == 1) ? "X" : "O");
+	            resultado = resultado + ("] ");
 	        }
-	        resultado.append("\n");
+	        resultado = resultado + ("\n");
 	    }
 
-	    return resultado.toString();
+	    return resultado;
 	}
 	
 	/**
-	 * Description : Este método se encarga cambiar la desponibilidad de un índice de la salaVirtual
+	 * Description : Este método se encarga cambiar la disponibilidad de un asiento de la salaVirtual.
 	 * @param fecha : Recibe el dato de la fecha, en formato localDateTime, seleccionado por el cliente que se pasará a la llave de horarios
 	 * @param fila : Recibe el número de la fila seleccionada por el cliente
 	 * @param columna : Recibe el número de la columna seleccionada por el cliente
 	 * */
 	public void modificarSalaVirtual(LocalDateTime fecha, int fila, int columna) {
 	    
-		if (this.asientos.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] == 0) {
-			this.asientos.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] = 1;	
+		if (this.asientosVirtuales.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] == 0) {
+			this.asientosVirtuales.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] = 1;	
 		}else {
-			this.asientos.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] = 0;	
+			this.asientosVirtuales.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] = 0;	
 		}	
 	}
 	
 	/**
 	 * Description : Este método se encarga revisar la desponibilidad de un índice de la salaVirtual
-	 * @param day : Recibe el dato del localDateTime seleccionado por el cliente con la que se obtendrá su valor del LinkedHashMap
-	 * @param fila : Recibe el número de la fila seleccionada por el cliente
-	 * @param columna : Recibe el número de la columna seleccionada por el cliente
+	 * @param fecha : Recibe el dato del horario (De tipo localDateTime) seleccionado por el cliente con la que se obtendrán sus asientos, 
+	 * correspondientes a la sala de cine virtual.
+	 * @param fila : Recibe el número de la fila seleccionada por el cliente.
+	 * @param columna : Recibe el número de la columna seleccionada por el cliente.
+	 * @return <b>boolean</b> : Este método retorna un boolean que representa la disponibilidad del asiento selccionado por el cliente.
 	 * */
 	public boolean isDisponibilidadAsientoSalaVirtual(LocalDateTime fecha, int fila, int columna) {
 	    
-		if (this.asientos.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] == 0) {
+		if (this.asientosVirtuales.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] == 0) {
 			return true;	
 		}else {
 			return false;	
@@ -385,10 +360,9 @@ public class Pelicula{
 	}
 	
 	/**
-	 * Description : Este método se encarga de crear una matriz que representa la sala virtual
-	 * posteriormente esta se pasa como valor a una llave y se introducen en el diccionario de horarios
-	 * @param fecha : Este método recibe del administrador un LocalDateTime para crear la salaDeCineVirtual 
-	 * @return <b>Void</b> : No retorna nada, solo añade un par clave, valor a horarios
+	 * Description : Este método se encarga de crear una matriz que representa la sala virtual posteriormente esta se añade al array 
+	 * de asientos virtuales de la película y se añade el horario al array de horarios.
+	 * @param fecha : Este método recibe una fecha (De tipo LocalDateTime) para crear la salaDeCineVirtual.
 	 * */
 	public void crearSalaVirtual(LocalDateTime fecha) {
 		int[][] nuevaSalaVirtual = new int[8][8];
@@ -400,7 +374,7 @@ public class Pelicula{
 		}
 		
 		this.horarios.add(fecha);
-		this.asientos.add(nuevaSalaVirtual);
+		this.asientosVirtuales.add(nuevaSalaVirtual);
 		
 	}
 	
@@ -414,7 +388,7 @@ public class Pelicula{
 		boolean isAsientosDisponibles = false;
 		
 		for (LocalDateTime horario : this.horarios) {
-			for (int[] filaAsientos : this.asientos.get(horarios.indexOf(horario))) {
+			for (int[] filaAsientos : this.asientosVirtuales.get(horarios.indexOf(horario))) {
 				for (int asiento : filaAsientos) {
 					if (asiento == 0) {
 						isAsientosDisponibles = true;
@@ -430,9 +404,9 @@ public class Pelicula{
 	}
 	
 	/**
-	 * Description : Este método se encarga de mostrar un listado con los horarios disponibles de la pelicula 
-	 * solicitada por el cliente.
-	 * @return <b>String</b> : Retorna un string que contiene los horarios disponibles de la película de forma enumerada y organizada.
+	 * Description : Este método se encarga de mostrar un listado con los horarios disponibles de la pelicula solicitada por el cliente.
+	 * @return <b>String</b> : Retorna un string que contiene los horarios disponibles de la película de forma enumerada y organizada 
+	 * para mostrar en pantalla.
 	 * */
 	public String mostrarHorarioPelicula(ArrayList<LocalDateTime> horariosPelicula) {
 		String horarios = null;
@@ -448,33 +422,13 @@ public class Pelicula{
 		return horarios;
 	}
 	
-//	/**
-//	 * Description : Este método se encarga de retornar la llave del LinkedHashMap
-//	 * a partir de la posición pasada como parámetro
-//	 * @param posicion : Recibe un entero que representa la posición del horario 
-//	 * seleccionado por el usuario luego de mostrarHorarios de esta película
-//	 * @return <b>LocalDateTime</b> : Retorna la localDateTime correspondiente a la elcción hecha por el usuario
-//	 * el formato LinkedHashMap garantiza que siempre retorna la localDateTime deseada
-//	 * */
-//	public LocalDateTime obtenerHorario(int posicion){
-//		int i = 0;
-//		LocalDateTime horarioDeseado = null;
-//		for (LocalDateTime horario : this.getHorarios().keySet()) {
-//			if (i == (posicion - 1)) {
-//				horarioDeseado = horario;
-//			}
-//			i++;
-//		}
-//		
-//		return horarioDeseado;
-//	}
-	
 	/**
 	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
-	 * utilidad de este método radica en que si retorna algo distinto de null se ejecuta un menú adicional antes de mostrar el
-	 * horario de la pelicula seleccionada por el usuario
+	 * utilidad de este método radica en que, si retorna algo distinto de null, se ejecuta un menú adicional antes de mostrar el
+	 * listado de horarios de la pelicula seleccionada por el usuario.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza este proceso
-	 * @return <b>SalaCine</b> : Este método retorna la salaDeCine donde está siendo proyectada la película, en caso de estarlo,
+	 * para obtener sus salas de cine.
+	 * @return <b>SalaCine</b> : Este método retorna la sala de cine donde está siendo proyectada la película, en caso de estarlo,
 	 * si la película no se encuentra en presentacion, retorna null.
 	 * */
 	public SalaCine whereIsPeliculaEnPresentacion(SucursalCine sucursalCine) {
@@ -493,11 +447,11 @@ public class Pelicula{
 	
 	/**
 	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
-	 * utilidad de este método radica en que retornará true en caso de encontrarla, no lleve más de 15 minutos en presentación 
-	 * y tenga algún asiento disponible, respecto a este retorno, se ejecutará un menú determinado en el proceso de la funcionalidad 1
-	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza este proceso
-	 * @return <b>boolean</b> : Este método retorna un boolean, en caso de encontrar que la película se encuentra en presentación,
-	 * si la película no se encuentra en presentacion, retorna false.
+	 * utilidad de este método radica en que retornará true en caso de: 1. Encontrarla, 2. No lleva más de 15 minutos en presentación 
+	 * y 3. Tenga algún asiento disponible, respecto a este retorno, se ejecutará un menú determinado en el proceso de la funcionalidad 1.
+	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza este proceso, para
+	 * obtener sus salas de cine.
+	 * @return <b>boolean</b> : Este método retorna un boolean, que representa si la película cumple, o no, con los criterios.
 	 * */
 	public boolean IsPeliculaEnPresentacion(SucursalCine sucursalCine) {;
 		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
@@ -520,15 +474,15 @@ public class Pelicula{
 	}
 	
 	/**
-	 * Description: Este método se encarga de buscar la salaDeCine en el array de salasDeCine
-	 *  que tiene el mismo numero de sala de la película para luego retornarlo
-	 *  @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) para realizar la busqueda en su array de salas de cine
+	 * Description: Este método se encarga de buscar la salaDeCine en el array de salasDeCine que tiene el mismo numero de sala de 
+	 * la película para luego retornarlo.
+	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) para realizar la busqueda en su array de salas de cine.
 	 * @return : Este método retorna la salaDeCine que tiene el mismo número de sala.
 	 * */
 	public SalaCine obtenerSalaDeCineConCodigo(SucursalCine sucursalCine) {
 		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
 			try {
-				if (this.getNumeroDeSala() == salaDeCine.getNumeroSala()) {
+				if (this.numeroDeSala == salaDeCine.getNumeroSala()) {
 					return salaDeCine;
 				}
 			}catch(NullPointerException e) {
@@ -537,84 +491,6 @@ public class Pelicula{
 			
 		}
 		return null;
-	}
-
-//Esto fue implementado directamente desde la clase SucursalCine
-//	/**
-//	 * Description: Este método se encarga de actualizarPeliculasEnPresentación de todas las sala de cine implementadas,
-//	 * para ver más a detalle como se realiza este proceso se recomienda leer la documentación de actualizarPeliculasEnPresentacion 
-//	 * en la clase SalaCine
-//	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), para actualizar las salas de cine propias de esta sede
-//	 * @return: <b>void</b> : Este método no retorna nada, solo actualiza las salaDeCine
-//	 * */
-//	public static void actualizarSalasDeCine(SucursalCine sucursalCine) {
-//		//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
-//		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
-//			try {
-//				if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SucursalCine.getFechaActual()) ) ) {
-//					salaDeCine.actualizarPeliculasEnPresentacion(sucursalCine);
-//				}
-//			}catch(NullPointerException e) {
-//				salaDeCine.actualizarPeliculasEnPresentacion(sucursalCine);
-//			}
-//		}
-//	}
-	
-	/**
-	 * Description : Este método se encarga de generar un listado de la salas de cine con información relevante de estas,
-	 * con el fin de que el usuario elija una de las opciones disponibles para ingresar
-	 * @return <b>String</b>: Retorna la lista de las salas de cine disponibles 
-	 * */
-	public static String mostrarSalaCine(ArrayList<SalaCine> salasDeCine) {
-		String resultado = null;
-		int i = 1;
-		
-		for (SalaCine salaDeCine : salasDeCine) {
-			
-			if (salaDeCine.getPeliculaEnPresentacion() == null) {
-				continue;
-			}
-			
-			if (resultado == null) {
-				resultado = i + ". Número sala de cine: " + salaDeCine.getNumeroSala() 
-				+ "; Formato de sala de cine : " + salaDeCine.getTipoDeSala()
-				+ "; Película en presentación : " + salaDeCine.getPeliculaEnPresentacion().getNombre()
-				+ "; Horario película : " + salaDeCine.getHorarioPeliculaEnPresentacion();
-			}else {
-				resultado = resultado + "\n" + i + ". Número sala de cine: " + salaDeCine.getNumeroSala() 
-				+ "; Formato de sala de cine : " + salaDeCine.getTipoDeSala()
-				+ "; Película en presentación : " + salaDeCine.getPeliculaEnPresentacion().getNombre()
-				+ "; Horario película : " + salaDeCine.getHorarioPeliculaEnPresentacion();
-			}
-			
-			i++;
-			
-		}
-		
-		return resultado;
-	}
-	
-	/**
-	 * Description : Este método se encarga de filtrar las salas de cine según si su película aún se encuentra en presentación,
-	 * para esto verifica que el horario de la película en presentación más su duración no sea menor a la hora actual
-	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza la busqueda desde sus salas de cine
-	 * @return  <b>ArrayList<SalaCine></b> : Este método retorna las salas de cine (De tipo ArrayList<SalaCine>)
-	 * que aún tienen su película en presentación, con el fin de ser las únicas que serán mostradas en pantalla durante el proceso de la funcionalidad 1 
-	 * */
-	public static ArrayList<SalaCine> filtrarSalasDeCine (SucursalCine sucursalCine){
-		ArrayList<SalaCine> salasDeCineDisponibles = new ArrayList<>();
-		
-		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
-			try {
-				if (salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SucursalCine.getFechaActual())) {
-					salasDeCineDisponibles.add(salaDeCine);
-				}
-			}catch(NullPointerException e) {
-				continue;
-			}
-		}
-		
-		return salasDeCineDisponibles;
 	}
 	
 }

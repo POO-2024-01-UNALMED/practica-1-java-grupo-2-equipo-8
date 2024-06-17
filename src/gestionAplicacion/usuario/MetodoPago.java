@@ -11,7 +11,7 @@ public class MetodoPago{
 	private double descuentoAsociado;
 	private double limiteMaximoPago;
 	private static ArrayList<MetodoPago> metodosDePagoDisponibles = new ArrayList<>();
-	private static ArrayList<MetodoPago> metodosDePagoUsados = new ArrayList<>();
+	//private static ArrayList<MetodoPago> metodosDePagoUsados = new ArrayList<>();
 	private int tipo;
 	
 	
@@ -58,12 +58,12 @@ public class MetodoPago{
 		//Se recorre la lista de los medios de pagos disponibles en la lista del cliente.
 		for (MetodoPago metodoPago : cliente.getMetodosDePago()) {
 				if (resultado == null) {
-					resultado = i + ". "+ metodoPago.getNombre()+ " Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "%" +"\n";
+					resultado = i + ". "+ metodoPago.getNombre()+ " - Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "% - Límite Máximo de pago: " + metodoPago.limiteMaximoPago + "\n";
 				}else {
 					if (metodoPago.getNombre() == "Puntos") {
 						resultado = resultado + i + ". "+ metodoPago.getNombre() + " Saldo: " + (int)(metodoPago.getLimiteMaximoPago());
 						continue;}
-					resultado = resultado + i + ". " + metodoPago.getNombre() +" Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100)+ "%" + "\n";
+					resultado = resultado + i + ". " + metodoPago.getNombre() + " - Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "% -  Límite Máximo de pago: " + metodoPago.limiteMaximoPago + "\n";
 					
 				}
 				i++;
@@ -238,8 +238,9 @@ public class MetodoPago{
 			}
 			
 		}
-		//Pasamos el metodoDePago a metodosDePagoUsados
-		MetodoPago.getMetodosDePagoUsados().add(this);
+//		//Pasamos el metodoDePago a metodosDePagoUsados
+//		MetodoPago.getMetodosDePagoUsados().add(this);
+		
 		//Eliminamos su referencia de los metodos de pago asociados al cliente
 		cliente.getMetodosDePago().remove(this);
 				
@@ -298,14 +299,14 @@ public class MetodoPago{
 	}
 
 
-	public static ArrayList<MetodoPago> getMetodosDePagoUsados() {
-		return metodosDePagoUsados;
-	}
-
-
-	public static void setMetodosDePagoUsados(ArrayList<MetodoPago> metodosDePagoUsados) {
-		MetodoPago.metodosDePagoUsados = metodosDePagoUsados;
-	}
+//	public static ArrayList<MetodoPago> getMetodosDePagoUsados() {
+//		return metodosDePagoUsados;
+//	}
+//
+//
+//	public static void setMetodosDePagoUsados(ArrayList<MetodoPago> metodosDePagoUsados) {
+//		MetodoPago.metodosDePagoUsados = metodosDePagoUsados;
+//	}
 }
 
 	

@@ -13,27 +13,32 @@ import gestionAplicacion.servicios.Servicio;
 import gestionAplicacion.usuario.Ticket;
 
 public class SucursalCine {
+	
+	private static LocalDateTime fechaActual = LocalDateTime.now().withMinute(14);
+	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
+	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
+	
+	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
+	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 0);
+	
 	private String lugar;
-	private static LocalDateTime fechaActual = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0);
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
 	private ArrayList<Producto> inventarioCine = new ArrayList<>();
 	private ArrayList<Pelicula> cartelera = new ArrayList<>();
 	private ArrayList<Ticket> ticketsCreados = new ArrayList<>();
 	private ArrayList<Servicio> servicios = new ArrayList<>();
-	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
-	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
-	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
-	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 0);
+	
+	
 	//private static ArrayList<Cliente> clientes = new ArrayList<>();
 	
 	//Methods
 	
 	/**
 	 * Description : Este método se encarga de crear un string que se imprimirá en pantalla para visualizar las 
-	 * sucursales de nuestra franquicia a nivel nacional
-	 * @return <b>String</b> : Retorna un string con el lugar de nuestras distintas dependencias, con el fin de que el cliente elija a cual de estas desea
-	 * ingresar
+	 * sucursales de nuestra franquicia a nivel nacional.
+	 * @return <b>String</b> : Retorna un string con el lugar de nuestras distintas dependencias, con el fin de que el cliente 
+	 * elija a cual de estas desea ingresar.
 	 * */
 	public static String mostrarSucursalCine(){
 		String resultado = null;
@@ -50,19 +55,19 @@ public class SucursalCine {
 		
 	}
 	
-	/**
-	 * Description : Este método se encarga de añadir las salas de cine a las sucursales de cine correspondientes
-	 * @return <b>void</b> : Este método no retorna nada, solo se encarga de añadir las salas de cine a las sucursales de cine correspondientes
-	 * */
-	public static void añadirSalasCineSede () {
-		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
-			for (SalaCine salaCine : SalaCine.getSalasCine()) {
-				if (salaCine.getUbicacionSede().equals(sede)) {
-					sede.getSalasDeCine().add(salaCine);
-				}
-			}
-		}
-	}
+//	/**
+//	 * Description : Este método se encarga de añadir las salas de cine a las sucursales de cine correspondientes
+//	 * @return <b>void</b> : Este método no retorna nada, solo se encarga de añadir las salas de cine a las sucursales de cine correspondientes
+//	 * */
+//	public static void añadirSalasCineSede () {
+//		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+//			for (SalaCine salaCine : SalaCine.getSalasCine()) {
+//				if (salaCine.getUbicacionSede().equals(sede)) {
+//					sede.getSalasDeCine().add(salaCine);
+//				}
+//			}
+//		}
+//	}
 	
 	/**
 	 * Description : Este método se encarga de actualizar las salas de todas las sedes, para esto, iteramos sobre el ArrayList de las sedes,
@@ -86,48 +91,65 @@ public class SucursalCine {
 	}
 	
 	/**
-	 * Description : Este método se encarga de eliminar los horarios que ya no pueden ser presentados luego de un salto de tiempo (Usar la sala de espera)
-	 * de todas las películas, para esto, obtenemos la película con la mayor duración, con la idea de no eliminar una película que aún puede ser
-	 * presentada, luego, iteramos sobre los horarios de todas las películas y comparamos si es menor al horario actual luego de 
-	 * que le restamos a este la duración máxima obtenida anteriormente, en caso de que sí, lo eliminamos.  
+	 * Description : Este método se encarga de eliminar los horarios que ya no pueden ser presentados luego de un salto de tiempo 
+	 * (Usar la sala de espera o usar un thread) de todas las películas de una sucursal, para esto, obtenemos la película con la mayor duración, 
+	 * con la idea de no eliminar una película que aún puede ser presentada, luego, iteramos sobre los horarios de todas las películas 
+	 * y comparamos si es menor al horario actual luego de  que le restamos a este la duración máxima obtenida anteriormente, 
+	 * en caso de que sí, lo eliminamos.  
 	 * */
 	public static void dropHorariosVencidos() {
-		Duration maxDuration = Duration.ofSeconds(0);
-		Duration auxMaxDuration = Duration.ofSeconds(0);
-		int comparacionDuraciones = 0;
 		
-		//Obtenemos la película con la duración máxima
-		for (Pelicula pelicula : SucursalCine.getPeliculasDisponibles()) {
-			auxMaxDuration = pelicula.getDuracion();
-			comparacionDuraciones = auxMaxDuration.compareTo(maxDuration);
-			
-			if(comparacionDuraciones > 0) {
-				maxDuration = auxMaxDuration;
-			}
-			
-		}
+		Duration maxDuration;
+		Duration auxMaxDuration;
+		int comparacionDuraciones;
 		
-		ArrayList<LocalDateTime> horariosPeliculaAEliminar = new ArrayList<>();
-		//Eliminamos con certeza todos los horarios que fueron omitidos
-		for (Pelicula pelicula : SucursalCine.getPeliculasDisponibles()) {
-			for (LocalDateTime horario : pelicula.getHorarios()) {
-				if (horario.isBefore(fechaActual.minus(maxDuration))) {
-					horariosPeliculaAEliminar.add(horario);
+		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+			maxDuration = Duration.ofSeconds(0);
+			auxMaxDuration = Duration.ofSeconds(0);
+			comparacionDuraciones = 0;
+			
+			//Obtenemos la película con la duración máxima de las películas en cartelera de la sede
+			for (Pelicula pelicula : sede.getCartelera()) {
+				auxMaxDuration = pelicula.getDuracion();
+				comparacionDuraciones = auxMaxDuration.compareTo(maxDuration);
+				
+				if(comparacionDuraciones > 0) {
+					maxDuration = auxMaxDuration;
 				}
-			}
-			for (LocalDateTime horarioAEliminar : horariosPeliculaAEliminar) {
-				pelicula.getHorarios().remove(horarioAEliminar);
+				
 			}
 			
-			horariosPeliculaAEliminar.clear();
+			//Creamos un array que almacena los horarios a eliminar de cada pelícla
+			ArrayList<LocalDateTime> horariosPeliculaAEliminar = new ArrayList<>();
+			
+			for (Pelicula pelicula : sede.getCartelera()) {
+				for (LocalDateTime horario : pelicula.getHorarios()) {
+					//Buscamos cuáles horarios podemos eliminar y los guardamos en un array
+					if (horario.isBefore(fechaActual.minus(maxDuration))) {
+						horariosPeliculaAEliminar.add(horario);
+					}
+				}
+				
+				//Iteramos sobre el array de horarios a eliminar
+				for (LocalDateTime horarioAEliminar : horariosPeliculaAEliminar) {
+					//Eliminamos los horarios y sus asientos correspondientes
+					pelicula.getAsientosVirtuales().remove(pelicula.getHorarios().indexOf(horarioAEliminar));
+					pelicula.getHorarios().remove(horarioAEliminar);
+				}
+				
+				//Limpiamos el array con los horarios a eliminar para continuar con la siguiente película
+				horariosPeliculaAEliminar.clear();
+				
+			}
 		}
 	}
 	
 	/**
 	 * Description : Este método se ecanrga de crear 20 horarios por cada película en cartelera de la sucursal de cine, teniendo en cuenta los siguientes
-	 * criterios: 1. El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras instalaciones
-	 * 2. La hora a la que termina la película es menor a la hora de cierre.
-	 * @return <b>void</b>: Este método no retorna nada.
+	 * criterios: 
+	 * 1. El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras instalaciones
+	 * 2. La hora a la que termina la película es menor a la hora de cierre 
+	 * 3. Al finalizar una película se tiene en cuenta el tiempo de limpieza de la sala de cine.
 	 * */
 	public void crearHorariosPeliculasPorSala() {
 		
@@ -137,8 +159,8 @@ public class SucursalCine {
 		
 		for(SalaCine salaDeCine : this.salasDeCine) {
 			
-			LocalDateTime horarioParaPresentar = SucursalCine.fechaActual;
-			LocalDateTime auxHorarioParaPresentar = SucursalCine.fechaActual.plusDays(1);
+			LocalDateTime horarioParaPresentar = SucursalCine.fechaActual.withMinute(0).withSecond(0).withNano(0);
+			LocalDateTime auxHorarioParaPresentar = horarioParaPresentar.plusDays(1);
 			
 			for(Pelicula pelicula : this.cartelera) {
 				if (salaDeCine.getNumeroSala() == pelicula.getNumeroDeSala()) {
@@ -188,7 +210,6 @@ public class SucursalCine {
 	/**
 	 * Description : Este método se encarga de iterar sobre el array de Sucursales, con el fin de que cada sucursal se encargue de llamar al método 
 	 * crearHorarioPeliculasPorSala().
-	 * @return <b>void</b> : Este método no retorna nada. 
 	 * */
 	public static void crearHorariosPeliculasPorSucursal() {
 		for (SucursalCine sede : SucursalCine.sucursalesCine) {

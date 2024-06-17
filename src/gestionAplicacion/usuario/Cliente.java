@@ -101,7 +101,6 @@ public class Cliente {
 		return cliente1;
 	}
 	
-	public Ticket generarTicket() {return new Ticket();}
 	public void editarCuenta() {}
 	public void modificarMetodosDePago() {}
 	
@@ -141,9 +140,9 @@ public class Cliente {
 	/**
 	 * Description: Este método se encarga de mostrar al cliente las sala de cine a las que puede ingresar
 	 * examinando su array de tickets e imprimiendo en pantalla información relevante de estos para facilitar
-	 * la elección de la sala de cine a ingresar
+	 * la elección de la sala de cine a ingresar.
 	 * @return: <b>String</b> : Este método se encarga de retornar un string con el nombre de la película
-	 * el número de la sala de cine y la fecha de la película de cada uno de los tickets asociados del cliente
+	 * el número de la sala de cine y la fecha de la película de cada uno de los tickets asociados del cliente.
 	 * */
 	public String mostrarTicketsParaUsar() {
 		String tickets = null;
@@ -168,7 +167,6 @@ public class Cliente {
 	 * Description: Este método se encarga de eliminar los tickets cuyo horario, más la duración de la película para la cuál fue adquirido 
 	 * es menor a la fecha actual, para esto, creamos un array en el cuál almacenamos los tickets que cumplan la condición anterior y posteriormente
 	 * los eliminamos.
-	 * @return <b>void</b> : Este método no retorna nada (void), solo elimina los tickets caducados.
 	 * */
 	public void dropTicketsCaducados() {
 		ArrayList<Ticket> ticketsCaducados = new ArrayList<>();
@@ -186,11 +184,11 @@ public class Cliente {
 	
 	/**
 	 * Description : Este método se encarga de verificar si el cliente posee algún ticket correspondiente a alguna de las películas en cartelera
-	 * de la sede que se pasa como parámetro
+	 * de la sede que se pasa como parámetro.
 	 * @param sucursalCineProceso : Este método recibe como parámetro la sede (De tipo SucursalCine) desde la cuál el cliente esta accediendo a nuestros
-	 * servicios
+	 * servicios.
 	 * @return <b>boolean</b> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
-	 * o a la sala de espera si este posee algún ticket válido.
+	 * o a la sala de espera si este posee algún ticket de esta sucursal.
 	 * */
 	public boolean disponibilidadTicketParaSede(SucursalCine sucursalCineProceso) {
 		for (Ticket ticket : this.getTickets()) {
@@ -205,7 +203,7 @@ public class Cliente {
 	
 	/**
 	 * Description : Este método se encarga de encontrar el género más visto por un cliente, para realizar este proceso, iteramos sobre su historial
-	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en distintos arraylists, conservando
+	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en un arraylists distinto, conservando
 	 * el mismo índice, por último, evaluamos cual género tiene más visualizaciones y se retorna este, en caso de coincidir en visualizaciones con 
 	 * otro género, retornamos el género más reciente.
 	 * @return <b>String</b> : Este método retorna el género (De tipo String) con más visualizaciones.  
@@ -248,7 +246,6 @@ public class Cliente {
 		
 		return generoMasVisto;
 	}
-	
 	
 	public void mostrarCodigosDescuento() {
 		
@@ -397,11 +394,13 @@ public class Cliente {
 		this.historialDePedidos = historialDePedidos;
 	}
 	
-	
-	
-	
-	
-	
+	public ArrayList<Producto> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(ArrayList<Producto> pedidos) {
+		this.pedidos = pedidos;
+	}
 	
 	
 }
