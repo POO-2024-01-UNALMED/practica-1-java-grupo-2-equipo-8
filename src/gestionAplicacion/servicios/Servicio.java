@@ -1,7 +1,6 @@
 package gestionAplicacion.servicios;
 
 import java.util.ArrayList;
-
 import gestionAplicacion.usuario.Cliente;
 
 public abstract class Servicio {
@@ -18,7 +17,7 @@ public abstract class Servicio {
 		this.nombre = nombre;
 	}
 	
-	// Metodos abstractos
+	// Metodos abstractos y ligadura Dinamica
 	
 	public abstract ArrayList<Producto> actualizarInventario();
 	
@@ -60,10 +59,14 @@ public abstract class Servicio {
 		}
 	}
 	
+
+	//Ligadura Estatica
+	
 	public Producto validarBono(String codigo , Servicio servicio){
+
 		Producto producto = new Producto();
 		for (int i=0; i < Bono.getBonosCreados().size();i++) {
-			if (Bono.getBonosCreados().get(i).getCodigo() == codigo && Bono.getBonosCreados().get(i).getTipoServicio().equals(servicio)) {
+			if (Bono.getBonosCreados().get(i).getCodigo() == codigo && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
 				producto = Bono.getBonosCreados().get(i).getProducto();
 				Bono.getBonosCreados().remove(i);
 				return producto;

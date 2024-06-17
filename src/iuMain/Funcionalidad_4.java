@@ -80,320 +80,141 @@ public class Funcionalidad_4 {
 				casoValido = false;
 			}
 		}while(casoValido);
+						
 		
-			
-		double maximo = ClienteActual.getMetodosDePago().get(0).getLimiteMaximoPago();
-		double maximo2 = ClienteActual.getMetodosDePago().get(1).getLimiteMaximoPago();
-		double maximo3 = ClienteActual.getMetodosDePago().get(2).getLimiteMaximoPago();
-		double maximo4 = ClienteActual.getMetodosDePago().get(3).getLimiteMaximoPago();
-		double maximo5 = 0;
-		if (ClienteActual.getMetodosDePago().size()>4) {
-			maximo5 = ClienteActual.getMetodosDePago().get(4).getLimiteMaximoPago();
-		}
+		int eleccion1 = 0;
+		boolean finCiclo = true;
+		
 		
 		do {
 			
 			try {
 				System.out.println("•¿Deseas recargar la tarjeta?");
 				System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir");
-				int eleccion1 = (int)Administrador.readLong();
-				boolean finCiclo = true;
-				if (eleccion1==1) {
-					
-					double recargaMaxima = 0;
-					for (MetodoPago metodo : ClienteActual.getMetodosDePago()) {
-						recargaMaxima+= metodo.getLimiteMaximoPago();
-					}
-					
-					System.out.println("•Escoja su metodo de pago");
-					System.out.println("•El valor maximo a recargar por proceso es: $"+recargaMaxima+" intente no superar este valor");
-					System.out.println("•Ademas Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago para completar la recarga");
-					MetodoPago.asignarMetodosDePago(ClienteActual);
-					System.out.println(MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-					int eleccion2 = (int)Administrador.readLong();
-					System.out.print("•¿Cuanto desea recargar?: ");
-					double montoRecarga = (double)Administrador.readLong();
-					if (montoRecarga>recargaMaxima) {System.out.println("•El valor a recargar no puede superar $"+recargaMaxima+"\n•Se recargarán solo $"+recargaMaxima+", para recargar mas vuelva a hacer el proceso\n");montoRecarga = recargaMaxima;}
-					espera(2000);
-					while (finCiclo) {
-						
-						switch (eleccion2) {
-						
-						case 1:
-							
-							MetodoPago metodoPagoCliente = Arkade.encontrarMetodoPagoCliente("Bancolombia", ClienteActual.getMetodosDePago());
-							
-							if (metodoPagoCliente.getLimiteMaximoPago()==0) {
-								System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente.getLimiteMaximoPago())+" restantes");
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-								break;
-							}
-							
-							boolean Break = true;
-							int issue = 0;
-							do {
-								System.out.println("•Por favor confirma el pago\n1.Confirmar\n2.Cancelar");
-								int confirmacion = (int) Administrador.readLong();
-								if (confirmacion==1) {Break = false;}
-								else if (confirmacion==2) {barraCarga("Cancelando");Break= false;finCiclo = false;issue=1;}
-								else {System.out.println("•Opcion invalida");}
-							}while(Break);
-							if (issue==1) {break;}
-							barraCarga("Procesando recarga");
-							
-							if (montoRecarga>metodoPagoCliente.getLimiteMaximoPago()) {
-								ClienteActual.getCuenta().ingresarSaldo(metodoPagoCliente.getLimiteMaximoPago());
-								System.out.println("\n•Se han recargado: $"+metodoPagoCliente.getLimiteMaximoPago()+" exitosamente\n•Sin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente.getNombre()+
-										"\n•Por favor escoja otro metodo de pago para pagar los $"+(montoRecarga-metodoPagoCliente.getLimiteMaximoPago())+
-										" restantes");
-								
-								montoRecarga = (double)montoRecarga-metodoPagoCliente.getLimiteMaximoPago();
-								metodoPagoCliente.setLimiteMaximoPago(0);
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-							}
-							else {
-								ClienteActual.getCuenta().ingresarSaldo(montoRecarga);
-								System.out.println("\n•Se han recargado: $"+montoRecarga+" exitosamente");
-								finCiclo = false;
-							}
-							break;
-						case 2:
-							
-							MetodoPago metodoPagoCliente2 = Arkade.encontrarMetodoPagoCliente("AV Villas", ClienteActual.getMetodosDePago());
-							
-							if (metodoPagoCliente2.getLimiteMaximoPago()==0) {
-								System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente2.getLimiteMaximoPago())+" restantes");
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-								break;
-							}
-							
-							boolean Break2 = true;
-							int issue2 = 0;
-							do {
-								System.out.println("•Por favor confirma el pago\n1.Confirmar\n2.Cancelar");
-								int confirmacion = (int) Administrador.readLong();
-								if (confirmacion==1) {Break2 = false;}
-								else if (confirmacion==2) {barraCarga("Cancelando");Break2= false;finCiclo = false;issue2=1;}
-								else {System.out.println("•Opcion invalida");}
-							}while(Break2);
-							if (issue2==1) {break;}
-							barraCarga("Procesando recarga");
-							
-							if (montoRecarga>metodoPagoCliente2.getLimiteMaximoPago()) {
-								ClienteActual.getCuenta().ingresarSaldo(metodoPagoCliente2.getLimiteMaximoPago());
-								System.out.println("\n•Se han recargado: $"+metodoPagoCliente2.getLimiteMaximoPago()+" exitosamente\n•Sin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente2.getNombre()+
-										"\n•Por favor escoja otro metodo de pago para pagar los $"+(montoRecarga-metodoPagoCliente2.getLimiteMaximoPago())+
-										" restantes");
-								
-								montoRecarga = (double)montoRecarga-metodoPagoCliente2.getLimiteMaximoPago();
-								metodoPagoCliente2.setLimiteMaximoPago(0);
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-							}
-							else {
-								ClienteActual.getCuenta().ingresarSaldo(montoRecarga);
-								System.out.println("\n•Se han recargado: $"+montoRecarga+" exitosamente");
-								finCiclo = false;
-							}
-							break;
-						case 3:
-	
-							
-							MetodoPago metodoPagoCliente3 = Arkade.encontrarMetodoPagoCliente("Banco Agrario", ClienteActual.getMetodosDePago());
-							
-							if (metodoPagoCliente3.getLimiteMaximoPago()==0) {
-								System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente3.getLimiteMaximoPago())+" restantes");
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-								break;
-							}
-							
-							boolean Break3 = true;
-							int issue3 = 0;
-							do {
-								System.out.println("•Por favor confirma el pago\n1.Confirmar\n2.Cancelar");
-								int confirmacion = (int) Administrador.readLong();
-								if (confirmacion==1) {Break3 = false;}
-								else if (confirmacion==2) {barraCarga("Cancelando");Break3= false;finCiclo = false;issue3=1;}
-								else {System.out.println("•Opcion invalida");}
-							}while(Break3);
-							if (issue3==1) {break;}
-							barraCarga("Procesando recarga");
-							
-							if (montoRecarga>metodoPagoCliente3.getLimiteMaximoPago()) {
-								ClienteActual.getCuenta().ingresarSaldo(metodoPagoCliente3.getLimiteMaximoPago());
-								System.out.println("\n•Se han recargado: $"+metodoPagoCliente3.getLimiteMaximoPago()+" exitosamente\n•Sin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente3.getNombre()+
-										"\n•Por favor escoja otro metodo de pago para pagar los $"+(montoRecarga-metodoPagoCliente3.getLimiteMaximoPago())+
-										" restantes");
-								
-								montoRecarga = (double)montoRecarga-metodoPagoCliente3.getLimiteMaximoPago();
-								metodoPagoCliente3.setLimiteMaximoPago(0);
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-							}
-							else {
-								ClienteActual.getCuenta().ingresarSaldo(montoRecarga);
-								System.out.println("\n•Se han recargado: $"+montoRecarga+" exitosamente");
-								finCiclo = false;
-							}
-							break;
-						case 4:
-	
-							
-							MetodoPago metodoPagoCliente4 = Arkade.encontrarMetodoPagoCliente("Efectivo", ClienteActual.getMetodosDePago());
-							
-							if (metodoPagoCliente4.getLimiteMaximoPago()==0) {
-								System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente4.getLimiteMaximoPago())+" restantes");
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-								break;
-							}
-							
-							boolean Break4 = true;
-							int issue4 = 0;
-							do {
-								System.out.println("•Por favor confirma el pago\n1.Confirmar\n2.Cancelar");
-								int confirmacion = (int) Administrador.readLong();
-								if (confirmacion==1) {Break4 = false;}
-								else if (confirmacion==2) {barraCarga("Cancelando");Break4= false;finCiclo = false;issue4=1;}
-								else {System.out.println("•Opcion invalida");}
-							}while(Break4);
-							if (issue4==1) {break;}
-							barraCarga("Procesando recarga");
-							
-							if (montoRecarga>metodoPagoCliente4.getLimiteMaximoPago()) {
-								ClienteActual.getCuenta().ingresarSaldo(metodoPagoCliente4.getLimiteMaximoPago());
-								System.out.println("\n•Se han recargado: $"+metodoPagoCliente4.getLimiteMaximoPago()+" exitosamente\n•Sin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente4.getNombre()+
-										"\n•Por favor escoja otro metodo de pago para pagar los $"+(montoRecarga-metodoPagoCliente4.getLimiteMaximoPago())+
-										" restantes");
-								
-								montoRecarga = (double)montoRecarga-metodoPagoCliente4.getLimiteMaximoPago();
-								metodoPagoCliente4.setLimiteMaximoPago(0);
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-							}
-							else {
-								ClienteActual.getCuenta().ingresarSaldo(montoRecarga);
-								System.out.println("\n•Se han recargado: $"+montoRecarga+" exitosamente");
-								finCiclo = false;
-							}
-							break;
-						case 5:
-							
-							MetodoPago metodoPagoCliente5 = Arkade.encontrarMetodoPagoCliente("Puntos", ClienteActual.getMetodosDePago());
-							
-							if (metodoPagoCliente5 == null) {
-								System.out.println("•Metodo de pago invalido, por favor seleccione otro");
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-								break;
-								}
-							if (metodoPagoCliente5.getLimiteMaximoPago()==0) {
-								System.out.println("•No puedes utilizar mas este metodo de pago ya que no tiene mas cupo disponible\n•Por favor elije otro para pagar los $"+(montoRecarga-metodoPagoCliente5.getLimiteMaximoPago())+" restantes");
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-								break;
-							}
-							
-							boolean Break5 = true;
-							int issue5 = 0;
-							do {
-								System.out.println("•Por favor confirma el pago\n1.Confirmar\n2.Cancelar");
-								int confirmacion = (int) Administrador.readLong();
-								if (confirmacion==1) {Break5 = false;}
-								else if (confirmacion==2) {barraCarga("Cancelando");Break5= false;finCiclo = false;issue5=1;}
-								else {System.out.println("•Opcion invalida");}
-							}while(Break5);
-							if (issue5==1) {break;}
-							barraCarga("Procesando recarga");
-							
-							if (montoRecarga>metodoPagoCliente5.getLimiteMaximoPago()) {
-								ClienteActual.getCuenta().ingresarSaldo(metodoPagoCliente5.getLimiteMaximoPago());
-								System.out.println("\n•Se han recargado: $"+metodoPagoCliente5.getLimiteMaximoPago()+" exitosamente\n•Sin embargo el valor a recargar ha superado el limite permitido por "+metodoPagoCliente5.getNombre()+
-										"\n•Por favor escoja otro metodo de pago para pagar los $"+(montoRecarga-metodoPagoCliente5.getLimiteMaximoPago())+
-										" restantes");
-								
-								montoRecarga = (double)montoRecarga-metodoPagoCliente5.getLimiteMaximoPago();
-								metodoPagoCliente5.setLimiteMaximoPago(0);
-								System.out.println("\n"+MetodoPago.mostrarMetodosDePago(ClienteActual.getMetodosDePago()));
-								eleccion2 = (int)Administrador.readLong();
-							}
-							else {
-								ClienteActual.getCuenta().ingresarSaldo(montoRecarga);
-								System.out.println("\n•Se han recargado: $"+montoRecarga+" exitosamente");
-								finCiclo = false;
-							}
-							break;
-							
-						default:
-							System.out.println("•Metodo de pago invalido");
-							finCiclo = false;
-							break;
-						}
-						
-							
-							
-					}
-					
-					ClienteActual.restablecerLimiteMaximo(maximo, maximo2, maximo3, maximo4, maximo5);
-					System.out.println("\n•Su tarjeta:");
-					espera(2000);
-					imprimirTarjeta(ClienteActual.getNombre(),ClienteActual.getCuenta().getSaldo());
-	
-					while(!finCiclo) {
-						System.out.println("Desea: ");
-						System.out.println("1.Ingresar\n2.Recargar tarjeta cinemar\n3.Volver al menu principal\n4.Salir");
-						int eleccion4 = (int)Administrador.readLong();
-						switch (eleccion4) {
-						case 1: barraCarga("Ingresando");casoValido= false;finCiclo= true; break;
-						case 2: barraCarga("Redirigiendo");casoValido = true ; finCiclo= true; break;
-						case 3: barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);
-						case 4: barraCarga("Saliendo");Administrador.salirDelSistema();
-						default: finCiclo = false; break; 
-					}
-					}
-					
-				}
-				else if (eleccion1==2) {
-					System.out.println("\n-----------------------------------------------------------------------------");
-			        System.out.println("•Recuerde que debe tener saldo para acceder a los diferentes juegos•");
-			        System.out.println("-----------------------------------------------------------------------------");
-			        System.out.println("\n•Su tarjeta:");
-			        espera(2000);
-					imprimirTarjeta(ClienteActual.getNombre(),ClienteActual.getCuenta().getSaldo());
-					while(finCiclo) {
-						System.out.println("\nDesea: ");
-						System.out.println("1.Ingresar\n2.Recargar tarjeta cinemar\n3.Volver al menu principal\n4.Salir");
-						int eleccion4 = (int)Administrador.readLong();
-						switch (eleccion4) {
-						case 1: barraCarga("Ingresando");casoValido= false;finCiclo= false; break;
-						case 2: barraCarga("Redirigiendo");casoValido = true;finCiclo= false; break;
-						case 3: barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);
-						case 4: barraCarga("Saliendo");Administrador.salirDelSistema();
-						default: finCiclo = true; break; 
-						}
-					}
-				}
-				else if (eleccion1==3) {
-					barraCarga("Volviendo");
-					Administrador.sc.nextLine();
-					Administrador.inicio(ClienteActual, sucursalCineProceso);
-				}
-				else if (eleccion1==4) {
-					barraCarga("Saliendo");
-					Administrador.salirDelSistema();
-				}
-				else {System.out.println("Opcion invalida");}
+				eleccion1 = (int)Administrador.readLong();
+				casoValido = false;
+
 			}catch(InputMismatchException e) {
 				System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
-				ClienteActual.restablecerLimiteMaximo(maximo, maximo2, maximo3, maximo4, maximo5);
+				//ClienteActual.restablecerLimiteMaximo(maximo, maximo2, maximo3, maximo4, maximo5);
 				Administrador.sc.nextLine();
 				casoValido = true;
 			}
 		}while(casoValido);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		double recargaMaxima = 0;
+		double valorRecarga = 0;
+		
+		for (MetodoPago metodo : ClienteActual.getMetodosDePago()) {
+			recargaMaxima+= metodo.getLimiteMaximoPago();
+		}
+		
+		do {
+			try {
+				if(eleccion1 == 1) {
+					
+					valorRecarga = 0;
+					
+					System.out.println("•El valor maximo a recargar por proceso es: $"+recargaMaxima+" intente no superar este valor");
+					//System.out.println("•Ademas Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago para completar la recarga");
+					System.out.print("•Digite el valor a recargar: ");
+					valorRecarga = Administrador.readLong();
+					
+					if (!(valorRecarga<= recargaMaxima & valorRecarga>0)) {
+						System.out.println("•El valor ingresado supera el limite maximo de recarga ");
+					}
+					
+				}
+			}catch(InputMismatchException e) {
+				System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+				Administrador.sc.nextLine();
+				casoValido = true;
+			}
+		}while(!(valorRecarga<= recargaMaxima & valorRecarga>0)); 
+		
+		casoValido = true;
+		int opcionPago = 0;
+		double precioRecargaProceso = valorRecarga;
+		do {
+			do {
+				try {
+					System.out.println("\n•Escoja su metodo de pago");
+					System.out.println("•Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago para completar la recarga");
+					System.out.println(MetodoPago.mostrarMetodosDePago(ClienteActual));
+					opcionPago = (int)Administrador.readLong();
+					
+					if(!(opcionPago > 0 & opcionPago <= ClienteActual.getMetodosDePago().size() )) {
+						System.out.println("•Opcion Invalida");
+					}
+				}catch(InputMismatchException e) {
+					System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+					Administrador.sc.nextLine();
+					casoValido = true;
+				}
+			}while(!(opcionPago > 0 & opcionPago <= ClienteActual.getMetodosDePago().size() ));
+			
+			MetodoPago metodoPagoProceso = null;
+			metodoPagoProceso = ClienteActual.getMetodosDePago().get(opcionPago - 1);
+			
+			
+			
+			System.out.println("El método de pago escogido es: " + metodoPagoProceso.getNombre() 
+			+ " ( Precio anterior: " + precioRecargaProceso+ " -> Precio actual: " + precioRecargaProceso * (1 - metodoPagoProceso.getDescuentoAsociado()) + " )");
+
+				
+
+
+			if(metodoPagoProceso.realizarPago(precioRecargaProceso, ClienteActual) == 0) {
+				System.out.println("Pago exitoso, se han recargado "+ valorRecarga);
+				ClienteActual.getCuenta().ingresarSaldo(valorRecarga);
+				imprimirTarjeta(ClienteActual.getNombre(), ClienteActual.getCuenta().getSaldo());
+				casoValido = false;
+			}
+			else {
+				precioRecargaProceso = metodoPagoProceso.realizarPago(precioRecargaProceso, ClienteActual);
+				System.out.println("Tiene un saldo pendiente de : " + precioRecargaProceso);
+				casoValido = true;
+			}
+		}while(casoValido);
+		
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////				
+
+		if (eleccion1==2) {
+			System.out.println("\n-----------------------------------------------------------------------------");
+	        System.out.println("•Recuerde que debe tener saldo para acceder a los diferentes juegos•");
+	        System.out.println("-----------------------------------------------------------------------------");
+	        System.out.println("\n•Su tarjeta:");
+	        espera(2000);
+			imprimirTarjeta(ClienteActual.getNombre(),ClienteActual.getCuenta().getSaldo());
+			while(finCiclo) {
+				System.out.println("\nDesea: ");
+				System.out.println("1.Ingresar\n2.Recargar tarjeta cinemar\n3.Volver al menu principal\n4.Salir");
+				int eleccion4 = (int)Administrador.readLong();
+				switch (eleccion4) {
+				case 1: barraCarga("Ingresando");casoValido= false;finCiclo= false; break;
+				case 2: barraCarga("Redirigiendo");casoValido = true;finCiclo= false; break;
+				case 3: barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);
+				case 4: barraCarga("Saliendo");Administrador.salirDelSistema();
+				default: finCiclo = true; break; 
+				}
+			}
+		}
+		else if (eleccion1==3) {
+			barraCarga("Volviendo");
+			Administrador.sc.nextLine();
+			Administrador.inicio(ClienteActual, sucursalCineProceso);
+		}
+		else if (eleccion1==4) {
+			barraCarga("Saliendo");
+			Administrador.salirDelSistema();
+		}
+		else {System.out.println("Opcion invalida");}
+			
 		
 		boolean caso = true;
 		boolean redimioCodigo = false;
