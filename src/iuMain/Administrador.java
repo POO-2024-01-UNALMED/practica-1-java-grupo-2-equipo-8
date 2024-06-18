@@ -171,10 +171,18 @@ public class Administrador {
 			
 			sucursalCine1.getServicios().add(servicioComidaM);
 			
+			sucursalCine1.getInventarioCine().add(producto1);
+			sucursalCine1.getInventarioCine().add(producto2);
+			sucursalCine1.getInventarioCine().add(producto3);
+			sucursalCine1.getInventarioCine().add(producto4);
+			sucursalCine1.getInventarioCine().add(producto5);
+			sucursalCine1.getInventarioCine().add(producto6);
+			sucursalCine1.getInventarioCine().add(producto7);
+			sucursalCine1.getInventarioCine().add(producto8);
+			
+			
 			sucursalCine2.getServicios().add(servicioComidaM);
 			sucursalCine2.getServicios().add(servicioSouvenirsM);
-			
-			sucursalCine3.getServicios().add(servicioSouvenirsM);
 			
 			sucursalCine2.getInventarioCine().add(producto1);
 			sucursalCine2.getInventarioCine().add(producto2);
@@ -190,6 +198,14 @@ public class Administrador {
 			sucursalCine2.getInventarioCine().add(producto3S);
 			sucursalCine2.getInventarioCine().add(producto4S);
 			sucursalCine2.getInventarioCine().add(producto5S);
+			
+			sucursalCine3.getServicios().add(servicioSouvenirsM);
+			
+			sucursalCine3.getInventarioCine().add(producto1S);
+			sucursalCine3.getInventarioCine().add(producto2S);
+			sucursalCine3.getInventarioCine().add(producto3S);
+			sucursalCine3.getInventarioCine().add(producto4S);
+			sucursalCine3.getInventarioCine().add(producto5S);
 			
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 			//Funcionalidad 1 

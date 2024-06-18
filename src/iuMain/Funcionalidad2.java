@@ -244,7 +244,7 @@ public class Funcionalidad2 {
 			try {
 				
 				System.out.println("\nMETODOS DE PEGO DISPONIBLES:\n");
-				System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso.getMetodosDePago()));
+				System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso));
 				System.out.print("Seleccione una opcion: ");
 				eleccion = Integer.parseInt(sc.nextLine());
 				
@@ -255,17 +255,19 @@ public class Funcionalidad2 {
 			
 			MetodoPago metodoDePago = MetodoPago.usarMetodopago(clienteProceso, eleccion);
 			
-			if (!metodoDePago.getNombre().equalsIgnoreCase("Efectivo")) {
-				for(int i = 0; i < serviciProceso.getOrden().size(); i++) {
-					if (serviciProceso.getOrden().get(i).getTamaño().equalsIgnoreCase("Cangreburger") && (serviciProceso.getOrden().get(i).getPrecio() > 100000) && descuento) {
-						descuento = false;
-						serviciProceso.setValorPedido(serviciProceso.getValorPedido()-(serviciProceso.getValorPedido()*0.5));
-						System.out.println("Felicidades tenes un descuento por del 5% por comprar mas de $100.000 en Cangreburgers");
-						System.out.println("El valor a pagar ahora es de: $"+serviciProceso.getValorPedido());
-					}
+			System.out.println("Gracias por preferir a:"+ metodoDePago.getNombre());
+			double valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+			System.out.println("Ahora tu valor a pagar es de: $"+valor);
+			
+			if (descuento) {
+				descuento = false;
+				if (serviciProceso.descuentoCompra(metodoDePago)) {
+					System.out.println("Felicidades obtuviste un descuento sorpresa en tu compra");
+					valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+					System.out.println("Ahora tu cuenta quedo en: $" + valor);
 				}
 			}
-			
+
 			serviciProceso.setValorPedido(metodoDePago.realizarPago(serviciProceso.getValorPedido(),clienteProceso));
 			
 			if (serviciProceso.getValorPedido() == 0) {
@@ -278,7 +280,7 @@ public class Funcionalidad2 {
 			}
 			
 		}while(verificacion);
-			
+		
 		
 	}
 	

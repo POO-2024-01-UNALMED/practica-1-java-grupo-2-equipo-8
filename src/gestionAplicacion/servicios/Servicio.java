@@ -2,14 +2,16 @@ package gestionAplicacion.servicios;
 
 import java.util.ArrayList;
 import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.IBuyable;
+import gestionAplicacion.usuario.MetodoPago;
 
-public abstract class Servicio {
+public abstract class Servicio implements IBuyable{
 
 	protected String nombre;
 	protected Cliente cliente;
 	protected ArrayList<Producto> inventario = new ArrayList<>();
 	protected ArrayList<Producto> orden = new ArrayList<>();
-	private double valorPedido;
+	protected double valorPedido;
 	
 	public Servicio(){}
 	
@@ -18,6 +20,8 @@ public abstract class Servicio {
 	}
 	
 	// Metodos abstractos y ligadura Dinamica
+	
+	public abstract boolean descuentoCompra (MetodoPago metodo);
 	
 	public abstract ArrayList<Producto> actualizarInventario();
 	
@@ -58,12 +62,10 @@ public abstract class Servicio {
 			}
 		}
 	}
-	
 
 	//Ligadura Estatica
 	
 	public Producto validarBono(String codigo , Servicio servicio){
-
 		Producto producto = new Producto();
 		for (int i=0; i < Bono.getBonosCreados().size();i++) {
 			if (Bono.getBonosCreados().get(i).getCodigo() == codigo && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
@@ -84,10 +86,8 @@ public abstract class Servicio {
 	
 	public String mostrarOrden() {
 		String pedido = "\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n";
-		int r;
 		float total = 0;
 		for(int i =0;i<orden.size();i++) {
-			r = i+1;
 			pedido = pedido + "\n" + " -- " +orden.get(i).getCantidad()+" " + orden.get(i).getNombre() + " " + orden.get(i).getTamaño() +
 					" : $" + orden.get(i).getPrecio();
 			total = total + orden.get(i).getPrecio();

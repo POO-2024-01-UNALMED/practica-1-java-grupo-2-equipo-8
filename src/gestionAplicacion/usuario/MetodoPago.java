@@ -162,12 +162,6 @@ public class MetodoPago{
 		}	
 	}
 	
-	
- 	public double aplicarDescuento(Cliente cliente, MetodoPago metodopago) {
- 		
- 		
- 		return 3.1415926535;
- 		}
 	/**
 	*<b>Description</b>: Este método de asignar el método de pago para ser usado.
 	*@param int : Se usa el número de la selección para poder escoger el método de pago.

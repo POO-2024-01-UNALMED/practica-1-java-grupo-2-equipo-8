@@ -1,8 +1,12 @@
 package gestionAplicacion.servicios;
 import java.util.ArrayList;
 
+import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.MetodoPago;
+
 
 public class ServicioComida extends Servicio{
+	
 	
 	public ServicioComida(){}
 	
@@ -28,6 +32,31 @@ public class ServicioComida extends Servicio{
 		}
 		return inventario;
 	}
-	
 
+	@Override
+	public boolean descuentoCompra(MetodoPago metodo) {
+		if (!metodo.getNombre().equalsIgnoreCase("Efectivo")) {
+			for(int i = 0; i < orden.size(); i++) {
+				if (orden.get(i).getTamaño().equalsIgnoreCase("Cangreburger") && (orden.get(i).getPrecio() > 100000)) {
+					valorPedido = valorPedido - (valorPedido*0.05);
+					return true;
+				}
+		}
+		return false;
+		}
+		return false;
+	}
+
+	@Override
+	public void procesarPagoRealizado(Cliente cliente) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String factura(Cliente cliente) {
+		
+		return null;
+	}	
+	
 }
