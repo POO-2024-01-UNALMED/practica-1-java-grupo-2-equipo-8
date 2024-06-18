@@ -25,7 +25,7 @@ public class Ticket implements IBuyable{
 		this.numeroAsiento = numeroAsiento;
 		this.horario = horario;
 		this.precio = this.clienteSuertudo();
-		this.salaDeCine = pelicula.obtenerSalaDeCineConCodigo(sucursalCine);
+		this.salaDeCine = pelicula.getSalaPresentacion();
 	}
 	
 	//Methods
@@ -107,7 +107,7 @@ public class Ticket implements IBuyable{
 	}
 	
 	private String generarCodigoTicket() {
-		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getNumeroDeSala()+"-"+this.getPelicula().getGenero();
+		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getSalaPresentacion().getNumeroSala()+"-"+this.getPelicula().getGenero();
 
 		return codigoTicket;
 	}

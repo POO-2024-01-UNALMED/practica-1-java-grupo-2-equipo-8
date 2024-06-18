@@ -228,8 +228,8 @@ public class SalaCine {
 	}
 	
 	/**
-	 * Description: Este método se encarga actualizar la película en presentación, según los siguientes criterios: 1. Alguna de las películas 
-	 * en cartelera de la sucursal de cine coincide con el número de sala y fomato. 
+	 * Description: Este método se encarga actualizar la película en presentación, según los siguientes criterios: 
+	 * 1. Alguna de las películas en cartelera de la sucursal de cine coincide con alguna de las salas de cine de esta. 
 	 * 2. Revisamos si esa película tiene algún horario cercano o igual a la fecha actual durante el cuál estará o esta siendo presentada.
 	 * una vez hecho esto cumpla con los dos criterios anteriores, limpiamos los asientos de la sala de cine, cambiando su disponibilidad a libre, y
 	 * por último actualizamos la información de la disponibilidad de los asientos, tomando la información del array de la sala virtual que 
@@ -252,7 +252,7 @@ public class SalaCine {
 		for (Pelicula pelicula : sucursalCine.getCartelera()) {
 			
 			//Verificamos si la película tiene el mismo número de sala y tipo de formato que la sala de cine que ejecuta el método
-			if ( (pelicula.getNumeroDeSala() == this.getNumeroSala() ) && ( pelicula.getTipoDeFormato().equals(this.getTipoDeSala()) ) ) {
+			if ( pelicula.getSalaPresentacion().equals(this) ) {
 				
 				firstTimeComparacionHorario = true;
 				
