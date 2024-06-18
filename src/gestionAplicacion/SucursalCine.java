@@ -14,12 +14,12 @@ import gestionAplicacion.usuario.Ticket;
 
 public class SucursalCine {
 	
-	private static LocalDateTime fechaActual = LocalDateTime.now().withMinute(14);
+	private static LocalDateTime fechaActual = LocalDateTime.now();
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	
 	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
-	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 0);
+	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 00);
 	
 	private String lugar;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
@@ -145,7 +145,7 @@ public class SucursalCine {
 	}
 	
 	/**
-	 * Description : Este método se ecanrga de crear 20 horarios por cada película en cartelera de la sucursal de cine, teniendo en cuenta los siguientes
+	 * Description : Este método se ecanrga de crear 15 horarios por cada película en cartelera de la sucursal de cine, teniendo en cuenta los siguientes
 	 * criterios: 
 	 * 1. El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras instalaciones
 	 * 2. La hora a la que termina la película es menor a la hora de cierre 
@@ -163,12 +163,12 @@ public class SucursalCine {
 			LocalDateTime auxHorarioParaPresentar = horarioParaPresentar.plusDays(1);
 			
 			for(Pelicula pelicula : this.cartelera) {
-				if (salaDeCine.getNumeroSala() == pelicula.getNumeroDeSala()) {
+				if (salaDeCine.equals(pelicula.getSalaPresentacion())) {
 					peliculasDeSalaDeCine.add(pelicula);
 				}
 			}
 			
-			for (int i = 1; i <= 20; i++) {
+			for (int i = 1; i <= 15; i++) {
 				
 				for (Pelicula pelicula : peliculasDeSalaDeCine) {
 					
@@ -205,6 +205,102 @@ public class SucursalCine {
 			
 		}
 		
+	}
+	
+	/**
+	 * Descripition: Este método se encarga de distribuir las películas en cartelera en las distintas salas de cine de la sucursal de cine que
+	 * ejecuta este método, para esta distribución se tienen encuenta 3 casos posibles:
+	 * 1. Hay menos películas que salas de cine o igual cantidad de ambas.
+	 * 2. Hay más películas que salas de cine, pero caben exactamente la misma cantidad de películas en cada sala.
+	 * 3. Hay más películas que salas de cine, pero al menos una sala de cine debe tener 1 película más que todas las otras (Principio de Dirichlet).
+	 * */
+	public void distribuirPeliculasPorSala() {
+		
+		String[] formatos = {"2D", "3D", "4D"};
+		
+		ArrayList<SalaCine> grupoSalasPorFormato = new ArrayList<>();
+		ArrayList<Pelicula> grupoPeliculasPorFormato = new ArrayList<>();
+
+		int cantidadMaxPeliculasPorSala = 0;
+		int indice = 0;
+		int contador = 0;
+		
+		//Iteramos sobre los distintos formatos de películas disponibles
+		for (String formato : formatos) {
+			
+			//Guardamos en un ArrayList las salas de cine que coinciden con el formato
+			//Sobre el que estamos iterando
+			for (SalaCine salaDeCine : this.salasDeCine) {
+				if (salaDeCine.getTipoDeSala().equals(formato)) {
+					grupoSalasPorFormato.add(salaDeCine);
+				}
+			}
+			
+			//Guardamos en un ArrayList las películas que coinciden con el formato
+			//Sobre el que estamos iterando
+			for (Pelicula pelicula : this.cartelera) {
+				if(pelicula.getTipoDeFormato().equals(formato)) {
+					grupoPeliculasPorFormato.add(pelicula);
+				}
+			}
+			
+			//Evaluamos esto con el fin de determinar si debemos distribuir de forma especial o no
+			if (grupoPeliculasPorFormato.size() > grupoSalasPorFormato.size()) {
+				
+				//Hallamos el número máximo de películas que pueden presentarse en cada sala de cine
+				// Distribución exacta o Principio del palomar
+				cantidadMaxPeliculasPorSala = grupoPeliculasPorFormato.size() % grupoSalasPorFormato.size() == 0  ? grupoPeliculasPorFormato.size() / grupoSalasPorFormato.size() : grupoPeliculasPorFormato.size() / grupoSalasPorFormato.size() + 1;
+				
+				//Setteamos la sala de cine en presentación
+				for (Pelicula pelicula : grupoPeliculasPorFormato) {
+					
+					pelicula.setSalaPresentacion(grupoSalasPorFormato.get(indice));
+					contador++;
+					
+					//En caso de que el contador sea igual al número máximo de películas por sala, cambiamos de sala
+					// Y reiniciamos el contador
+					if (contador == cantidadMaxPeliculasPorSala) {
+						contador = 0;
+						indice++;
+					}
+					
+				}
+				
+			}else {
+				
+				for (Pelicula pelicula : grupoPeliculasPorFormato) {
+					
+					pelicula.setSalaPresentacion(grupoSalasPorFormato.get(indice));
+					indice++;
+					
+				}
+				
+			}
+			
+			//Reiniciamos las variables para el próximo formato
+			indice = 0;
+			contador = 0;
+			grupoPeliculasPorFormato.clear();
+			grupoSalasPorFormato.clear();
+			
+			
+		}
+		
+	}
+	
+	/**
+	 * Description: Este método se encarga de ejecutar toda la lógica para realizar reservas de ticket, se compone de 3 puntos principales:
+	 * 1. Distribuir las películas en cartelera de cada sucursal de forma equitativa respecto a sus salas de cine
+	 * 2. Una vez realizada la distribución, crear los horarios en los que se presentará cada película
+	 * 3. Por último actualizar las películas cuyo horarios se esta presentando en estos momentos
+	 * */
+	public static void logicaSistemaReservarTicket() {
+		for (SucursalCine sede : SucursalCine.sucursalesCine) {
+			sede.distribuirPeliculasPorSala();
+			sede.crearHorariosPeliculasPorSala();
+		}
+		
+		SucursalCine.actualizarPeliculasSalasDeCine();
 	}
 	
 	/**

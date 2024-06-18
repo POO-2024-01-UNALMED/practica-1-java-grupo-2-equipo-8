@@ -155,7 +155,7 @@ public class Cliente {
 						+ ", Hora: " + ticket.getHorario();
 			}else {
 				tickets = tickets + "\n" + i + ". Película: " + ticket.getPelicula().getNombre() 
-						+ ", Número sala de Cine: " + ticket.getPelicula().getNumeroDeSala() 
+						+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
 						+ ", Hora: " + ticket.getHorario();
 			}
 			i++;

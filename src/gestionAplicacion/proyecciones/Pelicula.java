@@ -17,7 +17,7 @@ public class Pelicula{
 	private ArrayList<LocalDateTime> horarios = new ArrayList<>();
 	private ArrayList<int[][]> asientosVirtuales = new ArrayList<>();
 	private String tipoDeFormato;
-	private int numeroDeSala;
+	private SalaCine salaPresentacion;
 	private int idPelicula; 
 	private double valoracion;
 	private int totalEncuestasDeValoracionRealizadas;
@@ -71,12 +71,12 @@ public class Pelicula{
 		this.tipoDeFormato = tipoDeFormato;
 	}
 
-	public int getNumeroDeSala() {
-		return numeroDeSala;
+	public SalaCine getSalaPresentacion() {
+		return salaPresentacion;
 	}
 
-	public void setNumeroDeSala(int numeroDeSala) {
-		this.numeroDeSala = numeroDeSala;
+	public void setSalaPresentacion(SalaCine salaPresentacion) {
+		this.salaPresentacion = salaPresentacion;
 	}
 
 	public int getIdPelicula() {
@@ -125,7 +125,7 @@ public class Pelicula{
 	}
 
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
-			String tipoDeFormato, int numeroDeSala, SucursalCine sucursalCine) {
+			String tipoDeFormato, SucursalCine sucursalCine) {
 		this();
 		this.nombre = nombre;
 		this.precio = precio;
@@ -133,7 +133,6 @@ public class Pelicula{
 		this.duracion = duracion;
 		this.clasificacion = clasificacion;
 		this.tipoDeFormato = tipoDeFormato;
-		this.numeroDeSala = numeroDeSala;
 		sucursalCine.getCartelera().add(this);
 	}
 
@@ -473,24 +472,24 @@ public class Pelicula{
 		return false;
 	}
 	
-	/**
-	 * Description: Este método se encarga de buscar la salaDeCine en el array de salasDeCine que tiene el mismo numero de sala de 
-	 * la película para luego retornarlo.
-	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) para realizar la busqueda en su array de salas de cine.
-	 * @return : Este método retorna la salaDeCine que tiene el mismo número de sala.
-	 * */
-	public SalaCine obtenerSalaDeCineConCodigo(SucursalCine sucursalCine) {
-		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
-			try {
-				if (this.numeroDeSala == salaDeCine.getNumeroSala()) {
-					return salaDeCine;
-				}
-			}catch(NullPointerException e) {
-				continue;
-			}
-			
-		}
-		return null;
-	}
+//	/**
+//	 * Description: Este método se encarga de buscar la salaDeCine en el array de salasDeCine que tiene el mismo numero de sala de 
+//	 * la película para luego retornarlo.
+//	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) para realizar la busqueda en su array de salas de cine.
+//	 * @return : Este método retorna la salaDeCine que tiene el mismo número de sala.
+//	 * */
+//	public SalaCine obtenerSalaDeCineConCodigo(SucursalCine sucursalCine) {
+//		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
+//			try {
+//				if (this.numeroDeSala == salaDeCine.getNumeroSala()) {
+//					return salaDeCine;
+//				}
+//			}catch(NullPointerException e) {
+//				continue;
+//			}
+//			
+//		}
+//		return null;
+//	}
 	
 }

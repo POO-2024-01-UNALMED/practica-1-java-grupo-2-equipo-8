@@ -1073,17 +1073,21 @@ public class Funcionalidad1 {
 	}
 }
 
-//1. Automatizar el proceso de actualizar las salas de cine automáticamente, acompañado del método de avanzar la hora automáticamente (Investigar el uso de threads y Hablar con David)
-
 //0. Cambiar el map de Horarios por un Array (Obligatorio) (Hecho, hacer tests)
 //0.1. Revisar error que no permite ejecutar actualizar horarios sin dropear los horarios vencidos, debe resolverse sin dropear (Hecho)
-//0.2. La película puede tener directamente la sala de cine de su sucursal en la que puede ser presentada, esto permitiría automatizar la organización
-// Esto me ahorarría código y pensar de más la organización de nuevas películas, además se tendría que crear un array con las películas que se van a presentar
-// Y tendría que mejorar la lógica de crear una película y sus horarios.
-// La solución sencilla es que la película se settee directamente la sala de cine aprovechando su número de sala y además toca supervisar las películas
-// que se agreguen
+//0.2. La película puede tener directamente la sala de cine de su sucursal en la que puede ser presentada, esto permitiría automatizar la
+// distribución de forma equitativa de películas por sala de cine (Hecho)
 //0.3. Posible problema con el serializador y asignar al cliente antes de realizar un pago (Hecho)
 
+//0.4. Automatizar la creación de películas a partir de crear una película 2D
+//0.5. Mejorar vista en consola de las salas de cine y sala de espera
+//0.6. Solucionar error en vista de salas de cine de películas que ya finalizaron su presentación (Ver el filtro)
+//0.7. Limitar la creación de horarios en una semana
+//0.8. Usar el setter de cliente de cineActual, crear opción menú para cambiar de sucursal
+//0.9. Depurar el código de la clase Funcionalidad 1
+//0.10. Incluir el código de la clase Funcionaliadad 1 en la clase Administrador y Estudiar serialización
+
+//0. Automatizar el proceso de actualizar las salas de cine automáticamente y CRUD de horarios, acompañado del método de avanzar la hora automáticamente (Investigar el uso de threads y Hablar con David)
 //1. Limpiar código en Funcionalidad1 y Administrador (A la hora de crear los objetos) 
 //2. Mejorar abstracción de métodos, revisar todo el código hecho y mejorar documentación
 //3. Hacer Tests
