@@ -295,6 +295,7 @@ public class SucursalCine {
 	 * 3. Por último actualizar las películas cuyo horarios se esta presentando en estos momentos
 	 * */
 	public static void logicaSistemaReservarTicket() {
+		
 		for (SucursalCine sede : SucursalCine.sucursalesCine) {
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();

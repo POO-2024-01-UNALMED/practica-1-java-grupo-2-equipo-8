@@ -70,28 +70,17 @@ public class Administrador {
 	static SalaCine salaDeCine1_8 = new SalaCine(8, "3D", sucursalCine1);
 	static SalaCine salaDeCine1_9 = new SalaCine(9, "4D", sucursalCine1);
 
-	static Pelicula pelicula1_1 = new Pelicula("Star Wars: Episode 1", 50000, "Aventura", Duration.ofMinutes(110), "+7", "4D", sucursalCine1); 
-	static Pelicula pelicula1_2 = new Pelicula("Star Wars: Episode 1", 27000, "Aventura", Duration.ofMinutes(110), "+7", "3D", sucursalCine1); 
-	static Pelicula pelicula1_3 = new Pelicula("Star Wars: Episode 1", 18000, "Aventura", Duration.ofMinutes(110), "+7", "2D", sucursalCine1); 
+	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+7", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_4 = new Pelicula("Misión Imposible 4", 55000, "Acción", Duration.ofMinutes(155), "+18", "4D", sucursalCine1);
-	static Pelicula pelicula1_5 = new Pelicula("Misión Imposible 4", 32000, "Acción", Duration.ofMinutes(155), "+18", "3D", sucursalCine1);
-	static Pelicula pelicula1_6 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", sucursalCine1);
+	static Pelicula pelicula1_2 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_7 = new Pelicula("El conjuro 3", 60000, "Terror", Duration.ofMinutes(140), "+18", "4D", sucursalCine1); 
-	static Pelicula pelicula1_8 = new Pelicula("El conjuro 3", 31000, "Terror", Duration.ofMinutes(140), "+18", "3D", sucursalCine1); 
-	static Pelicula pelicula1_9 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+18", "2D", sucursalCine1); 
+	static Pelicula pelicula1_7 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+18", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_10 = new Pelicula("Your name", 29000, "Romance", Duration.ofMinutes(110), "+8", "3D", sucursalCine1);
-	static Pelicula pelicula1_11 = new Pelicula("Your name", 18000, "Romance", Duration.ofMinutes(110), "+8", "2D", sucursalCine1);
+	static Pelicula pelicula1_10 = new Pelicula("Your name", 18000, "Romance", Duration.ofMinutes(110), "+8", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_12 = new Pelicula("Furiosa: A Mad Max Saga", 68000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "4D", sucursalCine1);
-	static Pelicula pelicula1_13 = new Pelicula("Furiosa: A Mad Max Saga", 30000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "3D", sucursalCine1);
-	static Pelicula pelicula1_14 = new Pelicula("Furiosa: A Mad Max Saga", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "2D", sucursalCine1);
+	static Pelicula pelicula1_12 = new Pelicula("Furiosa: A Mad Max Saga", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_15 = new Pelicula("Spy x Familiy Código: Blanco", 269000, "Infantil", Duration.ofMinutes(90), "+5", "4D", sucursalCine1);
-	static Pelicula pelicula1_16 = new Pelicula("Spy x Familiy Código: Blanco", 30000, "Infantil", Duration.ofMinutes(90), "+5", "3D", sucursalCine1);
-	static Pelicula pelicula1_17 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", sucursalCine1);
+	static Pelicula pelicula1_15 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", sucursalCine1);
 	
 	static SalaCine salaDeCine2_1 = new SalaCine(1, "2D", sucursalCine2);
 	static SalaCine salaDeCine2_2 = new SalaCine(2, "3D", sucursalCine2);
@@ -100,27 +89,17 @@ public class Administrador {
 	static SalaCine salaDeCine2_5 = new SalaCine(5, "3D", sucursalCine2);
 	static SalaCine salaDeCine2_6 = new SalaCine(6, "4D", sucursalCine2);
 	
-	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 60000, "Acción", Duration.ofMinutes(60), "+12", "4D", sucursalCine2); 
-	static Pelicula pelicula2_2 = new Pelicula("Jujutsu Kaisen Cero", 32000, "Acción", Duration.ofMinutes(60), "+12", "3D", sucursalCine2); 
-	static Pelicula pelicula2_3 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(60), "+12", "2D", sucursalCine2); 
+	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(60), "+12", "2D", sucursalCine2); 
 	
-	static Pelicula pelicula2_4 = new Pelicula("The Strangers: Chapter 1", 65000, "Terror", Duration.ofMinutes(114), "+18", "4D", sucursalCine2);
-	static Pelicula pelicula2_5 = new Pelicula("The Strangers: Chapter 1", 37000, "Terror", Duration.ofMinutes(114), "+18", "3D", sucursalCine2);
-	static Pelicula pelicula2_6 = new Pelicula("The Strangers: Chapter 1", 20000, "Terror", Duration.ofMinutes(114), "+18", "2D", sucursalCine2);
+	static Pelicula pelicula2_4 = new Pelicula("The Strangers: Chapter 1", 20000, "Terror", Duration.ofMinutes(114), "+18", "2D", sucursalCine2);
 	
-	static Pelicula pelicula2_7 = new Pelicula("El pájaro loco", 55000, "Infantil", Duration.ofMinutes(120), "+5", "4D", sucursalCine2); 
-	static Pelicula pelicula2_8 = new Pelicula("El pájaro loco", 27000, "Infantil", Duration.ofMinutes(120), "+5", "3D", sucursalCine2); 
-	static Pelicula pelicula2_9 = new Pelicula("El pájaro loco", 15000, "Infantil", Duration.ofMinutes(120), "+5", "2D", sucursalCine2); 
+	static Pelicula pelicula2_7 = new Pelicula("El pájaro loco", 15000, "Infantil", Duration.ofMinutes(120), "+5", "2D", sucursalCine2); 
 	
-	static Pelicula pelicula2_10 = new Pelicula("One Life", 27000, "Historia", Duration.ofMinutes(110), "+8", "3D", sucursalCine2);
-	static Pelicula pelicula2_11 = new Pelicula("One Life", 19000, "Historia", Duration.ofMinutes(110), "+8", "2D", sucursalCine2);
+	static Pelicula pelicula2_10 = new Pelicula("One Life", 19000, "Historia", Duration.ofMinutes(110), "+8", "2D", sucursalCine2);
 	
-	static Pelicula pelicula2_12 = new Pelicula("Challengers", 25000, "Drama", Duration.ofMinutes(132), "+12", "3D", sucursalCine2);
-	static Pelicula pelicula2_13 = new Pelicula("Challengers", 15000, "Drama", Duration.ofMinutes(132), "+12", "2D", sucursalCine2);
+	static Pelicula pelicula2_12 = new Pelicula("Challengers", 15000, "Drama", Duration.ofMinutes(132), "+12", "2D", sucursalCine2);
 
-	static Pelicula pelicula2_14 = new Pelicula("Bad Boys: Hasta la muerte", 77000, "Acción", Duration.ofMinutes(109), "+18", "4D", sucursalCine2);
-	static Pelicula pelicula2_15 = new Pelicula("Bad Boys: Hasta la muerte", 31000, "Acción", Duration.ofMinutes(109), "+18", "3D", sucursalCine2);
-	static Pelicula pelicula2_16 = new Pelicula("Bad Boys: Hasta la muerte", 17000, "Acción", Duration.ofMinutes(109), "+18", "2D", sucursalCine2);
+	static Pelicula pelicula2_14 = new Pelicula("Bad Boys: Hasta la muerte", 17000, "Comedia", Duration.ofMinutes(109), "+18", "2D", sucursalCine2);
 	
 	static SalaCine salaDeCine3_1 = new SalaCine(1, "2D", sucursalCine3);
 	static SalaCine salaDeCine3_2 = new SalaCine(2, "3D", sucursalCine3);
@@ -129,27 +108,17 @@ public class Administrador {
 	static SalaCine salaDeCine3_5 = new SalaCine(5, "3D", sucursalCine3);
 	static SalaCine salaDeCine3_6 = new SalaCine(6, "4D", sucursalCine3);
 
-	static Pelicula pelicula3_1 = new Pelicula("KNJ temporada 4 movie", 60000, "Aventura", Duration.ofMinutes(60), "+12", "4D", sucursalCine3); 
-	static Pelicula pelicula3_2 = new Pelicula("KNJ temporada 4 movie", 25000, "Aventura", Duration.ofMinutes(60), "+12", "3D", sucursalCine3); 
-	static Pelicula pelicula3_3 = new Pelicula("KNJ temporada 4 movie", 15000, "Aventura", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
+	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 15000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
 	
-	static Pelicula pelicula3_4 = new Pelicula("Código Enigma", 27000, "Historia", Duration.ofMinutes(180), "+18", "3D", sucursalCine3);
-	static Pelicula pelicula3_5 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
+	static Pelicula pelicula3_4 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
 	
-	static Pelicula pelicula3_6 = new Pelicula("Oppenheimer", 25000, "Historia", Duration.ofMinutes(120), "+18", "3D", sucursalCine3); 
-	static Pelicula pelicula3_7 = new Pelicula("Oppenheimer", 15000, "Historia", Duration.ofMinutes(120), "+18", "2D", sucursalCine3); 
+	static Pelicula pelicula3_6 = new Pelicula("Oppenheimer", 15000, "Historia", Duration.ofMinutes(120), "+18", "2D", sucursalCine3);
 	
-	static Pelicula pelicula3_8 = new Pelicula("Jhon Wick 4", 65000, "Acción", Duration.ofMinutes(180), "+18", "4D", sucursalCine3);
-	static Pelicula pelicula3_9 = new Pelicula("Jhon Wick 4", 31000, "Acción", Duration.ofMinutes(180), "+18", "3D", sucursalCine3);
-	static Pelicula pelicula3_10 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
+	static Pelicula pelicula3_8 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
 	
-	static Pelicula pelicula3_11 = new Pelicula("Intensamente 2", 57000, "Infantil", Duration.ofMinutes(105), "+5", "4D", sucursalCine3);
-	static Pelicula pelicula3_12 = new Pelicula("Intensamente 2", 27000, "Infantil", Duration.ofMinutes(105), "+5", "3D", sucursalCine3);
-	static Pelicula pelicula3_13 = new Pelicula("Intensamente 2", 15000, "Infantil", Duration.ofMinutes(105), "+5", "2D", sucursalCine3);
+	static Pelicula pelicula3_11 = new Pelicula("Intensamente 2", 15000, "Infantil", Duration.ofMinutes(105), "+5", "2D", sucursalCine3);
 	
-	static Pelicula pelicula3_14 = new Pelicula("BNHA temporada 7 movie", 58000, "Acción", Duration.ofMinutes(60), "+18", "4D", sucursalCine3);
-	static Pelicula pelicula3_15 = new Pelicula("BNHA temporada 7 movie", 30000, "Acción", Duration.ofMinutes(60), "+18", "3D", sucursalCine3); 
-	static Pelicula pelicula3_16 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+18", "2D", sucursalCine3);
+	static Pelicula pelicula3_14 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+18", "2D", sucursalCine3);
 
 	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
 	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);

@@ -1079,7 +1079,7 @@ public class Funcionalidad1 {
 // distribución de forma equitativa de películas por sala de cine (Hecho)
 //0.3. Posible problema con el serializador y asignar al cliente antes de realizar un pago (Hecho)
 
-//0.4. Automatizar la creación de películas a partir de crear una película 2D
+//0.4. Automatizar la creación de películas a partir de crear una película 2D, crear estas mismas pero con 3D y 4D según su género (Hecho)
 //0.5. Mejorar vista en consola de las salas de cine y sala de espera
 //0.6. Solucionar error en vista de salas de cine de películas que ya finalizaron su presentación (Ver el filtro)
 //0.7. Limitar la creación de horarios en una semana

@@ -122,6 +122,7 @@ public class Pelicula{
 	// Constructor
 	public Pelicula(){
 		SucursalCine.getPeliculasDisponibles().add(this);
+		this.idPelicula = SucursalCine.getPeliculasDisponibles().size();
 	}
 
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
@@ -134,6 +135,18 @@ public class Pelicula{
 		this.clasificacion = clasificacion;
 		this.tipoDeFormato = tipoDeFormato;
 		sucursalCine.getCartelera().add(this);
+		this.crearPelicula(sucursalCine);
+	}
+	
+	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
+			String tipoDeFormato) {
+		this();
+		this.nombre = nombre;
+		this.precio = precio;
+		this.genero = genero;
+		this.duracion = duracion;
+		this.clasificacion = clasificacion;
+		this.tipoDeFormato = tipoDeFormato;
 	}
 
 	//Methods
@@ -188,26 +201,29 @@ public class Pelicula{
 		int i = 1;
 		if(clienteProceso.getMembresia() != null) {
 			for(String nombrePelicula : filtroNombrePeliculas) {
+				
 				if (!nombrePeliculas.contains(nombrePelicula)) {
+					
 					if (nombrePeliculasRecomendadas.contains(nombrePelicula)) {
 						nombrePeliculas = nombrePeliculas + "\n" + i + ". RECOMENDADA: " + nombrePelicula;
 						i++;
 					}else {
 						nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
 						i++;
-					}	
-				}	
+					}
+					
+				}
+				
 			}
 			
 		}else {
 			for (String nombrePelicula : filtroNombrePeliculas) {
-				if (nombrePeliculas == null) {
-					nombrePeliculas = i + ". " + nombrePelicula;
-				}
+				
 				if (!nombrePeliculas.contains(nombrePelicula)) {
 					nombrePeliculas = nombrePeliculas + "\n" + i + ". " + nombrePelicula;
 				}
 				i++;
+				
 			}
 		}
 		
@@ -247,9 +263,9 @@ public class Pelicula{
 		int i = 1;
 		for (Pelicula pelicula : peliculasFiltradasPorNombre){
 			if (TiposFormatoPeliculaSeleccionada == null) {
-				TiposFormatoPeliculaSeleccionada = i + ". " + pelicula.getTipoDeFormato();
+				TiposFormatoPeliculaSeleccionada = i + ". " + pelicula.getTipoDeFormato() + ", Precio: " + pelicula.getPrecio();
 			}else {
-				TiposFormatoPeliculaSeleccionada = TiposFormatoPeliculaSeleccionada + "\n" + i + ". " + pelicula.getTipoDeFormato();
+				TiposFormatoPeliculaSeleccionada = TiposFormatoPeliculaSeleccionada + "\n" + i + ". " + pelicula.getTipoDeFormato() + ", Precio: " + pelicula.getPrecio();
 			}
 			i++;
 		}
@@ -492,4 +508,32 @@ public class Pelicula{
 //		return null;
 //	}
 	
+	/**
+	 * Description : Este método se encarga de automatizar la creación de películas en varios formatos con distinto precio, para hacer esto
+	 * se evalua si el género de la película que ejecuta este método se encuentra en los géneros que tienen permitido el 3D y 4D o únicamente 3D, 
+	 * en caso de ser así, crea una película nueva con toda su misma información, a excepción del tipo de formato y precio, para finalizar
+	 * se añaden las películas creadas a la cartelera de la sucursal que se pasa como parámetro.
+	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en la que será presentada la película.
+	 * */
+	public void crearPelicula(SucursalCine sucursalCine) {
+		
+		ArrayList<String> generos4D = new ArrayList<>();
+		generos4D.add("Aventura");
+		generos4D.add("Acción");
+		generos4D.add("Ciencia ficción");
+		generos4D.add("Terror");
+		generos4D.add("Infantil");
+		
+		ArrayList<String> generos3D = new ArrayList<>();
+		generos3D.add("Historia");
+		generos3D.add("Comedia");
+		
+		if (generos4D.contains(this.genero)) {
+			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D"));
+			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 50000, this.genero, this.duracion, this.clasificacion, "4D"));
+		}else if (generos3D.contains(this.genero)) {
+			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D"));
+		}
+	}
+		
 }
