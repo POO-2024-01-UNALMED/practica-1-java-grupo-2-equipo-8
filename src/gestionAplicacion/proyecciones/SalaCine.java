@@ -167,7 +167,7 @@ public class SalaCine {
 		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
 			//Se usa try en caso de que las salas de cine no tengan ninguna película en presentación en estos momentos y devolver un array vacío, para continuar con el proceso
 			try {
-				if (!salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isBefore(SucursalCine.getFechaActual())) {
+				if (salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SucursalCine.getFechaActual())) {
 					salasDeCineDisponibles.add(salaDeCine);
 				}
 			}catch(NullPointerException e) {
@@ -400,10 +400,10 @@ public class SalaCine {
 			resultado = resultado + "\n" + " |                      					|";
 		}
 		
-		resultado = resultado + "\n |             Programación Orientada a objetos			|\n";
+		resultado = resultado + "\n |             Programación Orientada a objetos			|";
 		
 		for (int i = 0; i < 6; i++) {
-			resultado = resultado + " |                      					|\n";
+			resultado = resultado + "\n |                      					|";
 		}
 		
 		resultado = resultado + this.mostrarAsientosParaPantalla();

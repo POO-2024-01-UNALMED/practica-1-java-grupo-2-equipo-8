@@ -222,7 +222,7 @@ public class Funcionalidad5 {
 			}
 		}while (valorAPagar != 0); 
 		membresiaNueva.procesarPagoRealizado(cliente);
-		System.out.print(membresiaNueva.factura(cliente));
+		System.out.print(clienteProceso.getFacturas().get( clienteProceso.getFacturas().size() - 1 ));
 		TarjetaCinemar tarjetaCinemarActual = cliente.getCuenta();
 		int tipoMembresia = 0;
 		if (tarjetaCinemarActual != null) {

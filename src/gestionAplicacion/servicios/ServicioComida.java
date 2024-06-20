@@ -54,9 +54,8 @@ public class ServicioComida extends Servicio{
 	}
 
 	@Override
-	public String factura(Cliente cliente) {
+	public void factura(Cliente cliente) {
 		
-		return null;
 	}	
 	
 }

@@ -328,17 +328,22 @@ public class Membresia implements IBuyable{
 		
 		//Al adquirir la membresia, se crea y asigna un método de pago único que permite acumular puntos canjeables con compras en el cine.
 		MetodoPago.asignarMetodosDePago(cliente);
+		
 //		//Se eliminan las referencias de los métodosDePagoUsados
 //		MetodoPago.getMetodosDePagoUsados().clear();
+		
 		//Se pasa la referencia de la membresia al cliente que lo compró y se agrega este último al array de clientes en Membresia
 		this.getClientes().add(cliente);
+		
+		//Creamos la factura y se la asociamos al cliente
+		this.factura(cliente);
 	}
 		
 
 
 
 	@Override
-	public String factura(Cliente cliente) {
+	public void factura(Cliente cliente) {
 		String factura = null;
 		factura = "=== Factura de compra ===\n" +
 				"Nombre dueño: " + cliente.getNombre() + "\n" +
@@ -349,7 +354,6 @@ public class Membresia implements IBuyable{
 				"Duración: " + cliente.getMembresia().getDuracionMembresiaDias()+ " dias.\n" +
 				"Precio de compra: " + cliente.getMembresia().getValorSuscripcionMensual() + "\n" +
 		cliente.getFacturas().add(factura);
-		return factura;
 	}
 	
 	
