@@ -20,7 +20,7 @@ public class Funcionalidad3 {
 				continue;
 			}
 			if (eleccion == 3) {
-				Administrador.inicio(clienteProceso, sucursalCineProceso);
+				Administrador.inicio(clienteProceso);
 				break;
 			}
 			else if (eleccion == 1 || eleccion == 2) {

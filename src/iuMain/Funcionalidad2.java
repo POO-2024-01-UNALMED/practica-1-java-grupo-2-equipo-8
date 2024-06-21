@@ -9,10 +9,10 @@ import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
 
 public class Funcionalidad2 {
-	public static void compras(Cliente clienteProceso,SucursalCine sucursalCineProceso){
+	public static void compras(Cliente clienteProceso){
 		// Seleccion del servicio que se desea acceder
 		Scanner sc = new Scanner(System.in);
-		clienteProceso.setCine(sucursalCineProceso);
+		//clienteProceso.setCineActual(sucursalCineProceso);
 		Servicio serviciProceso;
 		boolean verificacion = true;
 		int servicio = 0;
@@ -23,9 +23,9 @@ public class Funcionalidad2 {
 		
 		do {
 			try {
-				for(int i = 0;i<sucursalCineProceso.getServicios().size();i++) {
+				for(int i = 0;i<clienteProceso.getCineActual().getServicios().size();i++) {
 					int n = i+1; 
-					System.out.println(n+". "+"Servicio "+sucursalCineProceso.getServicios().get(i).getNombre()+" 🏪🏪🏪🏪🏪");
+					System.out.println(n+". "+"Servicio "+clienteProceso.getCineActual().getServicios().get(i).getNombre()+" 🏪🏪🏪🏪🏪");
 				}
 				System.out.print("0.Volver al menu.\n\nSeleccione una opcion: ");
 				servicio = Integer.parseInt(sc.nextLine());
@@ -34,7 +34,7 @@ public class Funcionalidad2 {
 				continue;
 			}
 			if (servicio == 0) {
-				Administrador.inicio(clienteProceso, sucursalCineProceso);
+				Administrador.inicio(clienteProceso);
 				break;
 			}
 			else if (servicio == 1 || servicio == 2) {
@@ -48,10 +48,10 @@ public class Funcionalidad2 {
 		
 			
 		//Filtramos el inventario segun el servicio y la sucursal del cine
-		serviciProceso = sucursalCineProceso.getServicios().get(servicio);
+		serviciProceso = clienteProceso.getCineActual().getServicios().get(servicio);
 		System.out.print("\n Bienvenido al servicio "+ serviciProceso.getNombre());
 		serviciProceso.setCliente(clienteProceso);
-		serviciProceso.setInventario(sucursalCineProceso.getServicios().get(servicio).actualizarInventario());
+		serviciProceso.setInventario(clienteProceso.getCineActual().getServicios().get(servicio).actualizarInventario());
 		
 		
 		//Mostramos los productos que hay disponibles en la sucursal y 
@@ -64,7 +64,7 @@ public class Funcionalidad2 {
 			try {
 				System.out.print("\n"+serviciProceso.mostrarInventario());
 				if (serviciProceso.mostrarInventario() == "\nNO HAY PRODUCTOS DISPONIBLES :(\n") {
-					Administrador.inicio(clienteProceso, sucursalCineProceso);
+					Administrador.inicio(clienteProceso);
 				}
 				System.out.print("\n\nSelecciones una opcion de los productos: ");
 				eleccion = Integer.parseInt(sc.nextLine());
@@ -150,7 +150,7 @@ public class Funcionalidad2 {
 					System.out.println("\nError, debes ingresar un dato numérico\n");
 					continue;
 				}
-				productoBono = serviciProceso.validarBono(codigoBono,sucursalCineProceso.getServicios().get(servicio));
+				productoBono = serviciProceso.validarBono(codigoBono,clienteProceso.getCineActual().getServicios().get(servicio));
 				if (productoBono == null) {
 					System.out.println("Codigo invalido porfavor verificar el codigo");
 					

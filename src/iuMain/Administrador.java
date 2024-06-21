@@ -256,20 +256,21 @@ public class Administrador {
 		Cliente clienteProceso = iniciarSesion();
 		
 		System.out.println("\nIngresar a una de nuestras sedes");
-		SucursalCine sucursalCineProceso = ingresarASucursal();
-		clienteProceso.setCine(sucursalCineProceso);
+		clienteProceso.setCineActual(ingresarASucursal());
 		
-		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido al cine de marinilla");
-		inicio(clienteProceso, sucursalCineProceso);
+		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
+		inicio(clienteProceso);
 		
 	}
 	
       
 	
-	public static void inicio(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
+	public static void inicio(Cliente clienteProceso) {
 	int opcion = 0;
 	do {
+		
 		try {
+			
 			opcion = 0;
 			System.out.println("\n¿Qué operacion desea realizar?");
 			System.out.println("1. Reservar ticket de pelicula");
@@ -280,29 +281,29 @@ public class Administrador {
 			System.out.println("6. Adquirir o actualizar membresia");
 			System.out.println("7. Hacer calificacion");
 			System.out.println("8. Ingresar a sala de espera");
-			System.out.println("9. Salir");
+			System.out.println("9. Cambiar de sucursal");
+			System.out.println("10. Salir");
 			opcion = Integer.parseInt(sc.nextLine());
-			//NumberFormatException e							aca dejo esto por si lo queres modificar de nuevo
-			//opcion = (int)readLong(); //edi cambie esto ya que cuando llamaba el metodo en mi funcionalidad me saltaba el error y se me imprimia el menu 2 veces no se porque, pero asi funciona melo.
+			
 		}catch(NumberFormatException e) {
 			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-			//sc.nextLine(); // Consumir el input incorrecto
-		    //opcion = 0; // Asignar un valor válido para evitar el bucle infinito
 		}
-	}while(!(opcion > 0 & opcion <= 9));
+		
+	}while(!(opcion > 0 & opcion <= 10));
 	
 	
 	switch (opcion) {
-		case 1: Funcionalidad1.reservarTicket(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
-		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 3: Funcionalidad2.compras(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 1: Funcionalidad1.reservarTicket(clienteProceso);inicio(clienteProceso); break;
+		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso); inicio(clienteProceso); break;
+		case 3: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
 		//case 4: 
-		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		//case 6: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		//case 7: Funcionalidad3.calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
-		case 8: Funcionalidad1.salaDeEspera(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 9: salirDelSistema(); break;
-		default: System.out.println("Opción invalida"); inicio(clienteProceso, sucursalCineProceso);
+		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
+		//case 6: Funcionalidad5.adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
+		//case 7: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
+		case 8: Funcionalidad1.salaDeEspera(clienteProceso); inicio(clienteProceso); break;
+		case 9: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
+		case 10: salirDelSistema(); break;
+		default: System.out.println("Opción invalida"); inicio(clienteProceso);
 	  }
 	
 	}
@@ -696,7 +697,7 @@ public class Administrador {
 	 * @param cliente : Este método recibe un cliente (De tipo Cliente) el cual ejecuta el menú de inicio
 	 * @return <b>void</b> : Este método no retorna nada.
 	 * */
-	static void evaluarRestriccionHoraria(Cliente cliente) {
+	static void evaluarRestriccionHoraria(Cliente clienteProceso) {
 		if ( !(SucursalCine.getFechaActual().toLocalTime().isBefore(SucursalCine.FIN_HORARIO_LABORAL) &&
 				(SucursalCine.getFechaActual().toLocalTime().isAfter(SucursalCine.INICIO_HORARIO_LABORAL) ||
 						SucursalCine.getFechaActual().toLocalTime().equals(SucursalCine.INICIO_HORARIO_LABORAL)) ) ) {
@@ -721,12 +722,38 @@ public class Administrador {
 				SucursalCine.actualizarPeliculasSalasDeCine();
 				System.out.println("La fecha actual se ha actualizado de forma exitosa (" + SucursalCine.getFechaActual() + ")");
 			}else {
-				salirDelSistema();
-				//Cambiar por menú de inicio
+				inicio(clienteProceso);
 			}
 		}
 	}
 	
-	
+	/**
+	 * Description : Este método se encarga de cambiar la sucursal en la cual se encuentra el cliente
+	 * @param clienteProceso : Este método recibe al cliente (De tipo cliente) que desea cambiar de sucursal
+	 * */
+	static void cambiarSucursalCine(Cliente clienteProceso) {
+		
+		System.out.println("\n==============================");
+		System.out.println("Sistema de cambio de sucursal");
+		
+		int opcionMenu;
+		do {
+			opcionMenu = 0;
+			
+			try {
+				System.out.println("\n¿Desea cambiar de " + clienteProceso.getCineActual().getLugar() + " a otra de nuestras sucursales? \n1. Si\n2. No");
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debe ingresar un único dato numérico entre las opciones disponibles");
+			}
+			
+		}while(!(opcionMenu == 1 || opcionMenu == 2));
+		
+		if (opcionMenu == 1) {
+			clienteProceso.setCineActual(ingresarASucursal());
+		}else {
+			System.out.println("\nRegresando al menú principal...");
+		}
+	}
 }
 

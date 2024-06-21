@@ -23,7 +23,7 @@ public class ServicioComida extends Servicio{
 	
 	@Override
 	public ArrayList<Producto> actualizarInventario(){
-		ArrayList<Producto> inventarioGeneral = getCliente().getCine().getInventarioCine();
+		ArrayList<Producto> inventarioGeneral = getCliente().getCineActual().getInventarioCine();
 		ArrayList<Producto> inventario = new ArrayList<Producto>();
 		for(int i = 0;i<inventarioGeneral.size();i++) {
 			if(inventarioGeneral.get(i).getTipoProducto().equalsIgnoreCase("Comida") && inventarioGeneral.size() > 0) {

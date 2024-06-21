@@ -27,7 +27,7 @@ public class Cliente {
 	private ArrayList<String> codigosDescuento = new ArrayList<>();
 	private ArrayList<String> codigosBonos = new ArrayList<>();
 	private ArrayList<Bono> bonos = new ArrayList<>();
-	private SucursalCine cine;
+	private SucursalCine cineActual;
 	
 	
 	//Constructores
@@ -354,12 +354,12 @@ public class Cliente {
 		this.metodosDePago = metodosDePago;
 	}
 
-	public SucursalCine getCine() {
-		return cine;
+	public SucursalCine getCineActual() {
+		return cineActual;
 	}
 
-	public void setCine(SucursalCine cine) {
-		this.cine = cine;
+	public void setCineActual(SucursalCine cineActual) {
+		this.cineActual = cineActual;
 	}
 
 	public ArrayList<String> getCodigosDescuento() {

@@ -73,7 +73,7 @@ public class Ticket implements IBuyable{
 		Ticket.cantidadTicketsCreados++;
 		
 		//Se crea un apuntador del ticket en el array de tickets generados de la sucursal de cine
-		cliente.getCine().getTicketsCreados().add(this);
+		cliente.getCineActual().getTicketsCreados().add(this);
 		
 		//Creamos la factura y se la asociamos al cliente
 		this.factura(cliente);

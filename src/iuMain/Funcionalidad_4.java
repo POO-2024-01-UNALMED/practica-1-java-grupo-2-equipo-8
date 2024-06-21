@@ -24,22 +24,22 @@ public class Funcionalidad_4 {
 	 * (De tipo SucursalCine)
 	 * @return <b>void</b> : No hay retorno
 	 * */
-	static void ingresoZonaJuegos(Cliente ClienteActual, SucursalCine sucursalCineProceso) {
+	static void ingresoZonaJuegos(Cliente ClienteActual) {
 		
 		
 		
 		try {
 			System.out.println("\n☺Recuerde que para entrar a los juegos es necesario tener la tarjeta cinemar☺\nDesea:\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
 			int opcion = (int)Administrador.readLong();
-			if (opcion==2) {barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);}
+			if (opcion==2) {barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual);}
 			else if (opcion==1) {barraCarga("Ingresando");}
 			else if (opcion==3) {barraCarga("Saliendo");Administrador.salirDelSistema();}
-			else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual, sucursalCineProceso);}	
+			else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual);}	
 		
 		}catch(InputMismatchException e) {
 			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
 			Administrador.sc.nextLine(); 
-			ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
+			ingresoZonaJuegos(ClienteActual);
 		}
 		
 		boolean casoValido = true;
@@ -63,10 +63,10 @@ public class Funcionalidad_4 {
 							imprimirTarjeta(ClienteActual.getCuenta().getDueno().getNombre(),ClienteActual.getCuenta().getSaldo());
 							casoValido = false;
 						}
-						else {System.out.println("\n•Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde");Administrador.sc.nextLine(); Administrador.inicio(ClienteActual, sucursalCineProceso);}
+						else {System.out.println("\n•Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde");Administrador.sc.nextLine(); Administrador.inicio(ClienteActual);}
 					
 					}
-					else if (option ==2) {ingresoZonaJuegos(ClienteActual, sucursalCineProceso);}
+					else if (option ==2) {ingresoZonaJuegos(ClienteActual);}
 					else {System.out.println("\n•Opcion Invalida");}
 				}catch(InputMismatchException e) {
 					System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
@@ -198,7 +198,7 @@ public class Funcionalidad_4 {
 				switch (eleccion4) {
 				case 1: barraCarga("Ingresando");casoValido= false;finCiclo= false; break;
 				case 2: barraCarga("Redirigiendo");casoValido = true;finCiclo= false; break;
-				case 3: barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);
+				case 3: barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual);
 				case 4: barraCarga("Saliendo");Administrador.salirDelSistema();
 				default: finCiclo = true; break; 
 				}
@@ -207,7 +207,7 @@ public class Funcionalidad_4 {
 		else if (eleccion1==3) {
 			barraCarga("Volviendo");
 			Administrador.sc.nextLine();
-			Administrador.inicio(ClienteActual, sucursalCineProceso);
+			Administrador.inicio(ClienteActual);
 		}
 		else if (eleccion1==4) {
 			barraCarga("Saliendo");
@@ -291,8 +291,8 @@ public class Funcionalidad_4 {
 						System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 						int option = (int)Administrador.readLong();
 							switch(option) {
-							case 1: Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);
-							case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
+							case 1: Administrador.sc.nextLine();Administrador.inicio(ClienteActual);
+							case 2: ingresoZonaJuegos(ClienteActual);
 							case 3: Administrador.salirDelSistema();
 							default:  break;
 							}
@@ -326,8 +326,8 @@ public class Funcionalidad_4 {
 						System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 						int option = (int)Administrador.readLong();
 							switch(option) {
-							case 1: Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);
-							case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
+							case 1: Administrador.sc.nextLine();Administrador.inicio(ClienteActual);
+							case 2: ingresoZonaJuegos(ClienteActual);
 							case 3: Administrador.salirDelSistema();
 							default:  break;
 							}
@@ -362,8 +362,8 @@ public class Funcionalidad_4 {
 						System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 						int option = (int)Administrador.readLong();
 							switch(option) {
-							case 1: Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);
-							case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
+							case 1: Administrador.sc.nextLine();Administrador.inicio(ClienteActual);
+							case 2: ingresoZonaJuegos(ClienteActual);
 							case 3: Administrador.salirDelSistema();
 							default:  break;
 							}
@@ -397,8 +397,8 @@ public class Funcionalidad_4 {
 						System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 						int option = (int)Administrador.readLong();
 							switch(option) {
-							case 1: Administrador.sc.nextLine(); Administrador.inicio(ClienteActual, sucursalCineProceso);
-							case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
+							case 1: Administrador.sc.nextLine(); Administrador.inicio(ClienteActual);
+							case 2: ingresoZonaJuegos(ClienteActual);
 							case 3: Administrador.salirDelSistema();
 							default:  break;
 							}
@@ -432,8 +432,8 @@ public class Funcionalidad_4 {
 						System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver para recargar tarjeta\n3.Salir");
 						int option = (int)Administrador.readLong();
 							switch(option) {
-							case 1: Administrador.sc.nextLine(); Administrador.inicio(ClienteActual, sucursalCineProceso);
-							case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
+							case 1: Administrador.sc.nextLine(); Administrador.inicio(ClienteActual);
+							case 2: ingresoZonaJuegos(ClienteActual);
 							case 3: Administrador.salirDelSistema();
 							default:  break;
 							}
@@ -458,7 +458,7 @@ public class Funcionalidad_4 {
 						}
 					}	
 					break;
-				case 6: barraCarga("Volviendo"); Administrador.sc.nextLine(); Administrador.inicio(ClienteActual, sucursalCineProceso); break;
+				case 6: barraCarga("Volviendo"); Administrador.sc.nextLine(); Administrador.inicio(ClienteActual); break;
 				case 7 : barraCarga("Saliendo"); Administrador.salirDelSistema(); break;
 				default: break;
 				}
@@ -496,7 +496,7 @@ public class Funcionalidad_4 {
 					System.out.println("\nGanas un bono de comida por obtener la puntuacion maxima en un juego de tipo "+generoJuego+" y redimir un codigo de pelicula del mismo genero");
 					barraCarga("Generando bono");
 					espera(3000);
-					bonoCliente = Arkade.generarBonoComidaJuegos(sucursalCineProceso);
+					bonoCliente = Arkade.generarBonoComidaJuegos(ClienteActual.getCineActual());
 					codigoBono = bonoCliente.getCodigo();
 					ClienteActual.getCodigosBonos().add(codigoBono);
 					ClienteActual.getBonos().add(bonoCliente);
@@ -523,7 +523,7 @@ public class Funcionalidad_4 {
 		System.out.println("\n☻☻☻Gracias por jugar con nosotros☻☻☻\n");
 		barraCarga("Redireccionando al menú principal");
 		Administrador.sc.nextLine();
-		Administrador.inicio(ClienteActual, sucursalCineProceso);
+		Administrador.inicio(ClienteActual);
 		
 	}
 	

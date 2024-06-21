@@ -39,7 +39,7 @@ public class Funcionalidad5 {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: Administrador.inicio(clienteProceso, sucursalCineProceso); casoValido = true; break;
+				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
 				case 3: Administrador.salirDelSistema(); casoValido = true; break;
 				default: System.out.println("Opcion invalida"); break;
 			}
@@ -62,7 +62,7 @@ public class Funcionalidad5 {
 				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
 				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
 				case 4: adquirirMembresia(clienteProceso, sucursalCineProceso);casoValido=false;break;
-				case 5: Administrador.inicio(clienteProceso, sucursalCineProceso);casoValido=false;break;
+				case 5: Administrador.inicio(clienteProceso);casoValido=false;break;
 				case 6: Administrador.salirDelSistema();
 				default: System.out.println("Opcion invalida");break;
 			}
@@ -156,7 +156,7 @@ public class Funcionalidad5 {
 			System.out.print(Membresia.verificarMembresiaActual(cliente));
 			System.out.print(Membresia.mostrarCategoria(cliente) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
 			opcionMenu = (int) Integer.parseInt(sc.nextLine());
-			if (opcionMenu == 6) {Administrador.inicio(clienteProceso, sucursalCineProceso); break;}
+			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
 				if (cliente.getMembresia()!= null) {
 					int categoriaCliente = cliente.getMembresia().getCategoria();
@@ -190,7 +190,7 @@ public class Funcionalidad5 {
 			+ ". Por favor, seleccione el método de pago a usar:\n"
 			+ MetodoPago.mostrarMetodosDePago(cliente) + "5. Volver al inicio \nIngrese la opción: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
-			if (opcionMenu == 5) {Administrador.inicio(clienteProceso, sucursalCineProceso);}
+			if (opcionMenu == 5) {Administrador.inicio(clienteProceso);}
 			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(cliente, opcionMenu);
 			try {
 				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {
