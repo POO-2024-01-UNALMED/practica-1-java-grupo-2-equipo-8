@@ -1,4 +1,5 @@
 package gestionAplicacion.servicios;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import gestionAplicacion.usuario.Cliente;
@@ -10,6 +11,20 @@ public class ServicioSouvenirs extends Servicio{
 	
 	public ServicioSouvenirs(String nombre) {
 		super(nombre);
+	}
+	
+	@Override
+	public boolean descuentarPorCompra(MetodoPago metodo) {
+		if (!metodo.getNombre().equalsIgnoreCase("Efectivo")) {
+			for(int i = 0; i < orden.size(); i++) {
+				if (orden.get(i).getTamaño().equalsIgnoreCase("Katana") && (orden.get(i).getPrecio() > 120000)) {
+					valorPedido = valorPedido - (valorPedido*0.1);
+					return true;
+				}
+		}
+		return false;
+		}
+		return false;
 	}
 	
 	@Override
@@ -32,14 +47,15 @@ public class ServicioSouvenirs extends Servicio{
 
 	@Override
 	public void factura(Cliente cliente) {
-		// TODO Auto-generated method stub
+		String factura;
+		factura="                          CINEMAR \n"+
+				"==================== Factura de Souvenir ====================\n"+
+				"Nombre dueño : " + this.getCliente().getNombre() + "\n" +
+				"Fecha de compra: "+ LocalDate.now() + "\n" +
+				this.mostrarOrden()+ "\n" +
+				"Total a pagar aplicando descuentos : $" + valorPedido+ "\n";
+		this.getCliente().getFacturas().add(factura);
 		
-	}
-
-	@Override
-	public boolean descuentoCompra(MetodoPago metodo) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	
 }

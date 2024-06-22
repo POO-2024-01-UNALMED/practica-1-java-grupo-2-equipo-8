@@ -17,7 +17,7 @@ public class Funcionalidad2 {
 		boolean verificacion = true;
 		int servicio = 0;
 		int cantidad = 0;
-		System.out.println(" ====== Bienvenido a los servicios de compras ======");
+		System.out.println("\n ====== Bienvenido a los servicios de compra ====== \n");
 		
 		//Le pedimos el servicio al cual desea acceder
 		
@@ -49,7 +49,7 @@ public class Funcionalidad2 {
 			
 		//Filtramos el inventario segun el servicio y la sucursal del cine
 		serviciProceso = clienteProceso.getCineActual().getServicios().get(servicio);
-		System.out.print("\n Bienvenido al servicio "+ serviciProceso.getNombre());
+		System.out.print("\n Bienvenido al servicio "+ serviciProceso.getNombre()+" 📽️📽️📽️");
 		serviciProceso.setCliente(clienteProceso);
 		serviciProceso.setInventario(clienteProceso.getCineActual().getServicios().get(servicio).actualizarInventario());
 		
@@ -76,7 +76,7 @@ public class Funcionalidad2 {
 					continue;
 				}
 				eleccion = eleccion - 1;
-				System.out.print("Ingrese el numero de productos que deseas llevar: ");
+				System.out.print("\nIngrese el numero de productos que deseas llevar: ");
 				cantidad = Integer.parseInt(sc.nextLine());
 			}catch(NumberFormatException e) {
 				System.out.println("\nError, debes ingresar un dato numérico\n");
@@ -87,17 +87,20 @@ public class Funcionalidad2 {
 			
 			Producto producto = serviciProceso.hacerPedido(eleccion, cantidad);
 			if(producto == null) {
-				System.out.print("No hay suficientes productos de: "+serviciProceso.getInventario().get(eleccion).getNombre()+
-						serviciProceso.getInventario().get(eleccion).getTamaño()+" \nEn el momento solo hay disponible: "+
+				System.out.print("\nNo hay suficientes productos de: "+serviciProceso.getInventario().get(eleccion).getNombre()+
+						serviciProceso.getInventario().get(eleccion).getTamaño()+" (╥_╥)(╥_╥)(╥_╥) \n\nEn el momento solo hay disponible: "+
 						serviciProceso.getInventario().get(eleccion).getCantidad());
 			}
 			else {
-				System.out.print("\n 🎉🎉El pedido fue realizado con exito🎉🎉 \n");
+				System.out.print("  --------------------------------------------------- \n");
+				System.out.print(" | 🎉🎉🎉🎉El pedido fue realizado con exito🎉🎉🎉🎉 |\n");
+				System.out.print("  ---------------------------------------------------  \n");
 				serviciProceso.agregarOrden(producto);
+				System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
 				System.out.print(serviciProceso.mostrarOrden());
 				do {
 					try {
-						System.out.print("\n\nQuieres hacer otro pedido: \n1.SI \n2.NO"+
+						System.out.print("\n\n"+"¿Quieres hacer otro pedido? \n1.SI \n2.NO"+
 					"\nSeleccione una opcion: ");	
 						eleccion = Integer.parseInt(sc.nextLine());
 					}catch(NumberFormatException e) {
@@ -115,7 +118,24 @@ public class Funcionalidad2 {
 		
 		//////////// Espacio para descuento por genero con horario para hacer con Andy///////////////////////
 		
-		
+		if(serviciProceso.getOrden().size()>0) {
+			Producto productoDescuento = serviciProceso.descuentarPorGenero(clienteProceso.getCineActual());
+			
+			if (productoDescuento != null){
+				
+				System.out.print("                ------------------------------------------------------------------- \n");
+				System.out.print("               |            🎉🎉Felicidades obtuviste un descuento 🎉🎉            |\n");
+				System.out.print("               |Por comprar un producto del mismo genero que el tiket que compraste|\n");
+				System.out.print("                ------------------------------------------------------------------- \n");
+				System.out.print("Todos los produtos de :"+ productoDescuento.getNombre() + productoDescuento.getTamaño() +" Obtuvieron un descuento del 10% en esta compra \n");
+				System.out.print("Precio anterior --> $"+productoDescuento.getPrecio()+" Precio actual --> $");
+				productoDescuento.setPrecio(productoDescuento.getPrecio()*0.9);
+				System.out.println(productoDescuento.getPrecio());
+				System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
+				System.out.print(serviciProceso.mostrarOrden());
+				
+			}
+		}
 		
 		
 		/////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +144,8 @@ public class Funcionalidad2 {
 		verificacion = true;
 		do {
 			try {
-				System.out.print("¿Tienes algun bono de comida para reclamar?\n1.SI\n2.NO\nSeleccione una opcion:");
+				System.out.print("\n\n    SISTEMA DE BONOS 🎁🎁🎁🎁🎁");
+				System.out.print("\n\n¿Tienes algun bono para reclamar?\n1.SI\n2.NO\nSeleccione una opcion:");
 				eleccion = Integer.parseInt(sc.nextLine());
 				if (eleccion != 1 && eleccion != 2) {
 					System.out.println("Error, Debes de seleccionar una de las dos opciones");
@@ -152,11 +173,11 @@ public class Funcionalidad2 {
 				}
 				productoBono = serviciProceso.validarBono(codigoBono,clienteProceso.getCineActual().getServicios().get(servicio));
 				if (productoBono == null) {
-					System.out.println("Codigo invalido porfavor verificar el codigo");
+					System.out.println("\n Codigo invalido, verificar el codigo (╥_╥)(╥_╥)(╥_╥)");
 					
 					do {
 						try {
-							System.out.print("\n¿Que deseas hacer?\n1.Salir\n2.Volver a intentar\nSeleccione una opcion: ");
+							System.out.print("\n"+"¿Que deseas hacer?\n1.Salir\n2.Volver a intentar\nSeleccione una opcion: ");
 							eleccion = Integer.parseInt(sc.nextLine());
 						}catch(NumberFormatException e) {
 							System.out.println("\nError, debes ingresar un dato numérico\n");
@@ -173,14 +194,17 @@ public class Funcionalidad2 {
 					
 				}
 				else {
-					System.out.println("\n\nBono validado con exito🎉🎉🎉🎉\n\n");
-					System.out.print("El bono es de: "+productoBono.getNombre()+" "+productoBono.getTamaño());
+					System.out.print("  ----------------------------------------- ");
+					System.out.println("\n | 🎉🎉🎉🎉Bono validado con exito🎉🎉🎉🎉 | ");
+					System.out.print("  ----------------------------------------- \n");
+					System.out.println("   El bono es de: "+productoBono.getNombre()+" "+productoBono.getTamaño());
+					
 					
 					if(productoBono.comprobarBonoEnOrden(serviciProceso)) {
 						verificacion = true;
 						do {
 							try {
-								System.out.print("\n\\n¿Que deseas hacer con el producto?\n1.Desea agregarlo al pedido"+
+								System.out.print("\n"+"¿Que deseas hacer con el producto?\n1.Desea agregarlo al pedido"+
 										"\n2.Desea descontarlo del pedido\nSelecciona una opcion:");
 								eleccion = Integer.parseInt(sc.nextLine());
 							}catch(NumberFormatException e) {
@@ -192,11 +216,13 @@ public class Funcionalidad2 {
 								productoBono.setPrecio(0);
 								productoBono.setNombre("Regalo de Bono "+productoBono.getNombre());
 								serviciProceso.getOrden().add(productoBono);
+								System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
 								System.out.print(serviciProceso.mostrarOrden());
 								verificacion = false;
 							}
 							else if (eleccion == 2){
 								serviciProceso.descontarProducto(productoBono);
+								System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
 								System.out.print(serviciProceso.mostrarOrden());
 								verificacion = false;
 							}
@@ -209,13 +235,14 @@ public class Funcionalidad2 {
 						productoBono.setPrecio(0);
 						productoBono.setNombre("Regalo de bono "+productoBono.getNombre());
 						serviciProceso.getOrden().add(productoBono);
-						System.out.print(serviciProceso.mostrarOrden());
+						System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
+						System.out.println(serviciProceso.mostrarOrden());
 					}
 					verificacion = true;
 					do {
 						try {
 							
-							System.out.print("\n¿Deseas reclamar otro Bono?\n1.SI\n2.NO\nSelecciona una opcion:");
+							System.out.print("\n\n¿Deseas reclamar otro Bono?\n1.SI\n2.NO\nSelecciona una opcion:");
 							eleccion = Integer.parseInt(sc.nextLine());
 						}catch(NumberFormatException e) {
 							System.out.println("\nError, debes ingresar un dato numérico\n");
@@ -232,14 +259,13 @@ public class Funcionalidad2 {
 					}while(eleccion != 1 && eleccion != 2);
 				}
 			}while(verificacion);
-			
-			System.out.print("\nSALIO DEL SISTEMA DE BONOS\n");
-			
 		}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
 		serviciProceso.setValorPedido(serviciProceso.calcularTotal());
 		verificacion = true;
 		boolean descuento = true;
+		boolean descuento2 = true;
+		System.out.print("\n------EL PEDDIDO ESTA LISTO SOLO FALTA PAGAR: $"+serviciProceso.getValorPedido()+" ------\n");
 		do {
 			try {
 				
@@ -254,27 +280,41 @@ public class Funcionalidad2 {
 			}
 			
 			MetodoPago metodoDePago = MetodoPago.usarMetodopago(clienteProceso, eleccion);
-			
-			System.out.println("Gracias por preferir a:"+ metodoDePago.getNombre());
-			double valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
-			System.out.println("Ahora tu valor a pagar es de: $"+valor);
-			
-			if (descuento) {
+			if(descuento){
+				System.out.println("\n----------------------------------------------------------------------------------");
+				System.out.println("\n          Gracias por utilizar: "+ metodoDePago.getNombre() +" de primera opcion");
+				double valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+				System.out.println("          Ahora el valor a pagar es de: $"+valor+"\n");
 				descuento = false;
-				if (serviciProceso.descuentoCompra(metodoDePago)) {
-					System.out.println("Felicidades obtuviste un descuento sorpresa en tu compra");
+			}
+			if (descuento2) {
+				descuento2 = false;
+				double valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+				if (serviciProceso.descuentarPorCompra(metodoDePago)) {
+					System.out.print("                ------------------------------------------------------------------- \n");
+					System.out.print("               |  🎉🎉Felicidades obtuviste un descuento sorpresa en tu compra🎉🎉 |\n");
+					System.out.print("                ------------------------------------------------------------------- \n");
 					valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
-					System.out.println("Ahora tu cuenta quedo en: $" + valor);
+					System.out.println("               Ahora tu cuenta quedo en: $" + valor);
 				}
 			}
 
 			serviciProceso.setValorPedido(metodoDePago.realizarPago(serviciProceso.getValorPedido(),clienteProceso));
 			
 			if (serviciProceso.getValorPedido() == 0) {
-				System.out.println("La cuota fue cubierta en su totalidad");
+				System.out.println("LA CUOTA FUE CUBIARTA EN SU TOTALIDAD 🎉🎉🎉🎉");
+				System.out.println("\nEstamos generando su factura, por favor espere...\n");
+				try {
+					Thread.sleep(3000);
+				}catch(InterruptedException e) {
+					e.printStackTrace();
+				}
+				serviciProceso.factura(clienteProceso);
+				System.out.print(clienteProceso.getFacturas().get(-1));
 				verificacion = false;
 			}
 			else {
+				System.out.println("\n----------------------------------------------------------------------------------");
 				System.out.println("\nFALTA POR TERMINAR DE PAGAR : $" + serviciProceso.getValorPedido() + " (╥_╥)(╥_╥)(╥_╥)");
 				continue;
 			}

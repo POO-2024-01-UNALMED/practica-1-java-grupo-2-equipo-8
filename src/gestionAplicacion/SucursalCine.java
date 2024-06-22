@@ -14,7 +14,7 @@ import gestionAplicacion.usuario.Ticket;
 
 public class SucursalCine {
 	
-	private static LocalDateTime fechaActual = LocalDateTime.now();
+	private static LocalDateTime fechaActual = LocalDateTime.now().withMinute(14);
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	
