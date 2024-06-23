@@ -259,6 +259,10 @@ public class Cliente {
 		System.out.println((this.codigosDescuento.size()+1)+". Ninguno");
 		System.out.println((this.codigosDescuento.size()+2)+". Salir");
 	}
+	
+	public void validarTicketCliente() {
+		
+	}
 	//Getters y setters
 	public String getNombre() {
 		return nombre;

@@ -5,7 +5,7 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
 
 public class Funcionalidad3 {
-	static void calificacion(Cliente clienteProceso, SucursalCine sucursalCineProceso){
+	static void calificacion(Cliente clienteProceso){
 		boolean verificar = true;
 		int eleccion = 0;
 		Scanner sc = new Scanner(System.in);
@@ -31,8 +31,21 @@ public class Funcionalidad3 {
 		if (eleccion==1) {
 			System.out.println("      Bienvenido al apartado de calificacion de comida     ");
 			
+		    }
+		if (eleccion==2) {
+			System.out.println("      Bienvenido al apartado de calificacion de peliculas   ");
 		}
-   }
+        
+		if (eleccion==3) {
+			Administrador.inicio(clienteProceso);
+			
+		}
+	//Verificar si el cliente ha consumido o no algun producto o si ha visto alguna pelicula
+		
+	}
+	
+	
+	
     
  
 

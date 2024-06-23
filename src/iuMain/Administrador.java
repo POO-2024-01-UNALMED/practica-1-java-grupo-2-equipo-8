@@ -297,7 +297,7 @@ public class Administrador {
 		case 3: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
 		case 4: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
 		//case 5: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		//case 6: Funcionalidad3.calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
+		case 6: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
 		case 7: Funcionalidad1.salaDeEspera(clienteProceso); inicio(clienteProceso); break;
 		case 8: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
 		case 9: salirDelSistema(); break;
