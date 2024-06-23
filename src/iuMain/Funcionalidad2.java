@@ -142,10 +142,34 @@ public class Funcionalidad2 {
 		
 		//Validacion de los bonos
 		verificacion = true;
+		serviciProceso.actualizarBonos();
+		if (0 < serviciProceso.getBonosCliente().size()) {
+			do {
+				try {
+					System.out.println(serviciProceso.mostrarBonos());
+					System.out.print("Seleccione una opcion");
+					eleccion = Integer.parseInt(sc.nextLine());
+					if (eleccion > serviciProceso.getBonosCliente().size()) {
+						System.out.println("\nError, debes escoger una opcion correcta\n");
+						continue;
+					}
+				}catch(NumberFormatException e) {
+				System.out.println("\nError, debes ingresar un dato numérico\n");
+				continue;
+			}
+				verificacion = false;
+			}while(verificacion);
+			
+			
+			
+		}
+		
+		
+		verificacion = true;
 		do {
 			try {
 				System.out.print("\n\n    SISTEMA DE BONOS 🎁🎁🎁🎁🎁");
-				System.out.print("\n\n¿Tienes algun bono para reclamar?\n1.SI\n2.NO\nSeleccione una opcion:");
+				System.out.print("\n\n¿Tienes algun codigo para reclamar?\n1.SI\n2.NO\nSeleccione una opcion:");
 				eleccion = Integer.parseInt(sc.nextLine());
 				if (eleccion != 1 && eleccion != 2) {
 					System.out.println("Error, Debes de seleccionar una de las dos opciones");
@@ -262,6 +286,7 @@ public class Funcionalidad2 {
 		}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
 		serviciProceso.setValorPedido(serviciProceso.calcularTotal());
+		double valor = 0;
 		verificacion = true;
 		boolean descuento = true;
 		boolean descuento2 = true;
@@ -283,25 +308,26 @@ public class Funcionalidad2 {
 			if(descuento){
 				System.out.println("\n----------------------------------------------------------------------------------");
 				System.out.println("\n          Gracias por utilizar: "+ metodoDePago.getNombre() +" de primera opcion");
-				double valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+				valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
 				System.out.println("          Ahora el valor a pagar es de: $"+valor+"\n");
 				descuento = false;
 			}
 			if (descuento2) {
 				descuento2 = false;
-				double valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+				valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
 				if (serviciProceso.descuentarPorCompra(metodoDePago)) {
-					System.out.print("                ------------------------------------------------------------------- \n");
-					System.out.print("               |  🎉🎉Felicidades obtuviste un descuento sorpresa en tu compra🎉🎉 |\n");
-					System.out.print("                ------------------------------------------------------------------- \n");
+					System.out.print("        ------------------------------------------------------------------- \n");
+					System.out.print("       |  🎉🎉Felicidades obtuviste un descuento sorpresa en tu compra🎉🎉 |\n");
+					System.out.print("        ------------------------------------------------------------------- \n");
 					valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
-					System.out.println("               Ahora tu cuenta quedo en: $" + valor);
+					System.out.println("       Ahora tu cuenta quedo en: $" + valor);
 				}
 			}
-
+			
 			serviciProceso.setValorPedido(metodoDePago.realizarPago(serviciProceso.getValorPedido(),clienteProceso));
 			
 			if (serviciProceso.getValorPedido() == 0) {
+				serviciProceso.setValorPedido(valor);
 				System.out.println("LA CUOTA FUE CUBIARTA EN SU TOTALIDAD 🎉🎉🎉🎉");
 				System.out.println("\nEstamos generando su factura, por favor espere...\n");
 				try {
@@ -310,7 +336,8 @@ public class Funcionalidad2 {
 					e.printStackTrace();
 				}
 				serviciProceso.factura(clienteProceso);
-				System.out.print(clienteProceso.getFacturas().get(-1));
+				System.out.print(clienteProceso.getFacturas().get(clienteProceso.getFacturas().size()-1));
+				serviciProceso.procesarPagoRealizado(clienteProceso);
 				verificacion = false;
 			}
 			else {

@@ -10,7 +10,7 @@ import gestionAplicacion.servicios.Arkade;
 public class Ticket implements IBuyable{
 	
 	private static int cantidadTicketsCreados = 1;
-	private boolean descuento = true;//NO ME LO BORRE,YO RUSBEL LO NECESITO
+	private boolean descuento;
 	private int idTicket;
 	private Cliente dueno;
 	private SalaCine salaDeCine;
@@ -21,6 +21,7 @@ public class Ticket implements IBuyable{
 
 	//Constructors
 	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalCine) {
+		this.descuento = true;
 		this.pelicula = pelicula;
 		this.idTicket = Ticket.cantidadTicketsCreados;
 		this.numeroAsiento = numeroAsiento;

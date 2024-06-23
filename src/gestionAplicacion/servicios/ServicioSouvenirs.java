@@ -41,7 +41,7 @@ public class ServicioSouvenirs extends Servicio{
 
 	@Override
 	public void procesarPagoRealizado(Cliente cliente) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -50,10 +50,10 @@ public class ServicioSouvenirs extends Servicio{
 		String factura;
 		factura="                          CINEMAR \n"+
 				"==================== Factura de Souvenir ====================\n"+
-				"Nombre dueño : " + this.getCliente().getNombre() + "\n" +
-				"Fecha de compra: "+ LocalDate.now() + "\n" +
+				" Nombre dueño : " + this.getCliente().getNombre() + "\n" +
+				" Fecha de compra: "+ LocalDate.now() + "\n" +
 				this.mostrarOrden()+ "\n" +
-				"Total a pagar aplicando descuentos : $" + valorPedido+ "\n";
+				" Total a pagar aplicando descuentos : $" + valorPedido+ "\n";
 		this.getCliente().getFacturas().add(factura);
 		
 	}

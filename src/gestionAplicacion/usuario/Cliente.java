@@ -6,6 +6,7 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
+import gestionAplicacion.servicios.Servicio;
 
 public class Cliente {
 	
@@ -65,6 +66,7 @@ public class Cliente {
 	}
 	
 	//Methods
+	
 	/**
 	 * Description : Este método genera un String que se imprimirá en pantalla, con el fin de que el usuario
 	 * pueda visualizar la información relevante a su perfil.

@@ -15,6 +15,7 @@ public abstract class Servicio implements IBuyable{
 	protected Cliente cliente;
 	protected ArrayList<Producto> inventario = new ArrayList<>();
 	protected ArrayList<Producto> orden = new ArrayList<>();
+	protected ArrayList<Bono> bonosCliente = new ArrayList<>();
 	protected double valorPedido;
 	
 	public Servicio(){}
@@ -23,12 +24,32 @@ public abstract class Servicio implements IBuyable{
 		this.nombre = nombre;
 	}
 	
+	//ligadura estatica
+	
+	public String  mostrarBonos() {
+		int n = 0;
+		String bono = " ====== Tienes los siguientes bonos disponibles ======\n";
+		for(int i = 0;i < bonosCliente.size();i++) {
+				n = n +i;
+				bono = bono + "\n" + n + ". " + bonosCliente.get(i).getProducto().getNombre();
+		}
+		return bono;
+	}
+	
+	public void actualizarBonos() {
+		for(int i = 0;i < cliente.getBonos().size();i++) {
+			if (cliente.getBonos().get(i).getTipoServicio().equalsIgnoreCase(nombre)) {
+				bonosCliente.add(cliente.getBonos().get(i));
+			}
+		}
+	}
+	
 	public Producto descuentarPorGenero (SucursalCine cine) {
 		for (int i = 0;i < orden.size();i++) {
 			for(int j = 0; j < cine.getTicketsCreados().size(); j++) {
 				if(orden.get(i).getGenero().equalsIgnoreCase(cine.getTicketsCreados().get(j).getPelicula().getGenero()) && cliente.equals(cine.getTicketsCreados().get(j).getDueno())){
 					LocalDate fecha = LocalDate.now();
-					if (fecha.equals(cine.getTicketsCreados().get(j).getHorario().toLocalDate()) && cine.getTicketsCreados().get(i).isDescuento()) {
+					if (fecha.equals(cine.getTicketsCreados().get(j).getHorario().toLocalDate()) && cine.getTicketsCreados().get(j).isDescuento()) {
 						cine.getTicketsCreados().get(i).setDescuento(false);
 						return orden.get(i);
 					}
@@ -89,6 +110,11 @@ public abstract class Servicio implements IBuyable{
 		for (int i=0; i < Bono.getBonosCreados().size();i++) {
 			if (Bono.getBonosCreados().get(i).getCodigo().equalsIgnoreCase(codigo) && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
 				producto = Bono.getBonosCreados().get(i).getProducto();
+				for (int j =0; j < Bono.getBonosCreados().get(i).getCliente().getBonos().size(); j++) {
+					if (Bono.getBonosCreados().get(i).getCliente().getBonos().get(j).getCodigo().equalsIgnoreCase(codigo)) {
+						Bono.getBonosCreados().get(i).getCliente().getBonos().remove(j);
+					}
+				}
 				Bono.getBonosCreados().remove(i);
 				return producto;
 			}
@@ -202,6 +228,14 @@ public abstract class Servicio implements IBuyable{
 
 	public void setValorPedido(double valorPedido) {
 		this.valorPedido = valorPedido;
+	}
+
+	public ArrayList<Bono> getBonosCliente() {
+		return bonosCliente;
+	}
+
+	public void setBonosCliente(ArrayList<Bono> bonosCliente) {
+		this.bonosCliente = bonosCliente;
 	}
 	
 	

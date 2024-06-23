@@ -52,7 +52,12 @@ public class ServicioComida extends Servicio {
 
 	@Override
 	public void procesarPagoRealizado(Cliente cliente) {
-
+		
+		MetodoPago.asignarMetodosDePago(cliente);
+		
+		orden = null;
+		valorPedido = 0.0;
+		
 	}
 
 	@Override
