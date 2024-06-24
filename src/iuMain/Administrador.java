@@ -108,7 +108,7 @@ public class Administrador {
 	static SalaCine salaDeCine3_5 = new SalaCine(5, "3D", sucursalCine3);
 	static SalaCine salaDeCine3_6 = new SalaCine(6, "4D", sucursalCine3);
 
-	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 15000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
+	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 1500000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
 	
 	static Pelicula pelicula3_4 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
 	

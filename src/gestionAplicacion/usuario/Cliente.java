@@ -1,18 +1,20 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
 import java.time.Duration;
+import java.util.Iterator;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
-import gestionAplicacion.servicios.Servicio;
+//import gestionAplicacion.servicios.Servicio;
 
 public class Cliente {
 	
 	//Atributos
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
+	private ArrayList<Pelicula> peliculasDisponiblesParaCalificar = new ArrayList<>();
 	private ArrayList<Pelicula> historialDePedidos = new ArrayList<>();
 	private ArrayList<Producto> pedidos = new ArrayList<>();
 	private ArrayList<Ticket> tickets = new ArrayList<>();
@@ -140,29 +142,27 @@ public class Cliente {
 	}
 	
 	/**
-	 * Description: Este método se encarga de mostrar al cliente las sala de cine a las que puede ingresar
+	 * Description: Este método se encarga de mostrar al cliente las salas de cine a las que puede ingresar
 	 * examinando su array de tickets e imprimiendo en pantalla información relevante de estos para facilitar
 	 * la elección de la sala de cine a ingresar.
 	 * @return: <b>String</b> : Este método se encarga de retornar un string con el nombre de la película
 	 * el número de la sala de cine y la fecha de la película de cada uno de los tickets asociados del cliente.
 	 * */
 	public String mostrarTicketsParaUsar() {
-		String tickets = null;
+		
+		StringBuilder tickets = new StringBuilder("\n");
 		int i = 1;
-		for (Ticket ticket : this.getTickets()) {
+		
+		for (Ticket ticket : this.tickets) {
 			
-			if (tickets == null) {
-				tickets = i + ". Película: " + ticket.getPelicula().getNombre() 
-						+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
-						+ ", Hora: " + ticket.getHorario();
-			}else {
-				tickets = tickets + "\n" + i + ". Película: " + ticket.getPelicula().getNombre() 
-						+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
-						+ ", Hora: " + ticket.getHorario();
-			}
+			tickets.append("\n" + i + ". Película: " + ticket.getPelicula().getNombre() 
+			+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
+			+ ", Hora: " + ticket.getHorario());
 			i++;
+			
 		}
-		return tickets;
+		
+		return tickets.toString();
 	}
 	
 	/**
@@ -171,17 +171,22 @@ public class Cliente {
 	 * los eliminamos.
 	 * */
 	public void dropTicketsCaducados() {
-		ArrayList<Ticket> ticketsCaducados = new ArrayList<>();
+		//Creamos un apuntador del tipo de la interfaz iterator y le asignamos los tickets del cliente que ejecuta el método
+		Iterator<Ticket> iteradorTickets = this.tickets.iterator();
 		
-		for (Ticket ticket : this.getTickets()) {
+		//Iteramos sobre el iterador, preguntando si tiene un elemento siguiente
+		while(iteradorTickets.hasNext()) {
+			
+			//Creamos una variable de tipo ticket que me almacene el ticket sobre el que estoy iterando en estos momentos
+			Ticket ticket = (Ticket) iteradorTickets.next();
+			
+			//Valido si el ticket ya caducó
 			if( !(ticket.getHorario().plus(ticket.getPelicula().getDuracion()).isAfter(SucursalCine.getFechaActual())) ){
-				ticketsCaducados.add(ticket);
+				//Lo elimino
+				iteradorTickets.remove();
 			}
 		}
 		
-		for (Ticket ticket : ticketsCaducados) {
-			this.getTickets().remove(ticket);
-		}
 	}
 	
 	/**
@@ -193,7 +198,8 @@ public class Cliente {
 	 * o a la sala de espera si este posee algún ticket de esta sucursal.
 	 * */
 	public boolean disponibilidadTicketParaSede(SucursalCine sucursalCineProceso) {
-		for (Ticket ticket : this.getTickets()) {
+		
+		for (Ticket ticket : this.tickets) {
 			for (Pelicula peliculaCarteleraSede : sucursalCineProceso.getCartelera()) {
 				if(ticket.getPelicula().equals(peliculaCarteleraSede)) {
 					return true;
@@ -215,14 +221,19 @@ public class Cliente {
 		ArrayList<String> generosVistos = new ArrayList<>();
 		ArrayList<Integer> cantidadVisualizaciones = new ArrayList<>();
 		
-		for(Pelicula pelicula : this.getHistorialDePeliculas()) {
+		for(Pelicula pelicula : this.historialDePeliculas) {
+			//Verificamos si el género se encuentra en el array de generosVistos
 			if (generosVistos.contains(pelicula.getGenero())) {
 				
+				//Buscamos en qué índice se encuentra
 				int indiceGenero = generosVistos.indexOf(pelicula.getGenero());
+				//Aumentamos en 1 las visualizaciones de ese género
 				cantidadVisualizaciones.set(indiceGenero, cantidadVisualizaciones.get(indiceGenero) + 1);
 				
 			}else {
+				//Lo añadimos al array de generos vistos
 				generosVistos.add(pelicula.getGenero());
+				//Añadimos una visualización en el array de visualizaciones
 				cantidadVisualizaciones.add(1);
 			}
 		}
@@ -230,18 +241,23 @@ public class Cliente {
 		boolean firstEntry = true;
 		String generoMasVisto = null;
 		int valorGeneroMasVisto = 0;
+		
+		//Revisamos cuál fue el género con mayor cantidad de visualizaciones
 		for( String genero : generosVistos ) {
-			String auxGeneroMasVisto = genero;
-			int auxValorGeneroMasVisto = cantidadVisualizaciones.get(generosVistos.indexOf(auxGeneroMasVisto));
+
+			int auxValorGeneroMasVisto = cantidadVisualizaciones.get(generosVistos.indexOf(genero));
 			
 			if (firstEntry) {
-				generoMasVisto = auxGeneroMasVisto;
+				//Si es la primera vez que iteramos sobre el array
+				generoMasVisto = genero;
 				valorGeneroMasVisto =  auxValorGeneroMasVisto;
 				firstEntry = false;
 			}
 			
+			//Comparamos las visualizaciones del género más visto con su auxiliar
 			if(auxValorGeneroMasVisto >= valorGeneroMasVisto) {
-				generoMasVisto = auxGeneroMasVisto;
+				//Decimos que es el género más visto
+				generoMasVisto = genero;
 			}
 
 		}
@@ -404,5 +420,13 @@ public class Cliente {
 		this.pedidos = pedidos;
 	}
 	
+	public ArrayList<Pelicula> getPeliculasDisponiblesParaCalificar() {
+		return peliculasDisponiblesParaCalificar;
+	}
+
+	public void setPeliculasParaCalificiar(ArrayList<Pelicula> peliculasDisponiblesParaCalificiar) {
+		this.peliculasDisponiblesParaCalificar = peliculasDisponiblesParaCalificiar;
+	}
+
 	
 }

@@ -6,10 +6,6 @@ public class Asiento {
 	private boolean disponibilidad = true;
 	private static int AsientosCreados;
 	
-	public Asiento(){
-		++AsientosCreados;
-	}
-	
 	public Asiento(int fila, int columna){
 		++AsientosCreados;
 		this.numeroAsiento = (fila + 1) + "-" + (columna + 1);

@@ -38,9 +38,12 @@ public class Ticket implements IBuyable{
 	 * o no el descuento.
 	 * */
 	private double clienteSuertudo() {
-		double posibleCuadradoPerfecto = Math.sqrt(Ticket.cantidadTicketsCreados) % 1;
-		boolean verificacion = (posibleCuadradoPerfecto == 0) ? true : false; 
+		
+		//Verificamos si al sacarle módulo a la raíz cuadrada a los tickets creados nos da un número sin decimales (Cuadrado perfecto)
+		boolean verificacion = (Math.sqrt(Ticket.cantidadTicketsCreados) % 1 == 0) ? true : false; 
+		//Tomamos el precio de la película asociada al ticket
 		double precio = this.pelicula.getPrecio();
+		
 		if(verificacion){
 			if (this.pelicula.getTipoDeFormato().equals("3D") || this.pelicula.getTipoDeFormato().equals("4D") ) {
 				precio = precio * 0.5;
@@ -95,16 +98,16 @@ public class Ticket implements IBuyable{
 	 * que verifica su compra realizada
 	 * */
 	public void factura(Cliente cliente) {
-		String factura = "         Cinemar\n" +
-				"=== Factura de Ticket ===\n" +
-				"Nombre dueño : " + this.getDueno().getNombre() + "\n" +
-				"Documento : " + this.getDueno().getDocumento() + "\n" +
-				"Pelicula : " + this.getPelicula().getNombre() + "\n" +
-				"Número de sala : " + this.getSalaDeCine().getNumeroSala() + "\n" +
-				"Número de asiento : " + this.getNumeroAsiento() + "\n" +
-				"Fecha Presentación: " + this.getHorario().toLocalDate() + "\n" +
-				"Hora Presentación: " + this.getHorario().toLocalTime() + "\n" + 
-				"Valor ticket (IVA incluido): " + this.getPrecio() + "\n" + 
+		String factura = "		Cinemar\n" +
+				"========= Factura de Ticket =========\n" +
+				"Nombre dueño : " + this.dueno.getNombre() + "\n" +
+				"Documento : " + this.dueno.getDocumento() + "\n" +
+				"Pelicula : " + this.pelicula.getNombre() + "\n" +
+				"Número de sala : " + this.salaDeCine.getNumeroSala() + "\n" +
+				"Número de asiento : " + this.numeroAsiento + "\n" +
+				"Fecha Presentación: " + this.horario.toLocalDate() + "\n" +
+				"Hora Presentación: " + this.horario.toLocalTime() + "\n" + 
+				"Valor ticket (IVA incluido): " + this.precio + "\n" + 
 				"Fecha de compra: " + SucursalCine.getFechaActual().withNano(0);
 				
 		cliente.getFacturas().add(factura);

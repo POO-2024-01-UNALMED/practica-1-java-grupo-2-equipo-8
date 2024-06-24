@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
@@ -41,47 +42,34 @@ public class SucursalCine {
 	 * elija a cual de estas desea ingresar.
 	 * */
 	public static String mostrarSucursalCine(){
-		String resultado = null;
+		
+		StringBuilder resultado = new StringBuilder();
 		int i = 1;
+		
 		for (SucursalCine sucursal : SucursalCine.getSucursalesCine()) {
-			if (resultado == null) {
-				resultado = "\n" + i + ". Sucursal Cinemar en "  + sucursal.getLugar();
-			}else {
-				resultado = resultado + "\n" + i + ". Sucursal Cinemar en "  + sucursal.getLugar();
-			}
+			
+			resultado.append("\n" + i + ". Sucursal Cinemar en "  + sucursal.getLugar());
 			i++;
+			
 		}
-		return resultado;
+		
+		return resultado.toString();
 		
 	}
 	
-//	/**
-//	 * Description : Este método se encarga de añadir las salas de cine a las sucursales de cine correspondientes
-//	 * @return <b>void</b> : Este método no retorna nada, solo se encarga de añadir las salas de cine a las sucursales de cine correspondientes
-//	 * */
-//	public static void añadirSalasCineSede () {
-//		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
-//			for (SalaCine salaCine : SalaCine.getSalasCine()) {
-//				if (salaCine.getUbicacionSede().equals(sede)) {
-//					sede.getSalasDeCine().add(salaCine);
-//				}
-//			}
-//		}
-//	}
-	
 	/**
 	 * Description : Este método se encarga de actualizar las salas de todas las sedes, para esto, iteramos sobre el ArrayList de las sedes,
-	 * luego iteramos sobre el ArrayList de las salas de cine de cada sala y la sede la pasamos
-	 * como parámetro al método actualizarPeliculasEnPresentacion de la clase SalaCine.
+	 * luego iteramos sobre el ArrayList de las salas de cine de cada sede y actualizamos la sala de cine en caso de ser necesario.
 	 * */
 	public static void actualizarPeliculasSalasDeCine() {
 		
-		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+		for (SucursalCine sede : SucursalCine.sucursalesCine) {
 			//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
-			for (SalaCine salaDeCine : sede.getSalasDeCine()) {
-				//En caso de que sea la primera vez que se realiza este proceso y el horarioPeliculaEnPresentacion sea nulo
+			for (SalaCine salaDeCine : sede.salasDeCine) {
+				//try en caso de que sea la primera vez que se realiza este proceso y el horarioPeliculaEnPresentacion sea nulo
 				try {
-					if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SucursalCine.getFechaActual()) ) ) {
+					//Solo actualizamos las salas de cine que estrictamente deban ser actualizadas
+					if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SucursalCine.fechaActual) ) ) {
 						salaDeCine.actualizarPeliculasEnPresentacion(sede);
 					}
 				}catch(NullPointerException e) {
@@ -104,6 +92,7 @@ public class SucursalCine {
 		Duration auxMaxDuration;
 		int comparacionDuraciones;
 		
+		//Iteramos sobre las sucursales
 		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
 			maxDuration = Duration.ofSeconds(0);
 			auxMaxDuration = Duration.ofSeconds(0);
@@ -120,29 +109,26 @@ public class SucursalCine {
 				
 			}
 			
-			//Creamos un array que almacena los horarios a eliminar de cada pelícla
-			ArrayList<LocalDateTime> horariosPeliculaAEliminar = new ArrayList<>();
-			
+			//Iteramos sobre las películas en cartelera
 			for (Pelicula pelicula : sede.getCartelera()) {
-				for (LocalDateTime horario : pelicula.getHorarios()) {
-					//Buscamos cuáles horarios podemos eliminar y los guardamos en un array
+				
+				//Iteramos sobre los horarios de esa película
+				Iterator<LocalDateTime> horariosPelicula = pelicula.getHorarios().iterator();
+				
+				while (horariosPelicula.hasNext()) {
+					LocalDateTime horario = (LocalDateTime) horariosPelicula.next();
+					//Verificamos si el horarios es anterior a la fecha actual menos la duración
 					if (horario.isBefore(fechaActual.minus(maxDuration))) {
-						horariosPeliculaAEliminar.add(horario);
+						//Eliminamos su referencia de la sala de cine virtual (Asientos y horario)
+						pelicula.getAsientosVirtuales().remove(pelicula.getHorarios().indexOf(horario));
+						horariosPelicula.remove();
 					}
 				}
 				
-				//Iteramos sobre el array de horarios a eliminar
-				for (LocalDateTime horarioAEliminar : horariosPeliculaAEliminar) {
-					//Eliminamos los horarios y sus asientos correspondientes
-					pelicula.getAsientosVirtuales().remove(pelicula.getHorarios().indexOf(horarioAEliminar));
-					pelicula.getHorarios().remove(horarioAEliminar);
-				}
-				
-				//Limpiamos el array con los horarios a eliminar para continuar con la siguiente película
-				horariosPeliculaAEliminar.clear();
-				
 			}
+			
 		}
+		
 	}
 	
 	/**
@@ -174,13 +160,13 @@ public class SucursalCine {
 			//Creamos 20 horarios por convención
 			for (int i = 1; i <= 20; i++) {
 				
+				//Verificamos que no se exceda la proyección semanal de películas
+				if (horarioParaPresentar.isAfter(limiteCreacionHorariosPeliculas)) {
+					break;
+				}
+				
 				//Iteramos sobre las películas que comparten sala de cine
 				for (Pelicula pelicula : peliculasDeSalaDeCine) {
-					
-					//Verificamos que no se exceda la proyección semanal de películas
-					if (horarioParaPresentar.isAfter(limiteCreacionHorariosPeliculas)) {
-						break;
-					}
 					
 					//1 y 2 verifican que se encuentre en el horario laboral, 3 y 4 que la duración no exceda el final del horario laboral y no pase al
 					//siguiente día
@@ -292,7 +278,6 @@ public class SucursalCine {
 			grupoPeliculasPorFormato.clear();
 			grupoSalasPorFormato.clear();
 			
-			
 		}
 		
 	}
@@ -311,16 +296,6 @@ public class SucursalCine {
 		}
 		
 		SucursalCine.actualizarPeliculasSalasDeCine();
-	}
-	
-	/**
-	 * Description : Este método se encarga de iterar sobre el array de Sucursales, con el fin de que cada sucursal se encargue de llamar al método 
-	 * crearHorarioPeliculasPorSala().
-	 * */
-	public static void crearHorariosPeliculasPorSucursal() {
-		for (SucursalCine sede : SucursalCine.sucursalesCine) {
-			sede.crearHorariosPeliculasPorSala();
-		}
 	}
 	
 	
