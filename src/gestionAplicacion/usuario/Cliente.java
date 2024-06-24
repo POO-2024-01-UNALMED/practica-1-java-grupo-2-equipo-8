@@ -260,9 +260,25 @@ public class Cliente {
 		System.out.println((this.codigosDescuento.size()+2)+". Salir");
 	}
 	
-	public void validarTicketCliente() {
+	public String  mostrarHistorialDePelicula() {
+		String peliculas = null;
+		int i = 1;
+		for ( Pelicula pelicula : historialDePeliculas ) {
+			
+			if (peliculas == null) {
+				peliculas =i + "." + pelicula.getNombre() + " " + pelicula.getTipoDeFormato();  
+						
+			}else {
+				peliculas = peliculas+" \n"+ i + "." + pelicula.getNombre()+ " " + pelicula.getTipoDeFormato();
+			}
+			i++;
+		}
+		return peliculas;
 		
-	}
+		}
+			
+		
+	
 	//Getters y setters
 	public String getNombre() {
 		return nombre;
