@@ -1,5 +1,6 @@
 package gestionAplicacion.servicios;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
@@ -12,29 +13,18 @@ public class Arkade {
 	
 	//Atributos
 	private String nombreServicio;
-	private String horarioServicio;
+	//private String horarioServicio;
 	private static ArrayList<TarjetaCinemar> tarjetasEnInventario = new ArrayList<>();
 	private static ArrayList<Arkade> juegos = new ArrayList<>();
 	private double valorServicio;
-	private static ArrayList<String> codigosGenerados = new ArrayList<>();;
-	private static ArrayList<String> codigosUsados= new ArrayList<>();;
-	private final double puntuacionMaxima = 10.0;
-	private double puntuacionUsuario;
+	//private static ArrayList<String> codigosGenerados = new ArrayList<>();;
+	//private static ArrayList<String> codigosUsados= new ArrayList<>();;
+	private static final double puntuacionMaxima = 10.0;
+	//private double puntuacionUsuario;
 	private String generoServicio;
 	
 	//Constructores
 	public Arkade(){juegos.add(this);}
-	
-	public Arkade(String nombre, String horario, String nombreServicio, String horarioServicio,
-			double valorServicio, double puntuacionUsuario, String generoServicio) {
-		this.nombreServicio = nombreServicio;
-		this.horarioServicio = horarioServicio;
-		this.valorServicio = valorServicio;
-		this.puntuacionUsuario = puntuacionUsuario;
-		this.generoServicio = generoServicio;
-		juegos.add(this);
-	}
-	
 	
 	public Arkade(String nombreServicio, double valorServicio, String generoServicio) {
 		super();
@@ -84,42 +74,6 @@ public class Arkade {
 		cliente.setCuenta(tarjetasEnInventario.get(0));
 		tarjetasEnInventario.remove(0);
 	}
-	/**
-	*Description: Buscando el el array de metodos de pago del cliente, encuentra el que el cliente ha seleccionado de acuerdo al nombre.
-	*@param nombreMetodoPago :  Es el String del nombre del metodo de pago seleccionado por el cliente
-	*@param metodosPagoCliente :  Es el array de los metodos de pago que le pertenecen a ese cliente.
-	*@return <b>metodoPagoCliente</b> :  se retorna el metodo de pago encontrado para el cliente.
-	*/
-	
-	public static MetodoPago encontrarMetodoPagoCliente(String nombreMetodoPago, ArrayList<MetodoPago> metodosPagoCliente) {
-		
-		MetodoPago metodoPagoCliente = null;
-		for (MetodoPago pago : metodosPagoCliente) {
-			if (nombreMetodoPago.equals(pago.getNombre())){
-				metodoPagoCliente = pago;
-				break;
-			}
-		}
-		return metodoPagoCliente;
-	}
-	
-	/**
-	*Description: Buscando el el array de codigos generados se verifica si el codigo pasado coincide con alguno de los generados, en caso de que si,
-	*se añade a codigos usados y se quita de codigos generados
-	*@param codigo :  Es el String del codigo a verificar
-	*@return <b>boolean</b> :  se retorna true si el codigo existe y false si no existe.
-	*/
-	public static boolean comprobarCodigo(String codigo) {
-		boolean existencia = false;
-		for (String code : codigosGenerados) {
-			if (code.equals(codigo)) {
-				existencia = true;
-				codigosUsados.add(code);
-				codigosGenerados.remove(code);
-			}
-		}
-		return existencia;
-	}
 	
 	
 	/**
@@ -129,13 +83,29 @@ public class Arkade {
 	public static String mostrarJuegos(){
 		String juegos = null;
 		int i = 1;
+		ArrayList<Double> precios = new ArrayList<>();
+		
+		precios.addAll(Arrays.asList(15000.0, 20000.0, 10000.0, 30000.0, 7500.0));
+		
 		for (Arkade juego : Arkade.juegos) {
 			if (juegos == null) {
-				juegos = i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
+				if (juego.getValorServicio()==precios.get(i-1)) {
+					juegos = i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
+				}
+				else {
+					juegos = i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+"--> Precio anterior: "+precios.get(i-1)+".\n";
+				}
+				//juegos = i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
 				i++;
 			}
 			else {
-				juegos+= i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
+				if (juego.getValorServicio()==precios.get(i-1)) {
+					juegos += i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
+				}
+				else {
+					juegos += i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+" --> Precio anterior: "+precios.get(i-1)+".\n";
+				}
+				//juegos+= i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
 				i++;
 			}
 		}
@@ -147,8 +117,9 @@ public class Arkade {
 	*Description: Este metodo se encarga de aplicar un descuento del 20% al valor de los juegos 
 	*@return <b>void</b> :  No hay retorno
 	*/
-	public static void AplicarDescuentoJuegos() {
+	public static void AplicarDescuentoJuegos(String genero) {
 		for (Arkade juego : Arkade.juegos) {
+			if (juego.getGeneroServicio().equals(genero))
 			juego.setValorServicio(juego.getValorServicio()-(juego.getValorServicio()*20/100));
 		}
 	}
@@ -208,6 +179,53 @@ public class Arkade {
 	    return bono;
 	}
 	
+	public static Bono generarBonoSouvenirJuegos(SucursalCine sucursal) {
+		ArrayList<Producto> productosSouvenirs = new ArrayList<>();
+	    for (Producto producto : sucursal.getInventarioCine()) {
+	        if (producto.getTipoProducto().equals("souvenir")) {
+	        	productosSouvenirs.add(producto);
+	        }
+	    }
+	    
+	    if (productosSouvenirs.isEmpty()) {
+	        System.out.println("•Error al generar bono, no hay productos de souvenir disponibles, lo sentimos.");
+	        return null;
+	    }
+
+	    Random random = new Random();
+
+	    
+	    int numeroAleatorio = random.nextInt(productosSouvenirs.size());
+	    String code = generarCodigoAleatorio(7);
+	    Bono bono = new Bono(code,productosSouvenirs.get(numeroAleatorio),productosSouvenirs.get(numeroAleatorio).getTipoProducto());
+	    productosSouvenirs.get(numeroAleatorio).setCantidad(productosSouvenirs.get(numeroAleatorio).getCantidad()-1);
+	    
+	    System.out.println("\n        ╔══════════════════════════╗");
+	    System.out.println("        ║        Bono Souvenir     ║");
+	    System.out.println("        ╠══════════════════════════╣");
+	    String linea = "        ║ Producto: " + productosSouvenirs.get(numeroAleatorio).getNombre();
+	    for (int i = linea.length(); i < 36; i++) {
+	        if (i == 35) {
+	            linea = linea + "║";
+	        } else {
+	            linea = linea + " ";
+	        }
+	    }
+	    System.out.println(linea);
+	    String line = "        ║ Codigo:   " + code;
+	    for (int i = line.length(); i < 38; i++) {
+	        if (i == 35) {
+	            line = line + "║";
+	        } else {
+	            line = line + " ";
+	        }
+	    }
+	    System.out.println(line);
+	    System.out.println("        ╚══════════════════════════╝\n");
+	    
+	    return bono;
+	}
+	
 	public static String generarCodigoAleatorio(int longitud) {
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
@@ -234,29 +252,14 @@ public class Arkade {
 		return nombreServicio;
 	}
 
-	public String getHorarioServicio() {
-		return horarioServicio;
-	}
 
 	public double getValorServicio() {
 		return valorServicio;
 	}
 	
-	
-	public static ArrayList<String> getCodigosGenerados() {
-		return codigosGenerados;
-	}
 
-	public static ArrayList<String> getCodigosUsados() {
-		return codigosUsados;
-	}
-
-	public double getPuntuacionMaxima() {
+	public static double getPuntuacionMaxima() {
 		return puntuacionMaxima;
-	}
-
-	public double getPuntuacionUsuario() {
-		return puntuacionUsuario;
 	}
 
 	public String getGeneroServicio() {
@@ -267,25 +270,11 @@ public class Arkade {
 		this.nombreServicio = nombreServicio;
 	}
 
-	public void setHorarioServicio(String horarioServicio) {
-		this.horarioServicio = horarioServicio;
-	}
 
 	public void setValorServicio(double valorServicio) {
 		this.valorServicio = valorServicio;
 	}
 
-	public static void setCodigosGenerados(ArrayList<String> codigosGenerados) {
-		Arkade.codigosGenerados = codigosGenerados;
-	}
-
-	public static void setCodigosUsados(ArrayList<String> codigosUsados) {
-		Arkade.codigosUsados = codigosUsados;
-	}
-
-	public void setPuntuacionUsuario(double puntuacionUsuario) {
-		this.puntuacionUsuario = puntuacionUsuario;
-	}
 
 	public void setGeneroServicio(String generoServicio) {
 		this.generoServicio = generoServicio;
@@ -298,6 +287,8 @@ public class Arkade {
 	public static void setJuegos(ArrayList<Arkade> juegos) {
 		Arkade.juegos = juegos;
 	}
+
+
 	
 	
 	
