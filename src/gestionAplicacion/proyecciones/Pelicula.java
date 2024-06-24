@@ -292,22 +292,7 @@ public class Pelicula{
 		}
 		return carteleraPersonalizada;
 	}
-	
-//	/**
-//	 * Description : Este método se encarga de verificar si la pelicula seleccionada se encuentra en presentación
-//	 * y en caso de que sí, retorna la sala de cine que la esta presentando
-//	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), para acceder a sus salas de cine
-//	 * @return <b>SalaDeCine</b> : Retorna el objeto de sala de cine que coincide con la pelicula
-//	 * */
-//	public SalaCine obtenerSalaDePeliculaEnPresentacion(SucursalCine sucursalCine) {
-//		for (SalaCine SalaDecine : sucursalCine.getSalasDeCine()) {
-//			if (this.equals(SalaDecine.getPeliculaEnPresentacion())){
-//				return SalaDecine;
-//			}
-//		}
-//		return null;
-//	}
-	
+
 	/**
 	 * Description : Este método se encarga de generar un String que se imprimirá en pantalla con el fin de visualizar
 	 * el estado de de los asientos en la sala virtual.
@@ -487,26 +472,6 @@ public class Pelicula{
 		}
 		return false;
 	}
-	
-//	/**
-//	 * Description: Este método se encarga de buscar la salaDeCine en el array de salasDeCine que tiene el mismo numero de sala de 
-//	 * la película para luego retornarlo.
-//	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) para realizar la busqueda en su array de salas de cine.
-//	 * @return : Este método retorna la salaDeCine que tiene el mismo número de sala.
-//	 * */
-//	public SalaCine obtenerSalaDeCineConCodigo(SucursalCine sucursalCine) {
-//		for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
-//			try {
-//				if (this.numeroDeSala == salaDeCine.getNumeroSala()) {
-//					return salaDeCine;
-//				}
-//			}catch(NullPointerException e) {
-//				continue;
-//			}
-//			
-//		}
-//		return null;
-//	}
 	
 	/**
 	 * Description : Este método se encarga de automatizar la creación de películas en varios formatos con distinto precio, para hacer esto

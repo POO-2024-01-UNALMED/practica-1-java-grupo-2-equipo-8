@@ -6,6 +6,7 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
+import gestionAplicacion.servicios.Servicio;
 
 public class Cliente {
 	
@@ -27,7 +28,7 @@ public class Cliente {
 	private ArrayList<String> codigosDescuento = new ArrayList<>();
 	private ArrayList<String> codigosBonos = new ArrayList<>();
 	private ArrayList<Bono> bonos = new ArrayList<>();
-	private SucursalCine cine;
+	private SucursalCine cineActual;
 	
 	
 	//Constructores
@@ -65,6 +66,7 @@ public class Cliente {
 	}
 	
 	//Methods
+	
 	/**
 	 * Description : Este método genera un String que se imprimirá en pantalla, con el fin de que el usuario
 	 * pueda visualizar la información relevante a su perfil.
@@ -257,6 +259,10 @@ public class Cliente {
 		System.out.println((this.codigosDescuento.size()+1)+". Ninguno");
 		System.out.println((this.codigosDescuento.size()+2)+". Salir");
 	}
+	
+	public void validarTicketCliente() {
+		
+	}
 	//Getters y setters
 	public String getNombre() {
 		return nombre;
@@ -354,12 +360,12 @@ public class Cliente {
 		this.metodosDePago = metodosDePago;
 	}
 
-	public SucursalCine getCine() {
-		return cine;
+	public SucursalCine getCineActual() {
+		return cineActual;
 	}
 
-	public void setCine(SucursalCine cine) {
-		this.cine = cine;
+	public void setCineActual(SucursalCine cineActual) {
+		this.cineActual = cineActual;
 	}
 
 	public ArrayList<String> getCodigosDescuento() {

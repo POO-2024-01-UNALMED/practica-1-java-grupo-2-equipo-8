@@ -10,6 +10,7 @@ import gestionAplicacion.servicios.Arkade;
 public class Ticket implements IBuyable{
 	
 	private static int cantidadTicketsCreados = 1;
+	private boolean descuento;
 	private int idTicket;
 	private Cliente dueno;
 	private SalaCine salaDeCine;
@@ -20,6 +21,7 @@ public class Ticket implements IBuyable{
 
 	//Constructors
 	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalCine) {
+		this.descuento = true;
 		this.pelicula = pelicula;
 		this.idTicket = Ticket.cantidadTicketsCreados;
 		this.numeroAsiento = numeroAsiento;
@@ -57,7 +59,8 @@ public class Ticket implements IBuyable{
 	 * 3. Se pasa la referencia del cliente al atributo dueño del ticket.
 	 * 4. Se aumenta la cantidad de tickets genereados en uno.
 	 * 5. Se crea una referencia de este ticket en el arraylist de los tickets creados en el cine.
-	 * 6. Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.
+	 * 6. Se crea la factura y se le asoscia al cliente
+	 * 7. Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.
 	 * @param cliente : Se pide como parámetro el cliente (De tipo Cliente) que realizó exitosamente el pago.
 	 */
 	public void procesarPagoRealizado(Cliente cliente) {
@@ -72,7 +75,10 @@ public class Ticket implements IBuyable{
 		Ticket.cantidadTicketsCreados++;
 		
 		//Se crea un apuntador del ticket en el array de tickets generados de la sucursal de cine
-		cliente.getCine().getTicketsCreados().add(this);
+		cliente.getCineActual().getTicketsCreados().add(this);
+		
+		//Creamos la factura y se la asociamos al cliente
+		this.factura(cliente);
 		
 		//Proceso para funcionalidad 4
 		String codigoArkade = this.generarCodigoTicket();
@@ -87,9 +93,8 @@ public class Ticket implements IBuyable{
 	 * además, retorna un string que contiene toda la información del ticket en forma de factura.
 	 * @param cliente : Este método solicita un cliente de tipo Cliente como parámetro con el fin de asociarle a este la factura
 	 * que verifica su compra realizada
-	 * @return <b>factura</b> : Este método retorna un String que contiene la información de la factura con el fin de imprimirla en pantalla
 	 * */
-	public String factura(Cliente cliente) {
+	public void factura(Cliente cliente) {
 		String factura = "         Cinemar\n" +
 				"=== Factura de Ticket ===\n" +
 				"Nombre dueño : " + this.getDueno().getNombre() + "\n" +
@@ -103,7 +108,6 @@ public class Ticket implements IBuyable{
 				"Fecha de compra: " + SucursalCine.getFechaActual().withNano(0);
 				
 		cliente.getFacturas().add(factura);
-		return factura;
 	}
 	
 	/**
@@ -199,6 +203,14 @@ public class Ticket implements IBuyable{
 
 	public void setNumeroAsiento(String numeroAsiento) {
 		this.numeroAsiento = numeroAsiento;
+	}
+
+	public boolean isDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(boolean descuento) {
+		this.descuento = descuento;
 	}
 	
 }

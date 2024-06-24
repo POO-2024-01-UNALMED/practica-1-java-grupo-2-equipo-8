@@ -14,7 +14,7 @@ import gestionAplicacion.usuario.Ticket;
 
 public class SucursalCine {
 	
-	private static LocalDateTime fechaActual = LocalDateTime.now();
+	private static LocalDateTime fechaActual = LocalDateTime.now().withMinute(14);
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	
@@ -79,6 +79,7 @@ public class SucursalCine {
 		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
 			//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
 			for (SalaCine salaDeCine : sede.getSalasDeCine()) {
+				//En caso de que sea la primera vez que se realiza este proceso y el horarioPeliculaEnPresentacion sea nulo
 				try {
 					if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SucursalCine.getFechaActual()) ) ) {
 						salaDeCine.actualizarPeliculasEnPresentacion(sede);
@@ -156,43 +157,51 @@ public class SucursalCine {
 		ArrayList<Pelicula> peliculasDeSalaDeCine = new ArrayList<>();
 		
 		final Duration LIMPIEZA_DE_SALA = Duration.ofMinutes(30);
+		final LocalDateTime limiteCreacionHorariosPeliculas =  SucursalCine.fechaActual.withMinute(0).withSecond(0).withNano(0).plusWeeks(1);
 		
+		//Iteramos sobre las salas de cine de esta sucursal
 		for(SalaCine salaDeCine : this.salasDeCine) {
 			
 			LocalDateTime horarioParaPresentar = SucursalCine.fechaActual.withMinute(0).withSecond(0).withNano(0);
-			LocalDateTime auxHorarioParaPresentar = horarioParaPresentar.plusDays(1);
 			
+			//Buscamos las películas de la cartelera a las cuales les corresponde esta sala de cine
 			for(Pelicula pelicula : this.cartelera) {
 				if (salaDeCine.equals(pelicula.getSalaPresentacion())) {
 					peliculasDeSalaDeCine.add(pelicula);
 				}
 			}
 			
-			for (int i = 1; i <= 15; i++) {
+			//Creamos 20 horarios por convención
+			for (int i = 1; i <= 20; i++) {
 				
+				//Iteramos sobre las películas que comparten sala de cine
 				for (Pelicula pelicula : peliculasDeSalaDeCine) {
 					
+					//Verificamos que no se exceda la proyección semanal de películas
+					if (horarioParaPresentar.isAfter(limiteCreacionHorariosPeliculas)) {
+						break;
+					}
+					
+					//1 y 2 verifican que se encuentre en el horario laboral, 3 y 4 que la duración no exceda el final del horario laboral y no pase al
+					//siguiente día
 					if (horarioParaPresentar.toLocalTime().isBefore(FIN_HORARIO_LABORAL) &&
 							horarioParaPresentar.toLocalTime().isAfter(INICIO_HORARIO_LABORAL) &&
 							horarioParaPresentar.plus(pelicula.getDuracion()).toLocalTime().isBefore(FIN_HORARIO_LABORAL) &&
 							horarioParaPresentar.plus(pelicula.getDuracion()).toLocalDate().equals(horarioParaPresentar.toLocalDate()) ) {
 						
+						//Creamos el horario y nos preparamos para crear el siguiente horario disponible
 						pelicula.crearSalaVirtual(horarioParaPresentar);
 						horarioParaPresentar = horarioParaPresentar.plus(pelicula.getDuracion());
 						horarioParaPresentar = horarioParaPresentar.plus(LIMPIEZA_DE_SALA);
 						
 					}else {
 						
-						if (horarioParaPresentar.toLocalDate().isEqual(auxHorarioParaPresentar.toLocalDate())) {
-							horarioParaPresentar = horarioParaPresentar.withHour(INICIO_HORARIO_LABORAL.getHour())
-									.withMinute(INICIO_HORARIO_LABORAL.getMinute());
-						}else {
-							horarioParaPresentar = horarioParaPresentar.plusDays(1);
-							horarioParaPresentar = horarioParaPresentar.withHour(INICIO_HORARIO_LABORAL.getHour())
-									.withMinute(INICIO_HORARIO_LABORAL.getMinute());
-						}
+						//Pasamos de día y nos ubicamos en el inicio de la jornada laboral 
+						horarioParaPresentar = horarioParaPresentar.plusDays(1);
+						horarioParaPresentar = horarioParaPresentar.withHour(INICIO_HORARIO_LABORAL.getHour())
+								.withMinute(INICIO_HORARIO_LABORAL.getMinute());
 						
-						auxHorarioParaPresentar = horarioParaPresentar.plusDays(1);
+						//Creamos el horario y nos preparamos para crear el siguiente horario disponible
 						pelicula.crearSalaVirtual(horarioParaPresentar);
 						horarioParaPresentar = horarioParaPresentar.plus(pelicula.getDuracion());
 						horarioParaPresentar = horarioParaPresentar.plus(LIMPIEZA_DE_SALA);

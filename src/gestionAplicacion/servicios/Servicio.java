@@ -1,6 +1,10 @@
 package gestionAplicacion.servicios;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.IBuyable;
 import gestionAplicacion.usuario.MetodoPago;
@@ -11,6 +15,7 @@ public abstract class Servicio implements IBuyable{
 	protected Cliente cliente;
 	protected ArrayList<Producto> inventario = new ArrayList<>();
 	protected ArrayList<Producto> orden = new ArrayList<>();
+	protected ArrayList<Bono> bonosCliente = new ArrayList<>();
 	protected double valorPedido;
 	
 	public Servicio(){}
@@ -19,16 +24,51 @@ public abstract class Servicio implements IBuyable{
 		this.nombre = nombre;
 	}
 	
+	//ligadura estatica
+	
+	public String  mostrarBonos() {
+		int n = 0;
+		String bono = " ====== Tienes los siguientes bonos disponibles ======\n";
+		for(int i = 0;i < bonosCliente.size();i++) {
+				n = n +i;
+				bono = bono + "\n" + n + ". " + bonosCliente.get(i).getProducto().getNombre();
+		}
+		return bono;
+	}
+	
+	public void actualizarBonos() {
+		for(int i = 0;i < cliente.getBonos().size();i++) {
+			if (cliente.getBonos().get(i).getTipoServicio().equalsIgnoreCase(nombre)) {
+				bonosCliente.add(cliente.getBonos().get(i));
+			}
+		}
+	}
+	
+	public Producto descuentarPorGenero (SucursalCine cine) {
+		for (int i = 0;i < orden.size();i++) {
+			for(int j = 0; j < cine.getTicketsCreados().size(); j++) {
+				if(orden.get(i).getGenero().equalsIgnoreCase(cine.getTicketsCreados().get(j).getPelicula().getGenero()) && cliente.equals(cine.getTicketsCreados().get(j).getDueno())){
+					LocalDate fecha = LocalDate.now();
+					if (fecha.equals(cine.getTicketsCreados().get(j).getHorario().toLocalDate()) && cine.getTicketsCreados().get(j).isDescuento()) {
+						cine.getTicketsCreados().get(i).setDescuento(false);
+						return orden.get(i);
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
 	// Metodos abstractos y ligadura Dinamica
 	
-	public abstract boolean descuentoCompra (MetodoPago metodo);
+	public abstract boolean descuentarPorCompra (MetodoPago metodo);
 	
 	public abstract ArrayList<Producto> actualizarInventario();
 	
 	// Metodos
 	
-	public float calcularTotal() {
-		float total = 0;
+	public double calcularTotal() {
+		double total = 0;
 		for(int i = 0; i < orden.size();i++) {
 			total = total + orden.get(i).getPrecio();
 		}
@@ -68,8 +108,13 @@ public abstract class Servicio implements IBuyable{
 	public Producto validarBono(String codigo , Servicio servicio){
 		Producto producto = new Producto();
 		for (int i=0; i < Bono.getBonosCreados().size();i++) {
-			if (Bono.getBonosCreados().get(i).getCodigo() == codigo && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
+			if (Bono.getBonosCreados().get(i).getCodigo().equalsIgnoreCase(codigo) && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
 				producto = Bono.getBonosCreados().get(i).getProducto();
+				for (int j =0; j < Bono.getBonosCreados().get(i).getCliente().getBonos().size(); j++) {
+					if (Bono.getBonosCreados().get(i).getCliente().getBonos().get(j).getCodigo().equalsIgnoreCase(codigo)) {
+						Bono.getBonosCreados().get(i).getCliente().getBonos().remove(j);
+					}
+				}
 				Bono.getBonosCreados().remove(i);
 				return producto;
 			}
@@ -85,15 +130,15 @@ public abstract class Servicio implements IBuyable{
 	*/
 	
 	public String mostrarOrden() {
-		String pedido = "\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n";
-		float total = 0;
+		String pedido = "";
+		double total = 0;
 		for(int i =0;i<orden.size();i++) {
 			pedido = pedido + "\n" + " -- " +orden.get(i).getCantidad()+" " + orden.get(i).getNombre() + " " + orden.get(i).getTamaño() +
 					" : $" + orden.get(i).getPrecio();
 			total = total + orden.get(i).getPrecio();
 		}
 		
-		pedido = pedido + "\n Total a pagar: $" + total;
+		pedido = pedido + "\n Total: $" + total;
 		return pedido;
 	}
 	
@@ -105,7 +150,7 @@ public abstract class Servicio implements IBuyable{
 	
 	
 	public String mostrarInventario() {
-		String productos = "\n----------Productos disponibles----------\n0. Ningun producto";
+		String productos = "\n----------Productos disponibles----------\n\n0. Ningun producto";
 		int r;
 		if(0 == inventario.size()) {
 			productos = "\nNO HAY PRODUCTOS DISPONIBLES :(\n";
@@ -136,6 +181,7 @@ public abstract class Servicio implements IBuyable{
 			inventario.get(indice).setCantidad(inventario.get(indice).getCantidad()-cantidad);
 			Producto producto = new Producto(inventario.get(indice).getNombre(),inventario.get(indice).getTamaño(),cantidad);
 			producto.setPrecio(inventario.get(indice).getPrecio()*cantidad);
+			producto.setGenero(inventario.get(indice).getGenero());
 			return producto;
 		}
 		else {
@@ -182,6 +228,14 @@ public abstract class Servicio implements IBuyable{
 
 	public void setValorPedido(double valorPedido) {
 		this.valorPedido = valorPedido;
+	}
+
+	public ArrayList<Bono> getBonosCliente() {
+		return bonosCliente;
+	}
+
+	public void setBonosCliente(ArrayList<Bono> bonosCliente) {
+		this.bonosCliente = bonosCliente;
 	}
 	
 	

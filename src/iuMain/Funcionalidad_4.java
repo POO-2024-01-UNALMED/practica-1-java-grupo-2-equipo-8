@@ -24,22 +24,22 @@ public class Funcionalidad_4 {
 	 * (De tipo SucursalCine)
 	 * @return <b>void</b> : No hay retorno
 	 * */
-	static void ingresoZonaJuegos(Cliente ClienteActual, SucursalCine sucursalCineProceso) {
+	static void ingresoZonaJuegos(Cliente ClienteActual) {
 		
 		
 		
 		try {
 			System.out.println("\n☺Recuerde que para entrar a los juegos es necesario tener la tarjeta cinemar☺\nDesea:\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
 			int opcion = (int)Administrador.readLong();
-			if (opcion==2) {barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);}
+			if (opcion==2) {barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual);}
 			else if (opcion==1) {barraCarga("Ingresando");}
 			else if (opcion==3) {barraCarga("Saliendo");Administrador.salirDelSistema();}
-			else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual, sucursalCineProceso);}	
+			else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual);}	
 		
 		}catch(InputMismatchException e) {
 			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
 			Administrador.sc.nextLine(); 
-			ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
+			ingresoZonaJuegos(ClienteActual);
 		}
 		
 		boolean casoValido = true;
@@ -63,10 +63,10 @@ public class Funcionalidad_4 {
 							imprimirTarjeta(ClienteActual.getCuenta().getDueno().getNombre(),ClienteActual.getCuenta().getSaldo());
 							casoValido = false;
 						}
-						else {System.out.println("\n•Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde");Administrador.sc.nextLine(); Administrador.inicio(ClienteActual, sucursalCineProceso);}
+						else {System.out.println("\n•Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde");Administrador.sc.nextLine(); Administrador.inicio(ClienteActual);}
 					
 					}
-					else if (option ==2) {ingresoZonaJuegos(ClienteActual, sucursalCineProceso);}
+					else if (option ==2) {ingresoZonaJuegos(ClienteActual);}
 					else {System.out.println("\n•Opcion Invalida");}
 				}catch(InputMismatchException e) {
 					System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
@@ -472,7 +472,7 @@ public class Funcionalidad_4 {
 		System.out.println("\n☻☻☻Gracias por jugar con nosotros☻☻☻\n");
 		barraCarga("Redireccionando al menú principal");
 		Administrador.sc.nextLine();
-		Administrador.inicio(ClienteActual, sucursalCineProceso);
+		Administrador.inicio(ClienteActual);
 		
 	}
 	

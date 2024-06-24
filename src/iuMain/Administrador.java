@@ -26,20 +26,20 @@ public class Administrador {
 	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
 	static SucursalCine sucursalCine3 = new SucursalCine("Medellín");
 	
-	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,200,null);
+	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,200,"Normal");
 	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",30000,200,"Comedia");
-	static Producto producto3 = new Producto("Perro caliente","Grande","comida",20000,200,null);
+	static Producto producto3 = new Producto("Perro caliente","Grande","comida",20000,200,"Normal");
 	static Producto producto4 = new Producto("Perro caliente","Don salchicha","comida",30000,200,"Comedia");
-	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",15000,200,"Accion");
-	static Producto producto6 = new Producto("Crispetas","Grandes","comida",16000,200,null);
-	static Producto producto7 = new Producto("Gaseosa","Grande","comida",6000,200,null);
-	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",3000,200,null);
+	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",15000,200,"Acción");
+	static Producto producto6 = new Producto("Crispetas","Grandes","comida",16000,200,"Normal");
+	static Producto producto7 = new Producto("Gaseosa","Grande","comida",6000,200,"Normal");
+	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",3000,200,"Normal");
 	
-	static Producto producto1S = new Producto("Camisa","XL","souvenir",19000,200,null);
+	static Producto producto1S = new Producto("Camisa","XL","souvenir",19000,200,"Normal");
 	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",30000,200,"Comedia");
-	static Producto producto3S = new Producto("Gorra","L","souvenir",12000,200,null);
-	static Producto producto4S = new Producto("Llavero","Katana","souvenir",30000,200,"Accion");
-	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",30000,200,"comedia");
+	static Producto producto3S = new Producto("Gorra","L","souvenir",12000,200,"Normal");
+	static Producto producto4S = new Producto("Llavero","Katana","souvenir",30000,200,"Acción");
+	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",30000,200,"Comedia");
 	
 	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
 	static Bono bono1 = new Bono("1234",productoBono,"comida");
@@ -256,53 +256,52 @@ public class Administrador {
 		Cliente clienteProceso = iniciarSesion();
 		
 		System.out.println("\nIngresar a una de nuestras sedes");
-		SucursalCine sucursalCineProceso = ingresarASucursal();
-		clienteProceso.setCine(sucursalCineProceso);
+		clienteProceso.setCineActual(ingresarASucursal());
 		
-		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido al cine de marinilla");
-		inicio(clienteProceso, sucursalCineProceso);
+		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
+		inicio(clienteProceso);
 		
 	}
 	
       
 	
-	public static void inicio(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
+	public static void inicio(Cliente clienteProceso) {
 	int opcion = 0;
 	do {
+		
 		try {
+			
 			opcion = 0;
 			System.out.println("\n¿Qué operacion desea realizar?");
 			System.out.println("1. Reservar ticket de pelicula");
 			System.out.println("2. Ingresar a la sala de cine");
-			System.out.println("3. Realizar orden de comida"); 
-			System.out.println("4. Realizar compra de souvenirs");
-			System.out.println("5. Ingresar a la zona de juegos");
-			System.out.println("6. Adquirir o actualizar membresia");
-			System.out.println("7. Hacer calificacion");
-			System.out.println("8. Ingresar a sala de espera");
+			System.out.println("3. Ingrear a los servicios de compra"); 
+			System.out.println("4. Ingresar a la zona de juegos");
+			System.out.println("5. Adquirir o actualizar membresia");
+			System.out.println("6. Hacer calificacion");
+			System.out.println("7. Ingresar a sala de espera");
+			System.out.println("8. Cambiar de sucursal");
 			System.out.println("9. Salir");
 			opcion = Integer.parseInt(sc.nextLine());
-			//NumberFormatException e							aca dejo esto por si lo queres modificar de nuevo
-			//opcion = (int)readLong(); //edi cambie esto ya que cuando llamaba el metodo en mi funcionalidad me saltaba el error y se me imprimia el menu 2 veces no se porque, pero asi funciona melo.
+			
 		}catch(NumberFormatException e) {
 			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-			//sc.nextLine(); // Consumir el input incorrecto
-		    //opcion = 0; // Asignar un valor válido para evitar el bucle infinito
 		}
-	}while(!(opcion > 0 & opcion <= 9));
+		
+	}while(!(opcion > 0 & opcion <= 10));
 	
 	
 	switch (opcion) {
-		case 1: Funcionalidad1.reservarTicket(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
-		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 3: Funcionalidad2.compras(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		//case 4: 
-		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		//case 6: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		//case 7: Funcionalidad3.calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
-		case 8: Funcionalidad1.salaDeEspera(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 1: Funcionalidad1.reservarTicket(clienteProceso);inicio(clienteProceso); break;
+		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso); inicio(clienteProceso); break;
+		case 3: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
+		case 4: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
+		//case 5: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 6: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
+		case 7: Funcionalidad1.salaDeEspera(clienteProceso); inicio(clienteProceso); break;
+		case 8: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
 		case 9: salirDelSistema(); break;
-		default: System.out.println("Opción invalida"); inicio(clienteProceso, sucursalCineProceso);
+		default: System.out.println("Opción invalida"); inicio(clienteProceso);
 	  }
 	
 	}
@@ -696,7 +695,7 @@ public class Administrador {
 	 * @param cliente : Este método recibe un cliente (De tipo Cliente) el cual ejecuta el menú de inicio
 	 * @return <b>void</b> : Este método no retorna nada.
 	 * */
-	static void evaluarRestriccionHoraria(Cliente cliente) {
+	static void evaluarRestriccionHoraria(Cliente clienteProceso) {
 		if ( !(SucursalCine.getFechaActual().toLocalTime().isBefore(SucursalCine.FIN_HORARIO_LABORAL) &&
 				(SucursalCine.getFechaActual().toLocalTime().isAfter(SucursalCine.INICIO_HORARIO_LABORAL) ||
 						SucursalCine.getFechaActual().toLocalTime().equals(SucursalCine.INICIO_HORARIO_LABORAL)) ) ) {
@@ -721,12 +720,38 @@ public class Administrador {
 				SucursalCine.actualizarPeliculasSalasDeCine();
 				System.out.println("La fecha actual se ha actualizado de forma exitosa (" + SucursalCine.getFechaActual() + ")");
 			}else {
-				salirDelSistema();
-				//Cambiar por menú de inicio
+				inicio(clienteProceso);
 			}
 		}
 	}
 	
-	
+	/**
+	 * Description : Este método se encarga de cambiar la sucursal en la cual se encuentra el cliente
+	 * @param clienteProceso : Este método recibe al cliente (De tipo cliente) que desea cambiar de sucursal
+	 * */
+	static void cambiarSucursalCine(Cliente clienteProceso) {
+		
+		System.out.println("\n==============================");
+		System.out.println("Sistema de cambio de sucursal");
+		
+		int opcionMenu;
+		do {
+			opcionMenu = 0;
+			
+			try {
+				System.out.println("\n¿Desea cambiar de " + clienteProceso.getCineActual().getLugar() + " a otra de nuestras sucursales? \n1. Si\n2. No");
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debe ingresar un único dato numérico entre las opciones disponibles");
+			}
+			
+		}while(!(opcionMenu == 1 || opcionMenu == 2));
+		
+		if (opcionMenu == 1) {
+			clienteProceso.setCineActual(ingresarASucursal());
+		}else {
+			System.out.println("\nRegresando al menú principal...");
+		}
+	}
 }
 
