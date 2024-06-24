@@ -85,7 +85,7 @@ public class Ticket implements IBuyable{
 		
 		//Proceso para funcionalidad 4
 		String codigoArkade = this.generarCodigoTicket();
-		Arkade.getCodigosGenerados().add(codigoArkade);
+		//Arkade.getCodigosGenerados().add(codigoArkade);
 		this.dueno.getCodigosDescuento().add(codigoArkade);
 	}
 	
@@ -113,19 +113,31 @@ public class Ticket implements IBuyable{
 		cliente.getFacturas().add(factura);
 	}
 	
+	/**
+	 * Description: Este metodo se encarga de generar un codigo de descuento que se le asocia al usuario dueño del ticket para que pueda redimirlo 
+	 * en el Arkade posteriormente.
+	 * @return <b>codigoTicket</b> : Este método retorna un String que contiene la información del codigo mas el genero de la pelicula asociada.
+	 * */
 	private String generarCodigoTicket() {
 		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getSalaPresentacion().getNumeroSala()+"-"+this.getPelicula().getGenero();
 
 		return codigoTicket;
 	}
 	
+	
+	/**
+	 * Description: Este metodo se encarga de encontar el genero de la pelicula asociada a un codigo que esta contenido dentro del string del mismo.
+	 * @param cliente : Este método reckbe como parametro el codigo del cual se sacara un substring con el genero de la pelicula
+	 * @return <b>String</b> : Este método retorna un String que contiene la información del genero de la pelicula del codigo.
+	 * */
 	public static String encontrarGeneroCodigoPelicula(String codigo) {
 		int indiceGuion = codigo.indexOf("-");
 
         if (indiceGuion != -1 && indiceGuion != codigo.length() - 1) {
 
             return codigo.substring(indiceGuion + 1);
-        } else {
+        } 
+        else {
 
             return "";
         }

@@ -46,7 +46,7 @@ public class Administrador {
 	
 	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
-	static Arkade game3= new Arkade("Hang Man", 10000, "POO");
+	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");
 	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
 	static Arkade game5= new Arkade("Hang Man", 7500, "Drama");
 	
@@ -197,7 +197,8 @@ public class Administrador {
 //			cliente1.getHistorialDePeliculas().add(pelicula1_2);
 //			cliente1.getHistorialDePeliculas().add(pelicula3_1);
 //			cliente1.getHistorialDePeliculas().add(pelicula3_4);
-			
+			cliente5.getHistorialDePeliculas().add(pelicula3_1);
+			cliente5.getHistorialDePeliculas().add(pelicula3_11);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
 			cliente4.setCuenta(tarjeta1);
@@ -297,7 +298,7 @@ public class Administrador {
 		case 3: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
 		case 4: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
 		//case 5: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		//case 6: Funcionalidad3.calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
+		case 6: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
 		case 7: Funcionalidad1.salaDeEspera(clienteProceso); inicio(clienteProceso); break;
 		case 8: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
 		case 9: salirDelSistema(); break;
