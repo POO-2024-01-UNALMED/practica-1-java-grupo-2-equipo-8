@@ -270,6 +270,8 @@ public class Administrador {
 		System.out.println("\nIngresar a una de nuestras sedes");
 		SucursalCine sucursalCineProceso = ingresarASucursal();
 		
+		clienteProceso.setCine(sucursalCineProceso);
+		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido al cine de marinilla");
 		inicio(clienteProceso, sucursalCineProceso);
 		
@@ -309,7 +311,7 @@ public class Administrador {
 		case 3: Funcionalidad2.compras(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		//case 4: Funcionalidad3.calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
 		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		//case 6: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 6: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 7: Funcionalidad1.salaDeEspera(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
 		case 8: salirDelSistema(); break;
 		default: System.out.println("Opción invalida"); inicio(clienteProceso, sucursalCineProceso);

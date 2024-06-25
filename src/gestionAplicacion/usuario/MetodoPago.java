@@ -205,11 +205,11 @@ public class MetodoPago{
 			valorPagar = 0;
 		}
 				
-		//Cuando el método usado sea efectivo o Puntos, no se pasará a usados
+		//Cuando el método usado sea efectivo, no se pasará a usados
 		if (this.getNombre().equals("Efectivo")) {
 			return valorPagar;
 		}
-		
+		//Cuando el método sea Puntos, se realiza el descuento de esos puntos en el saldo.
 		if (this.getNombre().equals("Puntos")) {
 			this.setLimiteMaximoPago(this.getLimiteMaximoPago()- precio);
 			if (this.getLimiteMaximoPago() < 0) {
@@ -238,6 +238,7 @@ public class MetodoPago{
 			}
 			
 		}
+
 		//Pasamos el metodoDePago a metodosDePagoUsados
 		MetodoPago.getMetodosDePagoUsados().add(this);
 		//Eliminamos su referencia de los metodos de pago asociados al cliente
