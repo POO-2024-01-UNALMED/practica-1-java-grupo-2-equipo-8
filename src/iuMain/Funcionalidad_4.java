@@ -189,7 +189,7 @@ public class Funcionalidad_4 {
 						switch(eleccionUser) {
 						case 1: barraCarga("Ingresando");casoValido = false; Vcase = false; break;
 						case 2: barraCarga("Redirigiendo"); casoValido = false; Vcase = true ; break;
-						case 3: barraCarga("Volviendo"); Administrador.inicio(ClienteActual, sucursalCineProceso); break;
+						case 3: barraCarga("Volviendo"); Administrador.inicio(ClienteActual); break;
 						case 4: barraCarga("Saliendo"); Administrador.salirDelSistema(); break;
 						
 						}
@@ -225,7 +225,7 @@ public class Funcionalidad_4 {
 						switch (eleccion4) {
 						case 1: barraCarga("Ingresando");Vcase= false;finCiclo= false; break;
 						case 2: barraCarga("Redirigiendo");Vcase = true;finCiclo= false; break;
-						case 3: barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);
+						case 3: barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual);
 						case 4: barraCarga("Saliendo");Administrador.salirDelSistema();
 						default: finCiclo = true; break; 
 						}
@@ -239,7 +239,7 @@ public class Funcionalidad_4 {
 			else if (eleccion1==3) {
 				barraCarga("Volviendo");
 				Administrador.sc.nextLine();
-				Administrador.inicio(ClienteActual, sucursalCineProceso);
+				Administrador.inicio(ClienteActual);
 			}
 			else if (eleccion1==4) {
 				barraCarga("Saliendo");
@@ -370,8 +370,8 @@ public class Funcionalidad_4 {
 							System.out.println("Tu tarjeta no tiene saldo suficiente, por favor vuelva a ingresar para recargarla\n1.Volver al menu principal\n2.Volver a ingresar para recargar tarjeta\n3.Salir");
 							int option = (int)Administrador.readLong();
 								switch(option) {
-								case 1: Administrador.sc.nextLine();Administrador.inicio(ClienteActual, sucursalCineProceso);
-								case 2: ingresoZonaJuegos(ClienteActual, sucursalCineProceso);
+								case 1: Administrador.sc.nextLine();Administrador.inicio(ClienteActual);
+								case 2: ingresoZonaJuegos(ClienteActual);
 								case 3: Administrador.salirDelSistema();
 								default:  break;
 								}
@@ -387,7 +387,7 @@ public class Funcionalidad_4 {
 			else if (eleccion7 == (Arkade.getJuegos().size()+1)) {
 				barraCarga("Volviendo");
 				Administrador.sc.nextLine();
-				Administrador.inicio(ClienteActual, sucursalCineProceso);
+				Administrador.inicio(ClienteActual);
 			}
 			else if (eleccion7 ==(Arkade.getJuegos().size()+2)) {
 				barraCarga("Saliendo");
@@ -420,7 +420,7 @@ public class Funcionalidad_4 {
 					System.out.println("\nGanas un bono de comida por obtener la puntuacion maxima en un juego de tipo "+generoJuego+" y redimir un codigo de pelicula del mismo genero");
 					barraCarga("Generando bono");
 					espera(3000);
-					bonoCliente = Arkade.generarBonoComidaJuegos(sucursalCineProceso);
+					bonoCliente = Arkade.generarBonoComidaJuegos(ClienteActual.getCineActual());
 					
 					if (!(bonoCliente == null)) {
 						codigoBono = bonoCliente.getCodigo();
@@ -435,7 +435,7 @@ public class Funcionalidad_4 {
 					System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡");
 					barraCarga("Generando bono");
 					espera(3000);
-					bonoCliente = Arkade.generarBonoSouvenirJuegos(sucursalCineProceso);
+					bonoCliente = Arkade.generarBonoSouvenirJuegos(ClienteActual.getCineActual());
 					if (!(bonoCliente == null)) {
 						codigoBono = bonoCliente.getCodigo();
 						ClienteActual.getCodigosBonos().add(codigoBono);
@@ -451,7 +451,7 @@ public class Funcionalidad_4 {
 				System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡");
 				barraCarga("Generando bono");
 				espera(3000);
-				bonoCliente = Arkade.generarBonoSouvenirJuegos(sucursalCineProceso);
+				bonoCliente = Arkade.generarBonoSouvenirJuegos(ClienteActual.getCineActual());
 				if (!(bonoCliente == null)) {
 					codigoBono = bonoCliente.getCodigo();
 					ClienteActual.getCodigosBonos().add(codigoBono);

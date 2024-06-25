@@ -234,7 +234,7 @@ public class MetodoPago{
 		}
 
 		//Pasamos el metodoDePago a metodosDePagoUsados
-		MetodoPago.getMetodosDePagoUsados().add(this);
+		//MetodoPago.getMetodosDePagoUsados().add(this);
 //		//Pasamos el metodoDePago a metodosDePagoUsados
 //		MetodoPago.getMetodosDePagoUsados().add(this);
 		

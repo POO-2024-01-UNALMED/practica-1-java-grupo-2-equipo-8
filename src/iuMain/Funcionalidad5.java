@@ -23,7 +23,7 @@ public class Funcionalidad5 {
 	}
 	
 	
-	static void adquirirMembresia(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
+	static void adquirirMembresia(Cliente clienteProceso) {
 		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla, " + clienteProceso.getNombre() + ".");
 		boolean casoValido = false;
 		int opcionMenu = 0;
@@ -49,20 +49,20 @@ public class Funcionalidad5 {
 		do {
 			opcionMenu = 0;
 			System.out.print(Membresia.verificarMembresiaActual(clienteProceso));
-			System.out.print(Membresia.mostrarCategoria(clienteProceso, sucursalCineProceso) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
+			System.out.print(Membresia.mostrarCategoria(clienteProceso, clienteProceso.getCineActual()) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
-			if (opcionMenu == 6) {Administrador.inicio(clienteProceso, sucursalCineProceso); break;}
+			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
-				if (clienteProceso.getMembresia()!= null) {
-					int categoriaCliente = clienteProceso.getMembresia().getCategoria();
-					if (categoriaCliente == opcionMenu) {
-						System.out.print("Ya posee esta categoria. Redirigiendo al menú de membresias\n");
-						continue;
-					}
+				//Se verifica si se cumple con los requisitos para adquirir la membresia.
+				boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(clienteProceso, opcionMenu, clienteProceso.getCineActual());
+				System.out.print("\nCargando...\n");
+				try {
+				Thread.sleep(3000);
+				}catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-				boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(clienteProceso, opcionMenu, sucursalCineProceso);
 					if (requisitosMembresia == false) {
-						System.out.print("No puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello o no hay unidades en el momento.\n"
+						System.out.print("\nNo puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello o no hay unidades en el momento.\n"
 								+ "Redirigiendo al menú de membresias\n");
 						continue;
 					} else {
@@ -74,48 +74,45 @@ public class Funcionalidad5 {
 		} while (membresiaNueva == null);
 		
 		//Una vez se ha escogido la membresia, se pasa a realizar el pago
-		double valorAPagar= membresiaNueva.getValorSuscripcionMensual();
-		double precio = 0;
-		LinkedHashMap<MetodoPago, Double> pagosEnTransaccion = new LinkedHashMap<>();
-		Entry<MetodoPago, Double> primerPagoUsado = null;
-		String descuentoActivo = null;
+		double valorAPagar = membresiaNueva.getValorSuscripcionMensual();
 		do {
 			opcionMenu = 0;
 			System.out.print("El precio de la membresia es de " + valorAPagar 
 			+ ". Por favor, seleccione el método de pago a usar:\n"
 			+ MetodoPago.mostrarMetodosDePago(clienteProceso) + "\n6. Volver al inicio \nIngrese la opción: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
-			if (opcionMenu == 6) {Administrador.inicio(clienteProceso, sucursalCineProceso);}
+			if (opcionMenu == 6) {Administrador.inicio(clienteProceso);}
 			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(clienteProceso, opcionMenu);
 			try {
 				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {
 					valorAPagar = valorAPagar - valorAPagar * metodoPagoSeleccionado.getDescuentoAsociado();
 					System.out.print("Con el método de pago " 
 						+ metodoPagoSeleccionado.getNombre()+ ", el nuevo monto a pagar es " 
-						+ valorAPagar +". Por favor, seleccione una opción: ");
+						+ valorAPagar +".\n1. Confirmar pago. \n2. Cambiar método de pago. \nPor favor, seleccione una opción: ");
 					
 				}else {
-					System.out.print(descuentoActivo + "\nEl monto a pagar con el método de pago " 
+					System.out.print("\nEl monto a pagar con el método de pago " 
 						+ metodoPagoSeleccionado.getNombre()+ " es " 
-						+ valorAPagar + ". Por favor, seleccione una opción: ");
+						+ valorAPagar + ". \n1. Confirmar pago. \n2. Cambiar método de pago. \nPor favor, seleccione una opción: ");
 				}
-			precio = Double.parseDouble(sc.nextLine());
+			opcionMenu = Integer.parseInt(sc.nextLine());
 			}catch (NumberFormatException e) {
-			System.out.print("Por favor, solo ingrese números");}
-			if (precio < valorAPagar) {
-				System.out.print("Por favor, termine de completar el pago.\n");
-				pagosEnTransaccion.put(metodoPagoSeleccionado, precio);
-				primerPagoUsado = pagosEnTransaccion.entrySet().iterator().next();
-				descuentoActivo = "El descuento de " + (int)(primerPagoUsado.getKey().getDescuentoAsociado()*100)
-				+ "% ya ha sido aplicado al precio original de " + membresiaNueva.getValorSuscripcionMensual();
-				valorAPagar = valorAPagar - precio;
+			System.out.print("Error, debes ingresar un dato numérico");}
+			
+			if (opcionMenu == 1) {
+				valorAPagar = metodoPagoSeleccionado.realizarPago(valorAPagar, clienteProceso);
+			} else if (opcionMenu == 2) {
+				valorAPagar = membresiaNueva.getValorSuscripcionMensual();
 				continue;
-			} else {
-				pagosEnTransaccion.put(metodoPagoSeleccionado, precio);
-				valorAPagar = metodoPagoSeleccionado.realizarPago(precio, clienteProceso);
-				break;
 			}
 		}while (valorAPagar != 0); 
+		
+		System.out.print("\nEstamos procesando su pago...\n");
+		try {
+			Thread.sleep(3000);
+			}catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		membresiaNueva.procesarPagoRealizado(clienteProceso);
 		System.out.print(clienteProceso.getFacturas().get( clienteProceso.getFacturas().size() - 1 ));
 		TarjetaCinemar tarjetaCinemarActual = clienteProceso.getCuenta();
@@ -164,10 +161,13 @@ public class Funcionalidad5 {
 						continue;
 					}
 				}
-				
+				try {
+					Thread.sleep(3000);
+					}catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 			} while (!finalizarCompra);
 		}
 	}
-		
-
 }
+

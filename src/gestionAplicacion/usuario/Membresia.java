@@ -159,7 +159,7 @@ public class Membresia implements IBuyable{
 						i++;
 						continue;
 					} else {
-				resultado = "Categoria " + i + ". "+ membresia.getNombre() + ". Disponibles: " + membresia.getCantidad() +"\n";}
+				resultado = "Categoria " + i + ". "+ membresia.getNombre() + ". Requisitos: " + (int) membresia.getPrecio() + " puntos."+"\n";}
 			}else {
 				if (membresia.getCantidad() == 0) {
 					resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + " (AGOTADA)\n";
@@ -170,7 +170,7 @@ public class Membresia implements IBuyable{
 					i++;
 					continue;
 				} else {
-			resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + ". Disponibles: " + membresia.getCantidad() +"\n";}
+			resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + ". Requisitos: " + (int) membresia.getPrecio() + " puntos." +"\n";}
 			}
 			i++;
 		}
@@ -356,7 +356,7 @@ public class Membresia implements IBuyable{
 		cliente.setDuracionMembresiaDias(Duration.ofDays(this.duracionMembresiaDias));
 		
 		//Se va al inventario del cine para restar la cantidad de membresias.
-		for (Producto membresiaStock : cliente.getCine().getInventarioCine()) {
+		for (Producto membresiaStock : cliente.getCineActual().getInventarioCine()) {
 			if (membresiaStock.getNombre() == this.getNombre()) {
 				membresiaStock.setCantidad(membresiaStock.getCantidad() - 1);
 				break;
@@ -364,9 +364,6 @@ public class Membresia implements IBuyable{
 		}
 		//Al adquirir la membresia, se crea y asigna un método de pago único que permite acumular puntos canjeables con compras en el cine.
 		MetodoPago.asignarMetodosDePago(cliente);
-		
-//		//Se eliminan las referencias de los métodosDePagoUsados
-//		MetodoPago.getMetodosDePagoUsados().clear();
 		
 		//Se pasa la referencia de la membresia al cliente que lo compró y se agrega este último al array de clientes en Membresia
 		this.getClientes().add(cliente);
@@ -380,15 +377,14 @@ public class Membresia implements IBuyable{
 
 	@Override
 	public void factura(Cliente cliente) {
-		String factura = null;
-		factura = "=== Factura de compra ===\n" +
+		String factura = "=== Factura de compra ===\n" +
 				"Nombre dueño: " + cliente.getNombre() + "\n" +
 				"Documento: " + cliente.getDocumento() + "\n" +
 				"Membresia: " + cliente.getMembresia().getNombre()+ "\n" +
 				"Categoria: " + cliente.getMembresia().getCategoria() + "\n" +
 				"Tipo: " + cliente.getMembresia().getTipoMembresia() + "\n" +
 				"Duración: " + cliente.getMembresia().getDuracionMembresiaDias()+ " dias.\n" +
-				"Precio de compra: " + cliente.getMembresia().getValorSuscripcionMensual() + "\n" +
+				"Precio de compra: " + cliente.getMembresia().getValorSuscripcionMensual() + "\n";
 		cliente.getFacturas().add(factura);
 	}
 	
