@@ -1139,8 +1139,8 @@ public class Funcionalidad1 {
 
 //0.13. Unificar Menú de mis 3 elementos del menú principal en 1 solo (Hecho)
 //0.14. Resolver error de cliente puede entrar a salas de cine y/o a sala de espera con un ticket que no funciona para la sucursal una vez que se cambie
-// una película de sucursal o el se cambie de sucursal (Hecho).
-//0.15. Refactorizar todo el código de la funcionalidad 1 (Usar el mismo estándar en todos los casos, doble booelan para hacer verificaciones).
+// una película de sucursal o el se cambie de sucursal (Hecho)
+//0.15. Refactorizar todo el código de la funcionalidad 1 (Usar el mismo estándar en todos los casos, doble booelan para hacer verificaciones)
 
 //1. Método de avanzar la hora automáticamente (Investigar el uso de threads y Hablar con David)
 //2. Incluir el código de la clase Funcionaliadad 1 en la clase Administrador y Estudiar serialización

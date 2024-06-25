@@ -89,12 +89,13 @@ public class Membresia implements IBuyable{
 	public static void asignarDescuento() {
 		//Se realiza un ciclo y se toma la categoria de cada membresia para asignar el descuento con switch.
 		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
-			
+			//Se realiza el ciclo tomando la categoria de cada membresia.
 	 		int categoria = membresia.getCategoria();
 	 		double descuento = 0.05;
 	 		descuento+=0.05 * categoria;
 	 		switch (categoria) {
 	 		
+	 		//Por cada iteración del ciclo, se aumenta el número de la categoria y su descuento para usar el set.
 	 		case 1: membresia.setDescuentoAsociado(descuento); break;
 	 		case 2: membresia.setDescuentoAsociado(descuento); break;
 	 		case 3: membresia.setDescuentoAsociado(descuento); break;
@@ -102,9 +103,7 @@ public class Membresia implements IBuyable{
 	 		case 5: membresia.setDescuentoAsociado(descuento); break;
 	 		}
 		}	
- 	}
-
-	
+ 	}	
 	
 	public boolean actualizarSuscripcion() {
 		
@@ -133,55 +132,89 @@ public class Membresia implements IBuyable{
 	*@param none : No se pide parametros
 	*@return <b>string</b> : Se retorna un texto mostrando el nombre de las categorias.
 	*/
-	public static String mostrarCategoria(Cliente cliente) {
+	public static String mostrarCategoria(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		String resultado = null;
 		int i = 1;
-		Membresia membresiaActual = cliente.getMembresia();
+		Membresia membresiaActual = clienteProceso.getMembresia();
 		String nombreMembresiaActual = null;
 		
 		//Se actualiza el nombre de la membresia.
 		if (membresiaActual == null) {
 			nombreMembresiaActual = "Sin membresia";
 		} else {
-			nombreMembresiaActual = cliente.getMembresia().getNombre();}
+			nombreMembresiaActual = clienteProceso.getMembresia().getNombre();}
 		//Se recorre la lista de tipos de membresia.
-		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
-			if (resultado == null) {
-				if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
-					i++;
-					continue;
-				}
-				resultado = "Categoria " + i + ". "+ membresia.getNombre() + "\n";
+		for (Producto membresia : sucursalCineProceso.getInventarioCine()) {
+			//Se ignora los productos que no sean de tipo Membresia.
+			if (!membresia.getTipoProducto().equalsIgnoreCase("Membresia")) {
+				continue;
+			}
+				if (resultado == null) {
+					if (membresia.getCantidad() == 0) {
+						resultado = "Categoria " + i + ". " + membresia.getNombre() + " (AGOTADA)\n";
+						i++;
+						continue;
+					}
+					else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
+						i++;
+						continue;
+					} else {
+				resultado = "Categoria " + i + ". "+ membresia.getNombre() + ". Requisitos: " + (int) membresia.getPrecio() + " puntos."+"\n";}
 			}else {
-				if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
+				if (membresia.getCantidad() == 0) {
+					resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + " (AGOTADA)\n";
 					i++;
 					continue;
 				}
-				resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + "\n";
+				else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
+					i++;
+					continue;
+				} else {
+			resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + ". Requisitos: " + (int) membresia.getPrecio() + " puntos." +"\n";}
 			}
 			i++;
 		}
-		/*System.out.println(resultado)*/
 		return resultado;
 	}
 
 	/**
-	*<b>Description</b>: Este método verifica a que categorias puede acceder el cliente.
+	*<b>Description</b>: Este método verifica a que categorias puede acceder el cliente. Se revisa
+	*si hay membresias disponibles y si el cliente tiene la cantidad de puntos e historial de peliculas como requisitos.
 	*@param cliente : Se pide al cliente para revisar su historial de peliculas para la 
 	*verificación. Si tiene X peliculas vistas en el cine, tiene acceso a ciertas categorias.
 	*@param categoriaSeleccionada : Se pide el número de la categoria que quiera adquirir.
+	*@param sucursalCineProceso : Se pide la sucursal de cine para revisar la cantidad de membresias.
 	*@return <b>boolean</b> : Se retorna un dato booleano que indica si el cliente puede 
 	*adquirir la categoria de membresia seleccionada.
 	*/
-	public static boolean verificarRestriccionMembresia(Cliente cliente, int categoriaSeleccionada) {
+	public static boolean verificarRestriccionMembresia(Cliente clienteProceso, int categoriaSeleccionada, SucursalCine sucursalCineProceso) {
+		Membresia membresiaProceso = Membresia.asignarMembresiaNueva(categoriaSeleccionada);
 		boolean esValido = false;
 		
+		//Se obtiene los puntos que posea el cliente.
+		double puntos = 0.0;
+		for (MetodoPago metodoPago : clienteProceso.getMetodosDePago()) {
+			if (metodoPago.getNombre() == "Puntos") {
+				puntos = metodoPago.getLimiteMaximoPago();
+				break;
+			}
+		}
+		//Se obtiene la cantidad de la membresia que hayan en el cine.
+		int membresiaStock = 0;
+		for (Producto membresiaInventario : sucursalCineProceso.getInventarioCine()) {
+			if (membresiaInventario.getNombre() == membresiaProceso.getNombre()) {
+				membresiaStock = membresiaInventario.getCantidad();
+				break;
+			}
+		}
 		//Si la categoria es 4 o 5, se revisa si se cumple los requisitos.
 		switch (categoriaSeleccionada) {
 		
-		case 1, 2, 3: esValido = true; break;
-		case 4: esValido = (cliente.getHistorialDePeliculas().size() >= 10) ? true : false; break;
-		case 5: esValido = (cliente.getHistorialDePeliculas().size() >= 20) ? true : false; break;
+		case 1: esValido = (membresiaStock > 0) ? true : false; break;
+		case 2: esValido = (membresiaStock > 0 && puntos >= 5000) ? true : false; break;
+		case 3: esValido = (membresiaStock > 0 && puntos >= 10000) ? true : false; break;
+		case 4: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 15000) ? true : false; break;
+		case 5: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 20 && puntos >= 20000) ? true : false; break;
 		}
 		
 		return esValido;
@@ -213,7 +246,7 @@ public class Membresia implements IBuyable{
 	*@return <b>Membresia</b> : Se retorna un dato de tipo Membresia que contiene el apuntador de
 	*tipo Membresia que coincide con la categoria deseada.
 	*/
-	public static Membresia asignarMembresiaNueva(Membresia membresia, int categoriaMembresia) {
+	public static Membresia asignarMembresiaNueva(int categoriaMembresia) {
 		//Se crea una instancia de tipo Membresia null
 		Membresia membresiaNueva = null;
 		//Se busca las instancias de tipo Membresia en Tipos de Membresia y si la categoria coincide, la instancia anterior apunta a este resultado
@@ -234,19 +267,15 @@ public class Membresia implements IBuyable{
 	*/
 	public static void stockMembresia(ArrayList<SucursalCine> sucursalesCine) {
 		int i = 50;
-		int precio = 5000;
+		int puntos = 0;
 		//Se revisa la lista de las sucursales de cine creadas.
 		for (SucursalCine sucursalCine : sucursalesCine) {
 			//Por cada membresia, se crea un producto de este tipo y se añade al inventario de la sucursal.
 			for (Membresia membresia : Membresia.getTiposDeMembresia()) {
-				if (membresia.getNombre() == "Básico") {
-					continue;
-				} else {
-					Producto membresiaSucursal = new Producto("Membresia", membresia.getNombre(), precio, i);
+					Producto membresiaSucursal = new Producto("Membresia", membresia.getNombre(), puntos, i);
 					sucursalCine.getInventarioCine().add(membresiaSucursal);
-					precio+=5000;
+					puntos+=5000;
 					i-=10;
-				}
 			}
 			//Se reinicia el contador de cantidad cada vez que se itere a una nueva sucursal de la lista.	
 			i = 50;
@@ -326,11 +355,15 @@ public class Membresia implements IBuyable{
 		cliente.setMembresia(this);
 		cliente.setDuracionMembresiaDias(Duration.ofDays(this.duracionMembresiaDias));
 		
+		//Se va al inventario del cine para restar la cantidad de membresias.
+		for (Producto membresiaStock : cliente.getCineActual().getInventarioCine()) {
+			if (membresiaStock.getNombre() == this.getNombre()) {
+				membresiaStock.setCantidad(membresiaStock.getCantidad() - 1);
+				break;
+			}
+		}
 		//Al adquirir la membresia, se crea y asigna un método de pago único que permite acumular puntos canjeables con compras en el cine.
 		MetodoPago.asignarMetodosDePago(cliente);
-		
-//		//Se eliminan las referencias de los métodosDePagoUsados
-//		MetodoPago.getMetodosDePagoUsados().clear();
 		
 		//Se pasa la referencia de la membresia al cliente que lo compró y se agrega este último al array de clientes en Membresia
 		this.getClientes().add(cliente);
@@ -344,21 +377,18 @@ public class Membresia implements IBuyable{
 
 	@Override
 	public void factura(Cliente cliente) {
-		String factura = null;
-		factura = "=== Factura de compra ===\n" +
+		String factura = "=== Factura de compra ===\n" +
 				"Nombre dueño: " + cliente.getNombre() + "\n" +
 				"Documento: " + cliente.getDocumento() + "\n" +
 				"Membresia: " + cliente.getMembresia().getNombre()+ "\n" +
 				"Categoria: " + cliente.getMembresia().getCategoria() + "\n" +
 				"Tipo: " + cliente.getMembresia().getTipoMembresia() + "\n" +
 				"Duración: " + cliente.getMembresia().getDuracionMembresiaDias()+ " dias.\n" +
-				"Precio de compra: " + cliente.getMembresia().getValorSuscripcionMensual() + "\n" +
+				"Precio de compra: " + cliente.getMembresia().getValorSuscripcionMensual() + "\n";
 		cliente.getFacturas().add(factura);
 	}
 	
 	
 }
-
-
 
 
