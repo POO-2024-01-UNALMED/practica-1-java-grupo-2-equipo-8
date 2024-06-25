@@ -1,9 +1,6 @@
 package iuMain;
 
-import java.time.LocalDateTime;
 import java.util.Scanner;
-import java.util.InputMismatchException;
-import java.util.ArrayList;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
@@ -22,30 +19,34 @@ public class Administrador {
 		return sc.nextLine();
 	}
 	
+	static ServicioComida servicioComidaM = new ServicioComida("comida");
+	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("souvenir");
+	
 	static SucursalCine sucursalCine1 = new SucursalCine("Bucaramanga");
 	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
 	static SucursalCine sucursalCine3 = new SucursalCine("Medellín");
 	
-	static ArrayList<Producto> inventarioBucaramanga = new ArrayList<Producto>();
-	static ArrayList<Producto> inventarioMarinilla = new ArrayList<Producto>();
-	static ArrayList<Producto> inventarioSanAndrés = new ArrayList<Producto>();
-	
-	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,200,null);
+	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,200,"Normal");
 	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",30000,200,"Comedia");
-	static Producto producto3 = new Producto("Perro caliente","Grande","comida",20000,200,null);
+	static Producto producto3 = new Producto("Perro caliente","Grande","comida",20000,200,"Normal");
 	static Producto producto4 = new Producto("Perro caliente","Don salchicha","comida",30000,200,"Comedia");
-	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",15000,200,"Accion");
-	static Producto producto6 = new Producto("Crispetas","Grandes","comida",16000,200,null);
-	static Producto producto7 = new Producto("Gaseosa","Grande","comida",6000,200,null);
-	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",3000,200,null);
+	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",15000,200,"Acción");
+	static Producto producto6 = new Producto("Crispetas","Grandes","comida",16000,200,"Normal");
+	static Producto producto7 = new Producto("Gaseosa","Grande","comida",6000,200,"Normal");
+	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",3000,200,"Normal");
 	
+	static Producto producto1S = new Producto("Camisa","XL","souvenir",19000,200,"Normal");
+	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",30000,200,"Comedia");
+	static Producto producto3S = new Producto("Gorra","L","souvenir",12000,200,"Normal");
+	static Producto producto4S = new Producto("Llavero","Katana","souvenir",30000,200,"Acción");
+	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",30000,200,"Comedia");
 	
 	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
 	static Bono bono1 = new Bono("1234",productoBono,"comida");
 	
 	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
-	static Arkade game3= new Arkade("Hang Man", 10000, "POO");
+	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");
 	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
 	static Arkade game5= new Arkade("Hang Man", 7500, "Drama");
 	
@@ -69,28 +70,17 @@ public class Administrador {
 	static SalaCine salaDeCine1_8 = new SalaCine(8, "3D", sucursalCine1);
 	static SalaCine salaDeCine1_9 = new SalaCine(9, "4D", sucursalCine1);
 
-	static Pelicula pelicula1_1 = new Pelicula("Star Wars: Episode 1", 50000, "Aventura", Duration.ofMinutes(120), "+7", "4D", 3, sucursalCine1); 
-	static Pelicula pelicula1_2 = new Pelicula("Star Wars: Episode 1", 27000, "Aventura", Duration.ofMinutes(120), "+7", "3D", 2, sucursalCine1); 
-	static Pelicula pelicula1_3 = new Pelicula("Star Wars: Episode 1", 18000, "Aventura", Duration.ofMinutes(120), "+7", "2D", 1, sucursalCine1); 
+	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+7", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_4 = new Pelicula("Misión Imposible 4", 55000, "Acción", Duration.ofMinutes(155), "+18", "4D", 6, sucursalCine1);
-	static Pelicula pelicula1_5 = new Pelicula("Misión Imposible 4", 32000, "Acción", Duration.ofMinutes(155), "+18", "3D", 5, sucursalCine1);
-	static Pelicula pelicula1_6 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", 4, sucursalCine1);
+	static Pelicula pelicula1_2 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_7 = new Pelicula("El conjuro 3", 60000, "Terror", Duration.ofMinutes(140), "+18", "4D", 9, sucursalCine1); 
-	static Pelicula pelicula1_8 = new Pelicula("El conjuro 3", 31000, "Terror", Duration.ofMinutes(140), "+18", "3D", 8, sucursalCine1); 
-	static Pelicula pelicula1_9 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+18", "2D", 7, sucursalCine1); 
+	static Pelicula pelicula1_7 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+18", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_10 = new Pelicula("Your name", 45000, "Romance", Duration.ofMinutes(110), "+8", "4D", 6, sucursalCine1);
-	static Pelicula pelicula1_11 = new Pelicula("Your name", 23000, "Romance", Duration.ofMinutes(110), "+8", "3D", 5, sucursalCine1);
+	static Pelicula pelicula1_10 = new Pelicula("Your name", 18000, "Romance", Duration.ofMinutes(110), "+8", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_12 = new Pelicula("Furiosa: A Mad Max Saga", 68000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "4D", 3, sucursalCine1);
-	static Pelicula pelicula1_13 = new Pelicula("Furiosa: A Mad Max Saga", 30000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "3D", 2, sucursalCine1);
-	static Pelicula pelicula1_14 = new Pelicula("Furiosa: A Mad Max Saga", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "2D", 1, sucursalCine1);
+	static Pelicula pelicula1_12 = new Pelicula("Furiosa: A Mad Max Saga", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "2D", sucursalCine1);
 	
-	static Pelicula pelicula1_15 = new Pelicula("Spy x Familiy Código: Blanco", 69000, "Infantil", Duration.ofMinutes(90), "+5", "4D", 9, sucursalCine1);
-	static Pelicula pelicula1_16 = new Pelicula("Spy x Familiy Código: Blanco", 30000, "Infantil", Duration.ofMinutes(90), "+5", "3D", 8, sucursalCine1);
-	static Pelicula pelicula1_17 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", 7, sucursalCine1);
+	static Pelicula pelicula1_15 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", sucursalCine1);
 	
 	static SalaCine salaDeCine2_1 = new SalaCine(1, "2D", sucursalCine2);
 	static SalaCine salaDeCine2_2 = new SalaCine(2, "3D", sucursalCine2);
@@ -99,27 +89,17 @@ public class Administrador {
 	static SalaCine salaDeCine2_5 = new SalaCine(5, "3D", sucursalCine2);
 	static SalaCine salaDeCine2_6 = new SalaCine(6, "4D", sucursalCine2);
 	
-	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 60000, "Acción", Duration.ofMinutes(60), "+12", "4D", 3, sucursalCine2); 
-	static Pelicula pelicula2_2 = new Pelicula("Jujutsu Kaisen Cero", 32000, "Acción", Duration.ofMinutes(60), "+12", "3D", 2, sucursalCine2); 
-	static Pelicula pelicula2_3 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(60), "+12", "2D", 1, sucursalCine2); 
+	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(60), "+12", "2D", sucursalCine2); 
 	
-	static Pelicula pelicula2_4 = new Pelicula("The Strangers: Chapter 1", 65000, "Terror", Duration.ofMinutes(114), "+18", "4D", 6, sucursalCine2);
-	static Pelicula pelicula2_5 = new Pelicula("The Strangers: Chapter 1", 37000, "Terror", Duration.ofMinutes(114), "+18", "3D", 5, sucursalCine2);
-	static Pelicula pelicula2_6 = new Pelicula("The Strangers: Chapter 1", 20000, "Terror", Duration.ofMinutes(114), "+18", "2D", 4, sucursalCine2);
+	static Pelicula pelicula2_4 = new Pelicula("The Strangers: Chapter 1", 20000, "Terror", Duration.ofMinutes(114), "+18", "2D", sucursalCine2);
 	
-	static Pelicula pelicula2_7 = new Pelicula("El pájaro loco", 55000, "Infantil", Duration.ofMinutes(120), "+5", "4D", 3, sucursalCine2); 
-	static Pelicula pelicula2_8 = new Pelicula("El pájaro loco", 27000, "Infantil", Duration.ofMinutes(120), "+5", "3D", 2, sucursalCine2); 
-	static Pelicula pelicula2_9 = new Pelicula("El pájaro loco", 15000, "Infantil", Duration.ofMinutes(120), "+5", "2D", 1, sucursalCine2); 
+	static Pelicula pelicula2_7 = new Pelicula("El pájaro loco", 15000, "Infantil", Duration.ofMinutes(120), "+5", "2D", sucursalCine2); 
 	
-	static Pelicula pelicula2_10 = new Pelicula("One Life", 50000, "Historia", Duration.ofMinutes(110), "+8", "4D", 6, sucursalCine2);
-	static Pelicula pelicula2_11 = new Pelicula("One Life", 25000, "Historia", Duration.ofMinutes(110), "+8", "3D", 5, sucursalCine2);
+	static Pelicula pelicula2_10 = new Pelicula("One Life", 19000, "Historia", Duration.ofMinutes(110), "+8", "2D", sucursalCine2);
 	
-	static Pelicula pelicula2_12 = new Pelicula("Challengers", 45000, "Drama", Duration.ofMinutes(132), "+12", "4D", 3, sucursalCine2);
-	static Pelicula pelicula2_13 = new Pelicula("Challengers", 25000, "Drama", Duration.ofMinutes(132), "+12", "3D", 2, sucursalCine2);
+	static Pelicula pelicula2_12 = new Pelicula("Challengers", 15000, "Drama", Duration.ofMinutes(132), "+12", "2D", sucursalCine2);
 
-	static Pelicula pelicula2_14 = new Pelicula("Bad Boys: Hasta la muerte", 77000, "Acción", Duration.ofMinutes(109), "+18", "4D", 6, sucursalCine2);
-	static Pelicula pelicula2_15 = new Pelicula("Bad Boys: Hasta la muerte", 31000, "Acción", Duration.ofMinutes(109), "+18", "3D", 5, sucursalCine2);
-	static Pelicula pelicula2_16 = new Pelicula("Bad Boys: Hasta la muerte", 17000, "Acción", Duration.ofMinutes(109), "+18", "2D", 4, sucursalCine2);
+	static Pelicula pelicula2_14 = new Pelicula("Bad Boys: Hasta la muerte", 17000, "Comedia", Duration.ofMinutes(109), "+18", "2D", sucursalCine2);
 	
 	static SalaCine salaDeCine3_1 = new SalaCine(1, "2D", sucursalCine3);
 	static SalaCine salaDeCine3_2 = new SalaCine(2, "3D", sucursalCine3);
@@ -128,42 +108,23 @@ public class Administrador {
 	static SalaCine salaDeCine3_5 = new SalaCine(5, "3D", sucursalCine3);
 	static SalaCine salaDeCine3_6 = new SalaCine(6, "4D", sucursalCine3);
 
-	static Pelicula pelicula3_1 = new Pelicula("KNJ temporada 4 movie", 60000, "Aventura", Duration.ofMinutes(60), "+12", "4D", 3, sucursalCine3); 
-	static Pelicula pelicula3_2 = new Pelicula("KNJ temporada 4 movie", 25000, "Aventura", Duration.ofMinutes(60), "+12", "3D", 2, sucursalCine3); 
-	static Pelicula pelicula3_3 = new Pelicula("KNJ temporada 4 movie", 15000, "Aventura", Duration.ofMinutes(60), "+12", "2D", 1, sucursalCine3); 
+	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 1500000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
 	
-	static Pelicula pelicula3_4 = new Pelicula("Código Enigma", 52000, "Historia", Duration.ofMinutes(180), "+18", "4D", 6, sucursalCine3);
-	static Pelicula pelicula3_5 = new Pelicula("Código Enigma", 27000, "Historia", Duration.ofMinutes(180), "+18", "3D", 5, sucursalCine3);
+	static Pelicula pelicula3_4 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
 	
-	static Pelicula pelicula3_6 = new Pelicula("Oppenheimer", 55000, "Historia", Duration.ofMinutes(120), "+18", "4D", 3, sucursalCine3); 
-	static Pelicula pelicula3_7 = new Pelicula("Oppenheimer", 25000, "Historia", Duration.ofMinutes(120), "+18", "3D", 2, sucursalCine3); 
+	static Pelicula pelicula3_6 = new Pelicula("Oppenheimer", 15000, "Historia", Duration.ofMinutes(120), "+18", "2D", sucursalCine3);
 	
-	static Pelicula pelicula3_8 = new Pelicula("Jhon Wick 4", 65000, "Acción", Duration.ofMinutes(180), "+18", "4D", 6, sucursalCine3);
-	static Pelicula pelicula3_9 = new Pelicula("Jhon Wick 4", 31000, "Acción", Duration.ofMinutes(180), "+18", "3D", 5, sucursalCine3);
-	static Pelicula pelicula3_10 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "2D", 4, sucursalCine3);
+	static Pelicula pelicula3_8 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
 	
-	static Pelicula pelicula3_11 = new Pelicula("Intensamente 2", 57000, "Infantil", Duration.ofMinutes(105), "+5", "4D", 3, sucursalCine3);
-	static Pelicula pelicula3_12 = new Pelicula("Intensamente 2", 27000, "Infantil", Duration.ofMinutes(105), "+5", "3D", 2, sucursalCine3);
-	static Pelicula pelicula3_13 = new Pelicula("Intensamente 2", 15000, "Infantil", Duration.ofMinutes(105), "+5", "2D", 1, sucursalCine3);
+	static Pelicula pelicula3_11 = new Pelicula("Intensamente 2", 15000, "Infantil", Duration.ofMinutes(105), "+5", "2D", sucursalCine3);
 	
-	static Pelicula pelicula3_14 = new Pelicula("BNHA temporada 7 movie", 58000, "Acción", Duration.ofMinutes(60), "+18", "4D", 6, sucursalCine3);
-	static Pelicula pelicula3_15 = new Pelicula("BNHA temporada 7 movie", 30000, "Acción", Duration.ofMinutes(60), "+18", "3D", 5, sucursalCine3); 
-	static Pelicula pelicula3_16 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+18", "2D", 4, sucursalCine3);
+	static Pelicula pelicula3_14 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+18", "2D", sucursalCine3);
 
 	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
 	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);
 	static Membresia membresia3 = new Membresia("Global", 3, 15000, 20);
 	static Membresia membresia4 = new Membresia("Challenger", 4, 25000, 25);
 	static Membresia membresia5 = new Membresia("Radiante", 5, 30000, 30);
-	
-	static Ticket ticket1 = new Ticket();
-	static Ticket ticket2 = new Ticket();
-	static Ticket ticket3 = new Ticket();
-	static Ticket ticket4 = new Ticket();
-	static Ticket ticket5 = new Ticket();
-	static Ticket ticket6 = new Ticket();
-	static Ticket ticket7 = new Ticket();
-	static Ticket ticket8 = new Ticket();
 	
 	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 200000, 0.10);
 	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 120000, 0.05);
@@ -177,38 +138,68 @@ public class Administrador {
 		//Llamados métodos de instancias para hacer pruebas
 		{
 			
-			inventarioMarinilla.add(producto1);
-			inventarioMarinilla.add(producto2);
-			inventarioMarinilla.add(producto3);
-			inventarioMarinilla.add(producto4);
-			inventarioMarinilla.add(producto5);
-			inventarioMarinilla.add(producto6);
-			inventarioMarinilla.add(producto7);
-			inventarioMarinilla.add(producto8);
+			sucursalCine1.getServicios().add(servicioComidaM);
 			
-			sucursalCine1.setInventarioCine(inventarioBucaramanga);
-			sucursalCine2.setInventarioCine(inventarioMarinilla);
-			sucursalCine3.setInventarioCine(inventarioSanAndrés);
+			sucursalCine1.getInventarioCine().add(producto1);
+			sucursalCine1.getInventarioCine().add(producto2);
+			sucursalCine1.getInventarioCine().add(producto3);
+			sucursalCine1.getInventarioCine().add(producto4);
+			sucursalCine1.getInventarioCine().add(producto5);
+			sucursalCine1.getInventarioCine().add(producto6);
+			sucursalCine1.getInventarioCine().add(producto7);
+			sucursalCine1.getInventarioCine().add(producto8);
+			
+			
+			sucursalCine2.getServicios().add(servicioComidaM);
+			sucursalCine2.getServicios().add(servicioSouvenirsM);
+			
+			sucursalCine2.getInventarioCine().add(producto1);
+			sucursalCine2.getInventarioCine().add(producto2);
+			sucursalCine2.getInventarioCine().add(producto3);
+			sucursalCine2.getInventarioCine().add(producto4);
+			sucursalCine2.getInventarioCine().add(producto5);
+			sucursalCine2.getInventarioCine().add(producto6);
+			sucursalCine2.getInventarioCine().add(producto7);
+			sucursalCine2.getInventarioCine().add(producto8);
+			
+			sucursalCine2.getInventarioCine().add(producto1S);
+			sucursalCine2.getInventarioCine().add(producto2S);
+			sucursalCine2.getInventarioCine().add(producto3S);
+			sucursalCine2.getInventarioCine().add(producto4S);
+			sucursalCine2.getInventarioCine().add(producto5S);
+			
+			sucursalCine3.getServicios().add(servicioSouvenirsM);
+			
+			sucursalCine3.getInventarioCine().add(producto1S);
+			sucursalCine3.getInventarioCine().add(producto2S);
+			sucursalCine3.getInventarioCine().add(producto3S);
+			sucursalCine3.getInventarioCine().add(producto4S);
+			sucursalCine3.getInventarioCine().add(producto5S);
 			
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 			//Funcionalidad 1 
-			SucursalCine.añadirSalasCineSede();
-			SucursalCine.crearHorariosPeliculasPorSucursal();
-			SucursalCine.actualizarPeliculasSalasDeCine();
+			SucursalCine.logicaSistemaReservarTicket();
+
+			//Prueba inicializar lógica para sistema de reserva de tickets
+//			for(Pelicula pelicula : SucursalCine.getPeliculasDisponibles()) {
+//				System.out.println("Película: " + pelicula.getNombre() + " Formato: "+ pelicula.getTipoDeFormato() + " Sala: " + pelicula.getSalaPresentacion().getNumeroSala() + " FormatoSala: " + pelicula.getSalaPresentacion().getTipoDeSala() +" Sucursal: " + pelicula.getSalaPresentacion().getUbicacionSede().getLugar());
+//			}
 			
 			//Prueba películas recomendadas
-			cliente1.getHistorialDePeliculas().add(pelicula3_10);
-			cliente1.getHistorialDePeliculas().add(pelicula3_11);
-			cliente1.getHistorialDePeliculas().add(pelicula3_12);
-			cliente1.getHistorialDePeliculas().add(pelicula2_16);
-			cliente1.getHistorialDePeliculas().add(pelicula2_4);
-			cliente1.getHistorialDePeliculas().add(pelicula1_1);
-			cliente1.getHistorialDePeliculas().add(pelicula2_15);
-			cliente1.getHistorialDePeliculas().add(pelicula2_1);
-			cliente1.getHistorialDePeliculas().add(pelicula1_2);
-			cliente1.getHistorialDePeliculas().add(pelicula3_1);
-			cliente1.getHistorialDePeliculas().add(pelicula3_4);
-			
+//			cliente1.getHistorialDePeliculas().add(pelicula3_10);
+//			cliente1.getHistorialDePeliculas().add(pelicula3_11);
+//			cliente1.getHistorialDePeliculas().add(pelicula3_12);
+//			cliente1.getHistorialDePeliculas().add(pelicula2_16);
+//			cliente1.getHistorialDePeliculas().add(pelicula2_4);
+//			cliente1.getHistorialDePeliculas().add(pelicula1_1);
+//			cliente1.getHistorialDePeliculas().add(pelicula2_15);
+//			cliente1.getHistorialDePeliculas().add(pelicula2_1);
+//			cliente1.getHistorialDePeliculas().add(pelicula1_2);
+//			cliente1.getHistorialDePeliculas().add(pelicula3_1);
+//			cliente1.getHistorialDePeliculas().add(pelicula3_4);
+			cliente5.getHistorialDePeliculas().add(pelicula3_1);
+			cliente5.getHistorialDePeliculas().add(pelicula3_11);
+			cliente5.getHistorialDePeliculas().add(pelicula1_2);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
 			cliente4.setCuenta(tarjeta1);
@@ -241,7 +232,6 @@ public class Administrador {
 			
 			//cliente4.setMembresia(membresia5);
 			cliente3.setMembresia(membresia2);
-			cliente4.getTickets().add(ticket5);
 //			ticket5.setDueno(cliente4);
 //			ticket5.setPelicula(pelicula1);
 //			ticket5.setSalaDeCine(salaDeCine1);
@@ -268,53 +258,52 @@ public class Administrador {
 		Cliente clienteProceso = iniciarSesion();
 		
 		System.out.println("\nIngresar a una de nuestras sedes");
-		SucursalCine sucursalCineProceso = ingresarASucursal();
+		clienteProceso.setCineActual(ingresarASucursal());
 		
-		clienteProceso.setCine(sucursalCineProceso);
-		
-		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido al cine de marinilla");
-		inicio(clienteProceso, sucursalCineProceso);
+		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
+		inicio(clienteProceso);
 		
 	}
 	
       
 	
-	public static void inicio(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
+	public static void inicio(Cliente clienteProceso) {
 	int opcion = 0;
 	do {
+		
 		try {
+			
 			opcion = 0;
 			System.out.println("\n¿Qué operacion desea realizar?");
 			System.out.println("1. Reservar ticket de pelicula");
 			System.out.println("2. Ingresar a la sala de cine");
-			System.out.println("3. Realizar orden de comida"); 
-			System.out.println("4. Realizar compra de souvenirs");
-			System.out.println("5. Ingresar a la zona de juegos");
-			System.out.println("6. Adquirir o actualizar membresia");
-			System.out.println("7. Hacer calificacion");
-			System.out.println("8. Ingresar a sala de espera");
+			System.out.println("3. Ingrear a los servicios de compra"); 
+			System.out.println("4. Ingresar a la zona de juegos");
+			System.out.println("5. Adquirir o actualizar membresia");
+			System.out.println("6. Hacer calificacion");
+			System.out.println("7. Ingresar a sala de espera");
+			System.out.println("8. Cambiar de sucursal");
 			System.out.println("9. Salir");
 			opcion = Integer.parseInt(sc.nextLine());
-			//NumberFormatException e							aca dejo esto por si lo queres modificar de nuevo
-			//opcion = (int)readLong(); //edi cambie esto ya que cuando llamaba el metodo en mi funcionalidad me saltaba el error y se me imprimia el menu 2 veces no se porque, pero asi funciona melo.
+			
 		}catch(NumberFormatException e) {
 			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-			//sc.nextLine(); // Consumir el input incorrecto
-		    //opcion = 0; // Asignar un valor válido para evitar el bucle infinito
 		}
-	}while(!(opcion > 0 & opcion <= 9));
+		
+	}while(!(opcion > 0 & opcion <= 10));
 	
 	
 	switch (opcion) {
-		case 1: Funcionalidad1.reservarTicket(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
-		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 3: Funcionalidad2.compras(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		//case 4: Funcionalidad3.calificacion(clienteProceso, sucursalCineProceso);inicio(clienteProceso, sucursalCineProceso); break;
-		case 5: Funcionalidad_4.ingresoZonaJuegos(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 6: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 7: Funcionalidad1.salaDeEspera(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 8: salirDelSistema(); break;
-		default: System.out.println("Opción invalida"); inicio(clienteProceso, sucursalCineProceso);
+		case 1: Funcionalidad1.reservarTicket(clienteProceso);inicio(clienteProceso); break;
+		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso); inicio(clienteProceso); break;
+		case 3: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
+		case 4: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
+		case 5: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 6: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
+		case 7: Funcionalidad1.salaDeEspera(clienteProceso); inicio(clienteProceso); break;
+		case 8: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
+		case 9: salirDelSistema(); break;
+		default: System.out.println("Opción invalida"); inicio(clienteProceso);
 	  }
 	
 	}
@@ -708,7 +697,7 @@ public class Administrador {
 	 * @param cliente : Este método recibe un cliente (De tipo Cliente) el cual ejecuta el menú de inicio
 	 * @return <b>void</b> : Este método no retorna nada.
 	 * */
-	static void evaluarRestriccionHoraria(Cliente cliente) {
+	static void evaluarRestriccionHoraria(Cliente clienteProceso) {
 		if ( !(SucursalCine.getFechaActual().toLocalTime().isBefore(SucursalCine.FIN_HORARIO_LABORAL) &&
 				(SucursalCine.getFechaActual().toLocalTime().isAfter(SucursalCine.INICIO_HORARIO_LABORAL) ||
 						SucursalCine.getFechaActual().toLocalTime().equals(SucursalCine.INICIO_HORARIO_LABORAL)) ) ) {
@@ -733,12 +722,38 @@ public class Administrador {
 				SucursalCine.actualizarPeliculasSalasDeCine();
 				System.out.println("La fecha actual se ha actualizado de forma exitosa (" + SucursalCine.getFechaActual() + ")");
 			}else {
-				salirDelSistema();
-				//Cambiar por menú de inicio
+				inicio(clienteProceso);
 			}
 		}
 	}
 	
-	
+	/**
+	 * Description : Este método se encarga de cambiar la sucursal en la cual se encuentra el cliente
+	 * @param clienteProceso : Este método recibe al cliente (De tipo cliente) que desea cambiar de sucursal
+	 * */
+	static void cambiarSucursalCine(Cliente clienteProceso) {
+		
+		System.out.println("\n==============================");
+		System.out.println("Sistema de cambio de sucursal");
+		
+		int opcionMenu;
+		do {
+			opcionMenu = 0;
+			
+			try {
+				System.out.println("\n¿Desea cambiar de " + clienteProceso.getCineActual().getLugar() + " a otra de nuestras sucursales? \n1. Si\n2. No");
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debe ingresar un único dato numérico entre las opciones disponibles");
+			}
+			
+		}while(!(opcionMenu == 1 || opcionMenu == 2));
+		
+		if (opcionMenu == 1) {
+			clienteProceso.setCineActual(ingresarASucursal());
+		}else {
+			System.out.println("\nRegresando al menú principal...");
+		}
+	}
 }
 

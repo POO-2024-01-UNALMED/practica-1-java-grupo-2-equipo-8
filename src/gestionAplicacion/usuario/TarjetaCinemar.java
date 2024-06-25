@@ -74,9 +74,8 @@ public class TarjetaCinemar implements IBuyable {
 	}
 
 	@Override
-	public String factura(Cliente cliente) {
+	public void factura(Cliente cliente) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	

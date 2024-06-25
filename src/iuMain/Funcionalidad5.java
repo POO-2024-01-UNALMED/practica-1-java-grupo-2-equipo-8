@@ -38,7 +38,7 @@ public class Funcionalidad5 {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: Administrador.inicio(clienteProceso, sucursalCineProceso); casoValido = true; break;
+				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
 				case 3: Administrador.salirDelSistema(); casoValido = true; break;
 				default: System.out.println("Opción invalida."); break;
 			}
@@ -117,7 +117,7 @@ public class Funcionalidad5 {
 			}
 		}while (valorAPagar != 0); 
 		membresiaNueva.procesarPagoRealizado(clienteProceso);
-		System.out.print(membresiaNueva.factura(clienteProceso));
+		System.out.print(clienteProceso.getFacturas().get( clienteProceso.getFacturas().size() - 1 ));
 		TarjetaCinemar tarjetaCinemarActual = clienteProceso.getCuenta();
 		int tipoMembresia = 0;
 		if (tarjetaCinemarActual != null) {

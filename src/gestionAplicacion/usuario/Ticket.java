@@ -3,67 +3,49 @@ package gestionAplicacion.usuario;
 import java.time.LocalDateTime;
 
 import gestionAplicacion.SucursalCine;
-import gestionAplicacion.proyecciones.*;
+import gestionAplicacion.proyecciones.Pelicula;
+import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Arkade;
 
 public class Ticket implements IBuyable{
 	
-	private static int cantidadTicketsCreados = 0;
+	private static int cantidadTicketsCreados = 1;
+	private boolean descuento;
 	private int idTicket;
 	private Cliente dueno;
 	private SalaCine salaDeCine;
-	//private Asiento asiento; Ver la forma de asociar el objeto o eliminar este atributo (Eliminar atributo)
-	private double precio;
 	private Pelicula pelicula;
 	private LocalDateTime horario;
-	private int idPelicula; //De la película tomar el Id
 	private String numeroAsiento;
-	private String codigo; //No cambiar
+	private double precio;
 
 	//Constructors
-	public Ticket(){
-		Ticket.cantidadTicketsCreados++;
-	}
-	
-	public Ticket(Cliente dueno, SalaCine salaDeCine, double precio, Pelicula pelicula, LocalDateTime horario, String numeroAsiento) {
-		this.dueno = dueno;
-		this.salaDeCine = salaDeCine;
-		this.precio = precio;
-		this.pelicula = pelicula;
-		this.horario = horario;
-		this.numeroAsiento = numeroAsiento;
-		Ticket.cantidadTicketsCreados++;
-		this.idTicket = Ticket.cantidadTicketsCreados;
-		this.codigo = this.generarCodigoTicket();
-		//Arkade.getCodigosGenerados().add(this.codigo);
-		this.dueno.getCodigosDescuento().add(this.codigo);
-	}
-	
-	public Ticket(Cliente dueno, Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalCine) {
-		this.dueno = dueno;
+	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalCine) {
+		this.descuento = true;
 		this.pelicula = pelicula;
 		this.idTicket = Ticket.cantidadTicketsCreados;
-		Ticket.cantidadTicketsCreados++;
-		this.codigo = this.generarCodigoTicket();
-		//Arkade.getCodigosGenerados().add(this.codigo);
-		this.dueno.getCodigosDescuento().add(this.codigo);
 		this.numeroAsiento = numeroAsiento;
 		this.horario = horario;
-
+		this.precio = this.clienteSuertudo();
+		this.salaDeCine = pelicula.getSalaPresentacion();
 	}
+	
 	//Methods
 	/**
 	 * Description : Este método se encarga de verificar si se puede aplicar o no un descuento sobre el precio de la pelicula
 	 * según si la cantidad de tickets creados corresponde a un cuadrado perfecto.
-	 * @return : <b>double</b> : Retorna un double que posteriormente será aplicado por el metodo asignarPrecio
-	 * cuya visibilidad es pública
+	 * @return : <b>double</b> : Retorna un double (De tipo double) que corresponde al precio del ticket en caso de aplicarse
+	 * o no el descuento.
 	 * */
 	private double clienteSuertudo() {
-		double posibleCuadradoPerfecto = Math.sqrt(Ticket.getCantidadTicketsCreados()) % 1;
-		boolean verificacion = (posibleCuadradoPerfecto == 0) ? true : false; 
-		double precio = this.getPelicula().getPrecio();
+		
+		//Verificamos si al sacarle módulo a la raíz cuadrada a los tickets creados nos da un número sin decimales (Cuadrado perfecto)
+		boolean verificacion = (Math.sqrt(Ticket.cantidadTicketsCreados) % 1 == 0) ? true : false; 
+		//Tomamos el precio de la película asociada al ticket
+		double precio = this.pelicula.getPrecio();
+		
 		if(verificacion){
-			if (this.getPelicula().getTipoDeFormato().equals("3D") || this.getPelicula().getTipoDeFormato().equals("4D") ) {
+			if (this.pelicula.getTipoDeFormato().equals("3D") || this.pelicula.getTipoDeFormato().equals("4D") ) {
 				precio = precio * 0.5;
 			}else {
 				precio = precio  * 0.2;
@@ -71,39 +53,40 @@ public class Ticket implements IBuyable{
 		}
 		return precio;
 	}
-	
-	/**
-	 * Description : Este método se encarga de aplicar el precio del ticket, para ello ejecuta el método clienteSuertudo(), que retorna el valor
-	 * de aplicar o no el descuento.
-	 * @return <b>void</b>: Este método no retorna nada, solo modifica el precio del ticket.
-	 * */
-	public void asignarPrecio() {
-		this.setPrecio(clienteSuertudo());
-	}
 
 	/**
 	 * @Override
-	 * Description: Este método se encarga de generar el último paso del proceso de pago, eliminando la referencia del
-	 * método de pago usado y se vuelven a settear los metodos de pago que el cliente tendrá disponibles,
-	 * se le pasa la referencia del ticket al usuario y se crea una referencia de este en el arraylist de los tickets creados en el cine
-	 * (Este método al igual que el anterior será ejecutado por un ticket luego de ser verificado el pago).
-	 * @param cliente : Se pide como parámetro el cliente que realiza el pago, con el fin de pasarle la referencia del
-	 * ticket adquirido por este
-	 * @return <b>void</b> : Este método no retorna nada, solo crea y elimina referencias del método de pago en métodos de pago
-	 * disponibles y usados, y de ticket en la sala de cine asociada y en el cliente que compra el ticket
+	 * Description: Este método se encarga de generar el último paso del proceso de pago y será ejecutado por un ticket luego de ser verificado el pago: 
+	 * 1. Se vuelven a settear los metodos de pago que el cliente tendrá disponibles.
+	 * 2. Se pasa la referencia del ticket al array de tickets del usuario.
+	 * 3. Se pasa la referencia del cliente al atributo dueño del ticket.
+	 * 4. Se aumenta la cantidad de tickets genereados en uno.
+	 * 5. Se crea una referencia de este ticket en el arraylist de los tickets creados en el cine.
+	 * 6. Se crea la factura y se le asoscia al cliente
+	 * 7. Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.
+	 * @param cliente : Se pide como parámetro el cliente (De tipo Cliente) que realizó exitosamente el pago.
 	 */
 	public void procesarPagoRealizado(Cliente cliente) {
 		//Se reestablecen los métodos de pago disponibles del cliente
 		MetodoPago.asignarMetodosDePago(cliente);
 		
-		//Se eliminan las referencias de los métodosDePagoUsados
-		MetodoPago.getMetodosDePagoUsados().clear();
-		
 		//Se pasa la referencia del ticket al cliente que lo compró
 		cliente.getTickets().add(this);
+		this.setDueno(cliente);
 		
-		//Se crea la referencia del ticket en el array de ticketsCreados de la sala de cine asociada a este
-		SalaCine.getTicketsCreados().add(this);
+		//Se aumenta la cantidad de tickets creados
+		Ticket.cantidadTicketsCreados++;
+		
+		//Se crea un apuntador del ticket en el array de tickets generados de la sucursal de cine
+		cliente.getCineActual().getTicketsCreados().add(this);
+		
+		//Creamos la factura y se la asociamos al cliente
+		this.factura(cliente);
+		
+		//Proceso para funcionalidad 4
+		String codigoArkade = this.generarCodigoTicket();
+		//Arkade.getCodigosGenerados().add(codigoArkade);
+		this.dueno.getCodigosDescuento().add(codigoArkade);
 	}
 	
 	
@@ -113,49 +96,52 @@ public class Ticket implements IBuyable{
 	 * además, retorna un string que contiene toda la información del ticket en forma de factura.
 	 * @param cliente : Este método solicita un cliente de tipo Cliente como parámetro con el fin de asociarle a este la factura
 	 * que verifica su compra realizada
-	 * @return <b>factura</b> : Este método retorna un String que contiene la información de la factura con el fin de imprimirla en pantalla
 	 * */
-	public String factura(Cliente cliente) {
-		String factura = "=== Factura de Ticket ===\n" +
-				"Nombre dueño : " + this.getDueno().getNombre() + "\n" +
-				"Documento : " + this.getDueno().getDocumento() + "\n" +
-				"Pelicula : " + this.getPelicula().getNombre() + "\n" +
-				"Número de sala : " + this.getSalaDeCine().getNumeroSala() + "\n" +
-				"Número de asiento : " + this.getNumeroAsiento() + "\n" +
-				"Fecha Presentación: " + this.getHorario().toLocalDate() + "\n" +
-				"Hora Presentación: " + this.getHorario().toLocalTime() + "\n" + 
-				"Valor ticket (IVA incluido): " + this.getPrecio() + "\n" + 
-				"Fecha de compra: " + SucursalCine.getFechaActual();
+	public void factura(Cliente cliente) {
+		String factura = "		Cinemar\n" +
+				"========= Factura de Ticket =========\n" +
+				"Nombre dueño : " + this.dueno.getNombre() + "\n" +
+				"Documento : " + this.dueno.getDocumento() + "\n" +
+				"Pelicula : " + this.pelicula.getNombre() + "\n" +
+				"Número de sala : " + this.salaDeCine.getNumeroSala() + "\n" +
+				"Número de asiento : " + this.numeroAsiento + "\n" +
+				"Fecha Presentación: " + this.horario.toLocalDate() + "\n" +
+				"Hora Presentación: " + this.horario.toLocalTime() + "\n" + 
+				"Valor ticket (IVA incluido): " + this.precio + "\n" + 
+				"Fecha de compra: " + SucursalCine.getFechaActual().withNano(0);
 				
 		cliente.getFacturas().add(factura);
-		return factura;
 	}
 	
+	/**
+	 * Description: Este metodo se encarga de generar un codigo de descuento que se le asocia al usuario dueño del ticket para que pueda redimirlo 
+	 * en el Arkade posteriormente.
+	 * @return <b>codigoTicket</b> : Este método retorna un String que contiene la información del codigo mas el genero de la pelicula asociada.
+	 * */
 	private String generarCodigoTicket() {
-		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getNumeroDeSala()+"-"+this.getPelicula().getGenero();
+		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getSalaPresentacion().getNumeroSala()+"-"+this.getPelicula().getGenero();
 
 		return codigoTicket;
 	}
 	
+	
+	/**
+	 * Description: Este metodo se encarga de encontar el genero de la pelicula asociada a un codigo que esta contenido dentro del string del mismo.
+	 * @param cliente : Este método reckbe como parametro el codigo del cual se sacara un substring con el genero de la pelicula
+	 * @return <b>String</b> : Este método retorna un String que contiene la información del genero de la pelicula del codigo.
+	 * */
 	public static String encontrarGeneroCodigoPelicula(String codigo) {
 		int indiceGuion = codigo.indexOf("-");
 
         if (indiceGuion != -1 && indiceGuion != codigo.length() - 1) {
 
             return codigo.substring(indiceGuion + 1);
-        } else {
+        } 
+        else {
 
             return "";
         }
 	}
-	/*public String toString() {
-		return "=== Factura de Ticket ===\n" +
-		"Nombre dueño : " + this.getDueno().getNombre() + "\n" +
-		"Documento : " + this.getDueno().getDocumento() + "\n" +
-		"Pelicula : " + this.getPelicula().getNombre() + "\n" +
-		"Número de sala : " + this.getPelicula().getNumeroDeSala() + "\n" +
-		"Número de asiento : " + this.getNumeroAsiento();
-	}*/
 	
 	//Getters and Setters
 	public Cliente getDueno() {
@@ -198,14 +184,6 @@ public class Ticket implements IBuyable{
 		this.horario = horario;
 	}
 
-	public int getIdPelicula() {
-		return idPelicula;
-	}
-
-	public void setIdPelicula(int idPelicula) {
-		this.idPelicula = idPelicula;
-	}
-
 	public static int getCantidadTicketsCreados() {
 		return cantidadTicketsCreados;
 	}
@@ -230,13 +208,12 @@ public class Ticket implements IBuyable{
 		this.numeroAsiento = numeroAsiento;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public boolean isDescuento() {
+		return descuento;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setDescuento(boolean descuento) {
+		this.descuento = descuento;
 	}
-	
 	
 }

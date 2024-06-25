@@ -1,19 +1,23 @@
 package gestionAplicacion.servicios;
 import java.util.ArrayList;
 
+import gestionAplicacion.usuario.Cliente;
+
 public class Bono {
 	
 	private String codigo;
 	private static ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private Producto producto;
 	private String tipoServicio;
+	private Cliente cliente;
 	
 	public Bono(){}
 	
-	public Bono(String codigo, Producto producto, String tipoServicio) {
-		this.codigo = codigo;
+	public Bono(String code, Producto producto, String tipoServicio) {
+		this.codigo = code;
 		this.producto = producto;
 		this.tipoServicio = tipoServicio;
+		cliente = null;
 		bonosCreados.add(this);
 	}
 	
@@ -48,6 +52,14 @@ public class Bono {
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 }

@@ -1,53 +1,61 @@
 package gestionAplicacion.servicios;
-import gestionAplicacion.usuario.Cliente;
+import java.time.LocalDate;
 import java.util.ArrayList;
+
+import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.MetodoPago;
 
 public class ServicioSouvenirs extends Servicio{
 	
-	private Cliente cliente;
-	private ArrayList<Producto> ordenSouvenir = new ArrayList<>();
-	private int codigoProducto;
-	private double valorPedido;
-	
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
-	public ArrayList<Producto> getOrdenSouvenir() {
-		return ordenSouvenir;
-	}
-
-	public void setOrdenSouvenir(ArrayList<Producto> ordenSouvenir) {
-		this.ordenSouvenir = ordenSouvenir;
-	}
-
-	public int getCodigoProducto() {
-		return codigoProducto;
-	}
-
-	public void setCodigoProducto(int codigoProducto) {
-		this.codigoProducto = codigoProducto;
-	}
-
-	public double getValorPedido() {
-		return valorPedido;
-	}
-
-	public void setValorPedido(double valorPedido) {
-		this.valorPedido = valorPedido;
-	}
-
 	public ServicioSouvenirs(){}
 	
-	public ServicioSouvenirs(String nombre, String horario, Cliente cliente, ArrayList<Producto> ordenSouvenir,
-			int codigoProducto, double valorPedido) {
-		this.cliente = cliente;
-		this.ordenSouvenir = ordenSouvenir;
-		this.codigoProducto = codigoProducto;
-		this.valorPedido = valorPedido;
+	public ServicioSouvenirs(String nombre) {
+		super(nombre);
 	}
+	
+	@Override
+	public boolean descuentarPorCompra(MetodoPago metodo) {
+		if (!metodo.getNombre().equalsIgnoreCase("Efectivo")) {
+			for(int i = 0; i < orden.size(); i++) {
+				if (orden.get(i).getTamaño().equalsIgnoreCase("Katana") && (orden.get(i).getPrecio() > 120000)) {
+					valorPedido = valorPedido - (valorPedido*0.1);
+					return true;
+				}
+		}
+		return false;
+		}
+		return false;
+	}
+	
+	@Override
+	public ArrayList<Producto> actualizarInventario(){
+		ArrayList<Producto> inventarioGeneral = getCliente().getCineActual().getInventarioCine();
+		ArrayList<Producto> inventario = new ArrayList<Producto>();
+		for(int i = 0;i<inventarioGeneral.size();i++) {
+			if(inventarioGeneral.get(i).getTipoProducto().equalsIgnoreCase("Souvenir") && inventarioGeneral.size() > 0) {
+				inventario.add(inventarioGeneral.get(i));
+			}
+		}
+		return inventario;
+	}
+
+	@Override
+	public void procesarPagoRealizado(Cliente cliente) {
+		
+		
+	}
+
+	@Override
+	public void factura(Cliente cliente) {
+		String factura;
+		factura="                          CINEMAR \n"+
+				"==================== Factura de Souvenir ====================\n"+
+				" Nombre dueño : " + this.getCliente().getNombre() + "\n" +
+				" Fecha de compra: "+ LocalDate.now() + "\n" +
+				this.mostrarOrden()+ "\n" +
+				" Total a pagar aplicando descuentos : $" + valorPedido+ "\n";
+		this.getCliente().getFacturas().add(factura);
+		
+	}
+	
 }

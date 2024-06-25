@@ -6,12 +6,14 @@ public class Producto {
 	private String genero;
 	private String nombre;
 	private String tamaño;
-	private int precio;
+	private double precio;
 	private int cantidad;
 	
 	public void descontarPrecioDeBono() {
 		
 	}
+	
+	//Ligadura Estatica
 	
 	public boolean comprobarBonoEnOrden(Servicio servicio) {
 		boolean verificacion = false;
@@ -34,7 +36,7 @@ public class Producto {
 		this.cantidad = cantidad;
 	}
 	
-	public Producto(String nombre,String tamaño,String tipoProducto,int precio,int cantidad,String genero) {
+	public Producto(String nombre,String tamaño,String tipoProducto,double precio,int cantidad,String genero) {
 		this.genero= genero;
 		this.nombre = nombre;
 		this.precio = precio;
@@ -44,7 +46,7 @@ public class Producto {
 	}
 	
 	//Constructor para objetos de Membresia.
-	public Producto(String tipoProducto, String nombre, int precio, int cantidad) {
+	public Producto(String tipoProducto, String nombre, double precio, int cantidad) {
 		this.tipoProducto = tipoProducto;
 		this.nombre = nombre;
 		this.precio = precio;
@@ -75,11 +77,11 @@ public class Producto {
 		this.tamaño = tamaño;
 	}
 
-	public int getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(int precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
 
