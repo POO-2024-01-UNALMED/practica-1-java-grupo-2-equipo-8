@@ -22,103 +22,6 @@ public class Pelicula{
 	private double valoracion;
 	private int totalEncuestasDeValoracionRealizadas;
 	
-	// Getters and Setters
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public int getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(int precio) {
-		this.precio = precio;
-	}
-
-	public String getGenero() {
-		return genero;
-	}
-
-	public void setGenero(String genero) {
-		this.genero = genero;
-	}
-
-	public Duration getDuracion() {
-		return duracion;
-	}
-
-	public void setDuracion(Duration duracion) {
-		this.duracion = duracion;
-	}
-
-	public String getClasificacion() {
-		return clasificacion;
-	}
-
-	public void setClasificacion(String clasificacion) {
-		this.clasificacion = clasificacion;
-	}
-
-	public String getTipoDeFormato() {
-		return tipoDeFormato;
-	}
-
-	public void setTipoDeFormato(String tipoDeFormato) {
-		this.tipoDeFormato = tipoDeFormato;
-	}
-
-	public SalaCine getSalaPresentacion() {
-		return salaPresentacion;
-	}
-
-	public void setSalaPresentacion(SalaCine salaPresentacion) {
-		this.salaPresentacion = salaPresentacion;
-	}
-
-	public int getIdPelicula() {
-		return idPelicula;
-	}
-
-	public void setIdPelicula(int idPelicula) {
-		this.idPelicula = idPelicula;
-	}
-
-	public ArrayList<LocalDateTime> getHorarios() {
-		return horarios;
-	}
-
-	public void setHorarios(ArrayList<LocalDateTime> horarios) {
-		this.horarios = horarios;
-	}
-
-	public ArrayList<int[][]> getAsientosVirtuales() {
-		return asientosVirtuales;
-	}
-
-	public void setAsientosVirtuales(ArrayList<int[][]> asientos) {
-		this.asientosVirtuales = asientos;
-	}
-	
-	public double getValoracion() {
-		return valoracion;
-	}
-
-	public void setValoracion(double valoracion) {
-		this.valoracion = valoracion;
-	}
-
-	public int getTotalEncuestasDeValoracionRealizadas() {
-		return totalEncuestasDeValoracionRealizadas;
-	}
-
-	public void setTotalEncuestasDeValoracionRealizadas(int totalEncuestasDeValoracionRealizadas) {
-		this.totalEncuestasDeValoracionRealizadas = totalEncuestasDeValoracionRealizadas;
-	}
-
 	// Constructor
 	public Pelicula(){
 		SucursalCine.getPeliculasDisponibles().add(this);
@@ -311,7 +214,7 @@ public class Pelicula{
 	    resultado.append("    ");
 	    
 	    // Agregar números de columnas
-	    for (int i = 0; i < this.asientosVirtuales.get(this.horarios.indexOf(fecha)).length; i++) {
+	    for (int i = 0; i < this.asientosVirtuales.get(this.horarios.indexOf(fecha))[0].length; i++) {
 	        resultado.append(String.format("%-4d", i + 1));
 	    }
 	    resultado.append("\n");
@@ -504,5 +407,102 @@ public class Pelicula{
 			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D"));
 		}
 	}
+	
+	// Getters and Setters
+		public String getNombre() {
+			return nombre;
+		}
+
+		public void setNombre(String nombre) {
+			this.nombre = nombre;
+		}
+
+		public int getPrecio() {
+			return precio;
+		}
+
+		public void setPrecio(int precio) {
+			this.precio = precio;
+		}
+
+		public String getGenero() {
+			return genero;
+		}
+
+		public void setGenero(String genero) {
+			this.genero = genero;
+		}
+
+		public Duration getDuracion() {
+			return duracion;
+		}
+
+		public void setDuracion(Duration duracion) {
+			this.duracion = duracion;
+		}
+
+		public String getClasificacion() {
+			return clasificacion;
+		}
+
+		public void setClasificacion(String clasificacion) {
+			this.clasificacion = clasificacion;
+		}
+
+		public String getTipoDeFormato() {
+			return tipoDeFormato;
+		}
+
+		public void setTipoDeFormato(String tipoDeFormato) {
+			this.tipoDeFormato = tipoDeFormato;
+		}
+
+		public SalaCine getSalaPresentacion() {
+			return salaPresentacion;
+		}
+
+		public void setSalaPresentacion(SalaCine salaPresentacion) {
+			this.salaPresentacion = salaPresentacion;
+		}
+
+		public int getIdPelicula() {
+			return idPelicula;
+		}
+
+		public void setIdPelicula(int idPelicula) {
+			this.idPelicula = idPelicula;
+		}
+
+		public ArrayList<LocalDateTime> getHorarios() {
+			return horarios;
+		}
+
+		public void setHorarios(ArrayList<LocalDateTime> horarios) {
+			this.horarios = horarios;
+		}
+
+		public ArrayList<int[][]> getAsientosVirtuales() {
+			return asientosVirtuales;
+		}
+
+		public void setAsientosVirtuales(ArrayList<int[][]> asientos) {
+			this.asientosVirtuales = asientos;
+		}
+		
+		public double getValoracion() {
+			return valoracion;
+		}
+
+		public void setValoracion(double valoracion) {
+			this.valoracion = valoracion;
+		}
+
+		public int getTotalEncuestasDeValoracionRealizadas() {
+			return totalEncuestasDeValoracionRealizadas;
+		}
+
+		public void setTotalEncuestasDeValoracionRealizadas(int totalEncuestasDeValoracionRealizadas) {
+			this.totalEncuestasDeValoracionRealizadas = totalEncuestasDeValoracionRealizadas;
+		}
 		
 }

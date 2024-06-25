@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
-import gestionAplicacion.servicios.Arkade;
+//import gestionAplicacion.servicios.Arkade;
 
 public class Ticket implements IBuyable{
 	
@@ -18,14 +18,16 @@ public class Ticket implements IBuyable{
 	private LocalDateTime horario;
 	private String numeroAsiento;
 	private double precio;
+	private SucursalCine sucursalCompra;
 
 	//Constructors
-	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalCine) {
+	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalDondeFueComprado) {
 		this.descuento = true;
 		this.pelicula = pelicula;
 		this.idTicket = Ticket.cantidadTicketsCreados;
 		this.numeroAsiento = numeroAsiento;
 		this.horario = horario;
+		this.sucursalCompra = sucursalDondeFueComprado;
 		this.precio = this.clienteSuertudo();
 		this.salaDeCine = pelicula.getSalaPresentacion();
 	}
@@ -98,8 +100,8 @@ public class Ticket implements IBuyable{
 	 * que verifica su compra realizada
 	 * */
 	public void factura(Cliente cliente) {
-		String factura = "		Cinemar\n" +
-				"========= Factura de Ticket =========\n" +
+		String factura = 
+				"========= Factura Ticket =========\n" +
 				"Nombre dueño : " + this.dueno.getNombre() + "\n" +
 				"Documento : " + this.dueno.getDocumento() + "\n" +
 				"Pelicula : " + this.pelicula.getNombre() + "\n" +
@@ -215,5 +217,14 @@ public class Ticket implements IBuyable{
 	public void setDescuento(boolean descuento) {
 		this.descuento = descuento;
 	}
+
+	public SucursalCine getSucursalCompra() {
+		return sucursalCompra;
+	}
+
+	public void setSucursalCompra(SucursalCine sucursalCompra) {
+		this.sucursalCompra = sucursalCompra;
+	}
+	
 	
 }

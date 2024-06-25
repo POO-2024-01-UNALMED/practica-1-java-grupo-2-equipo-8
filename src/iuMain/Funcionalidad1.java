@@ -39,7 +39,7 @@ public class Funcionalidad1 {
 		do {
 			
 			try {
-				System.out.println("¿Desea ingresar o volver?" +"\n1. Ingresar" + "\n2. Volver al menú principal" + "\n3. Salir");
+				System.out.println("¿Desea ingresar o volver?" +"\n1. Ingresar" + "\n2. Volver al menú anterior");
 				opcionMenu = Integer.parseInt(sc.nextLine());
 			}catch(NumberFormatException e) {
 				System.out.println("Error, debes ingresar un dato numérico");
@@ -48,8 +48,7 @@ public class Funcionalidad1 {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
-				case 3: Administrador.salirDelSistema(); casoValido = true; break;
+				case 2: ingresarASistemaDeProyecciones(clienteProceso); casoValido = true; break;
 				default: System.out.println("Opción invalida");
 			}
 			
@@ -81,26 +80,26 @@ public class Funcionalidad1 {
 					try {
 						System.out.println("\nHola " + clienteProceso.getNombre() + ", bienvenido al sistema de reserva de ticket\n"
 						+ "================================================================\n"
-						+ "Este es el listado de los nombres de las películas en cartelera,"
+						+ "Este es el listado de los nombres de las películas en cartelera:"
 						+ Pelicula.showNombrePeliculas(nombresPeliculasCarteleraPersonalizadaProceso, clienteProceso, peliculasRecomendadas) + "\n"
-						+ ( Integer.valueOf(nombresPeliculasCarteleraPersonalizadaProceso.size()) + 1 ) + ". Salir al menú principal");
+						+ ( Integer.valueOf(nombresPeliculasCarteleraPersonalizadaProceso.size()) + 1 ) + ". Regresar al menú de sistema de proyecciones");
 						System.out.print("\nElige una de las películas disponibles para ver más información: " );
 						opcionMenu = Integer.parseInt(sc.nextLine());
 					}catch (NumberFormatException e) {
 						System.out.println("Error, debes ingresar un único dato numérico");
 					}
+					
 				}while(!(opcionMenu > 0 && opcionMenu <= nombresPeliculasCarteleraPersonalizadaProceso.size() + 1));
 				
 				if (opcionMenu == Integer.valueOf(nombresPeliculasCarteleraPersonalizadaProceso.size()) + 1) {
-					Administrador.inicio(clienteProceso);
+					ingresarASistemaDeProyecciones(clienteProceso);
 				}
 				
 				//Obtenemos el nombre de la película seleccionada por el cliente
 				String nombrePelicula = nombresPeliculasCarteleraPersonalizadaProceso.get(opcionMenu - 1);
 				
 				//Buscamos las películas que coinciden con el nombre seleccionado con el cliente
-				ArrayList<Pelicula> peliculasProceso = new ArrayList<>();
-				peliculasProceso = Pelicula.filtrarPorNombreDePelicula(nombrePelicula, carteleraPersonalizadaProceso);
+				ArrayList<Pelicula> peliculasProceso = Pelicula.filtrarPorNombreDePelicula(nombrePelicula, carteleraPersonalizadaProceso);
 				
 				//Mostramos información del nombre de la película seleccionada
 				System.out.println("\nInformación película seleccionada -> \nNombre: " + peliculasProceso.get(0).getNombre() 
@@ -160,9 +159,8 @@ public class Funcionalidad1 {
 		LocalDateTime horarioProceso = null;
 		
 		//Filtramos los primeros 7 horarios con asientos disponibles desde la fecha actual
-		ArrayList<LocalDateTime> horariosPeliculaProceso = new ArrayList<>();
-		horariosPeliculaProceso = peliculaProceso.filtrarHorariosPelicula();
-		boolean disponibilidadHoraria = horariosPeliculaProceso.size()>0;
+		ArrayList<LocalDateTime> horariosPeliculaProceso = peliculaProceso.filtrarHorariosPelicula();
+		boolean disponibilidadHoraria = horariosPeliculaProceso.size() > 0;
 		
 		//Mostramos este menú en caso de que la película se encuentre en presentación en alguna sala de cine y 
 		//además la película no lleva más de 15 minutos en presentación
@@ -253,7 +251,7 @@ public class Funcionalidad1 {
 		do {
 			opcionMenu = 0;
 			try {
-				System.out.println("\nVamos a empezar con el proceso de pago\n1. Continuar\n2. Volver al menú principal");
+				System.out.println("\nVamos a empezar con el proceso de pago\n1. Continuar\n2. Volver al menú del sistema de proyecciones");
 				opcionMenu = Integer.parseInt(sc.nextLine());
 			}catch(NumberFormatException e) {
 				System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
@@ -282,7 +280,7 @@ public class Funcionalidad1 {
 				System.out.println("🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉");
 			}
 		}else {
-			Administrador.inicio(clienteProceso);
+			ingresarASistemaDeProyecciones(clienteProceso);
 		}
 		
 		//Iniciamos el proceso de pago
@@ -308,8 +306,9 @@ public class Funcionalidad1 {
 	 * con el fin de modificar la disponibilidad del asiento seleccionado por el cliente.
 	 * @param numeroAsientoProceso : Este método recibe como parámetro un String, que corresponde al numero del asiento seleccionado, 
 	 * con la idea de cambiar la disponibilidad del asiento en esa posición.
-	 * @param ticketProceso : Este método recibe como parámetro un ticket (De tipo Ticket), que corresponde al ticket generado durante el proceso de la
-	 * funcionalidad reservarTicket, del cuál se obtendrá el valor a pagar, se realizará el proceso de pago y una vez verificado, se le asociará al cliente   
+	 * @param ticketProceso : Este método recibe como parámetro un ticket (De tipo Ticket), que corresponde al ticket generado durante 
+	 * el proceso de la funcionalidad reservarTicket, del cuál se obtendrá el valor a pagar, se realizará el proceso de pago y una vez verificado, 
+	 * se le asociará al cliente.
 	 * */
 	static void pagarTicket(Cliente clienteProceso, SalaCine salaDeCineProceso, String numeroAsientoProceso, Ticket ticketProceso) {
 		
@@ -376,10 +375,10 @@ public class Funcionalidad1 {
 			//Verificamos si el pago fue cubierto en su totalidad
 			if (precioTicketProceso == 0) {
 				
+				System.out.println("Pago realizado, La compra de su ticket fue exitosa\n");
+				
 				//Setteamos el precio del ticket
 				ticketProceso.setPrecio(precioAcumuladoTicketProceso);
-				
-				System.out.println("Pago realizado, La compra de su ticket fue exitosa\n");
 				
 				//Realizamos el proceso correspondiente luego de ser verificado
 				ticketProceso.procesarPagoRealizado(clienteProceso);
@@ -400,7 +399,7 @@ public class Funcionalidad1 {
 		}while(!casoValido);
 		
 		System.out.println("\nFin del proceso reserva de ticket");
-		System.out.println("(Redireccionando al menú principal...)");
+		System.out.println("(Redireccionando al menú del sistema de proyecciones...)");
 		try {
 			Thread.sleep(3000);
 		}catch(InterruptedException e) {
@@ -411,19 +410,19 @@ public class Funcionalidad1 {
 	/**
 	 * Description : Este método se encarga de efectuar el proceso de pago del ticket creado por funcionalidad reservarTicket,
 	 * dado el caso de que el cliente compre el ticket en un horario determinado, ya sea porque seleccionó comprar en otro horario o su película no se
-	 * encontraba en presentación en ese momento, para esto, recibe los parámetros necesarios para realizar el pago y procesarlo
-	 * @param clienteProceso : Este método recibe como parámetro un cliente (De tipo cliente) 
+	 * encontraba en presentación en ese momento, para esto, recibe los parámetros necesarios para realizar el pago y procesarlo.
+	 * @param clienteProceso : Este método recibe como parámetro un cliente (De tipo cliente),
 	 * que realizará el pago y luego de ser verificado, se le asociará el ticket comprado con el método procesarPago.
 	 * @param peliculaProceso : Este método recibe como parámetro una película (De tipo película),
 	 * con el fin de cambiar la disponibilidad del asiento comprado por el cliente luego de verificar el pago.
-	 * @param horarioProceso : Este método recibe como parámetro el horario de la película (De tipo LocalDateTime), 
-	 * con el propósito de cambiar la disponibilidad del asiento seleccionado por el cliente en la sala virtual correspondiente a este horario
+	 * @param horarioProceso : Este método recibe como parámetro el horario de la película (De tipo LocalDateTime),
+	 * con el propósito de cambiar la disponibilidad del asiento seleccionado por el cliente en la sala virtual correspondiente a este horario.
 	 * @param numeroAsientoProceso : Este método recibe como parámetro un String, que corresponde al numero del asiento seleccionado, 
 	 * con la idea de obtener la fila y la columna seleccionada por el cliente para cambiar la disponibilidad del asiento en esa posición.
 	 * @param ticketProceso : Este método recibe como parámetro un ticket (De tipo Ticket), que corresponde al ticket generado durante el proceso de
-	 * reserva de ticket, del cuál se obtendrá el valor a pagar, se realizará el proceso de pago y una vez verificado, se le asociará al cliente   
+	 * reserva de ticket, del cuál se obtendrá el valor a pagar, se realizará el proceso de pago y una vez verificado, se le asociará al cliente.  
 	 * @param sucursalCineProceso : Este método recibe como parámetro la sede (De tipo SucursalCine), que corresponde al lugar desde donde el cliente
-	 * esta realizando la compra, con el fin de asignarle a este ticket la sala de cine correspondiente a su película
+	 * esta realizando la compra, con el fin de asignarle a este ticket la sala de cine correspondiente a su película.
 	 * */
 	static void pagarTicket(Cliente clienteProceso, Pelicula peliculaProceso, LocalDateTime horarioProceso, String numeroAsientoProceso, Ticket ticketProceso) {
 		
@@ -433,7 +432,7 @@ public class Funcionalidad1 {
 		
 		MetodoPago metodoPagoProceso = null;
 		double precioTicketProceso = ticketProceso.getPrecio();
-		boolean primerSetPrecioTicket = true;
+		double precioAcumuladoTicketProceso = 0;
 		
 		//Selccionar el método de pago para realizar el pago y realizar el pago
 		do {
@@ -477,14 +476,8 @@ public class Funcionalidad1 {
 				continue;
 			}
 			
-			//Setteamos el precio del ticket luego de aplicar el descuento por el método de pago
-			if (primerSetPrecioTicket) {
-				precioTicketProceso = precioTicketProceso * (1 - metodoPagoProceso.getDescuentoAsociado());
-				ticketProceso.setPrecio(precioTicketProceso);
-				primerSetPrecioTicket = false;
-			}
-			
-			//Realizamos el pago
+			//Realizamos el pago y sumamos 
+			precioAcumuladoTicketProceso = precioAcumuladoTicketProceso + precioTicketProceso * (1 - metodoPagoProceso.getDescuentoAsociado());
 			precioTicketProceso = metodoPagoProceso.realizarPago(precioTicketProceso, clienteProceso);
 			
 			System.out.println("\nEstamos procesando su pago, por favor espere...\n");
@@ -498,6 +491,9 @@ public class Funcionalidad1 {
 			if (precioTicketProceso == 0) {
 				
 				System.out.println("Pago realizado, La compra de su ticket fue exitosa\n");
+				
+				//Setteamos el precio del ticket
+				ticketProceso.setPrecio(precioAcumuladoTicketProceso);
 				
 				//Realizamos el proceso correspondiente a realizar el pago
 				ticketProceso.procesarPagoRealizado(clienteProceso);
@@ -522,7 +518,7 @@ public class Funcionalidad1 {
 		}while(!casoValido);
 		
 		System.out.println("\nFin del proceso reserva de ticket");
-		System.out.println("(Redireccionando al menu principal...)");
+		System.out.println("(Redireccionando al menú del sistema de proyecciones...)");
 		try {
 			Thread.sleep(3000);
 		}catch(InterruptedException e) {
@@ -532,13 +528,14 @@ public class Funcionalidad1 {
 	
 	/**
 	 * Description : Este método se encarga de seleccionar un horario a partir de la pelicula seleccionada por el cliente, para realizar este proceso,
-	 * Se muestra en pantalla los de horarios de la película seleccionada, para que el cliente pueda seleccionar uno de estos
+	 * Se muestra en pantalla los de horarios de la película seleccionada, para que el cliente pueda seleccionar uno de estos.
 	 * @param clienteProceso : Este método recibe como parámetro un cliente (De tipo cliente), con el fin de que, 
 	 * dado el caso, el cliente quiera regresar al menú principal, pueda hacerlo.
 	 * @param peliculaProceso : Este método recibe como parámetro una película (De tipo película) obtenido durante el proceso de la reserva de ticket,
 	 * para que de allí podamos mostrar en pantalla las llaves de su diccionario de horarios.
 	 * @param horariosPeliculaProceso : Este método recibe como parámetro los horarios disponibles de la película (De tipo ArrayList<LocalDateTime>)
-	 * obtenido durante el proceso de la reserva de ticket
+	 * obtenido durante el proceso de la reserva de ticket.
+	 * @return <b>LocalDateTime</b> : Este método retorna el horario seleccionado por el cliente, para continuar con el proceso de la reserva de ticket
 	 * */
 	static LocalDateTime seleccionarHorarioPelicula(Cliente clienteProceso, Pelicula peliculaProceso, ArrayList<LocalDateTime> horariosPeliculaProceso) {
 		
@@ -556,7 +553,7 @@ public class Funcionalidad1 {
 				try {
 					System.out.println("\nLos horarios de la película " + peliculaProceso.getNombre() 
 					+ " son:\n" + peliculaProceso.mostrarHorarioPelicula(horariosPeliculaProceso) 
-					+ "\n" + (Integer.valueOf(horariosPeliculaProceso.size()) + 1) + ". Volver al menú principal");
+					+ "\n" + (Integer.valueOf(horariosPeliculaProceso.size()) + 1) + ". Regresar al menú del sistema de proyecciones");
 					System.out.print("\nElige un horario entre los disponibles: ");
 					opcionMenu = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
@@ -567,7 +564,7 @@ public class Funcionalidad1 {
 			}while(!(opcionMenu > 0 && opcionMenu <= Integer.valueOf(horariosPeliculaProceso.size()) + 1));
 			
 			if(opcionMenu == Integer.valueOf(horariosPeliculaProceso.size()) + 1) {
-				Administrador.inicio(clienteProceso);
+				ingresarASistemaDeProyecciones(clienteProceso);
 			}else {
 				horarioProceso = horariosPeliculaProceso.get(opcionMenu - 1);
 			}
@@ -597,13 +594,12 @@ public class Funcionalidad1 {
 	/**
 	 * Description: Este método se encarga de seleccionar el número de asiento del cliente para ver una película en el horario previamente seleccionado, 
 	 * para hacer esto, Se muestra en pantalla los asientos de la sala de cine virtual con su respectiva disponibilidad del horario
-	 * de la película seleccionado por el cliente, tras esto, el cliente elige la fila,
-	 * luego la columna, se valida si el asiento en cuestión se encuentra disponible y una vez cumplida la verificación,
-	 * retornamos el número del asiento seleccionado.
-	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente) seleccionado en el proceso de login
-	 * @param horarioProceso : Este método recibe como parámetro el horario (De tipo LocalDateTime) seleccionado durante el proceso de reserva de ticket
-	 * @param horarioProceso : Este método recibe como parámetro la película (De tipo Pelicula) seleccionada durante el proceso de reserva de ticket
-	 * @return <b>String</b> : Este método retorna un String que corresponde al número de asiento seleccionado por el cliente
+	 * de la película seleccionado por el cliente, tras esto, el cliente elige la fila, luego la columna, se valida si el asiento en cuestión 
+	 * se encuentra disponible y una vez cumplida la verificación, retornamos el número del asiento seleccionado.
+	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente) seleccionado en el proceso de login.
+	 * @param horarioProceso : Este método recibe como parámetro el horario (De tipo LocalDateTime) seleccionado durante el proceso de reserva de ticket.
+	 * @param horarioProceso : Este método recibe como parámetro la película (De tipo Pelicula) seleccionada durante el proceso de reserva de ticket.
+	 * @return <b>String</b> : Este método retorna un String que corresponde al número de asiento seleccionado por el cliente.
 	 * */
 	static String seleccionarAsiento(Cliente clienteProceso, LocalDateTime horarioProceso, Pelicula peliculaProceso) {
 		boolean casoValido = false;
@@ -625,15 +621,15 @@ public class Funcionalidad1 {
 			//Elegimos la fila del asiento
 			do {
 				try {
-					System.out.println("Digite la fila de su asiento deseado");
+					System.out.print("\nDigite la fila de su asiento deseado: ");
 					filaProceso = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
-					System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles");
+					System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles\n");
 					continue;
 				}
 				
 				if(!(filaProceso > 0 & filaProceso <= Integer.valueOf(peliculaProceso.getAsientosVirtuales().get(peliculaProceso.getHorarios().indexOf(horarioProceso)).length))){
-					System.out.println("La fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
+					System.out.println("\nLa fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
 					continue;
 				}
 				
@@ -656,7 +652,7 @@ public class Funcionalidad1 {
 			casoValidoConfirmacion = false;
 			do {
 				try {
-					System.out.println("\nDigite la columna de su asiento deseado");
+					System.out.print("\nDigite la columna de su asiento deseado: ");
 					columnaProceso = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
 					System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
@@ -664,7 +660,7 @@ public class Funcionalidad1 {
 				}
 				
 				if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(peliculaProceso.getAsientosVirtuales().get(peliculaProceso.getHorarios().indexOf(horarioProceso)).length))){
-					System.out.println("La columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
+					System.out.println("\nLa columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
 					continue;
 				}
 				
@@ -703,12 +699,12 @@ public class Funcionalidad1 {
 	
 	/**
 	 * Description: Este método se encarga de seleccionar el número de asiento del cliente para ver una película que en estos momentos se encuentra en
-	 * presentación, para hacer esto, Se muestra en pantalla los asientos de la sala de cine con su respectiva disponibilidad, el cliente elige la fila
+	 * presentación, para hacer esto, se muestra en pantalla los asientos de la sala de cine con su respectiva disponibilidad, el cliente elige la fila
 	 * luego la columna, se valida si el asiento en cuestión se encuentra disponible y una vez cumplida la verificación,
-	 * retornamos el número del asiento seleccionado
+	 * retornamos el número del asiento seleccionado.
 	 * @param salaDeCinePresentacionProceso : Este método recibe como parámetro la sala de cine en la cuál se encuentra la película seleccionada durante
-	 * el proceso de la reserva de ticket
-	 * @return <b>String</b> : Este método retorna un String que corresponde al número de asiento seleccionado por el cliente
+	 * el proceso de la reserva de ticket.
+	 * @return <b>String</b> : Este método retorna un String que corresponde al número de asiento seleccionado por el cliente.
 	 * */
 	static String seleccionarAsiento(SalaCine salaDeCinePresentacionProceso) {
 		
@@ -730,15 +726,15 @@ public class Funcionalidad1 {
 			//Elegimos la fila del asiento
 			do {
 				try {
-					System.out.println("Digite la fila de su asiento deseado");
+					System.out.print("\nDigite la fila de su asiento deseado: ");
 					filaProceso = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
-						System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles");
+						System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles\n");
 						continue;
 				}
 						
 				if(!(filaProceso > 0 & filaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos().length))){
-					System.out.println("La fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
+					System.out.println("\nLa fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
 					continue;
 					}
 				
@@ -760,7 +756,7 @@ public class Funcionalidad1 {
 			casoValidoConfirmacion = false;
 			do {
 				try {
-					System.out.println("\nDigite la columna de su asiento deseado");
+					System.out.print("\nDigite la columna de su asiento deseado: ");
 					columnaProceso = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
 					System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
@@ -768,7 +764,7 @@ public class Funcionalidad1 {
 				}
 						
 				if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos().length))){
-					System.out.println("La columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
+					System.out.println("\nLa columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
 					continue;
 				}
 					
@@ -805,20 +801,28 @@ public class Funcionalidad1 {
 	}
 	
 	/**
-	 * Description : Este método se encarga de gestionar el ingreso a la sala de cine desde el menú, mostrando un mensaje donde
-	 * se pregunta al usuario si desea ingresar y luego ejecuta el método ingresarSalaCine()
-	 * @param clienteProceso : Este método recibe como parámetro el cliente (Clase cliente) que realizó el proceso de login
+	 * Description: Este método se encarga de realizar el proceso para que un usario pueda ingresar a una de las salas de cine,
+	 * para esto debemos cumplir un requisito fundamental, el cual es que el cliente tenga al menos un ticket asociado correspondiente a la
+	 * sucursal desde la cual está intentando acceder, dado el caso de que no, el cliente será redirigido al menú principal,
+	 * en caso de que sí podemos continuar con el proceso.
+	 * Mostramos en pantalla las salas de cine disponibles con información relevante de estas (Número de sala, película en presentación y horario),
+	 * el cliente selecciona una de estas, verificamos que alguno de los tickets del cliente, cumpla con los requisitos necesarios para 
+	 * poder ingresar a la sala de cine, en caso de que sí, se muestra en pantalla una representación de la sala de cine y una vez termina 
+	 * la película se redirecciona al cliente al menú principal, en caso de que no, se vuelve a mostrar por pantalla las salas de cine disponibles.
+	 * @param clienteProceso : Este método recibe como parámetro al cliente (De tipo Cliente), que ingresó desde el menú
+	 * principal o compró un ticket de una película en presentación y desea verla directamente .
 	 * */
-	static void ingresarSalaCineDesdeMenu(Cliente clienteProceso) {
+	static void ingresarSalaCine(Cliente clienteProceso) {
 		
-		System.out.println("Sistema de ingreso a la sala de cine\n");
+		System.out.println("\nSistema de ingreso a la sala de cine\n");
 		
 		//Elección menú inicial
 		boolean casoValido = false;
-		int opcionMenu = 0;
+		int opcionMenu;
 		do {
+			opcionMenu = 0;
 			try {
-				System.out.println("¿Desea ingresar o volver?" +"\n1. Ingresar" + "\n2. Volver al menú principal" + "\n3. Salir");
+				System.out.println("¿Desea ingresar o volver?" +"\n1. Ingresar" + "\n2. Volver al menú anterior");
 				opcionMenu = Integer.parseInt(sc.nextLine());
 			}catch(NumberFormatException e) {
 				System.out.println("Error, debes ingresar un dato numérico");
@@ -827,59 +831,42 @@ public class Funcionalidad1 {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
-				case 3: Administrador.salirDelSistema(); casoValido = true; break;
+				case 2: ingresarASistemaDeProyecciones(clienteProceso); casoValido = true; break;
 				default: System.out.println("Opción invalida");
 			}
 			
 		}while(!casoValido);
 		
-		if (opcionMenu == 1) {ingresarSalaCine(clienteProceso);}
-		
-	}
-	
-	/**
-	 * Description: Este método se encarga de realizar el proceso para que un usario pueda ingresar a una de las salas de cine,
-	 * para esto debemos cumplir un requisito fundamental, el cual es que el cliente tenga al menos un ticket asociado correspondeiente a la
-	 * sucursal desde la cual está intentando acceder, dado el caso de que no, el cliente será redirigido al menú principal,
-	 * en caso de que sí podemos continuar con el proceso.
-	 * Mostramos en pantalla las salas de cine disponibles con información relevante de estas (Número de sala, película en presentación y horario),
-	 * el cliente selecciona una de estas, verificamos que alguno de los tickets del cliente, cumpla con los requisitos necesarios para 
-	 * poder ingresar a la sala de cine, en caso de que sí, se muestra en pantalla una representación de la sala de cine y una vez termina 
-	 * la película se redirecciona al cliente al menú principal, en caso de que no, se vuelve a mostrar por pantalla las salas de cine disponibles.
-	 * @param clienteProceso : Este método recibe como parámetro al cliente (De tipo Cliente), que ingresó desde el menú
-	 * principal o compró un ticket de una película en presentación y desea verla directamente 
-	 * */
-	static void ingresarSalaCine(Cliente clienteProceso) {
-		
 		SalaCine salaDeCineProceso = null;
-		boolean casoValido = false;
+		casoValido = false;
 		boolean casoValidoConfirmacion = false;
-		int opcionMenu;
 		
 		//Tomamos las salas de cine que aún tienen películas en presentación y no han finalizado
 		ArrayList<SalaCine> salasDeCineDisponibles = SalaCine.filtrarSalasDeCine(clienteProceso.getCineActual());
 		
 		//En caso de no encontrar salas de cine, regresamos al menú principal
 		if (salasDeCineDisponibles.isEmpty()) {
-			System.out.println("\nNo hay películas en presentación, redireccionando al menú principal...");
-			Administrador.inicio(clienteProceso);
+			System.out.println("\nNo hay películas en presentación, redireccionando al menú del sistema de proyeccion de películas...");
+			ingresarASistemaDeProyecciones(clienteProceso);
 		}
 		
 		//Eliminamos los tickets caducados sin consumir que el cliente tenga asociados 
 		clienteProceso.dropTicketsCaducados();
 		
-		//Verificamos que el cliente tenga al menos un ticket asociado para continuar con el proceso
-		if(clienteProceso.getTickets().size() > 0 && clienteProceso.disponibilidadTicketParaSede(clienteProceso.getCineActual())) {
+		//Filtramos los tickets que puede usar el cliente
+		ArrayList<Ticket> ticketsDisponiblesParaUsar = clienteProceso.filtrarTicketsParaSede();
+		
+		//Verificamos que el cliente tenga al menos un ticket de esta sucursal para continuar con el proceso
+		if(ticketsDisponiblesParaUsar.size() > 0) {
 			System.out.println("\n		Hola " + clienteProceso.getNombre());
 			System.out.println("==================================================\n");
 			System.out.println( "\nFecha actual: "+ SucursalCine.getFechaActual().toLocalDate() 
 			+ "; Hora actual: " + SucursalCine.getFechaActual().toLocalTime() + "\n\n"
-			+ "Estos son los tickets que actualmente tienes disponibles: \n" 
-			+ clienteProceso.mostrarTicketsParaUsar() + "\n");
+			+ "Estos son los tickets que actualmente tienes disponibles:" 
+			+ clienteProceso.mostrarTicketsParaUsar(ticketsDisponiblesParaUsar) + "\n");
 		}else {
 			System.out.println("No has comprado ningún ticket o no tienes un ticket de una película de esta sede, te redireccionaremos al menú principal");
-			Administrador.inicio(clienteProceso);
+			ingresarASistemaDeProyecciones(clienteProceso);
 		}
 		//Iniciamos el proceso para ingresar a una sala de cine
 		do {
@@ -892,7 +879,7 @@ public class Funcionalidad1 {
 						//Mostramos el listado de las salas de cine disponibles para que el cliente elija una de estas
 						System.out.println("Este es el listado de las salas de cine disponibles: \n" 
 						+ SalaCine.mostrarSalaCine(salasDeCineDisponibles) + "\n" + (Integer.valueOf(salasDeCineDisponibles.size()) + 1) 
-						+ ". Salir al menú principal");
+						+ ". Regresar al menú de sistema de proyecciones");
 						opcionMenu = Integer.parseInt(sc.nextLine());
 						
 					}catch(NumberFormatException e) {
@@ -902,7 +889,7 @@ public class Funcionalidad1 {
 				}while(!(opcionMenu > 0 & opcionMenu <= (Integer.valueOf(salasDeCineDisponibles.size()) + 1) ) );
 				
 				if (opcionMenu == (Integer.valueOf(salasDeCineDisponibles.size()) + 1)) {
-					Administrador.inicio(clienteProceso);
+					ingresarASistemaDeProyecciones(clienteProceso);
 				}else {
 					//Obtenemos la sala de cine seleccionada
 					salaDeCineProceso = salasDeCineDisponibles.get(opcionMenu - 1);
@@ -937,7 +924,7 @@ public class Funcionalidad1 {
 				}
 		        
 		        System.out.println("La película ha finalizado, muchas gracias por asistir le deseamos un feliz resto de día" + 
-		        "\n(Redirigiendo al menú principal...)");
+		        "\n(Redirigiendo al menú del sistema de proyecciones...)");
 		        try {
 					Thread.sleep(3000);
 				}catch(InterruptedException e) {
@@ -964,11 +951,11 @@ public class Funcionalidad1 {
 	/**
 	 * Description : Este método se encarga de avanzar el tiempo del programa según el horario de la película del ticket del cliente, 
 	 * para que este pueda verla. Para hacer esto, mostramos en pantalla los tickets disponibles del cliente, el cliente selecciona uno de ellos,
-	 * setteamos la hora actual con la hora de la película y actualizamos las salas de cine (Un cliente sin tickets no puede ingresar a esta sala,
-	 * además antes de verficar eso, eliminamos los tickets que ya han caducado).
-	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente) que realizó el proceso de login
+	 * setteamos la hora actual con la hora de la película y actualizamos las salas de cine (Un cliente sin tickets o sin tickets de esta sucursal 
+	 * no puede ingresar a esta sala, además antes de verficar eso, eliminamos los tickets que ya han caducado).
+	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente) que realizó el proceso de login.
 	 * */
-	static void salaDeEspera(Cliente clienteProceso) {
+	static void ingresarSalaDeEspera(Cliente clienteProceso) {
 		System.out.println("\nIngreso a sala de espera");
 		
 		//Elección menu inicial
@@ -976,7 +963,7 @@ public class Funcionalidad1 {
 		int opcionMenu = 0;
 		do {
 			try {
-				System.out.println("¿Desea ingresar o volver?" +"\n1. Ingresar" + "\n2. Volver al menú principal" + "\n3. Salir");
+				System.out.println("¿Desea ingresar o volver?" +"\n1. Ingresar" + "\n2. Volver al menú anterior");
 				opcionMenu = Integer.parseInt(sc.nextLine());
 			}catch(NumberFormatException e) {
 				System.out.println("Error, debes ingresar un dato numérico");
@@ -985,8 +972,7 @@ public class Funcionalidad1 {
 			
 			switch (opcionMenu) {
 				case 1: casoValido = true; break;
-				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
-				case 3: Administrador.salirDelSistema(); casoValido = true; break;
+				case 2: ingresarASistemaDeProyecciones(clienteProceso); casoValido = true; break;
 				default: System.out.println("Opción invalida");
 			}
 			
@@ -994,9 +980,12 @@ public class Funcionalidad1 {
 		
 		//Validamos si el cliente tiene tickets disponibles
 		clienteProceso.dropTicketsCaducados();
-		if (!(clienteProceso.getTickets().size() > 0 && clienteProceso.disponibilidadTicketParaSede(clienteProceso.getCineActual()))) {
+		//Filtramos los tickets que el cliente puede usar
+		ArrayList<Ticket> ticketsDisponiblesParaUsar = clienteProceso.filtrarTicketsParaSede();
+		
+		if ((ticketsDisponiblesParaUsar.size() == 0)) {
 			System.out.println("Debes tener al menos un ticket de alguna película de esta sede para hacer uso de esta sala (Redireccionando al menú principal...)");
-			Administrador.inicio(clienteProceso);
+			ingresarASistemaDeProyecciones(clienteProceso);
 		}
 		
 		Ticket ticketParaUsar = null;
@@ -1013,8 +1002,9 @@ public class Funcionalidad1 {
 			try {
 				System.out.println( "\nFecha actual: "+ SucursalCine.getFechaActual().toLocalDate() 
 				+ "; Hora actual: " + SucursalCine.getFechaActual().toLocalTime().withNano(0) + "\n\n"
-				+ "Estos son los tickets que actualmente tienes disponibles: \n" 
-				+ clienteProceso.mostrarTicketsParaUsar());
+				+ "Estos son los tickets que actualmente tienes disponibles:" 
+				+ clienteProceso.mostrarTicketsParaUsar(ticketsDisponiblesParaUsar)
+				+ "\n" + (ticketsDisponiblesParaUsar.size() + 1) + ". Volver al menú del sistema de proyecciones\n");
 				System.out.print("Selecciona un ticket entre los disponibles: ");
 				opcionMenu = Integer.parseInt(sc.nextLine());
 			}catch(NumberFormatException e) {
@@ -1022,8 +1012,12 @@ public class Funcionalidad1 {
 				continue;
 			}
 			
+			if (opcionMenu == ticketsDisponiblesParaUsar.size() + 1) {
+				ingresarASistemaDeProyecciones(clienteProceso);
+			}
+			
 			try {
-				ticketParaUsar = clienteProceso.getTickets().get(opcionMenu - 1);
+				ticketParaUsar = ticketsDisponiblesParaUsar.get(opcionMenu - 1);
 			}catch(IndexOutOfBoundsException e) {
 				System.out.println("Error, por favor elige uno de los tickets disponibles");
 				continue;
@@ -1086,6 +1080,44 @@ public class Funcionalidad1 {
 		
 		return resultado;
 	}
+	
+	/**
+	 * Description: Este método se encarga mostrar en pantalla los procesos de la funcionalidad 1, para que el cliente elija uno de ellos, 
+	 * una vez termine su interacción, el cliente regresará a este mismo menú, en caso de que quiera regresar al menú principal termina el
+	 * ciclo y se ejecuta el menú inicial.
+	 * */
+	static void ingresarASistemaDeProyecciones(Cliente clienteProceso) {
+		
+		int opcionMenu;
+		boolean opcionValida = false;
+		do {
+			opcionMenu = 0;
+			try {
+				System.out.println("\nBienvenido al sistema de proyecciones de películas\n"
+						+ "Estos son nuestros servicios disponibles:\n"
+						+ "1. Reservar ticket de película\n"
+						+ "2. Ingresar a sala de cine\n"
+						+ "3. Ingresar a sala de espera\n"
+						+ "4. Volver al menú principal\n");
+				System.out.print("Elige una de las opciones disponibles para continuar con el proceso: ");
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debes ingresar un único dato númerico entre los disponibilidad");
+				continue;
+			}
+			
+			switch(opcionMenu) {
+				case 1: reservarTicket(clienteProceso); break;
+				case 2: ingresarSalaCine(clienteProceso); break;
+				case 3: ingresarSalaDeEspera(clienteProceso); break;
+				case 4: System.out.println("\nRegresando al menú principal..."); opcionValida = true; break;
+				default: System.out.println("Digite una única opción entre las disponibles"); 
+			}
+		}while(!opcionValida);
+		
+		Administrador.inicio(clienteProceso);
+		
+	}
 }
 
 //0. Cambiar el map de Horarios por un Array (Obligatorio) (Hecho, hacer tests)
@@ -1103,8 +1135,12 @@ public class Funcionalidad1 {
 
 //0.10. Cambiar Strings por String Builder (Hecho)
 //0.11. Cambiar for eliminador por iterator (Hecho)
-//0.12. Unificar Menú de mis 3 elementos del menú principal en 1 solo 
-//0.13. Mejorar abstracción de métodos, revisar todo el código hecho y mejorar documentación (Hecho)
+//0.12. Mejorar abstracción de métodos, revisar todo el código hecho y mejorar documentación (Hecho)
+
+//0.13. Unificar Menú de mis 3 elementos del menú principal en 1 solo (Hecho)
+//0.14. Resolver error de cliente puede entrar a salas de cine y/o a sala de espera con un ticket que no funciona para la sucursal una vez que se cambie
+// una película de sucursal o el se cambie de sucursal (Hecho).
+//0.15. Refactorizar todo el código de la funcionalidad 1 (Usar el mismo estándar en todos los casos, doble booelan para hacer verificaciones).
 
 //1. Método de avanzar la hora automáticamente (Investigar el uso de threads y Hablar con David)
 //2. Incluir el código de la clase Funcionaliadad 1 en la clase Administrador y Estudiar serialización

@@ -24,13 +24,6 @@ public class SalaCine {
 		ubicacionSede.getSalasDeCine().add(this);
 		this.asientos = this.crearAsientosSalaDeCine();
 	}
-	
-	public SalaCine(int numeroSala, String tipoDeSala, Asiento[][] asientos, Pelicula peliculaEnPresentacion, ArrayList<Ticket> ticketsCreados) {
-		this.numeroSala = numeroSala;
-		this.tipoDeSala = tipoDeSala;
-		this.asientos = asientos;
-		this.peliculaEnPresentacion = peliculaEnPresentacion;
-	}
 
 	//Methods
 	/**
@@ -61,7 +54,7 @@ public class SalaCine {
 	    resultado.append("    ");
 	    
 	    // Agregar números de columnas
-	    for (int i = 0; i < this.asientos[i].length; i++) {
+	    for (int i = 0; i < this.asientos[0].length; i++) {
 	        resultado.append(String.format("%-4d", i + 1));
 	    }
 	    resultado.append("\n");

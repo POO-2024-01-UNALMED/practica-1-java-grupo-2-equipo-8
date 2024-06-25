@@ -306,20 +306,6 @@ public class SucursalCine {
 		SucursalCine.getSucursalesCine().add(this);
 	}
 	
-	public SucursalCine(String lugar, LocalDateTime fechaActual, ArrayList<SalaCine> salasDeCine,
-			ArrayList<Producto> inventarioCine, ArrayList<Pelicula> peliculasDisponibles,
-			ArrayList<Ticket> ticketsCreados, ArrayList<Bono> bonosCreados) {
-		super();
-		this.lugar = lugar;
-		SucursalCine.fechaActual = fechaActual;
-		this.salasDeCine = salasDeCine;
-		this.setInventarioCine(inventarioCine);
-		this.cartelera = peliculasDisponibles;
-		this.ticketsCreados = ticketsCreados;
-		this.bonosCreados = bonosCreados;
-		SucursalCine.getSucursalesCine().add(this);
-	}
-	
 	//Getters and Setters
 	public String getLugar() {
 		return lugar;
@@ -389,7 +375,4 @@ public class SucursalCine {
 		this.servicios = servicios;
 	}
 	
-	
-	
-
 }
