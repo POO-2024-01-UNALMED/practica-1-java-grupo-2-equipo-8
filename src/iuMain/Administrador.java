@@ -275,34 +275,30 @@ public class Administrador {
 			
 			opcion = 0;
 			System.out.println("\n¿Qué operacion desea realizar?");
-			System.out.println("1. Reservar ticket de pelicula");
-			System.out.println("2. Ingresar a la sala de cine");
-			System.out.println("3. Ingrear a los servicios de compra"); 
-			System.out.println("4. Ingresar a la zona de juegos");
-			System.out.println("5. Adquirir o actualizar membresia");
-			System.out.println("6. Hacer calificacion");
-			System.out.println("7. Ingresar a sala de espera");
-			System.out.println("8. Cambiar de sucursal");
-			System.out.println("9. Salir");
+			System.out.println("1. Ingresar a sistema de proyecciones de películas");
+			System.out.println("2. Ingrear a los servicios de compra"); 
+			System.out.println("3. Ingresar a la zona de juegos");
+			System.out.println("4. Adquirir o actualizar membresia");
+			System.out.println("5. Hacer calificacion");
+			System.out.println("6. Cambiar de sucursal");
+			System.out.println("7. Salir");
 			opcion = Integer.parseInt(sc.nextLine());
 			
 		}catch(NumberFormatException e) {
 			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
 		}
 		
-	}while(!(opcion > 0 & opcion <= 10));
+	}while(!(opcion > 0 & opcion <= 7));
 	
 	
 	switch (opcion) {
-		case 1: Funcionalidad1.reservarTicket(clienteProceso);inicio(clienteProceso); break;
-		case 2: Funcionalidad1.ingresarSalaCineDesdeMenu(clienteProceso); inicio(clienteProceso); break;
-		case 3: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
-		case 4: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
-		//case 5: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
-		case 6: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
-		case 7: Funcionalidad1.salaDeEspera(clienteProceso); inicio(clienteProceso); break;
-		case 8: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
-		case 9: salirDelSistema(); break;
+		case 1: Funcionalidad1.ingresarASistemaDeProyecciones(clienteProceso); break;
+		case 2: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
+		case 3: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
+		//case 4: Funcionalidad5.adquirirMembresia(clienteProceso, sucursalCineProceso); inicio(clienteProceso, sucursalCineProceso); break;
+		case 5: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
+		case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
+		case 7: salirDelSistema(); break;
 		default: System.out.println("Opción invalida"); inicio(clienteProceso);
 	  }
 	

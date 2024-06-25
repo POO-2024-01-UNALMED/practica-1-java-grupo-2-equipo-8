@@ -69,24 +69,6 @@ public class Cliente {
 	//Methods
 	
 	/**
-	 * Description : Este método genera un String que se imprimirá en pantalla, con el fin de que el usuario
-	 * pueda visualizar la información relevante a su perfil.
-	 * @param documento : Solicita un Long que corresponde al documento del usuario.
-	 * @return String : Retorna la información del cliente, obtenida por el toString() de este.
-	 * */
-	public static String obtenerClientePorCedula(Long documento) {
-		boolean verificacion = false;
-		for (Cliente cliente : clientes) {
-			verificacion = (cliente.getDocumento() == documento);
-			if (verificacion) {
-				return cliente.toString();
-			}
-		}
-		return "El usuario no ha sido encontrado";
-	}
-	
-	
-	/**
 	*Description: se recibe un parametro long con el numero de cedula de el cliente y se busca en el array
 	*de clientes si hay alguno que tiene ese mismo documento asociado, en caso de que si se retorna ese cliente
 	*del array y de lo contrario se retorna nulo.
@@ -103,9 +85,6 @@ public class Cliente {
 		}
 		return cliente1;
 	}
-	
-	public void editarCuenta() {}
-	public void modificarMetodosDePago() {}
 	
 	/**
 	*Description: se verifica si el usuario tiene asociada una cuenta de tarjeta cinemar 
@@ -141,18 +120,19 @@ public class Cliente {
 	}
 	
 	/**
-	 * Description: Este método se encarga de mostrar al cliente las salas de cine a las que puede ingresar
-	 * examinando su array de tickets e imprimiendo en pantalla información relevante de estos para facilitar
-	 * la elección de la sala de cine a ingresar.
+	 * Description: Este método se encarga de mostrar al cliente los tickets que el cliente puede usar
+	 * imprimiendo en pantalla información relevante de estos para facilitar
+	 * la elección de la sala de cine a ingresar o el ticket a usar para usar la sala de espera.
+	 * @param ticketsParaUsar : Este método retorna una lista de los tickets (De tipo ArrayList<Ticket>) que el cliente puede usar.
 	 * @return: <b>String</b> : Este método se encarga de retornar un string con el nombre de la película
 	 * el número de la sala de cine y la fecha de la película de cada uno de los tickets asociados del cliente.
 	 * */
-	public String mostrarTicketsParaUsar() {
+	public String mostrarTicketsParaUsar(ArrayList<Ticket> ticketsParaUsar) {
 		
 		StringBuilder tickets = new StringBuilder("\n");
 		int i = 1;
 		
-		for (Ticket ticket : this.tickets) {
+		for (Ticket ticket : ticketsParaUsar) {
 			
 			tickets.append("\n" + i + ". Película: " + ticket.getPelicula().getNombre() 
 			+ ", Número sala de Cine: " + ticket.getSalaDeCine().getNumeroSala() 
@@ -189,23 +169,21 @@ public class Cliente {
 	}
 	
 	/**
-	 * Description : Este método se encarga de verificar si el cliente posee algún ticket correspondiente a alguna de las películas en cartelera
-	 * de la sede que se pasa como parámetro.
+	 * Description : Este método se encarga de retornar los tickets correspondientes a la sucursal de cine en la que se encuentra el cliente.
 	 * @param sucursalCineProceso : Este método recibe como parámetro la sede (De tipo SucursalCine) desde la cuál el cliente esta accediendo a nuestros
-	 * servicios.
-	 * @return <b>boolean</b> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
+	 * servicios, con el fin de hacer el filtrado.
+	 * @return ArrayList<Ticket> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
 	 * o a la sala de espera si este posee algún ticket de esta sucursal.
 	 * */
-	public boolean disponibilidadTicketParaSede(SucursalCine sucursalCineProceso) {
+	public ArrayList<Ticket> filtrarTicketsParaSede() {
 		
+		ArrayList<Ticket> ticketsParaUsar = new ArrayList<>();
 		for (Ticket ticket : this.tickets) {
-			for (Pelicula peliculaCarteleraSede : sucursalCineProceso.getCartelera()) {
-				if(ticket.getPelicula().equals(peliculaCarteleraSede)) {
-					return true;
-				}
+			if(ticket.getSucursalCompra().equals(this.getCineActual())) {
+				ticketsParaUsar.add(ticket);
 			}
 		}
-		return false;
+		return ticketsParaUsar;
 	}
 	
 	/**
@@ -264,6 +242,7 @@ public class Cliente {
 		return generoMasVisto;
 	}
 	
+	//No se puede usar System.out.println(), Cambiar lógica del método.
 	public void mostrarCodigosDescuento() {
 		
 		for (int i = 0; i < this.codigosDescuento.size(); i++) {
@@ -291,8 +270,7 @@ public class Cliente {
 		return peliculas;
 		
 		}
-			
-		
+	
 	
 	//Getters y setters
 	public String getNombre() {
