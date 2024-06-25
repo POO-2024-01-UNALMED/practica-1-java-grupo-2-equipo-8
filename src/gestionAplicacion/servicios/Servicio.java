@@ -50,7 +50,7 @@ public abstract class Servicio implements IBuyable{
 				if(orden.get(i).getGenero().equalsIgnoreCase(cine.getTicketsCreados().get(j).getPelicula().getGenero()) && cliente.equals(cine.getTicketsCreados().get(j).getDueno())){
 					LocalDate fecha = LocalDate.now();
 					if (fecha.equals(cine.getTicketsCreados().get(j).getHorario().toLocalDate()) && cine.getTicketsCreados().get(j).isDescuento()) {
-						cine.getTicketsCreados().get(i).setDescuento(false);
+						cine.getTicketsCreados().get(j).setDescuento(false);
 						return orden.get(i);
 					}
 				}

@@ -41,8 +41,14 @@ public class Administrador {
 	static Producto producto4S = new Producto("Llavero","Katana","souvenir",30000,200,"Acción");
 	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",30000,200,"Comedia");
 	
+	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
+	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
+	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
+	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
+	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
+	
 	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-	static Bono bono1 = new Bono("1234",productoBono,"comida");
+	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
 	
 	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
@@ -53,12 +59,6 @@ public class Administrador {
 	//static TarjetaCinemar cuenta1 = new TarjetaCinemar();
 	//static TarjetaCinemar cuenta2 = new TarjetaCinemar();
 	//static TarjetaCinemar cuenta3 = new TarjetaCinemar();
-	
-	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
-	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
-	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
-	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
-	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
 	
 	static SalaCine salaDeCine1_1 = new SalaCine(1, "2D", sucursalCine1);
 	static SalaCine salaDeCine1_2 = new SalaCine(2, "3D", sucursalCine1);

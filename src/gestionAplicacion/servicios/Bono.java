@@ -17,7 +17,14 @@ public class Bono {
 		this.codigo = code;
 		this.producto = producto;
 		this.tipoServicio = tipoServicio;
-		cliente = null;
+		bonosCreados.add(this);
+	}
+	public Bono(String code, Producto producto, String tipoServicio, Cliente cliente) {
+		this.codigo = code;
+		this.producto = producto;
+		this.tipoServicio = tipoServicio;
+		this.cliente = cliente;
+		cliente.getBonos().add(this);
 		bonosCreados.add(this);
 	}
 	

@@ -16,7 +16,6 @@ public class Cliente {
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
 	private ArrayList<Pelicula> peliculasDisponiblesParaCalificar = new ArrayList<>();
 	private ArrayList<Pelicula> historialDePedidos = new ArrayList<>();
-	private ArrayList<Producto> pedidos = new ArrayList<>();
 	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
@@ -432,13 +431,6 @@ public class Cliente {
 		this.historialDePedidos = historialDePedidos;
 	}
 	
-	public ArrayList<Producto> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(ArrayList<Producto> pedidos) {
-		this.pedidos = pedidos;
-	}
 	
 	public ArrayList<Pelicula> getPeliculasDisponiblesParaCalificar() {
 		return peliculasDisponiblesParaCalificar;
@@ -447,6 +439,5 @@ public class Cliente {
 	public void setPeliculasParaCalificiar(ArrayList<Pelicula> peliculasDisponiblesParaCalificiar) {
 		this.peliculasDisponiblesParaCalificar = peliculasDisponiblesParaCalificiar;
 	}
-
 	
 }
