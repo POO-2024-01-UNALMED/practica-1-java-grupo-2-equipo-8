@@ -55,7 +55,8 @@ public class ServicioComida extends Servicio {
 		
 		MetodoPago.asignarMetodosDePago(cliente);
 		
-		orden = null;
+		ArrayList<Producto> orden1 = new ArrayList<>();
+		orden = orden1;
 		valorPedido = 0.0;
 		
 	}
@@ -65,10 +66,10 @@ public class ServicioComida extends Servicio {
 		String factura;
 		factura="                          CINEMAR \n"+
 				"==================== Factura de Comida ====================\n"+
-				"Nombre dueño : " + this.getCliente().getNombre() + "\n" +
-				"Fecha de compra: "+ LocalDate.now() + "\n" +
+				" Nombre dueño : " + this.getCliente().getNombre() + "\n" +
+				" Fecha de compra: "+ LocalDate.now() + "\n" +
 				this.mostrarOrden()+ "\n" +
-				"Total a pagar aplicando descuentos : $" + valorPedido+ "\n";
+				" Total a pagar aplicando descuentos : $" + valorPedido+ "\n";
 		this.getCliente().getFacturas().add(factura);
 
 	}

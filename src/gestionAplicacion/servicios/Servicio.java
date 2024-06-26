@@ -30,10 +30,11 @@ public abstract class Servicio implements IBuyable{
 	
 	public String  mostrarBonos() {
 		int n = 0;
-		String bono = " ====== Tienes los siguientes bonos disponibles ======\n";
+		String bono = "\n ====== Tienes los siguientes bonos disponibles ======\n"+
+						"\n0. No reclamar ningun bono.";
 		for(int i = 0;i < bonosCliente.size();i++) {
-				n = n +i;
-				bono = bono + "\n" + n + ". " + bonosCliente.get(i).getProducto().getNombre();
+				n = i + 1;
+				bono = bono + "\n" + n + ". " + bonosCliente.get(i).getProducto().getNombre() + " " + bonosCliente.get(i).getProducto().getTamaño();
 		}
 		return bono;
 	}
@@ -115,6 +116,8 @@ public abstract class Servicio implements IBuyable{
 				for (int j =0; j < Bono.getBonosCreados().get(i).getCliente().getBonos().size(); j++) {
 					if (Bono.getBonosCreados().get(i).getCliente().getBonos().get(j).getCodigo().equalsIgnoreCase(codigo)) {
 						Bono.getBonosCreados().get(i).getCliente().getBonos().remove(j);
+						ArrayList<Bono> bonosCliente1 = new ArrayList<>();
+						bonosCliente = bonosCliente1;
 					}
 				}
 				Bono.getBonosCreados().remove(i);

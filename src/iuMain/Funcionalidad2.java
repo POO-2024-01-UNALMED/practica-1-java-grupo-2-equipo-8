@@ -63,6 +63,9 @@ public class Funcionalidad2 {
 		do {
 			try {
 				System.out.print("\n"+serviciProceso.mostrarInventario());
+				if(serviciProceso.getOrden().size()>0) {
+					System.out.print("\n"+(serviciProceso.getInventario().size()+1)+". Eliminar un producto de la orden");
+				}
 				if (serviciProceso.mostrarInventario() == "\nNO HAY PRODUCTOS DISPONIBLES :(\n") {
 					Administrador.inicio(clienteProceso);
 				}
@@ -71,31 +74,103 @@ public class Funcionalidad2 {
 				if (eleccion == 0) {
 					break;
 				}
-				if (eleccion > serviciProceso.getInventario().size() || eleccion < 1) {
+				
+				if (eleccion > serviciProceso.getInventario().size()+1 || eleccion < 1) {
 					System.out.print("ERROR EN LA SELECCION DEL PRODUCTO");
 					continue;
 				}
-				eleccion = eleccion - 1;
-				System.out.print("\nIngrese el numero de productos que deseas llevar: ");
-				cantidad = Integer.parseInt(sc.nextLine());
+				
+				if (eleccion < serviciProceso.getInventario().size()+1 ) {
+					eleccion = eleccion - 1;
+					System.out.print("\nIngrese el numero de productos que deseas llevar: ");
+					cantidad = Integer.parseInt(sc.nextLine());
+				}
+				
+				if (eleccion == serviciProceso.getInventario().size()+1) {
+					
+					int eleccion2;
+					verificacion = true;
+					do {
+						try {
+							System.out.print("\n"+serviciProceso.mostrarOrden());
+							System.out.print("\nSeleccione el producto que quieres eliminar: ");
+							eleccion2 = Integer.parseInt(sc.nextLine());
+							System.out.print("\n\nSeleccione la cantidad de productos que deasea quitar de su orden: ");
+							cantidad = Integer.parseInt(sc.nextLine());
+						}catch(NumberFormatException e) {
+							System.out.println("\nError, debes ingresar un dato numérico\n");
+							continue;
+						}
+						if (eleccion2 > serviciProceso.getOrden().size()+1 ) {
+							System.out.print("ERROR EN LA SELECCION DEL PRODUCTO");
+							continue;
+						}
+						else if(cantidad > serviciProceso.getOrden().get(eleccion2-1).getCantidad()) {
+							System.out.print("ERROR EN LA CANTIDAD DE PRODUCTOS QUE DESEA ELIMINAR");
+						}
+						else if (eleccion2 == 0) {
+							verificacion = false;
+						}
+						else {
+							if (cantidad == serviciProceso.getOrden().get(eleccion2-1).getCantidad()) {
+								serviciProceso.getOrden().remove(eleccion2-1);
+							}
+							else {
+								double total;
+								total = serviciProceso.getOrden().get(eleccion2-1).getPrecio() / serviciProceso.getOrden().get(eleccion2-1).getCantidad();
+								serviciProceso.getOrden().get(eleccion2-1).setCantidad(serviciProceso.getOrden().get(eleccion2-1).getCantidad() - cantidad);
+								serviciProceso.getOrden().get(eleccion2-1).setPrecio(total * serviciProceso.getOrden().get(eleccion2-1).getCantidad());
+								verificacion = false;
+							}
+						}
+						
+					}while(verificacion);
+				}
 			}catch(NumberFormatException e) {
 				System.out.println("\nError, debes ingresar un dato numérico\n");
 				continue;
 			}
 			
+			verificacion = true;
 			// Se verifica si hay suficientes productos segun la cantidad que pidio el cliente
 			
-			Producto producto = serviciProceso.hacerPedido(eleccion, cantidad);
-			if(producto == null) {
-				System.out.print("\nNo hay suficientes productos de: "+serviciProceso.getInventario().get(eleccion).getNombre()+
-						serviciProceso.getInventario().get(eleccion).getTamaño()+" (╥_╥)(╥_╥)(╥_╥) \n\nEn el momento solo hay disponible: "+
-						serviciProceso.getInventario().get(eleccion).getCantidad());
+			if (eleccion < serviciProceso.getInventario().size() ) {
+				
+				Producto producto = serviciProceso.hacerPedido(eleccion, cantidad);
+				if(producto == null) {
+					System.out.print("\nNo hay suficientes productos de: "+serviciProceso.getInventario().get(eleccion).getNombre()+
+							serviciProceso.getInventario().get(eleccion).getTamaño()+" (╥_╥)(╥_╥)(╥_╥) \n\nEn el momento solo hay disponible: "+
+							serviciProceso.getInventario().get(eleccion).getCantidad());
+				}
+				else {
+					System.out.print("  --------------------------------------------------- \n");
+					System.out.print(" | 🎉🎉🎉🎉El pedido fue realizado con exito🎉🎉🎉🎉 |\n");
+					System.out.print("  ---------------------------------------------------  \n");
+					serviciProceso.agregarOrden(producto);
+					System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
+					System.out.print(serviciProceso.mostrarOrden());
+					do {
+						try {
+							System.out.print("\n\n"+"¿Quieres hacer otro pedido? \n1.SI \n2.NO"+
+						"\nSeleccione una opcion: ");	
+							eleccion = Integer.parseInt(sc.nextLine());
+						}catch(NumberFormatException e) {
+							System.out.println("\nError, debes ingresar un dato numérico\n");
+							continue;
+						}
+						verificacion2 = false;
+						if(eleccion == 2){
+							verificacion = false;
+						}
+						
+					}while(verificacion2);
+				}
 			}
-			else {
+			
+			if (eleccion == serviciProceso.getInventario().size()+1) {
 				System.out.print("  --------------------------------------------------- \n");
-				System.out.print(" | 🎉🎉🎉🎉El pedido fue realizado con exito🎉🎉🎉🎉 |\n");
+				System.out.print(" |  🎉🎉🎉🎉 El pedido eliminado con exito 🎉🎉🎉🎉  |\n");
 				System.out.print("  ---------------------------------------------------  \n");
-				serviciProceso.agregarOrden(producto);
 				System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
 				System.out.print(serviciProceso.mostrarOrden());
 				do {
@@ -141,29 +216,97 @@ public class Funcionalidad2 {
 		/////////////////////////////////////////////////////////////////////////////////
 		
 		//Validacion de los bonos
+		boolean verificacionR = true;
 		verificacion = true;
-		serviciProceso.actualizarBonos();
-		if (0 < serviciProceso.getBonosCliente().size()) {
-			do {
-				try {
-					System.out.println(serviciProceso.mostrarBonos());
-					System.out.print("Seleccione una opcion");
-					eleccion = Integer.parseInt(sc.nextLine());
-					if (eleccion > serviciProceso.getBonosCliente().size()) {
-						System.out.println("\nError, debes escoger una opcion correcta\n");
-						continue;
-					}
-				}catch(NumberFormatException e) {
-				System.out.println("\nError, debes ingresar un dato numérico\n");
-				continue;
+		do {
+			serviciProceso.actualizarBonos();
+			if (0 < serviciProceso.getBonosCliente().size()) {
+				do {
+					try {
+						System.out.println(serviciProceso.mostrarBonos());
+						System.out.print("Seleccione una opcion: ");
+						eleccion = Integer.parseInt(sc.nextLine());
+						if (eleccion > serviciProceso.getBonosCliente().size()) {
+							System.out.println("\nError, debes escoger una opcion correcta\n");
+							continue;
+						}
+					}catch(NumberFormatException e) {
+					System.out.println("\nError, debes ingresar un dato numérico\n");
+					continue;
+				}
+					verificacion = false;
+				}while(verificacion);
+				
+				if (eleccion == 0) {
+					break;
+				}
+				Producto productoBono1 = serviciProceso.validarBono(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo(),clienteProceso.getCineActual().getServicios().get(servicio));
+				
+				if(productoBono1.comprobarBonoEnOrden(serviciProceso)) {
+					verificacion = true;
+					do {
+						try {
+							System.out.print("\n"+"¿Que deseas hacer con el producto?\n1.Desea agregarlo al pedido"+
+									"\n2.Desea descontarlo del pedido\nSelecciona una opcion:");
+							eleccion = Integer.parseInt(sc.nextLine());
+						}catch(NumberFormatException e) {
+							System.out.println("\nError, debes ingresar un dato numérico\n");
+							continue;
+						}
+
+						if (eleccion == 1) {
+							productoBono1.setPrecio(0);
+							productoBono1.setNombre("Regalo de Bono "+productoBono1.getNombre());
+							serviciProceso.getOrden().add(productoBono1);
+							System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
+							System.out.print(serviciProceso.mostrarOrden());
+							verificacion = false;
+						}
+						else if (eleccion == 2){
+							serviciProceso.descontarProducto(productoBono1);
+							System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
+							System.out.print(serviciProceso.mostrarOrden());
+							verificacion = false;
+						}
+						else {
+							System.out.print("\n\\nSELECCIONE UNA OPCION VALIDA\\n\n");
+						}
+					}while(verificacion);
+				}
+				else if (productoBono1 != null){
+					productoBono1.setPrecio(0);
+					productoBono1.setNombre("Regalo de bono "+productoBono1.getNombre());
+					serviciProceso.getOrden().add(productoBono1);
+					System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
+					System.out.println(serviciProceso.mostrarOrden());
+				}
+				if ( 0 < serviciProceso.getBonosCliente().size()-1) {
+					do {
+						try {
+							
+							System.out.print("\n\n¿Deseas reclamar otro Bono?\n1.SI\n2.NO\nSelecciona una opcion:");
+							eleccion = Integer.parseInt(sc.nextLine());
+						}catch(NumberFormatException e) {
+							System.out.println("\nError, debes ingresar un dato numérico\n");
+							continue;
+						}
+						if (eleccion == 2) {
+							verificacionR = false;
+						}
+						else if (eleccion != 1 && eleccion != 2) {
+							System.out.print("\nSELECCIONE UNA OPCION VALIDA\n");
+						}
+					}while(eleccion != 1 && eleccion != 2);
+				}
+				else {
+					verificacionR = false;
+				}
 			}
-				verificacion = false;
-			}while(verificacion);
+			else {
+				verificacionR = false;
+			}
 			
-			
-			
-		}
-		
+		}while(verificacionR);
 		
 		verificacion = true;
 		do {
@@ -182,7 +325,6 @@ public class Funcionalidad2 {
 			verificacion = false;
 		}while(verificacion);
 		
-		verificacion = true;
 		String codigoBono;
 		if(eleccion == 1) {
 			Producto productoBono = new Producto();
@@ -287,9 +429,10 @@ public class Funcionalidad2 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
 		serviciProceso.setValorPedido(serviciProceso.calcularTotal());
 		double valor = 0;
+		double valor1 = 0;
+		double descuento = 0;
 		verificacion = true;
-		boolean descuento = true;
-		boolean descuento2 = true;
+		boolean condicion = true;
 		System.out.print("\n------EL PEDDIDO ESTA LISTO SOLO FALTA PAGAR: $"+serviciProceso.getValorPedido()+" ------\n");
 		do {
 			try {
@@ -305,15 +448,14 @@ public class Funcionalidad2 {
 			}
 			
 			MetodoPago metodoDePago = MetodoPago.usarMetodopago(clienteProceso, eleccion);
-			if(descuento){
-				System.out.println("\n----------------------------------------------------------------------------------");
-				System.out.println("\n          Gracias por utilizar: "+ metodoDePago.getNombre() +" de primera opcion");
-				valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
-				System.out.println("          Ahora el valor a pagar es de: $"+valor+"\n");
-				descuento = false;
-			}
-			if (descuento2) {
-				descuento2 = false;
+			System.out.println("\n----------------------------------------------------------------------------------");
+			System.out.println("\n         Gracias por utilizar: "+ metodoDePago.getNombre() +" para hacer tu pago");
+			valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+			System.out.println("          Ahora el valor a pagar es de: $"+valor+"\n");
+			
+			
+			if (condicion) {
+				condicion = false;
 				valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
 				if (serviciProceso.descuentarPorCompra(metodoDePago)) {
 					System.out.print("        ------------------------------------------------------------------- \n");
@@ -322,12 +464,15 @@ public class Funcionalidad2 {
 					valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
 					System.out.println("       Ahora tu cuenta quedo en: $" + valor);
 				}
+				valor1 = serviciProceso.getValorPedido();
 			}
-			
+			descuento = descuento + (serviciProceso.getValorPedido() * metodoDePago.getDescuentoAsociado());
 			serviciProceso.setValorPedido(metodoDePago.realizarPago(serviciProceso.getValorPedido(),clienteProceso));
 			
+			
 			if (serviciProceso.getValorPedido() == 0) {
-				serviciProceso.setValorPedido(valor);
+				valor1 = valor1 - descuento;
+				serviciProceso.setValorPedido(valor1);
 				System.out.println("LA CUOTA FUE CUBIARTA EN SU TOTALIDAD 🎉🎉🎉🎉");
 				System.out.println("\nEstamos generando su factura, por favor espere...\n");
 				try {
