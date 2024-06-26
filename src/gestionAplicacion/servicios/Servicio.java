@@ -138,7 +138,8 @@ public abstract class Servicio implements IBuyable{
 		String pedido = "";
 		double total = 0;
 		for(int i =0;i<orden.size();i++) {
-			pedido = pedido + "\n" + " -- " +orden.get(i).getCantidad()+" " + orden.get(i).getNombre() + " " + orden.get(i).getTamaño() +
+			int n = i + 1;
+			pedido = pedido + "\n" + n +" -- " +orden.get(i).getCantidad()+" " + orden.get(i).getNombre() + " " + orden.get(i).getTamaño() +
 					" : $" + orden.get(i).getPrecio();
 			total = total + orden.get(i).getPrecio();
 		}

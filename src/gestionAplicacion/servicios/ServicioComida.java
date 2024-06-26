@@ -69,7 +69,8 @@ public class ServicioComida extends Servicio {
 				" Nombre dueño : " + this.getCliente().getNombre() + "\n" +
 				" Fecha de compra: "+ LocalDate.now() + "\n" +
 				this.mostrarOrden()+ "\n" +
-				" Total a pagar aplicando descuentos : $" + valorPedido+ "\n";
+				" Total a pagar aplicando descuentos : $" + valorPedido+ "\n"+
+				"===========================================================\n";
 		this.getCliente().getFacturas().add(factura);
 
 	}

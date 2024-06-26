@@ -42,7 +42,11 @@ public class ServicioSouvenirs extends Servicio{
 	@Override
 	public void procesarPagoRealizado(Cliente cliente) {
 		
+		MetodoPago.asignarMetodosDePago(cliente);
 		
+		ArrayList<Producto> orden1 = new ArrayList<>();
+		orden = orden1;
+		valorPedido = 0.0;
 	}
 
 	@Override
@@ -53,8 +57,10 @@ public class ServicioSouvenirs extends Servicio{
 				" Nombre dueño : " + this.getCliente().getNombre() + "\n" +
 				" Fecha de compra: "+ LocalDate.now() + "\n" +
 				this.mostrarOrden()+ "\n" +
-				" Total a pagar aplicando descuentos : $" + valorPedido+ "\n";
+				" Total a pagar aplicando descuentos : $" + valorPedido+ "\n"+
+				"=============================================================\n";
 		this.getCliente().getFacturas().add(factura);
+
 		
 	}
 	

@@ -114,6 +114,7 @@ public class Funcionalidad2 {
 						else {
 							if (cantidad == serviciProceso.getOrden().get(eleccion2-1).getCantidad()) {
 								serviciProceso.getOrden().remove(eleccion2-1);
+								verificacion = false;
 							}
 							else {
 								double total;
@@ -482,6 +483,12 @@ public class Funcionalidad2 {
 				}
 				serviciProceso.factura(clienteProceso);
 				System.out.print(clienteProceso.getFacturas().get(clienteProceso.getFacturas().size()-1));
+				System.out.print("\n\n          Redireccionando al menu principal\n\n");
+				try {
+					Thread.sleep(3000);
+				}catch(InterruptedException e) {
+					e.printStackTrace();
+				}
 				serviciProceso.procesarPagoRealizado(clienteProceso);
 				verificacion = false;
 			}
