@@ -39,6 +39,8 @@ public class Pelicula{
 		this.tipoDeFormato = tipoDeFormato;
 		sucursalCine.getCartelera().add(this);
 		this.crearPelicula(sucursalCine);
+		this.valoracion = 4.0;
+		this.totalEncuestasDeValoracionRealizadas = 25;
 	}
 	
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
@@ -50,6 +52,8 @@ public class Pelicula{
 		this.duracion = duracion;
 		this.clasificacion = clasificacion;
 		this.tipoDeFormato = tipoDeFormato;
+		this.valoracion = 4.0;
+		this.totalEncuestasDeValoracionRealizadas = 25;
 	}
 
 	//Methods

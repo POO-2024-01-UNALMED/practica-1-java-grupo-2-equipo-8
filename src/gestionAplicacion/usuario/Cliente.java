@@ -15,7 +15,7 @@ public class Cliente {
 	private String nombre;
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
 	private ArrayList<Pelicula> peliculasDisponiblesParaCalificar = new ArrayList<>();
-	private ArrayList<Pelicula> historialDePedidos = new ArrayList<>();
+	private ArrayList<Producto> historialDePedidos = new ArrayList<>();
 	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<String> facturas = new ArrayList<>();
 	private int edad;
@@ -45,7 +45,7 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 	}
 	
-	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Pelicula> historialDePedidos, ArrayList<Ticket> ticket, ArrayList<String> facturas,
+	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Producto> historialDePedidos, ArrayList<Ticket> ticket, ArrayList<String> facturas,
 			int edad, Membresia membresia, long documento, Duration duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<String> codigosDescuento) {
@@ -257,7 +257,7 @@ public class Cliente {
 	public String  mostrarHistorialDePelicula() {
 		String peliculas = null;
 		int i = 1;
-		for ( Pelicula pelicula : historialDePeliculas ) {
+		for ( Pelicula pelicula : peliculasDisponiblesParaCalificar ) {
 			
 			if (peliculas == null) {
 				peliculas =i + "." + pelicula.getNombre() + " " + pelicula.getTipoDeFormato();  
@@ -271,6 +271,22 @@ public class Cliente {
 		
 		}
 	
+	public String  mostrarHistorialDePedidos() {
+		String pedidos = null;
+		int i = 1;
+		for ( Producto producto : historialDePedidos  ) {
+			
+			if (pedidos == null) {
+				pedidos =i + "." + producto.getNombre() + " " + producto.getTamaño();  
+						
+			}else {
+				pedidos = pedidos+" \n"+ i + "." + producto.getNombre()+ " " + producto.getTamaño();
+			}
+			i++;
+		}
+		return pedidos;
+		
+		}
 	
 	//Getters y setters
 	public String getNombre() {
@@ -401,11 +417,11 @@ public class Cliente {
 		this.bonos = bonos;
 	}
 
-	public ArrayList<Pelicula> getHistorialDePedidos() {
+	public ArrayList<Producto> getHistorialDePedidos() {
 		return historialDePedidos;
 	}
 
-	public void setHistorialDePedidos(ArrayList<Pelicula> historialDePedidos) {
+	public void setHistorialDePedidos(ArrayList<Producto> historialDePedidos) {
 		this.historialDePedidos = historialDePedidos;
 	}
 	

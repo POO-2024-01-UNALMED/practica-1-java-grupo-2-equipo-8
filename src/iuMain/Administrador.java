@@ -197,9 +197,11 @@ public class Administrador {
 //			cliente1.getHistorialDePeliculas().add(pelicula1_2);
 //			cliente1.getHistorialDePeliculas().add(pelicula3_1);
 //			cliente1.getHistorialDePeliculas().add(pelicula3_4);
-			cliente5.getHistorialDePeliculas().add(pelicula3_1);
-			cliente5.getHistorialDePeliculas().add(pelicula3_11);
-			cliente5.getHistorialDePeliculas().add(pelicula1_2);
+			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_1);
+			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_11);
+			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
+			cliente5.getHistorialDePedidos().add(producto1);
+			cliente5.getHistorialDePedidos().add(producto2);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
 			cliente4.setCuenta(tarjeta1);
