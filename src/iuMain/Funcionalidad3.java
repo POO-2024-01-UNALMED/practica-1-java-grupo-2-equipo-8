@@ -14,11 +14,11 @@ public class Funcionalidad3 {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("    Bienvenido a la calificacion de productos     ");
+		System.out.println("********Bienvenido a la calificacion de productos*********");
 		 
 		do {
 			try {
-				System.out.print("1.Calificar Comida.\n2.Calificar Pelicula\n3.Volver al menu.\nSeleccione una opcion: ");
+				System.out.print("\n1.Calificar Comida.\n2.Calificar Pelicula\n3.Volver al menu.\nSeleccione una opcion: ");
 				eleccion = Integer.parseInt(sc.nextLine());
 			}catch(NumberFormatException e) {
 				System.out.println("\nError, debes ingresar un dato numérico\n");
@@ -34,49 +34,83 @@ public class Funcionalidad3 {
 		}while(verificar);
 		
 		if (eleccion==1) {
-			System.out.println("      Bienvenido al apartado de calificacion de comida     ");
-		}  
-		if (eleccion==2) {
-			System.out.println("      Bienvenido al apartado de calificacion de peliculas   ");
-			if(clienteProceso.getHistorialDePeliculas().size() > 0) {
-				System.out.println("----------Estas son las peliculas que has visto--------" + "\n" + clienteProceso.mostrarHistorialDePelicula());
+			System.out.println("\n********Bienvenido al apartado de calificacion de comida********");
+			if(clienteProceso.getHistorialDePedidos().size() > 0) {
+				System.out.println("\n********Estos son los pedidos que has adquirido**********" + "\n" + clienteProceso.mostrarHistorialDePedidos());
+				Producto opcionPedido=null;
+				int calificacion1=0;
+				do {
+					try {
+						System.out.print("\n*********Seleccione el producto que deseas calificar********");
+						eleccion = Integer.parseInt(sc.nextLine());
+						if (eleccion == 0) {
+							break;
+						}
+						if (eleccion > clienteProceso.getHistorialDePedidos().size() || eleccion < 1) {
+							System.out.print("\n******Error en la seleccion del producto******");
+							continue;
+						}
+						opcionPedido = clienteProceso.getHistorialDePedidos().get(eleccion-1);
+						System.out.print("\nIngrese la calificacion del 1 al 5 que le vas a dar a este producto: ");
+						calificacion1 = Integer.parseInt(sc.nextLine());
+						System.out.println("\n*********Escogiste: " + opcionPedido.getNombre() + " " + opcionPedido.getTamaño() + "  y le diste una valoracion de " + calificacion1 + "***********");
+					}catch(NumberFormatException e) {
+						System.out.println("\nError, debes ingresar un dato numérico\n");
+						continue;
+					}
+					
+					
+				}while(verificar);
 				}
 			else {
-				System.out.println("NO HAS VISTO NINGUNA PELICULA, POR LO TANTO NO PUEDES CALIFICAR NINGUNA PELICULA");
+				System.out.println("\n******Lastimosamente no has hecho compra de ningun alimento, por lo tanto no puedes calificar ninguno*******");
+			}
+		}  
+		else if (eleccion==2) {
+			System.out.println("\n********Bienvenido al apartado de calificacion de peliculas********");
+			if(clienteProceso.getPeliculasDisponiblesParaCalificar().size() > 0) {
+				System.out.println("\n********Estas son las peliculas que has visto**********" + "\n" + clienteProceso.mostrarHistorialDePelicula());
+				Pelicula opcionPelicula=null;
+				int calificacion=0;
+				do {
+					try {
+						System.out.print("\n*********Seleccione la pelicula que deseas calificar********");
+						eleccion = Integer.parseInt(sc.nextLine());
+						if (eleccion == 0) {
+							break;
+						}
+						if (eleccion > clienteProceso.getPeliculasDisponiblesParaCalificar().size() || eleccion < 1) {
+							System.out.print("\n******Error en la seleccion de la pelicula******");
+							continue;
+						}
+						opcionPelicula = clienteProceso.getPeliculasDisponiblesParaCalificar().get(eleccion-1);
+						System.out.print("\nIngrese la calificacion del 1 al 5 que le vas a dar a esta pelicula: ");
+						calificacion = Integer.parseInt(sc.nextLine());
+						System.out.println("\n*********Escogiste la pelicula: " + opcionPelicula.getNombre()+ " " + opcionPelicula.getTipoDeFormato()+ "  y le diste una valoracion de " + calificacion + "***********");
+					}catch(NumberFormatException e) {
+						System.out.println("\nError, debes ingresar un dato numérico\n");
+						continue;
+					}
+					
+					
+				}while(verificar);
+				}
+			else {
+				System.out.println("******Lastimosamente no has visto ninguna pelicula, por lo tanto no puedes calificar ninguna*******");
 			}
 				
 		}
 		
         
-		if (eleccion==3) {
+		else if (eleccion==3) {
 			Administrador.inicio(clienteProceso);
 			verificar=true;
+				
 	     }
-	
-		String opcionPelicula=null;
-		int calificacion=0;
-		do {
-			try {
-				System.out.print("\nSeleccione la pelicula que deseas calificar: ");
-				eleccion = Integer.parseInt(sc.nextLine());
-				if (eleccion == 0) {
-					break;
-				}
-				if (eleccion > clienteProceso.getHistorialDePeliculas().size() || eleccion < 1) {
-					System.out.print("ERROR EN LA SELECCION DE LA PELICULA");
-					continue;
-				}
-				//opcionPelicula = clienteProceso.mostrarHistorialDePelicula()(eleccion-1);
-				System.out.print("\nIngrese la calificacion del 1 al 5 que le vas a dar a esta pelicula: ");
-				calificacion = Integer.parseInt(sc.nextLine());
-				System.out.println("Escogiste la pelicula:");
-			}catch(NumberFormatException e) {
-				System.out.println("\nError, debes ingresar un dato numérico\n");
-				continue;
-			}
-			
-			
-		}while(verificar);
+		else {
+			Funcionalidad3.calificacion(clienteProceso);
+		}
+		
 
 	}
 	

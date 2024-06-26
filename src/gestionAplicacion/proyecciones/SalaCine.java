@@ -209,14 +209,15 @@ public class SalaCine {
 		//En caso de que sea la primera vez que ve la película, la añadimos al array de películas para calificar
 		if (verificacionIngresoASala) {
 			
+			if (!cliente.getHistorialDePeliculas().contains(ticketVerificado.getPelicula())) {
+				cliente.getPeliculasDisponiblesParaCalificar().add(ticketVerificado.getPelicula());
+			}
+
 			cliente.getHistorialDePeliculas().add(ticketVerificado.getPelicula());
 			
 			cliente.getTickets().remove(ticketVerificado);
 			
-			if (!cliente.getHistorialDePeliculas().contains(ticketVerificado.getPelicula())) {
-				cliente.getPeliculasDisponiblesParaCalificar().add(ticketVerificado.getPelicula());
-			}
-		}
+	    }
 		
 		//Retornamos el resultado de la verificación
 		return verificacionIngresoASala;

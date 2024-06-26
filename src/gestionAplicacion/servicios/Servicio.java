@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import gestionAplicacion.SucursalCine;
+import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.IBuyable;
 import gestionAplicacion.usuario.MetodoPago;
@@ -17,6 +18,7 @@ public abstract class Servicio implements IBuyable{
 	protected ArrayList<Producto> orden = new ArrayList<>();
 	protected ArrayList<Bono> bonosCliente = new ArrayList<>();
 	protected double valorPedido;
+	
 	
 	public Servicio(){}
 	
@@ -237,6 +239,7 @@ public abstract class Servicio implements IBuyable{
 	public void setBonosCliente(ArrayList<Bono> bonosCliente) {
 		this.bonosCliente = bonosCliente;
 	}
+
 	
 	
 }
