@@ -30,6 +30,7 @@ public class Cliente {
 	private ArrayList<String> codigosBonos = new ArrayList<>();
 	private ArrayList<Bono> bonos = new ArrayList<>();
 	private SucursalCine cineActual;
+	private ArrayList<Pelicula> valoracionesPeliculas=new ArrayList<>();
 	
 	
 	//Constructores
@@ -37,6 +38,7 @@ public class Cliente {
 		clientes.add(this);
 	}
 
+	
 	public Cliente(String nombre, int edad, long documento, TipoDeDocumento tipoDocumento) {
 		this();
 		this.nombre = nombre;
@@ -288,6 +290,12 @@ public class Cliente {
 		
 		}
 	
+	public void cambiarPeliculaSede(){
+		 
+		
+		
+	}
+	
 	//Getters y setters
 	public String getNombre() {
 		return nombre;
@@ -434,4 +442,12 @@ public class Cliente {
 		this.peliculasDisponiblesParaCalificar = peliculasDisponiblesParaCalificiar;
 	}
 	
+	public ArrayList<Pelicula> getValoracionesPeliculas() {
+		return valoracionesPeliculas;
+	}
+
+	public void setValoracionesPeliculas(ArrayList<Pelicula> valoracionesPeliculas) {
+		this.valoracionesPeliculas = valoracionesPeliculas;
+	}
+
 }

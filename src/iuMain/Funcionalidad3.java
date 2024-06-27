@@ -149,8 +149,7 @@ public class Funcionalidad3 {
 
 
 
-static void verificarClientePelicula(){
-  }
+
 
 }
 

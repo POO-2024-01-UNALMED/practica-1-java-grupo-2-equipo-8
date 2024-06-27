@@ -205,6 +205,7 @@ public class Administrador {
 			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
 			cliente5.getHistorialDePedidos().add(producto1);
 			cliente5.getHistorialDePedidos().add(producto2);
+			cliente5.getValoracionesPeliculas().add(pelicula1_15);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
 			cliente4.setCuenta(tarjeta1);
