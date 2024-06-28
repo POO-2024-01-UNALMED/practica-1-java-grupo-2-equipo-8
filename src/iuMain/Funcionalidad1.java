@@ -134,7 +134,7 @@ public class Funcionalidad1 {
 					System.out.println("\nError, debes ingresar un único dato numérico");
 				}
 				
-				if ((opcionMenu > 0 && opcionMenu < nombresPeliculasCarteleraPersonalizadaProceso.size())) {
+				if ((opcionMenu > 0 && opcionMenu <= nombresPeliculasCarteleraPersonalizadaProceso.size())) {
 					//Obtenemos el nombre de la película seleccionada por el cliente
 					nombrePelicula = nombresPeliculasCarteleraPersonalizadaProceso.get(opcionMenu - 1);
 					//Rompemos el bucle
@@ -174,7 +174,7 @@ public class Funcionalidad1 {
 					System.out.println("\nError, debes ingresar un único dato numérico");
 				}
 				
-				if ( opcionMenu > 0 && opcionMenu < Integer.valueOf(peliculasProceso.size()) ) {
+				if ( opcionMenu > 0 && opcionMenu <= Integer.valueOf(peliculasProceso.size()) ) {
 					//Seleccionamos la película con el formato seleccionado por el cliente
 					peliculaProceso = peliculasProceso.get(opcionMenu - 1);
 					casoValido = true;
@@ -231,6 +231,8 @@ public class Funcionalidad1 {
 		//además la película no lleva más de 15 minutos en presentación
 		if (peliculaProceso.IsPeliculaEnPresentacion(clienteProceso.getCineActual())) {
 			
+			//Se busca en que sala se encuentra la película en presentación
+			salaDeCineProceso = peliculaProceso.whereIsPeliculaEnPresentacion(clienteProceso.getCineActual());
 			casoValidoConfirmacion = false;
 			
 			//Preguntamos si desea ver la película a la hora de esta presentación o en un horario diferente en caso de tener más horarios disponibles
@@ -253,7 +255,6 @@ public class Funcionalidad1 {
 					switch(opcionMenu) {
 						case 1: casoValidoConfirmacion = true;
 							//Se piden los datos de reserva de ticket en la sala de cine en cuestión
-							salaDeCineProceso = peliculaProceso.whereIsPeliculaEnPresentacion(clienteProceso.getCineActual());
 							
 							//El cliente elige el asiento de la sala de cine que tiene la película seleccionada en presentación
 							numeroAsientoProceso = seleccionarAsiento(salaDeCineProceso);
@@ -548,7 +549,7 @@ public class Funcionalidad1 {
 					continue;
 				}
 				
-				if( opcionMenu > 0 && opcionMenu < Integer.valueOf(horariosPeliculaProceso.size()) ) {
+				if( opcionMenu > 0 && opcionMenu <= Integer.valueOf(horariosPeliculaProceso.size()) ) {
 					horarioProceso = horariosPeliculaProceso.get(opcionMenu - 1);
 					casoValidoEleccionHorario = true;
 				}else if(opcionMenu == Integer.valueOf(horariosPeliculaProceso.size()) + 1) {
@@ -849,7 +850,7 @@ public class Funcionalidad1 {
 			System.out.println("\n		Hola " + clienteProceso.getNombre());
 			System.out.println("==================================================\n");
 			System.out.println( "\nFecha actual: "+ SucursalCine.getFechaActual().toLocalDate() 
-			+ "; Hora actual: " + SucursalCine.getFechaActual().toLocalTime() + "\n\n"
+			+ "; Hora actual: " + SucursalCine.getFechaActual().toLocalTime().withNano(0) + "\n\n"
 			+ "Estos son los tickets que actualmente tienes disponibles:" 
 			+ clienteProceso.mostrarTicketsParaUsar(ticketsDisponiblesParaUsar) + "\n");
 		}else {
@@ -880,7 +881,7 @@ public class Funcionalidad1 {
 						System.out.println("\nError, debes ingresar un único dato numérico entre los disponibles");
 					}
 					
-					if (opcionMenu > 0 & opcionMenu <= (Integer.valueOf(salasDeCineDisponibles.size()) + 1) ) { 
+					if (opcionMenu > 0 & opcionMenu <= (Integer.valueOf(salasDeCineDisponibles.size()) ) ) { 
 						//Obtenemos la sala de cine seleccionada
 						salaDeCineProceso = salasDeCineDisponibles.get(opcionMenu - 1);
 						casoValidoEleccionSala = true;
@@ -1090,33 +1091,17 @@ public class Funcionalidad1 {
 	
 }
 
-//0. Cambiar el map de Horarios por un Array (Obligatorio) (Hecho, hacer tests)
-//0.1. Revisar error que no permite ejecutar actualizar horarios sin dropear los horarios vencidos, debe resolverse sin dropear (Hecho)
-//0.2. La película puede tener directamente la sala de cine de su sucursal en la que puede ser presentada, esto permitiría automatizar la
-// distribución de forma equitativa de películas por sala de cine (Hecho)
-//0.3. Posible problema con el serializador y asignar al cliente antes de realizar un pago (Hecho)
+//1. Método de avanzar la hora automáticamente (Investigar el uso de threads e implementarlo) (Hecho, investigar más y mejorar la lógica durante
+// la jornada laboral, investigar una forma de que esta se ejecute solo cuando sea necesaria no cada segundo, añadir a la verificación de tiempo
+// de actualizarSalasDeCine el tiempo de limpieza de sala y hacer testeos)
+//1.1. Solucionar error de actualización de horarios a las 10am cuando arranca el código (Solución parcial en el método crearHorarios SucursalCine, revisar lógica)
+//1.2.Depurar código en la clase SucursalCine 
 
-//0.4. Automatizar la creación de películas a partir de crear una película 2D, crear estas mismas pero con 3D y 4D según su género (Hecho)
-//0.5. Mejorar vista en consola de las salas de cine y sala de espera (Hecho)
-//0.6. Solucionar error en vista de salas de cine de películas que ya finalizaron su presentación (Ver el filtro) (Hecho)
-//0.7. Limitar la creación de horarios en una semana (Hecho)
-//0.8. Usar el setter de cliente de cineActual, crear opción menú para cambiar de sucursal (Hecho)
-//0.9. Depurar el código de la clase Funcionalidad 1 (Hecho)
-
-//0.10. Cambiar Strings por String Builder (Hecho)
-//0.11. Cambiar for eliminador por iterator (Hecho)
-//0.12. Mejorar abstracción de métodos, revisar todo el código hecho y mejorar documentación (Hecho)
-
-//0.13. Unificar Menú de mis 3 elementos del menú principal en 1 solo (Hecho)
-//0.14. Resolver error de cliente puede entrar a salas de cine y/o a sala de espera con un ticket que no funciona para la sucursal una vez que se cambie
-// una película de sucursal o el se cambie de sucursal (Hecho)
-//0.15. Refactorizar todo el código de la funcionalidad 1 (Usar el mismo estándar en todos los casos, doble booelan para hacer verificaciones) (Hecho)
-
-//1. Método de avanzar la hora automáticamente (Investigar el uso de threads y Hablar con David)
-//2. Incluir el código de la clase Funcionaliadad 1 en la clase Administrador y Estudiar serialización
-//3. Hacer Tests
+//2. Hacer Tests de la lógica de la funcionalidad 1
+//3. Incluir el código de la clase Funcionaliadad 1 en la clase Administrador y Estudiar serialización
 //4. Serializar
-//5. Empezar el Google Document con el manual de usuario y la documentación
+//5. Hacer test de serialización
+//6. Empezar el Google Document con el manual de usuario y la documentación
 
 
 

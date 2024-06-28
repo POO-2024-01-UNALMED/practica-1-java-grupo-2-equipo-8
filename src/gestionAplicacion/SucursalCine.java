@@ -1,6 +1,7 @@
 package gestionAplicacion;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -13,14 +14,15 @@ import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.Servicio;
 import gestionAplicacion.usuario.Ticket;
 
-public class SucursalCine {
+public class SucursalCine implements Runnable {
 	
-	private static LocalDateTime fechaActual = LocalDateTime.now().withMinute(14);
+	private static LocalDateTime fechaActual = LocalDateTime.now().withMinute(5);
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	
 	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
 	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 00);
+	public static final Duration LIMPIEZA_SALA_DE_CINE = Duration.ofMinutes(30); 
 	
 	private String lugar;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
@@ -46,9 +48,9 @@ public class SucursalCine {
 		StringBuilder resultado = new StringBuilder();
 		int i = 1;
 		
-		for (SucursalCine sucursal : SucursalCine.getSucursalesCine()) {
+		for (SucursalCine sucursal : sucursalesCine) {
 			
-			resultado.append("\n" + i + ". Sucursal Cinemar en "  + sucursal.getLugar());
+			resultado.append("\n" + i + ". Sucursal Cinemar en "  + sucursal.lugar);
 			i++;
 			
 		}
@@ -63,17 +65,20 @@ public class SucursalCine {
 	 * */
 	public static void actualizarPeliculasSalasDeCine() {
 		
-		for (SucursalCine sede : SucursalCine.sucursalesCine) {
+		for (SucursalCine sede : sucursalesCine) {
 			//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
 			for (SalaCine salaDeCine : sede.salasDeCine) {
 				//try en caso de que sea la primera vez que se realiza este proceso y el horarioPeliculaEnPresentacion sea nulo
 				try {
 					//Solo actualizamos las salas de cine que estrictamente deban ser actualizadas
-					if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(SucursalCine.fechaActual) ) ) {
+					if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion()).isAfter(fechaActual) ) ) {
+						
 						salaDeCine.actualizarPeliculasEnPresentacion(sede);
+						
 					}
 				}catch(NullPointerException e) {
 					salaDeCine.actualizarPeliculasEnPresentacion(sede);
+					
 				}
 			}
 		}
@@ -93,13 +98,13 @@ public class SucursalCine {
 		int comparacionDuraciones;
 		
 		//Iteramos sobre las sucursales
-		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+		for (SucursalCine sede : sucursalesCine) {
 			maxDuration = Duration.ofSeconds(0);
 			auxMaxDuration = Duration.ofSeconds(0);
 			comparacionDuraciones = 0;
 			
 			//Obtenemos la película con la duración máxima de las películas en cartelera de la sede
-			for (Pelicula pelicula : sede.getCartelera()) {
+			for (Pelicula pelicula : sede.cartelera) {
 				auxMaxDuration = pelicula.getDuracion();
 				comparacionDuraciones = auxMaxDuration.compareTo(maxDuration);
 				
@@ -110,7 +115,7 @@ public class SucursalCine {
 			}
 			
 			//Iteramos sobre las películas en cartelera
-			for (Pelicula pelicula : sede.getCartelera()) {
+			for (Pelicula pelicula : sede.cartelera) {
 				
 				//Iteramos sobre los horarios de esa película
 				Iterator<LocalDateTime> horariosPelicula = pelicula.getHorarios().iterator();
@@ -142,13 +147,12 @@ public class SucursalCine {
 		
 		ArrayList<Pelicula> peliculasDeSalaDeCine = new ArrayList<>();
 		
-		final Duration LIMPIEZA_DE_SALA = Duration.ofMinutes(30);
-		final LocalDateTime limiteCreacionHorariosPeliculas =  SucursalCine.fechaActual.withMinute(0).withSecond(0).withNano(0).plusWeeks(1);
+		final LocalDateTime limiteCreacionHorariosPeliculas =  fechaActual.withMinute(0).withSecond(0).withNano(0).plusWeeks(1);
 		
 		//Iteramos sobre las salas de cine de esta sucursal
 		for(SalaCine salaDeCine : this.salasDeCine) {
 			
-			LocalDateTime horarioParaPresentar = SucursalCine.fechaActual.withMinute(0).withSecond(0).withNano(0);
+			LocalDateTime horarioParaPresentar = fechaActual.withMinute(0).withSecond(0).withNano(0);
 			
 			//Buscamos las películas de la cartelera a las cuales les corresponde esta sala de cine
 			for(Pelicula pelicula : this.cartelera) {
@@ -178,19 +182,25 @@ public class SucursalCine {
 						//Creamos el horario y nos preparamos para crear el siguiente horario disponible
 						pelicula.crearSalaVirtual(horarioParaPresentar);
 						horarioParaPresentar = horarioParaPresentar.plus(pelicula.getDuracion());
-						horarioParaPresentar = horarioParaPresentar.plus(LIMPIEZA_DE_SALA);
+						horarioParaPresentar = horarioParaPresentar.plus(LIMPIEZA_SALA_DE_CINE);
 						
 					}else {
 						
-						//Pasamos de día y nos ubicamos en el inicio de la jornada laboral 
-						horarioParaPresentar = horarioParaPresentar.plusDays(1);
-						horarioParaPresentar = horarioParaPresentar.withHour(INICIO_HORARIO_LABORAL.getHour())
-								.withMinute(INICIO_HORARIO_LABORAL.getMinute());
+						if (!horarioParaPresentar.toLocalTime().isAfter(INICIO_HORARIO_LABORAL)) {
+							//Nos ubicamos en el inicio de la jornada laboral, esto es en caso de ejecutar el programa en la madrugada/mañana
+							horarioParaPresentar = horarioParaPresentar.withHour(INICIO_HORARIO_LABORAL.getHour())
+									.withMinute(INICIO_HORARIO_LABORAL.getMinute());
+						}else {
+							//Pasamos de día y nos ubicamos en el inicio de la jornada laboral 
+							horarioParaPresentar = horarioParaPresentar.plusDays(1);
+							horarioParaPresentar = horarioParaPresentar.withHour(INICIO_HORARIO_LABORAL.getHour())
+									.withMinute(INICIO_HORARIO_LABORAL.getMinute());
+						}
 						
 						//Creamos el horario y nos preparamos para crear el siguiente horario disponible
 						pelicula.crearSalaVirtual(horarioParaPresentar);
 						horarioParaPresentar = horarioParaPresentar.plus(pelicula.getDuracion());
-						horarioParaPresentar = horarioParaPresentar.plus(LIMPIEZA_DE_SALA);
+						horarioParaPresentar = horarioParaPresentar.plus(LIMPIEZA_SALA_DE_CINE);
 						
 					}
 				}
@@ -283,19 +293,92 @@ public class SucursalCine {
 	}
 	
 	/**
-	 * Description: Este método se encarga de ejecutar toda la lógica para realizar reservas de ticket, se compone de 3 puntos principales:
-	 * 1. Distribuir las películas en cartelera de cada sucursal de forma equitativa respecto a sus salas de cine
-	 * 2. Una vez realizada la distribución, crear los horarios en los que se presentará cada película
-	 * 3. Por último actualizar las películas cuyo horarios se esta presentando en estos momentos
+	 * Description: Este método se encarga de realizar la distribución de películas en las salas de cine y la creación de
+	 * sus horarios, cada semana, luego de haber efectuado el cambio de películas de sucursal propio de la funcionalidad 3. 
 	 * */
-	public static void logicaSistemaReservarTicket() {
-		
-		for (SucursalCine sede : SucursalCine.sucursalesCine) {
+	public static void logicaSemanalReservarTicket() {
+		for (SucursalCine sede : sucursalesCine) {
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();
 		}
-		
+	}
+	
+	/**
+	 * Description: Este método se encarga de ejecutar toda la lógica para realizar reservas de ticket por primera vez,
+	 * se compone de 3 puntos principales:
+	 * 1. Distribuir las películas en cartelera de cada sucursal de forma equitativa respecto a sus salas de cine.
+	 * 2. Una vez realizada la distribución, crear los horarios en los que se presentará cada película.
+	 * 3. Por último actualizar las películas cuyo horarios se esta presentando en estos momentos.
+	 * */
+	public static void logicaSistemaReservarTicket() {
+		for (SucursalCine sede : sucursalesCine) {
+			sede.distribuirPeliculasPorSala();
+			sede.crearHorariosPeliculasPorSala();
+		}
 		SucursalCine.actualizarPeliculasSalasDeCine();
+	}
+	
+	/**
+	 * @Override
+	 * Description : Este método se encarga de ejecutar la lógica de negocio en 3 plazos:
+	 * 
+	 * 1. Durante la jornada laboral: Actualiza las salas de cine, ubicando las películas en presentación en sus respectivas salas.
+	 * 
+	 * 2. Diariamente: Mejorar documentación
+	 * (Limpia el array de tickets generados, con el fin de tener únicamente aquellos tickets que pueden usarse para generar descuentos
+	 * y verifica la fecha de expedición de las memebresías de cada uno de los clientes).
+	 * 
+	 * 3. Semanalmente: Mejorar documentación
+	 * (Cambia las películas de sucursal según su rendimiento, distribuye de nuevo las películas en sus salas de cine y crea los horarios de presentación
+	 * semanal).
+	 * */
+	public void run() {
+		
+		LocalDate fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
+		LocalDate fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
+		
+		while(true) {
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			SucursalCine.setFechaActual(fechaActual.plusSeconds(10));
+			
+			if (fechaActual.toLocalTime().isBefore(FIN_HORARIO_LABORAL) 
+					&& fechaActual.toLocalTime().isAfter(INICIO_HORARIO_LABORAL) ) {
+				//Lógica durante la jornada laboral
+				SucursalCine.actualizarPeliculasSalasDeCine();
+				
+			}
+			
+			if (fechaActual.toLocalDate().equals(fechaValidacionNuevoDiaDeTrabajo)) {
+				//Lógica a evaluar cada día
+				
+				fechaValidacionNuevoDiaDeTrabajo = fechaValidacionNuevoDiaDeTrabajo.plusDays(1);
+				
+				//Implementar método aquí para eliminar TicketsGenerados para aplicar descuentos por productos de forma efectiva (Hecho)
+				ticketsCreados.clear();
+				
+				//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
+				
+			}
+			
+			if(fechaActual.toLocalDate().equals(fechaRevisionLogicaDeNegocio)) {
+				//Lógica a evaluar cada semana
+				
+				fechaRevisionLogicaDeNegocio = fechaRevisionLogicaDeNegocio.plusWeeks(1);
+				
+				//Implementar método de cambio de película entre sucursales según su valoración
+				
+				
+				//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
+				SucursalCine.logicaSistemaReservarTicket();
+			}
+			
+		}
+		
 	}
 	
 	
@@ -374,5 +457,7 @@ public class SucursalCine {
 	public void setServicios(ArrayList<Servicio> servicios) {
 		this.servicios = servicios;
 	}
+
+	
 	
 }

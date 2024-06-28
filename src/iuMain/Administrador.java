@@ -73,7 +73,7 @@ public class Administrador {
 	static SalaCine salaDeCine1_8 = new SalaCine(8, "3D", sucursalCine1);
 	static SalaCine salaDeCine1_9 = new SalaCine(9, "4D", sucursalCine1);
 
-	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+7", "2D", sucursalCine1);
+	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+18", "2D", sucursalCine1);
 	
 	static Pelicula pelicula1_2 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", sucursalCine1);
 	
@@ -92,7 +92,7 @@ public class Administrador {
 	static SalaCine salaDeCine2_5 = new SalaCine(5, "3D", sucursalCine2);
 	static SalaCine salaDeCine2_6 = new SalaCine(6, "4D", sucursalCine2);
 	
-	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(60), "+12", "2D", sucursalCine2); 
+	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(90), "+12", "2D", sucursalCine2); 
 	
 	static Pelicula pelicula2_4 = new Pelicula("The Strangers: Chapter 1", 20000, "Terror", Duration.ofMinutes(114), "+18", "2D", sucursalCine2);
 	
@@ -182,11 +182,6 @@ public class Administrador {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 			//Funcionalidad 1 
 			SucursalCine.logicaSistemaReservarTicket();
-
-			//Prueba inicializar lógica para sistema de reserva de tickets
-//			for(Pelicula pelicula : SucursalCine.getPeliculasDisponibles()) {
-//				System.out.println("Película: " + pelicula.getNombre() + " Formato: "+ pelicula.getTipoDeFormato() + " Sala: " + pelicula.getSalaPresentacion().getNumeroSala() + " FormatoSala: " + pelicula.getSalaPresentacion().getTipoDeSala() +" Sucursal: " + pelicula.getSalaPresentacion().getUbicacionSede().getLugar());
-//			}
 			
 			//Prueba películas recomendadas
 //			cliente1.getHistorialDePeliculas().add(pelicula3_10);
@@ -247,15 +242,13 @@ public class Administrador {
 			MetodoPago.asignarMetodosDePago(cliente3);
 			MetodoPago.asignarMetodosDePago(cliente4);
 			
-
+			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
+			//System.out.println(tarjeta.getSaldo());
+		//}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//Print tests
 			System.out.println();
 			System.out.println();
-			
-			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
-				//System.out.println(tarjeta.getSaldo());
-			//}
 			
 		}
 		
@@ -265,6 +258,9 @@ public class Administrador {
 		
 		System.out.println("\nIngresar a una de nuestras sedes");
 		clienteProceso.setCineActual(ingresarASucursal());
+		
+		Thread hiloLogicaProyecto = new Thread(clienteProceso.getCineActual());
+		hiloLogicaProyecto.start();
 		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
 		inicio(clienteProceso);
