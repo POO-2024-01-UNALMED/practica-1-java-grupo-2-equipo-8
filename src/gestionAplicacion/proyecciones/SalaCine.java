@@ -1,5 +1,6 @@
 package gestionAplicacion.proyecciones;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class SalaCine {
 	private Asiento[][] asientos;
 	private Pelicula peliculaEnPresentacion;
 	private SucursalCine ubicacionSede;
+	private boolean horariosPresentacionDia;
 	
 	//Constructors
 	public SalaCine(int nSala, String tipoDeSala, SucursalCine ubicacionSede){
@@ -23,6 +25,7 @@ public class SalaCine {
 		this.ubicacionSede = ubicacionSede;
 		ubicacionSede.getSalasDeCine().add(this);
 		this.asientos = this.crearAsientosSalaDeCine();
+		this.horariosPresentacionDia = true;
 	}
 
 	//Methods
@@ -230,7 +233,7 @@ public class SalaCine {
 	 * una vez hecho esto y cumpla con los dos criterios anteriores, limpiamos los asientos de la sala de cine, cambiando su disponibilidad a libre, y
 	 * por último actualizamos la información de la disponibilidad de los asientos, tomando la información del array de la sala virtual que 
 	 * coincidió en fecha y hora de la película en presentación, además modificamos el atributo horarioPeliculaEnPresentacion
-	 * y peliculaEnPresentacion de la sala de cine.
+	 * y peliculaEnPresentacion de la sala de cine. 
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), con el fin de actualizar, únicamente, las salas de cine
 	 * con las películas propias de esta sucursal.
 	 * */
@@ -359,6 +362,8 @@ public class SalaCine {
 	    return resultado.toString();
 	}
 	
+	
+	
 	/**
 	 * Description : Este método se encarga de generar un string que se imprimirá en pantalla para visualizar los
 	 * la pantalla de la sala de cine con un pequeño mensaje, además se llama al método mostrarAsientosParaPantalla.
@@ -383,7 +388,57 @@ public class SalaCine {
 		return resultado.toString();
 	}
 	
+	/**
+	 * Description : Este método se encarga de revisar si una sala de cine tendrá durante ese día más películas en presentación,
+	 * actualizando su atributo de horariosPresentacionDia, con el fin de reducir el número de peticiones de actualización provenientes 
+	 * de esta sala de cine.
+	 * */
+	public void tieneMasHorariosPresentacionHoy() {
+		
+		LocalDate diaActual = SucursalCine.getFechaActual().toLocalDate();
+		boolean horarioEncontrado = false;		
+		
+		for (Pelicula pelicula : this.ubicacionSede.getCartelera()) {
+			if (pelicula.getSalaPresentacion().equals(this)) {
+				for (LocalDateTime horario : pelicula.getHorarios()) {
+					
+					if (horario.toLocalDate().equals(diaActual)) {
+						horarioEncontrado = true;
+					}
+					
+					if (horarioEncontrado) {
+						break;
+					}
+				}
+				
+				if (horarioEncontrado) {
+					break;
+				}
+			}
+		}
+		
+		this.horariosPresentacionDia = horarioEncontrado;
+		
+	}
+	
+	
 	// Getters and Setters
+	public Pelicula getPeliculaEnPresentacion() {
+		return peliculaEnPresentacion;
+	}
+
+	public void setPeliculaEnPresentacion(Pelicula peliculaEnPresentacion) {
+		this.peliculaEnPresentacion = peliculaEnPresentacion;
+	}
+	
+	public LocalDateTime getHorarioPeliculaEnPresentacion() {
+		return horarioPeliculaEnPresentacion;
+	}
+	
+	public void setHorarioPeliculaEnPresentacion(LocalDateTime horarioPeliculaEnPresentacion) {
+		this.horarioPeliculaEnPresentacion = horarioPeliculaEnPresentacion;
+	}
+	
 	public int getNumeroSala() {
 		return numeroSala;
 	}
@@ -408,32 +463,20 @@ public class SalaCine {
 		this.asientos = asientos;
 	}
 
-	public Pelicula getPeliculaEnPresentacion() {
-		return peliculaEnPresentacion;
-	}
-
-	public void setPeliculaEnPresentacion(Pelicula peliculaEnPresentacion) {
-		this.peliculaEnPresentacion = peliculaEnPresentacion;
-	}
-	
-	public LocalDateTime getHorarioPeliculaEnPresentacion() {
-		return horarioPeliculaEnPresentacion;
-	}
-	
-	public void setHorarioPelicula(LocalDateTime horarioPeliculaEnPresentacion) {
-		this.horarioPeliculaEnPresentacion = horarioPeliculaEnPresentacion;
-	}
-	
-	public void setHorarioPeliculaEnPresentacion(LocalDateTime horarioPeliculaEnPresentacion) {
-		this.horarioPeliculaEnPresentacion = horarioPeliculaEnPresentacion;
-	}
-
 	public SucursalCine getUbicacionSede() {
 		return ubicacionSede;
 	}
 
 	public void setUbicacionSede(SucursalCine ubicacionSede) {
 		this.ubicacionSede = ubicacionSede;
+	}
+
+	public boolean isHorariosPresentacionDia() {
+		return horariosPresentacionDia;
+	}
+
+	public void setHorariosPresentacionDia(boolean horariosPresentacionDia) {
+		this.horariosPresentacionDia = horariosPresentacionDia;
 	}
 
 }

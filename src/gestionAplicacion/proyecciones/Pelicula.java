@@ -413,100 +413,101 @@ public class Pelicula{
 	}
 	
 	// Getters and Setters
-		public String getNombre() {
-			return nombre;
-		}
+	
+	public ArrayList<LocalDateTime> getHorarios() {
+		return horarios;
+	}
 
-		public void setNombre(String nombre) {
-			this.nombre = nombre;
-		}
+	public void setHorarios(ArrayList<LocalDateTime> horarios) {
+		this.horarios = horarios;
+	}
+	
+	public ArrayList<int[][]> getAsientosVirtuales() {
+		return asientosVirtuales;
+	}
 
-		public int getPrecio() {
-			return precio;
-		}
+	public void setAsientosVirtuales(ArrayList<int[][]> asientos) {
+		this.asientosVirtuales = asientos;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
 
-		public void setPrecio(int precio) {
-			this.precio = precio;
-		}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-		public String getGenero() {
-			return genero;
-		}
+	public int getPrecio() {
+		return precio;
+	}
 
-		public void setGenero(String genero) {
-			this.genero = genero;
-		}
+	public void setPrecio(int precio) {
+		this.precio = precio;
+	}
 
-		public Duration getDuracion() {
-			return duracion;
-		}
+	public String getGenero() {
+		return genero;
+	}
 
-		public void setDuracion(Duration duracion) {
-			this.duracion = duracion;
-		}
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
 
-		public String getClasificacion() {
-			return clasificacion;
-		}
+	public Duration getDuracion() {
+		return duracion;
+	}
 
-		public void setClasificacion(String clasificacion) {
-			this.clasificacion = clasificacion;
-		}
+	public void setDuracion(Duration duracion) {
+		this.duracion = duracion;
+	}
 
-		public String getTipoDeFormato() {
-			return tipoDeFormato;
-		}
+	public String getClasificacion() {
+		return clasificacion;
+	}
 
-		public void setTipoDeFormato(String tipoDeFormato) {
-			this.tipoDeFormato = tipoDeFormato;
-		}
+	public void setClasificacion(String clasificacion) {
+		this.clasificacion = clasificacion;
+	}
 
-		public SalaCine getSalaPresentacion() {
-			return salaPresentacion;
-		}
+	public String getTipoDeFormato() {
+		return tipoDeFormato;
+	}
 
-		public void setSalaPresentacion(SalaCine salaPresentacion) {
-			this.salaPresentacion = salaPresentacion;
-		}
+	public void setTipoDeFormato(String tipoDeFormato) {
+		this.tipoDeFormato = tipoDeFormato;
+	}
 
-		public int getIdPelicula() {
-			return idPelicula;
-		}
+	public SalaCine getSalaPresentacion() {
+		return salaPresentacion;
+	}
 
-		public void setIdPelicula(int idPelicula) {
-			this.idPelicula = idPelicula;
-		}
+	public void setSalaPresentacion(SalaCine salaPresentacion) {
+		this.salaPresentacion = salaPresentacion;
+	}
 
-		public ArrayList<LocalDateTime> getHorarios() {
-			return horarios;
-		}
+	public int getIdPelicula() {
+		return idPelicula;
+	}
 
-		public void setHorarios(ArrayList<LocalDateTime> horarios) {
-			this.horarios = horarios;
-		}
+	public void setIdPelicula(int idPelicula) {
+		this.idPelicula = idPelicula;
+	}
+	
+	public double getValoracion() {
+		return valoracion;
+	}
 
-		public ArrayList<int[][]> getAsientosVirtuales() {
-			return asientosVirtuales;
-		}
+	public void setValoracion(double valoracion) {
+		this.valoracion = valoracion;
+	}
 
-		public void setAsientosVirtuales(ArrayList<int[][]> asientos) {
-			this.asientosVirtuales = asientos;
-		}
-		
-		public double getValoracion() {
-			return valoracion;
-		}
+	public int getTotalEncuestasDeValoracionRealizadas() {
+		return totalEncuestasDeValoracionRealizadas;
+	}
 
-		public void setValoracion(double valoracion) {
-			this.valoracion = valoracion;
-		}
-
-		public int getTotalEncuestasDeValoracionRealizadas() {
-			return totalEncuestasDeValoracionRealizadas;
-		}
-
-		public void setTotalEncuestasDeValoracionRealizadas(int totalEncuestasDeValoracionRealizadas) {
-			this.totalEncuestasDeValoracionRealizadas = totalEncuestasDeValoracionRealizadas;
-		}
+	public void setTotalEncuestasDeValoracionRealizadas(int totalEncuestasDeValoracionRealizadas) {
+		this.totalEncuestasDeValoracionRealizadas = totalEncuestasDeValoracionRealizadas;
+	}
 		
 }
