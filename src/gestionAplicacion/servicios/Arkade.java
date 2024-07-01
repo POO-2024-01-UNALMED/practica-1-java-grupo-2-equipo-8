@@ -13,17 +13,14 @@ public class Arkade {
 	
 	//Atributos
 	private String nombreServicio;
-	//private String horarioServicio;
 	private static ArrayList<TarjetaCinemar> tarjetasEnInventario = new ArrayList<>();
 	private static ArrayList<Arkade> juegos = new ArrayList<>();
 	private double valorServicio;
-	//private static ArrayList<String> codigosGenerados = new ArrayList<>();;
-	//private static ArrayList<String> codigosUsados= new ArrayList<>();;
 	private static final double puntuacionMaxima = 10.0;
-	//private double puntuacionUsuario;
 	private String generoServicio;
 	
 	//Constructores
+	
 	public Arkade(){juegos.add(this);}
 	
 	public Arkade(String nombreServicio, double valorServicio, String generoServicio) {
@@ -35,18 +32,6 @@ public class Arkade {
 	}
 
 	//metodos
-	//public void ingresarSaldo(int saldo) {
-		
-	//}
-	public void usarServicio() {}
-	public void leerFactura() {}
-	public boolean verificarPuntuacion() {return true;}
-	public Producto obtenerBonoSouvenir() {return new Producto();}
-	public Producto obtenerBonoComida() {return new Producto();}
-	public boolean verificarRelacionPeliculaServicio() {return true;}
-	public String asignarPremio() {return "premio";}
-	public Bono crearBono() {return new Bono();}
-	
 	
 	/**
 	*Description: Se verifica si almenos hay alguna tarjeta disponible en el array de tarjetas en inventario.
@@ -114,7 +99,8 @@ public class Arkade {
 	}
 	
 	/**
-	*Description: Este metodo se encarga de aplicar un descuento del 20% al valor de los juegos 
+	*Description: Este metodo se encarga de aplicar un descuento del 20% al valor de los juegos con un genero pasado en el parametro
+	*@param genero :  se pasa el como parametro el genero de el juego a aplicar el descuento
 	*@return <b>void</b> :  No hay retorno
 	*/
 	public static void AplicarDescuentoJuegos(String genero) {
@@ -124,6 +110,11 @@ public class Arkade {
 		}
 	}
 	
+	
+	/**
+	*Description: Este metodo se encarga de restablecer el valor del precio de todos los juegos
+	*@return <b>void</b> :  No hay retorno
+	*/
 	public static void reestablecerPrecioJuegos() {
 		juegos.get(0).setValorServicio(15000);
 		juegos.get(1).setValorServicio(20000);
@@ -132,6 +123,13 @@ public class Arkade {
 		juegos.get(4).setValorServicio(7500);
 	}
 	
+	
+	/**
+	*Description: Este metodo se encarga primeramente de seleccionar los productos de tipo comida del inventario de la sucursal, luego genera un codigo aleatorio de 7 digitos para el bono
+	*y ademas escoge de esos productos seleccionados uno de manera aleatoria para ser asociado al bono y lo descuenta de la cantidad de disponibles, finalmente imprime por pantalla el bono al usuario
+	*@param sucursal :  se pasa el como parametro la sucursal a la cual se le solicita el inventario
+	*@return <b>Bono</b> :  Se retorna el bono creado
+	*/
 	public static Bono generarBonoComidaJuegos(SucursalCine sucursal) {
 	    ArrayList<Producto> productosComida = new ArrayList<>();
 	    for (Producto producto : sucursal.getInventarioCine()) {
@@ -179,6 +177,13 @@ public class Arkade {
 	    return bono;
 	}
 	
+	
+	/**
+	*Description: Este metodo se encarga primeramente de seleccionar los productos de tipo souvenir del inventario de la sucursal, luego genera un codigo aleatorio de 7 digitos para el bono
+	*y ademas escoge de esos productos seleccionados uno de manera aleatoria para ser asociado al bono y lo descuenta de la cantidad de disponibles, finalmente imprime por pantalla el bono al usuario
+	*@param sucursal :  se pasa el como parametro la sucursal a la cual se le solicita el inventario
+	*@return <b>Bono</b> :  Se retorna el bono creado
+	*/
 	public static Bono generarBonoSouvenirJuegos(SucursalCine sucursal) {
 		ArrayList<Producto> productosSouvenirs = new ArrayList<>();
 	    for (Producto producto : sucursal.getInventarioCine()) {
@@ -226,6 +231,12 @@ public class Arkade {
 	    return bono;
 	}
 	
+	
+	/**
+	*Description: Este metodo se encarga de generar un codigo aleatorio para los bonos creados.
+	*@param longitud :  se pasa el como parametro la longitud que se desea el codigo
+	*@return <b>Bono</b> :  Se retorna el bono creado
+	*/
 	public static String generarCodigoAleatorio(int longitud) {
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
@@ -238,6 +249,9 @@ public class Arkade {
 
         return codigo.toString();
     }
+	
+	
+	
 	
 	//getters y setters
 	public static ArrayList<TarjetaCinemar> getTarjetasEnInventario() {
