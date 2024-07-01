@@ -13,25 +13,34 @@ public class Cliente {
 	
 	//Atributos
 	private String nombre;
+	private int edad;
+	private long documento;
+	private TipoDeDocumento tipoDocumento;
+	private SucursalCine cineActual;
+	private static ArrayList<Cliente> clientes = new ArrayList<>();
+	
+	//Atributos para funcionalidad 1
+	private ArrayList<Ticket> tickets = new ArrayList<>();
 	private ArrayList<Pelicula> historialDePeliculas = new ArrayList<>();
+	
+	//Atributos para funcionalidad 3
 	private ArrayList<Pelicula> peliculasDisponiblesParaCalificar = new ArrayList<>();
 	private ArrayList<Producto> historialDePedidos = new ArrayList<>();
-	private ArrayList<Ticket> tickets = new ArrayList<>();
-	private ArrayList<String> facturas = new ArrayList<>();
-	private int edad;
-	private Membresia membresia;
-	private long documento;
-	private Duration duracionMembresiaDias;
-	private TipoDeDocumento tipoDocumento;
+	
+	//Atributos para funcionalidad 4 y 2
 	private TarjetaCinemar cuenta;
-	private static ArrayList<Cliente> clientes = new ArrayList<>();
-	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	private ArrayList<String> codigosDescuento = new ArrayList<>();
 	private ArrayList<String> codigosBonos = new ArrayList<>();
 	private ArrayList<Bono> bonos = new ArrayList<>();
-	private SucursalCine cineActual;
-	private ArrayList<Pelicula> valoracionesPeliculas=new ArrayList<>();
 	
+	//Atributos para funcionalidad 5
+	private Membresia membresia;
+	private Duration duracionMembresiaDias;
+	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
+	
+	//Posiblemente eliminar los siguientes atributos:
+	private ArrayList<String> facturas = new ArrayList<>();
+	private ArrayList<Pelicula> valoracionesPeliculas=new ArrayList<>();
 	
 	//Constructores
 	public Cliente(){

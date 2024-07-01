@@ -16,7 +16,7 @@ import gestionAplicacion.usuario.Ticket;
 
 public class SucursalCine implements Runnable {
 	
-	private static volatile LocalDateTime fechaActual = LocalDateTime.now().withMinute(5);
+	private static volatile LocalDateTime fechaActual = LocalDateTime.now().withHour(10).withMinute(5);
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	
@@ -364,7 +364,7 @@ public class SucursalCine implements Runnable {
 				//Reestablece el estado de interrupción
 				Thread.currentThread().interrupt();
 			}
-			SucursalCine.setFechaActual(fechaActual.plusMinutes(1));
+			SucursalCine.setFechaActual(fechaActual.plusSeconds(10));
 			
 			if (fechaActual.toLocalTime().isBefore(FIN_HORARIO_LABORAL) 
 					&& fechaActual.toLocalTime().isAfter(INICIO_HORARIO_LABORAL) ) {
@@ -381,7 +381,7 @@ public class SucursalCine implements Runnable {
 				//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
 				SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
 				
-				//Implementar método aquí para eliminar TicketsGenerados para aplicar descuentos por productos de forma efectiva (Hecho)
+				//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva (Hecho)
 				ticketsCreados.clear();
 				
 				//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente

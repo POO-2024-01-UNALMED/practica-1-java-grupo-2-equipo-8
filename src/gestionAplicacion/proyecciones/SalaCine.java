@@ -422,6 +422,22 @@ public class SalaCine {
 	}
 	
 	
+	/**
+	 * Description : Este método se encarga de actualizar la sala de cine seleccionada por el usuario durate el método ingresarSalaCine() de la
+	 * funcionalidad 1, con el fin de evitar problemas en la verificación de ingreso al existir la posibilidad de que el hilo principal
+	 * trabaje con una copia local de la sala de cine en cuestión.
+	 * @return <b>SalaCine</b> : Este método se retorna la última versión de esta sala de cine.
+	 * */
+	public SalaCine verificarSalaDeCineSeleccionada() {
+		for (SalaCine salaDeCine : this.ubicacionSede.getSalasDeCine()) {
+			if (salaDeCine.equals(this)) {
+				return salaDeCine;
+			}
+		}
+		
+		return null;
+	}
+	
 	// Getters and Setters
 	public Pelicula getPeliculaEnPresentacion() {
 		return peliculaEnPresentacion;
