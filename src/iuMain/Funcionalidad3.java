@@ -53,7 +53,17 @@ public class Funcionalidad3 {
 						opcionPedido = clienteProceso.getHistorialDePedidos().get(eleccion-1);
 						System.out.print("\nIngrese la calificacion del 1 al 5 que le vas a dar a este producto: ");
 						calificacion1 = Integer.parseInt(sc.nextLine());
-						System.out.println("\n*********Escogiste: " + opcionPedido.getNombre() + " " + opcionPedido.getTamaño() + "  y le diste una valoracion de " + calificacion1 + "***********");
+						if (calificacion1>3) {
+							System.out.println("\n*********Escogiste: " + opcionPedido.getNombre() + " " + opcionPedido.getTamaño() + "  y le diste una valoracion de " + calificacion1 + "por lo tanto esta comida esta catalogada como bien calificada" + "***********");
+						}
+						
+						else if(calificacion1<2.99) {
+							System.out.println("\n*********Escogiste: " + opcionPedido.getNombre() + " " + opcionPedido.getTamaño() + "  y le diste una valoracion de " + calificacion1 + "por lo tanto esta comida esta catalogada como mal calificada" + "***********");
+							}
+						else {
+							System.out.println("Error al calificar la comida, recuerda que es del 1 al 5");
+						}
+						
 					}catch(NumberFormatException e) {
 						System.out.println("\nError, debes ingresar un dato numérico\n");
 						continue;
@@ -86,7 +96,23 @@ public class Funcionalidad3 {
 						opcionPelicula = clienteProceso.getPeliculasDisponiblesParaCalificar().get(eleccion-1);
 						System.out.print("\nIngrese la calificacion del 1 al 5 que le vas a dar a esta pelicula: ");
 						calificacion = Integer.parseInt(sc.nextLine());
-						System.out.println("\n*********Escogiste la pelicula: " + opcionPelicula.getNombre()+ " " + opcionPelicula.getTipoDeFormato()+ "  y le diste una valoracion de " + calificacion + "***********");
+						if (calificacion>3) {
+							System.out.println("\n*********Escogiste la pelicula: " + opcionPelicula.getNombre()+ " " + opcionPelicula.getTipoDeFormato()+ "  y le diste una valoracion de " + calificacion + ", por lo tanto esta pelicula esta catalogada como bien calificada" +"***********");
+						}
+						else if	(calificacion<2.99) {
+						System.out.println("\n*********Escogiste la pelicula: " + opcionPelicula.getNombre()+ " " + opcionPelicula.getTipoDeFormato()+ "  y le diste una valoracion de " + calificacion +", por lo tanto esta pelicula esta catalogada como mal calificada" + "***********");
+						}
+						else {
+							System.out.println("Error al calificar la pelicula, recuerda que es del 1 al 5");
+						}
+				        
+						//Pelicula prueba1 = null;
+						//double calificacionGlobalPeliculas;
+						//calificacionGlobalPeliculas= (prueba1.getValoracion() * prueba1.getTotalEncuestasDeValoracionRealizadas()+calificacion)/prueba1.getTotalEncuestasDeValoracionRealizadas()+1;
+						//System.out.println(calificacionGlobalPeliculas);	
+						
+					
+					
 					}catch(NumberFormatException e) {
 						System.out.println("\nError, debes ingresar un dato numérico\n");
 						continue;
