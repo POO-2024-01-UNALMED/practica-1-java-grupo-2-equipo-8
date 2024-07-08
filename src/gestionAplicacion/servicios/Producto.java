@@ -7,25 +7,10 @@ public class Producto {
 	private String nombre;
 	private String tamaño;
 	private double precio;
-	public double getValoracion() {
-		return valoracion;
-	}
-
-	public void setValoracion(double valoracion) {
-		this.valoracion = valoracion;
-	}
-
-	public int getTotalEncuestasDeValoracionRealizadas() {
-		return totalEncuestasDeValoracionRealizadas;
-	}
-
-	public void setTotalEncuestasDeValoracionRealizadas(int totalEncuestasDeValoracionRealizadas) {
-		this.totalEncuestasDeValoracionRealizadas = totalEncuestasDeValoracionRealizadas;
-	}
-
 	private int cantidad;
-	private double valoracion;
-	private int totalEncuestasDeValoracionRealizadas;
+	//Atributos Valoraciones Comida
+	private double valoracionComida;
+	private int totalEncuestasDeValoracionRealizadasComida;
 	
 	public void descontarPrecioDeBono() {
 		
@@ -52,8 +37,8 @@ public class Producto {
 		this.nombre = nombre;
 		this.tamaño = tamaño;
 		this.cantidad = cantidad;
-		this.valoracion= 4.0;
-		this.totalEncuestasDeValoracionRealizadas = 25;
+		this.valoracionComida= 4.0;
+		this.totalEncuestasDeValoracionRealizadasComida = 25;
 	}
 	
 	public Producto(String nombre,String tamaño,String tipoProducto,double precio,int cantidad,String genero) {
@@ -63,8 +48,8 @@ public class Producto {
 		this.tamaño = tamaño;
 		this.tipoProducto = tipoProducto;
 		this.cantidad = cantidad;
-		this.valoracion= 4.0;
-		this.totalEncuestasDeValoracionRealizadas = 25;
+		this.valoracionComida= 4.0;
+		this.totalEncuestasDeValoracionRealizadasComida = 25;
 	}
 	
 	//Constructor para objetos de Membresia.
@@ -73,8 +58,8 @@ public class Producto {
 		this.nombre = nombre;
 		this.precio = precio;
 		this.cantidad = cantidad;
-		this.valoracion= 4.0;
-		this.totalEncuestasDeValoracionRealizadas = 25;
+		this.valoracionComida= 4.0;
+		this.totalEncuestasDeValoracionRealizadasComida = 25;
 	}
 
 	public String getTipoProducto() {
@@ -123,6 +108,22 @@ public class Producto {
 
 	public void setGenero(String genero) {
 		this.genero = genero;
+	}
+
+	public double getValoracionComida() {
+		return valoracionComida;
+	}
+
+	public void setValoracionComida(double valoracionComida) {
+		this.valoracionComida = valoracionComida;
+	}
+
+	public int getTotalEncuestasDeValoracionRealizadasComida() {
+		return totalEncuestasDeValoracionRealizadasComida;
+	}
+
+	public void setTotalEncuestasDeValoracionRealizadasComida(int totalEncuestasDeValoracionRealizadasComida) {
+		this.totalEncuestasDeValoracionRealizadasComida = totalEncuestasDeValoracionRealizadasComida;
 	}
 	
 }
