@@ -411,6 +411,14 @@ public class Pelicula{
 			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D"));
 		}
 	}
+	public boolean verificarHorariosPeliculas() {
+		if (this.horarios.size() ==0) {
+			return false;
+		}
+		else {
+			return true;
+		}	
+	}
 	
 	// Getters and Setters
 	
