@@ -65,9 +65,17 @@ public class Funcionalidad3 {
 						}
 						
 						Producto prueba=opcionPedido;
+						Servicio prueba3=opcionPedido;
 						double calificacionGlobalPedidos;
 						calificacionGlobalPedidos= (prueba.getValoracionComida() * prueba.getTotalEncuestasDeValoracionRealizadasComida()+calificacion1)/(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
-						
+						//prueba.TotalEncuestasDeValoracionRealizadas()++;
+						prueba3.verificarInventarioProductos();
+						if (prueba3.verificarInventarioProductos()== true ) {
+							continue;
+						}
+						else {
+							System.out.println("Esta pelicula todavia tiene horarios");
+						}
 						
 					}catch(NumberFormatException e) {
 						System.out.println("\nError, debes ingresar un dato numérico\n");
@@ -117,7 +125,7 @@ public class Funcionalidad3 {
 						//prueba1.TotalEncuestasDeValoracionRealizadas()++;
 						prueba1.verificarHorariosPeliculas();
 						if ( prueba1.verificarHorariosPeliculas()==true ) {
-							
+							continue;
 						}
 						else {
 							System.out.println("Esta pelicula todavia tiene horarios");

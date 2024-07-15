@@ -61,6 +61,14 @@ public class Producto {
 		this.valoracionComida= 4.0;
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
 	}
+	public boolean verificarInventarioProductos(Servicio servicio) {
+		if (servicio.getInventario().size() ==0) {
+			return false;
+		}
+		else {
+			return true;
+		}	
+	}
 
 	public String getTipoProducto() {
 		return tipoProducto;
