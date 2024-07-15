@@ -9,9 +9,11 @@ import java.util.Iterator;
 
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
+import gestionAplicacion.servicios.Arkade;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.Servicio;
+import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.Ticket;
 
 public class SucursalCine implements Runnable {
@@ -31,7 +33,7 @@ public class SucursalCine implements Runnable {
 	private ArrayList<Ticket> ticketsCreados = new ArrayList<>();
 	private ArrayList<Servicio> servicios = new ArrayList<>();
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
-	
+	private ArrayList<TarjetaCinemar> InventarioTarjetasCinemar = new ArrayList<>();
 	
 	//private static ArrayList<Cliente> clientes = new ArrayList<>();
 	
@@ -491,5 +493,15 @@ public class SucursalCine implements Runnable {
 	public void setServicios(ArrayList<Servicio> servicios) {
 		this.servicios = servicios;
 	}
+
+	public ArrayList<TarjetaCinemar> getInventarioTarjetasCinemar() {
+		return InventarioTarjetasCinemar;
+	}
+
+	public void setInventarioTarjetasCinemar(ArrayList<TarjetaCinemar> inventarioTarjetasCinemar) {
+		InventarioTarjetasCinemar = inventarioTarjetasCinemar;
+	}
+
+
 	
 }

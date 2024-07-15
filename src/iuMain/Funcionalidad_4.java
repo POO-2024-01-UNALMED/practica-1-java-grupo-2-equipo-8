@@ -49,7 +49,7 @@ public class Funcionalidad_4 {
 					espera(1000);
 					int option = (int)Administrador.readLong();
 					if (option==1) {
-						if (Arkade.verificarTarjetasEnInventario()) { // se verifica si hay tarjetas disponibles por vender en el array
+						if (Arkade.verificarTarjetasEnInventario(ClienteActual.getCineActual())) { // se verifica si hay tarjetas disponibles por vender en el array
 							barraCarga("Adquiriendo tarjeta");
 							System.out.println("\n•El precio de la tarjeta Cinemar es de $5000\n•Este valor sera descontado al saldo de su tarjeta");
 							espera(2000);

@@ -1,5 +1,6 @@
 package iuMain;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
@@ -59,9 +60,6 @@ public class Administrador {
 	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
 	static Arkade game5= new Arkade("Hang Man", 7500, "Drama");
 	
-	//static TarjetaCinemar cuenta1 = new TarjetaCinemar();
-	//static TarjetaCinemar cuenta2 = new TarjetaCinemar();
-	//static TarjetaCinemar cuenta3 = new TarjetaCinemar();
 	
 	static SalaCine salaDeCine1_1 = new SalaCine(1, "2D", sucursalCine1);
 	static SalaCine salaDeCine1_2 = new SalaCine(2, "3D", sucursalCine1);
@@ -134,7 +132,13 @@ public class Administrador {
 	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 300000, 0.15);
 	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",5000000, 0);
 	
-	static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000, false, cliente4);
+	//static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000,cliente4);
+	static TarjetaCinemar tarjeta1 = new TarjetaCinemar();static TarjetaCinemar tarjeta2 = new TarjetaCinemar();static TarjetaCinemar tarjeta3 = new TarjetaCinemar();	
+	static TarjetaCinemar tarjeta4 = new TarjetaCinemar();static TarjetaCinemar tarjeta5 = new TarjetaCinemar();static TarjetaCinemar tarjeta6 = new TarjetaCinemar();
+	static TarjetaCinemar tarjeta7 = new TarjetaCinemar();static TarjetaCinemar tarjeta8 = new TarjetaCinemar();static TarjetaCinemar tarjeta9 = new TarjetaCinemar();
+	static TarjetaCinemar tarjeta10 = new TarjetaCinemar();static TarjetaCinemar tarjeta11 = new TarjetaCinemar();static TarjetaCinemar tarjeta12 = new TarjetaCinemar();
+	static TarjetaCinemar tarjeta13 = new TarjetaCinemar();static TarjetaCinemar tarjeta14 = new TarjetaCinemar();static TarjetaCinemar tarjeta15 = new TarjetaCinemar();	
+	
 	
 	public static void main(String[] args) {
 		
@@ -203,7 +207,7 @@ public class Administrador {
 			cliente5.getValoracionesPeliculas().add(pelicula1_3);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
-			cliente4.setCuenta(tarjeta1);
+			//cliente4.setCuenta(tarjeta1);
 			Membresia.asignarTipoMembresia();
 //			for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
 //				MetodoPago.metodoPagoPorTipo(metodoPago);
@@ -241,6 +245,12 @@ public class Administrador {
 			MetodoPago.asignarMetodosDePago(cliente2);
 			MetodoPago.asignarMetodosDePago(cliente3);
 			MetodoPago.asignarMetodosDePago(cliente4);
+			
+			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
+			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));
+			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15));
+			//System.out.println(Arkade.getTarjetasEnInventario().size());
+			
 			
 			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
 			//System.out.println(tarjeta.getSaldo());

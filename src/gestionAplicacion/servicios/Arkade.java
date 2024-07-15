@@ -13,7 +13,7 @@ public class Arkade {
 	
 	//Atributos
 	private String nombreServicio;
-	private static ArrayList<TarjetaCinemar> tarjetasEnInventario = new ArrayList<>();
+	//private static ArrayList<TarjetaCinemar> tarjetasEnInventario = new ArrayList<>();
 	private static ArrayList<Arkade> juegos = new ArrayList<>();
 	private double valorServicio;
 	private static final double puntuacionMaxima = 10.0;
@@ -38,9 +38,9 @@ public class Arkade {
 	*@return <b>boolean</b> :  retorna true o false si hay o no tarjetas en inventario.
 	*/
 	
-	public static boolean verificarTarjetasEnInventario() {
+	public static boolean verificarTarjetasEnInventario(SucursalCine cine) {
 		boolean value= false;
-		if (tarjetasEnInventario.size()>0) {
+		if (cine.getInventarioTarjetasCinemar().size()>0) {
 			value = true;
 		}
 		return value;
@@ -53,11 +53,10 @@ public class Arkade {
 	
 	*/
 	public static void asociarTarjetaCliente(Cliente cliente) {
-		tarjetasEnInventario.get(0).setDueno(cliente);
-		tarjetasEnInventario.get(0).setEstado(false);
-		tarjetasEnInventario.get(0).setSaldo(0);
-		cliente.setCuenta(tarjetasEnInventario.get(0));
-		tarjetasEnInventario.remove(0);
+		cliente.getCineActual().getInventarioTarjetasCinemar().get(0).setDueno(cliente);
+		cliente.getCineActual().getInventarioTarjetasCinemar().get(0).setSaldo(0);
+		cliente.setCuenta(cliente.getCineActual().getInventarioTarjetasCinemar().get(0));
+		cliente.getCineActual().getInventarioTarjetasCinemar().remove(0);
 	}
 	
 	
@@ -254,13 +253,13 @@ public class Arkade {
 	
 	
 	//getters y setters
-	public static ArrayList<TarjetaCinemar> getTarjetasEnInventario() {
-		return tarjetasEnInventario;
-	}
-
-	public static void setTarjetasEnInventario(ArrayList<TarjetaCinemar> tarjetasEnInventario) {
-		Arkade.tarjetasEnInventario = tarjetasEnInventario;
-	}
+//	public static ArrayList<TarjetaCinemar> getTarjetasEnInventario() {
+//		return tarjetasEnInventario;
+//	}
+//
+//	public static void setTarjetasEnInventario(ArrayList<TarjetaCinemar> tarjetasEnInventario) {
+//		Arkade.tarjetasEnInventario = tarjetasEnInventario;
+//	}
 
 	public String getNombreServicio() {
 		return nombreServicio;

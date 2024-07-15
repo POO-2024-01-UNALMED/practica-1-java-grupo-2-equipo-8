@@ -1,27 +1,30 @@
 package gestionAplicacion.usuario;
 
+import java.util.ArrayList;
+
 import gestionAplicacion.servicios.Arkade;
 
 public class TarjetaCinemar implements IBuyable {
 	
 	//Atributos
 	private double saldo;
-	private boolean estado;
 	private Cliente dueno;
 	
 	
 	//constructores
-	public TarjetaCinemar(){Arkade.getTarjetasEnInventario().add(this);}
+	public TarjetaCinemar(){}
 	
-	public TarjetaCinemar(int saldo, boolean estado, Cliente dueno) {
-		super();
+	public TarjetaCinemar(int saldo,Cliente dueno) {
+
 		this.saldo = saldo;
-		this.estado = estado;
 		this.dueno = dueno;
-		Arkade.getTarjetasEnInventario().add(this);
+		
 	}
 	
 	//metodos
+	
+
+	
 	/**
 	 * Description : Este método se encarga de ingresar el saldo dado a la tarjeta cinemar
 	 * @param saldo : Este método recibe como parámetro el saldo a ingresar
@@ -47,9 +50,6 @@ public class TarjetaCinemar implements IBuyable {
 		return saldo;
 	}
 
-	public boolean isEstado() {
-		return estado;
-	}
 
 	public Cliente getDueno() {
 		return dueno;
@@ -59,9 +59,6 @@ public class TarjetaCinemar implements IBuyable {
 		this.saldo = saldo;
 	}
 
-	public void setEstado(boolean estado) {
-		this.estado = estado;
-	}
 
 	public void setDueno(Cliente dueno) {
 		this.dueno = dueno;
