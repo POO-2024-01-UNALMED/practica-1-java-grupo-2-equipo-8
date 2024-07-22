@@ -368,24 +368,21 @@ public class Membresia implements IBuyable{
 		//Se pasa la referencia de la membresia al cliente que lo compró y se agrega este último al array de clientes en Membresia
 		this.getClientes().add(cliente);
 		
-		//Creamos la factura y se la asociamos al cliente
-		this.factura(cliente);
 	}
 		
 
 
 
 	@Override
-	public void factura(Cliente cliente) {
-		String factura = "=== Factura de compra ===\n" +
-				"Nombre dueño: " + cliente.getNombre() + "\n" +
-				"Documento: " + cliente.getDocumento() + "\n" +
-				"Membresia: " + cliente.getMembresia().getNombre()+ "\n" +
-				"Categoria: " + cliente.getMembresia().getCategoria() + "\n" +
-				"Tipo: " + cliente.getMembresia().getTipoMembresia() + "\n" +
-				"Duración: " + cliente.getMembresia().getDuracionMembresiaDias()+ " dias.\n" +
-				"Precio de compra: " + cliente.getMembresia().getValorSuscripcionMensual() + "\n";
-		cliente.getFacturas().add(factura);
+	public String factura() {
+		return  "=== Factura de compra ===\n" +
+//				"Nombre dueño: " + cliente.getNombre() + "\n" +
+//				"Documento: " + cliente.getDocumento() + "\n" +
+				"Membresia: " + this.getNombre()+ "\n" +
+				"Categoria: " + this.getCategoria() + "\n" +
+				"Tipo: " + this.getTipoMembresia() + "\n" +
+				"Duración: " + this.getDuracionMembresiaDias()+ " dias.\n" +
+				"Precio de compra: " + this.getValorSuscripcionMensual() + "\n";
 	}
 	
 	

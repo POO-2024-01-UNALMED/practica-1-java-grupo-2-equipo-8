@@ -124,8 +124,9 @@ public class SalaCine implements Serializable{
 	}
 	
 	/**
-	 * Description : Este método se encarga de generar un listado de la salas de cine con información relevante de estas,
+	 * Description : Este método se encarga de geneerar un listado de la salas de cine con información relevante de estas,
 	 * con el fin de que el usuario elija una de las opciones disponibles para ingresar.
+	 * @param salasDeCine : Este método recibe como parámetro un listado de salas de cine disponibles (De tipo ArrayList<SalaCine>)
 	 * @return <b>String</b>: Retorna la lista de las salas de cine disponibles.
 	 * */
 	public static String mostrarSalaCine(ArrayList<SalaCine> salasDeCine) {

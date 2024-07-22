@@ -82,9 +82,6 @@ public class Ticket implements IBuyable{
 		//Se crea un apuntador del ticket en el array de tickets generados de la sucursal de cine
 		cliente.getCineActual().getTicketsCreados().add(this);
 		
-		//Creamos la factura y se la asociamos al cliente
-		this.factura(cliente);
-		
 		//Proceso para funcionalidad 4
 		String codigoArkade = this.generarCodigoTicket();
 		//Arkade.getCodigosGenerados().add(codigoArkade);
@@ -96,12 +93,11 @@ public class Ticket implements IBuyable{
 	 * @Override
 	 * Description: Este método se encarga de pasar la factura de la compra del ticket al array de facturas del usuario que realizó la compra
 	 * además, retorna un string que contiene toda la información del ticket en forma de factura.
-	 * @param cliente : Este método solicita un cliente de tipo Cliente como parámetro con el fin de asociarle a este la factura
-	 * que verifica su compra realizada
+	 * @return <b>String</b> : Este método retorna un String que representa la factura de compra con el fin de ser mostrada en pantalla
+	 * luego de realizar una compra.
 	 * */
-	public void factura(Cliente cliente) {
-		String factura = 
-				"========= Factura Ticket =========\n" +
+	public String factura() {
+		return	"========= Factura Ticket =========\n" +
 				"Nombre dueño : " + this.dueno.getNombre() + "\n" +
 				"Documento : " + this.dueno.getDocumento() + "\n" +
 				"Pelicula : " + this.pelicula.getNombre() + "\n" +
@@ -112,7 +108,6 @@ public class Ticket implements IBuyable{
 				"Valor ticket (IVA incluido): " + this.precio + "\n" + 
 				"Fecha de compra: " + SucursalCine.getFechaActual().withNano(0);
 				
-		cliente.getFacturas().add(factura);
 	}
 	
 	/**

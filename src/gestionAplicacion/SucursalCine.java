@@ -357,9 +357,13 @@ public class SucursalCine implements Runnable, Serializable {
 	 * semanal).
 	 * */
 	public void run() {
-		
+		//Posiblemente se deban serializar estos atributos
 		LocalDate fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
 		LocalDate fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
+		
+		//Se ejecuta este método con el fin de evitar problemas con el serializador, en caso de que guarde una película que no tiene más horarios
+		//de presentación ese día. Luego al día siguiente, se ejecuta de nuevo el programa, sigue marcada como false, cuando en realidad si tiene horarios para ese día.
+		SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
 		
 		while(!Thread.currentThread().isInterrupted()) {
 			
@@ -387,6 +391,7 @@ public class SucursalCine implements Runnable, Serializable {
 				SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
 				
 				//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva (Hecho)
+				//Con el serializador presenta problemas, implementar otra solución
 				ticketsCreados.clear();
 				
 				//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente

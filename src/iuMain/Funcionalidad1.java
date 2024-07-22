@@ -20,6 +20,8 @@ public class Funcionalidad1 {
 	 * Description: Este método se encarga mostrar en pantalla los procesos de la funcionalidad 1, para que el cliente elija uno de ellos, 
 	 * una vez termine su interacción, el cliente regresará a este mismo menú, en caso de que quiera regresar al menú principal termina el
 	 * ciclo y se ejecuta el menú inicial.
+	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo cliente) que realizará algún proceso
+	 * del sistema de proyeciones.
 	 * */
 	static void ingresarASistemaDeProyecciones(Cliente clienteProceso) {
 		
@@ -62,7 +64,8 @@ public class Funcionalidad1 {
 	 * 
 	 * 1. En caso de que sí, se le pregunta al cliente si quiere comprar la película en ese horario, dada una respuesta positiva, con la sala de cine
 	 * previamente encontrada realizamos el proceso de reserva del ticket (Mostramos los asientos de la sala de cine, 
-	 * le pedimos al cliente que seleccione el asiento, se valida su disponibilidad, se realiza el proceso de pago y se asigna el ticket al cliente).
+	 * le pedimos al cliente que seleccione el asiento, se valida su disponibilidad, se realiza el proceso de pago y se asigna el ticket al cliente)
+	 * (Para este proceso cuenta con un tiempo límite de 20 minutos).
 	 * 
 	 * 2. En caso de que haya decidido no comprar en ese horario o directamente la película no estaba en presentación, mostramos los horarios 
 	 * de la película, el usuario selecciona uno de ellos y realizamos el proceso de reserva del ticket (Mostramos los asientos de la sala de 
@@ -70,8 +73,6 @@ public class Funcionalidad1 {
 	 * se realiza el proceso de pago y se asigna el ticket al cliente).
 	 * 
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo cliente) que desea realizar la reserva de un ticket.
-	 * @param sucursalCineProceso: Este método recibe como parámetro el cine (De tipo SucursalCine) que se seleccionó luego del proceso de login 
-	 * y con este se hacen las búsquedas para mostrar en pantalla las películas en cartelera y las salas de cine disponibles.
 	 * */
 	static void reservarTicket(Cliente clienteProceso) {
 		
@@ -107,8 +108,7 @@ public class Funcionalidad1 {
 			
 			//Funcionalidad reserva de ticket
 			
-			//Mostramos una cartelera personalizada de acuerdo a la edad del cliente, si la película tiene horarios disponibles o se encuentra en presentación 
-			// Y las recomendaciones en caso de que el cliente tenga membresía(futuramente la membresía)
+			//Mostramos una cartelera personalizada de acuerdo a la edad del cliente, si la película tiene horarios disponibles o se encuentra en presentación
 			ArrayList<Pelicula> carteleraPersonalizadaProceso = Pelicula.filtrarCarteleraPorCliente(clienteProceso, clienteProceso.getCineActual());
 			
 			//Verificamos si el cliente tiene acceso para al menos una película
@@ -116,8 +116,12 @@ public class Funcionalidad1 {
 				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)");
 				Administrador.inicio(clienteProceso);
 			}
+			
+			//Tomamos los nombres de las películas para mostrarlos en pantalla
 			ArrayList<String> nombresPeliculasCarteleraPersonalizadaProceso = Pelicula.filtrarNombrePeliculas(carteleraPersonalizadaProceso);
-
+			
+			//Tomamos los nombres de las películas cuyo género coincide con el género más visto por el cliente con el fin de realizar
+			//el proceso de recomendación de películas en caso de que el cliente tenga membresía.
 			ArrayList<String> peliculasRecomendadas = Pelicula.filtrarPorGenero(carteleraPersonalizadaProceso, clienteProceso.generoMasVisto());
 			
 			//Seleccionamos una película
@@ -149,7 +153,6 @@ public class Funcionalidad1 {
 					if ((opcionMenu > 0 && opcionMenu <= nombresPeliculasCarteleraPersonalizadaProceso.size())) {
 						//Obtenemos el nombre de la película seleccionada por el cliente
 						nombrePelicula = nombresPeliculasCarteleraPersonalizadaProceso.get(opcionMenu - 1);
-						//Rompemos el bucle
 						casoValido = true;
 					}else if (opcionMenu == Integer.valueOf(nombresPeliculasCarteleraPersonalizadaProceso.size()) + 1) {
 						//Volvemos al menú del sistema de proyecciones
@@ -166,7 +169,7 @@ public class Funcionalidad1 {
 					break;
 				}
 				
-				//Buscamos las películas que coinciden con el nombre seleccionado con el cliente
+				//Buscamos las películas que coinciden con el nombre de película seleccionado con el cliente
 				ArrayList<Pelicula> peliculasProceso = Pelicula.filtrarPorNombreDePelicula(nombrePelicula, carteleraPersonalizadaProceso);
 				
 				//Mostramos información del nombre de la película seleccionada
@@ -280,7 +283,7 @@ public class Funcionalidad1 {
 								//Se piden los datos de reserva de ticket en la sala de cine en cuestión
 								
 								//El cliente elige el asiento de la sala de cine que tiene la película seleccionada en presentación
-								numeroAsientoProceso = seleccionarAsiento(salaDeCineProceso, nombrePelicula);
+								numeroAsientoProceso = seleccionarAsiento(salaDeCineProceso, peliculaProceso);
 								//Revisamos que el asiento haya sido seleccionado con éxito
 								if (numeroAsientoProceso == null) {
 									volverAlMenu = true;
@@ -325,7 +328,7 @@ public class Funcionalidad1 {
 									//Se piden los datos de reserva de ticket en la sala de cine en cuestión
 									
 									//El cliente elige el asiento de la sala de cine que tiene la película seleccionada en presentación
-									numeroAsientoProceso = seleccionarAsiento(salaDeCineProceso, nombrePelicula);
+									numeroAsientoProceso = seleccionarAsiento(salaDeCineProceso, peliculaProceso);
 									//Revisamos que el asiento haya sido seleccionado con éxito
 									if (numeroAsientoProceso == null) {
 										volverAlMenu = true;
@@ -370,7 +373,7 @@ public class Funcionalidad1 {
 				}else {
 					System.out.println("La película seleccionada se encuentra únicamente en presentación o no tiene asientos disponibles." + 
 					"\n(Serás redireccionado al menú inicial de este proceso...)");
-					reservarTicket(clienteProceso);
+					continue;
 				}
 				
 			}
@@ -409,7 +412,7 @@ public class Funcionalidad1 {
 				
 				//Revisamos si el horario de la película en presentación ha sido modificado, comparando que el nombre sea el mismo
 				// y el horario de presentación más la duración de la película no exceda a la fecha actual
-				if ( !verificarIntegridadHorarioSeleccionado(salaDeCineProceso, nombrePelicula) ) {
+				if ( !verificarIntegridadHorarioSeleccionado(salaDeCineProceso, peliculaProceso) ) {
 					System.out.println("\nEl tiempo límite de compra de una película en presentación ha sido excedido (20 minutos a partir del inicio de la proyección)." 
 					+ "\nLe solicitamos esperar a la siguiente presentación, serás redirigido al menú del sistema de proyecciones. ");
 					break;
@@ -526,7 +529,7 @@ public class Funcionalidad1 {
 					
 					//Revisamos si el horario de la película en presentación ha sido modificado, comparando que el nombre sea el mismo
 					// y el horario de presentación más la duración de la película no exceda a la fecha actual
-					if ( !verificarIntegridadHorarioSeleccionado(salaDeCineProceso, nombrePelicula) ) {
+					if ( !verificarIntegridadHorarioSeleccionado(salaDeCineProceso, peliculaProceso) ) {
 						System.out.println("\nEl proceso de compra no se ha llevado a cabo, debido a que ha excedido el tiempo límite " + 
 						"de compra de una película en presentación\n(20 minutos a partir del inicio de la proyección).\nTerminando proceso de compra...");
 						break;
@@ -545,7 +548,7 @@ public class Funcionalidad1 {
 					
 				}
 				
-				//Realizamos el pago y sumamos 
+				//Realizamos el pago y sumamos el precio acumulado para mostrar el valor real del ticket
 				precioAcumuladoTicketProceso = precioAcumuladoTicketProceso + precioTicketProceso * (1 - metodoPagoProceso.getDescuentoAsociado());
 				precioTicketProceso = metodoPagoProceso.realizarPago(precioTicketProceso, clienteProceso);
 				
@@ -572,7 +575,7 @@ public class Funcionalidad1 {
 						ticketProceso.procesarPagoRealizado(clienteProceso);
 						salaDeCineProceso.cambiarDisponibilidadAsientoLibre(numeroAsientoProceso);
 						
-						System.out.println( clienteProceso.getFacturas().get(clienteProceso.getFacturas().size() - 1) );
+						System.out.println( ticketProceso.factura() );
 						pagoRealizado = true;
 						
 					}else {
@@ -600,7 +603,7 @@ public class Funcionalidad1 {
 						int columnaProceso = Character.getNumericValue(numeroAsientoProceso.charAt(2));
 						peliculaProceso.modificarSalaVirtual(horarioProceso, filaProceso, columnaProceso);
 						
-						System.out.println( clienteProceso.getFacturas().get( clienteProceso.getFacturas().size() - 1 ) );
+						System.out.println( ticketProceso.factura() );
 						pagoRealizado = true;
 						
 					}else {
@@ -634,7 +637,7 @@ public class Funcionalidad1 {
 	 * @param clienteProceso : Este método recibe como parámetro un cliente (De tipo cliente), con el fin de que, 
 	 * dado el caso, el cliente quiera regresar al menú del sistema de proyeccciones, pueda hacerlo.
 	 * @param peliculaProceso : Este método recibe como parámetro una película (De tipo película) obtenido durante el proceso de la reserva de ticket,
-	 * para que de allí podamos mostrar en pantalla las llaves de su diccionario de horarios.
+	 * para que de esta podamos obtener su array de horarios y su correspondiente sala virtual obtenida del array de asientos virtuales.
 	 * @param horariosPeliculaProceso : Este método recibe como parámetro los horarios disponibles de la película (De tipo ArrayList<LocalDateTime>)
 	 * obtenido durante el proceso de la reserva de ticket.
 	 * @return <b>LocalDateTime</b> : Este método retorna el horario seleccionado por el cliente, para continuar con el proceso de la reserva de ticket.
@@ -704,9 +707,9 @@ public class Funcionalidad1 {
 	}
 	
 	/**
-	 * Description: Este método se encarga de seleccionar el número de asiento del cliente para ver una película en un horario previamente seleccionado, 
-	 * para hacer esto, Se muestra en pantalla los asientos de la sala de cine virtual, con su respectiva disponibilidad en el horario
-	 * de la película seleccionado por el cliente, tras esto, el cliente elige la fila, luego la columna, se valida si el asiento en cuestión 
+	 * Description: Este método se encarga de seleccionar el número de asiento del cliente para ver una película en un horario previamente seleccionado
+	 * por el cliente, para hacer esto, se muestra en pantalla los asientos de la sala de cine virtual, con su respectiva disponibilidad,
+	 * tras esto, el cliente elige la fila, luego la columna, se valida si el asiento en cuestión 
 	 * se encuentra disponible y una vez cumplida la verificación, retornamos el número del asiento seleccionado.
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente) seleccionado en el proceso de login.
 	 * @param horarioProceso : Este método recibe como parámetro el horario (De tipo LocalDateTime) seleccionado durante el proceso de reserva de ticket.
@@ -790,7 +793,7 @@ public class Funcionalidad1 {
 				//Revisamos si el horario aún se encuentra disponible
 				try {
 					
-					if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(peliculaProceso.getAsientosVirtuales().get(peliculaProceso.getHorarios().indexOf(horarioProceso))[0].length))){
+					if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(peliculaProceso.getAsientosVirtuales().get(peliculaProceso.getHorarios().indexOf(horarioProceso))[filaProceso - 1].length))){
 						System.out.println("\nLa columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
 						continue;
 					}
@@ -842,13 +845,16 @@ public class Funcionalidad1 {
 	/**
 	 * Description: Este método se encarga de seleccionar el número de asiento del cliente para ver una película que en estos momentos se encuentra en
 	 * presentación, para hacer esto, se muestra en pantalla los asientos de la sala de cine con su respectiva disponibilidad, el cliente elige la fila
-	 * luego la columna, se valida si el asiento en cuestión se encuentra disponible y una vez cumplida la verificación,
+	 * luego la columna, se valida si el asiento en cuestión se encuentra disponible y también si la pelicula aún se encuentra en presentación y
+	 * no supera el tiempo límite de realizar la reserva de ticket de una película en presentación (20 minutos) y una vez cumplida la verificación,
 	 * retornamos el número del asiento seleccionado.
 	 * @param salaDeCinePresentacionProceso : Este método recibe como parámetro la sala de cine en la cuál se encuentra la película seleccionada durante
 	 * el proceso de la reserva de ticket.
+	 * @param peliculaProceso: Este método recibe como parámetro la película (De tipo Película) seleccionada por el usuario durante el proceso de reserva,
+	 * con el fin de validar si esta aún se encuentra en presentación.
 	 * @return <b>String</b> : Este método retorna un String que corresponde al número de asiento seleccionado por el cliente.
 	 * */
-	static String seleccionarAsiento(SalaCine salaDeCinePresentacionProceso, String nombrePelicula) {
+	static String seleccionarAsiento(SalaCine salaDeCinePresentacionProceso, Pelicula peliculaProceso) {
 		
 		boolean casoValidoConfirmacion = false;
 		boolean casoValido = false;
@@ -905,7 +911,7 @@ public class Funcionalidad1 {
 					continue;
 				}
 						
-				if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos()[0].length))){
+				if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos()[filaProceso - 1].length))){
 					System.out.println("\nLa columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
 					continue;
 				}
@@ -926,7 +932,7 @@ public class Funcionalidad1 {
 		
 			//Revisamos si el horario de la película en presentación ha sido modificado, comparando que el nombre sea el mismo
 			// y el horario de presentación más la duración de la película no exceda a la fecha actual
-			if(!verificarIntegridadHorarioSeleccionado(salaDeCinePresentacionProceso, nombrePelicula)) {
+			if(!verificarIntegridadHorarioSeleccionado(salaDeCinePresentacionProceso, peliculaProceso)) {
 				System.out.println("\nEl tiempo límite de compra de una película en presentación ha sido excedido (20 minutos a partir del inicio de la proyección).\nLe solicitamos esperar a la siguiente presentación ");
 				break;
 			}
@@ -1088,7 +1094,6 @@ public class Funcionalidad1 {
 				
 				//Rompemos la lógica de caso válido de ingreso a la sala de cine
 				if(volverAlMenu) {
-					
 					break;
 				}
 				
@@ -1222,14 +1227,12 @@ public class Funcionalidad1 {
 					continue;
 				}
 				
-				if (opcionMenu == ticketsDisponiblesParaUsar.size() + 1) {
+				if (opcionMenu > 0 && opcionMenu <= ticketsDisponiblesParaUsar.size()) {
+					ticketParaUsar = ticketsDisponiblesParaUsar.get(opcionMenu - 1);
+				}else if (opcionMenu == ticketsDisponiblesParaUsar.size() + 1) {
 					volverAlMenu = true;
 					break;
-				}
-				
-				try {
-					ticketParaUsar = ticketsDisponiblesParaUsar.get(opcionMenu - 1);
-				}catch(IndexOutOfBoundsException e) {
+				}else {
 					System.out.println("Error, por favor elige uno de los tickets disponibles");
 					continue;
 				}
@@ -1315,11 +1318,15 @@ public class Funcionalidad1 {
 	 * por el avance del tiempo, para esto revisamos dos cosas: 
 	 * 1. El horario de la película en presentación de la sala de cine más 20 minutos (15 minutos de la posibilidad de compra y 5 minutos 
 	 * para realizar el proceso) es anterior a la fecha actual.
-	 * 2. El nombre de la película seleccionado por el cliente es igual al nombre de la película que se encuentra en presentación.
+	 * 2. La película seleccionada por el usuario durante el proceso corresponde a la película que se encuentra en presentación.
+	 * @param salaDeCineProceso : Este método recibe como parámetro la sala de cine (De tipo SalaCine) donde está siendo presentada la película 
+	 * seleccionada por el cliente.
+	 * @param peliculaProceso : Este método recibe como parámetro la pelicula (De tipo Pelicula) seleccionada por el usuario durante el proceso
+	 * de reserva de ticket.
 	 * @return <b>boolean</b> : Este método retorna el estado de la validación para tomar determinadas acciones respecto a esta.
 	 * */
-	static boolean verificarIntegridadHorarioSeleccionado(SalaCine salaDeCineProceso, String nombrePelicula) {
-		if((salaDeCineProceso.getPeliculaEnPresentacion().getNombre().equals(nombrePelicula)) 
+	static boolean verificarIntegridadHorarioSeleccionado(SalaCine salaDeCineProceso, Pelicula peliculaProceso) {
+		if((salaDeCineProceso.getPeliculaEnPresentacion().equals(peliculaProceso)) 
 		&& (salaDeCineProceso.getHorarioPeliculaEnPresentacion().plus(Duration.ofMinutes(20)).isAfter(SucursalCine.getFechaActual()))) {
 			return true;
 		}
@@ -1331,6 +1338,10 @@ public class Funcionalidad1 {
 	 * Description : Este método se encarga de verificar si el proceso de reserva de ticket, desde un horario que no se encuentra en presentación,
 	 * ha sido afectado por el avance del tiempo, para esto, se verifica si en el array de horarios de la película, se encuentra el horario seleccionado
 	 * por el cliente.
+	 * @param peliculaProceso : Este método recibe como parámetro la pelicula (De tipo Pelicula) seleccionada por el usuario durante el proceso
+	 * de reserva de ticket.
+	 * @param horarioProceso : Este método recibe como parámetro el horario (De tipo LocalDateTime) seleccionado por el usuario durante el proceso 
+	 * de reserva de ticket.
 	 * @return <b>boolean</b> : Este método retorna el estado de la validación para tomar determinadas acciones respecto a esta.
 	 * */
 	static boolean verificarIntegridadHorarioSeleccionado(Pelicula peliculaProceso, LocalDateTime horarioProceso) {
@@ -1344,23 +1355,10 @@ public class Funcionalidad1 {
 	
 }
 
-//1. Método de avanzar la hora automáticamente (Investigar el uso de threads e implementarlo) (Hecho, investigar más, (Hecho) y mejorar la lógica durante
-// la jornada laboral, investigar una forma de que esta se ejecute solo cuando sea necesaria no cada segundo (imposible), añadir a la verificación de tiempo
-// de actualizarSalasDeCine el tiempo de limpieza de sala (Hecho) y hacer testeos) (Hecho)
-//1.1. Solucionar error de actualización de horarios a las 10am cuando arranca el código (Solución parcial en el método crearHorarios SucursalCine, revisar lógica) (Hecho)
-//1.2. Depurar código en la clase SucursalCine (Revisar utilidad del método peliculaMenorDuracion (Eliminado)) (Hecho)
-//1.3. Resolver búcle luego de acceder a los servicios de sistema de proyecciones de película, sistema de reserva y luego regresar (Hecho)
-//1.4. Resolver errores de actualización de película de forma innecesaria, revisar si es error en la creación de horarios o en la lógica de la actualización (Hecho)
-//1.5. Poner un interruptor para sala de cine en caso de que no tenga más horarios para presentar ese día y ahorrar peticiones en el hilo. (Hecho)
-
-//Próxima tarea:
-//1.6. Crear método que se encarga de validar el tiempo que lleva un usuario dentro de un menú en la UI para evitar problemas con el avance de tiempo.
-// Alternativa: Antes de usar un ticket para usar en sala de espera y sala de cine verificar si no ha caducado, posiblemente hacer esto con los 
-// horarios de las películas y con las salas de cine que presentan una película para en caso de encontrar una inconsistencia respecto a esto, volver a
-// evaluar la posibilidad de uso de este servicio y reiniciar su lógica. (Hecho)
-
+//1. Posible error luego de serializaren en el momento de terminar de ejecutar el programa el día anterior cuando ya las salas de cine no tienen más horarios para ese día y luego volverlo a ejecutar el
+//el día siguiente, el atributo seguirá falso y no se podrán actualizar las películas ese día (Hecho).
 //2. Hacer Tests de la lógica de la funcionalidad 1
-//3. Incluir el código de la clase Funcionaliadad 1 en la clase Administrador y Estudiar serialización
+//3. Incluir el código de la clase Funcionalidad 1 en la clase Administrador y Estudiar serialización
 //4. Serializar
 //5. Hacer test de serialización
 //6. Empezar el Google Document con el manual de usuario y la documentación

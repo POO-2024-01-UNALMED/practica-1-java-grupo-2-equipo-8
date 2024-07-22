@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class Pelicula implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
+	
 	private String nombre;
 	private int precio;
 	private String genero;
@@ -100,7 +101,7 @@ public class Pelicula implements Serializable{
 	 * @param filtroNombrePeliculas : Este método recibe como parámetro los nombres de las películas sin repetición (De tipo ArrayList<Stirng>)
 	 * obtenidos de realizar el filtro de peliculas por nombre.
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente), con el fin de determinar si tiene o no membresía.
-	 * @param nombrePeliculaRecomendadas : Este método recibe como parámetro los nombres de las películas sin repeteción (De tipo ArrayList<String>)
+	 * @param nombrePeliculasRecomendadas : Este método recibe como parámetro los nombres de las películas sin repeteción (De tipo ArrayList<String>)
 	 * obtenidos luego de realizar el filtro por género de película más visto por el cliente
 	 * @return <b>String</b> : Este método retorna una lista de los nombres de las películas para ser presentadas por pantalla, con el fin de que 
 	 * el usuario elija una de estas (En caso de que el cliente tenga membresía se realiza una recomendación según el género de película que más ha visto).
@@ -320,6 +321,7 @@ public class Pelicula implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de mostrar un listado con los horarios disponibles de la pelicula solicitada por el cliente.
+	 * @param horariosPelicula : Este método recibe como parámetro el listado de horarios (ArrayList<LocalDateTime>) disponibles.
 	 * @return <b>String</b> : Retorna un string que contiene los horarios disponibles de la película de forma enumerada y organizada 
 	 * para mostrar en pantalla.
 	 * */

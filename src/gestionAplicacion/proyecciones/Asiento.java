@@ -8,10 +8,8 @@ public class Asiento implements Serializable {
 	
 	private String numeroAsiento;
 	private boolean disponibilidad = true;
-	private static int AsientosCreados;
 	
 	public Asiento(int fila, int columna){
-		++AsientosCreados;
 		this.numeroAsiento = (fila + 1) + "-" + (columna + 1);
 	}
 	public String getNumeroAsiento() {
@@ -20,14 +18,6 @@ public class Asiento implements Serializable {
 
 	public void setNumeroAsiento(String numeroAsiento) {
 		this.numeroAsiento = numeroAsiento;
-	}
-
-	public static int getAsientosCreados() {
-		return AsientosCreados;
-	}
-
-	public static void setAsientosCreados(int asientosCreados) {
-		AsientosCreados = asientosCreados;
 	}
 
 	public boolean isDisponibilidad() {

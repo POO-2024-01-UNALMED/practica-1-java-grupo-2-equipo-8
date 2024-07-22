@@ -1,5 +1,6 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.Iterator;
 
@@ -9,7 +10,9 @@ import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 //import gestionAplicacion.servicios.Servicio;
 
-public class Cliente {
+public class Cliente implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	//Atributos
 	private String nombre;
@@ -17,7 +20,6 @@ public class Cliente {
 	private long documento;
 	private TipoDeDocumento tipoDocumento;
 	private SucursalCine cineActual;
-	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	
 	//Atributos para funcionalidad 1
 	private ArrayList<Ticket> tickets = new ArrayList<>();
@@ -39,12 +41,11 @@ public class Cliente {
 	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	
 	//Posiblemente eliminar los siguientes atributos:
-	private ArrayList<String> facturas = new ArrayList<>();
 	private ArrayList<Pelicula> valoracionesPeliculas=new ArrayList<>();
 	
 	//Constructores
 	public Cliente(){
-		clientes.add(this);
+		SucursalCine.getClientes().add(this);
 	}
 
 	
@@ -56,7 +57,7 @@ public class Cliente {
 		this.tipoDocumento = tipoDocumento;
 	}
 	
-	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Producto> historialDePedidos, ArrayList<Ticket> ticket, ArrayList<String> facturas,
+	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Producto> historialDePedidos, ArrayList<Ticket> ticket,
 			int edad, Membresia membresia, long documento, Duration duracionMembresiaDias,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<String> codigosDescuento) {
@@ -65,7 +66,6 @@ public class Cliente {
 		this.historialDePeliculas = historialDePeliculas;
 		this.historialDePedidos = historialDePedidos;
 		this.tickets = ticket;
-		this.facturas = facturas;
 		this.edad = edad;
 		this.membresia = membresia;
 		this.documento = documento;
@@ -88,10 +88,10 @@ public class Cliente {
 	*/
 	
 	public static Cliente revisarDatosCliente(long numero) {
-		Cliente cliente1=null;
-		for(Cliente cliente : clientes) {
-			if (cliente.documento==numero) {
-				cliente1=cliente;
+		Cliente cliente1 = null;
+		for(Cliente cliente : SucursalCine.getClientes()) {
+			if (cliente.documento == numero) {
+				cliente1 = cliente;
 			}
 		}
 		return cliente1;
@@ -322,14 +322,6 @@ public class Cliente {
 		this.cuenta = cuenta;
 	}
 
-	public static ArrayList<Cliente> getClientes() {
-		return clientes;
-	}
-
-	public static void setClientes(ArrayList<Cliente> clientes) {
-		Cliente.clientes = clientes;
-	}
-
 	public ArrayList<Pelicula> getHistorialDePeliculas() {
 		return historialDePeliculas;
 	}
@@ -344,14 +336,6 @@ public class Cliente {
 
 	public void setTickets(ArrayList<Ticket> tickets) {
 		this.tickets = tickets;
-	}
-
-	public ArrayList<String> getFacturas() {
-		return facturas;
-	}
-
-	public void setFacturas(ArrayList<String> facturas) {
-		this.facturas = facturas;
 	}
 
 	public int getEdad() {

@@ -50,7 +50,7 @@ public class ServicioSouvenirs extends Servicio{
 	}
 
 	@Override
-	public void factura(Cliente cliente) {
+	public String factura() {
 		String factura;
 		factura="                          CINEMAR \n"+
 				"==================== Factura de Souvenir ====================\n"+
@@ -59,7 +59,7 @@ public class ServicioSouvenirs extends Servicio{
 				this.mostrarOrden()+ "\n" +
 				" Total a pagar aplicando descuentos : $" + valorPedido+ "\n"+
 				"=============================================================\n";
-		this.getCliente().getFacturas().add(factura);
+		return factura;
 
 		
 	}
