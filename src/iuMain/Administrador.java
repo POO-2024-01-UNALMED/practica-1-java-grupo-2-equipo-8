@@ -6,6 +6,7 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.usuario.*;
+import baseDatos.Serializador;
 import java.time.Duration;
 
 public class Administrador {
@@ -357,6 +358,17 @@ public class Administrador {
 //------------------------------------------------------------------------------------------------------------------	
 	
 	static void salirDelSistema() {
+		//Serialización
+		
+		//Atributos estáticos
+		Serializador.serializar();
+		
+		//Atributos de instancia
+		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+			Serializador.serializar(sede);
+		}
+		
+		//Fin del programa
 		System.out.println("¡Adios, vuelva pronto!");
 		System.exit(0);
 		

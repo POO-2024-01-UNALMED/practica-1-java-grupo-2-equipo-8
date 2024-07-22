@@ -1,6 +1,10 @@
 package gestionAplicacion.proyecciones;
 
-public class Asiento {
+import java.io.Serializable;
+
+public class Asiento implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private String numeroAsiento;
 	private boolean disponibilidad = true;

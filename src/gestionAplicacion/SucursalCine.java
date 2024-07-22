@@ -1,5 +1,6 @@
 package gestionAplicacion;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,18 +14,22 @@ import gestionAplicacion.servicios.Arkade;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.Servicio;
+import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.Ticket;
 
-public class SucursalCine implements Runnable {
+public class SucursalCine implements Runnable, Serializable {
 	
-	private static volatile LocalDateTime fechaActual = LocalDateTime.now().withHour(10).withMinute(5);
-	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
-	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
+	private static final long serialVersionUID = 1L;
 	
+	private static volatile LocalDateTime fechaActual = LocalDateTime.now();
 	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
 	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 00);
 	public static final Duration LIMPIEZA_SALA_DE_CINE = Duration.ofMinutes(30); 
+	
+	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
+	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
+	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	
 	private String lugar;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
@@ -34,8 +39,6 @@ public class SucursalCine implements Runnable {
 	private ArrayList<Servicio> servicios = new ArrayList<>();
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private ArrayList<TarjetaCinemar> InventarioTarjetasCinemar = new ArrayList<>();
-	
-	//private static ArrayList<Cliente> clientes = new ArrayList<>();
 	
 	//Methods
 	
@@ -502,6 +505,15 @@ public class SucursalCine implements Runnable {
 		InventarioTarjetasCinemar = inventarioTarjetasCinemar;
 	}
 
+	public static ArrayList<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public static void setClientes(ArrayList<Cliente> clientes) {
+		SucursalCine.clientes = clientes;
+	}
+	
+	
 
 	
 }

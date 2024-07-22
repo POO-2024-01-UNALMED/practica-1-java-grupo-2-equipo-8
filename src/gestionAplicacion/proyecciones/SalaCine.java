@@ -1,5 +1,6 @@
 package gestionAplicacion.proyecciones;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,8 +9,9 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.Ticket;
 
-public class SalaCine {
+public class SalaCine implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private int numeroSala;
 	private String tipoDeSala;
 	private LocalDateTime horarioPeliculaEnPresentacion;

@@ -1,10 +1,13 @@
 package gestionAplicacion.usuario;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestionAplicacion.servicios.Arkade;
 
-public class TarjetaCinemar implements IBuyable {
+public class TarjetaCinemar implements IBuyable, Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	//Atributos
 	private double saldo;

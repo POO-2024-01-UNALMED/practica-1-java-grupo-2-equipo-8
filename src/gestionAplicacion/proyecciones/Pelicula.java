@@ -6,9 +6,11 @@ import java.time.Duration;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
+import java.io.Serializable;
 
-public class Pelicula{
+public class Pelicula implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private int precio;
 	private String genero;

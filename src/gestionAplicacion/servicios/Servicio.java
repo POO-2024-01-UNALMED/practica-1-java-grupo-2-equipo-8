@@ -3,6 +3,7 @@ package gestionAplicacion.servicios;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
@@ -10,8 +11,10 @@ import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.IBuyable;
 import gestionAplicacion.usuario.MetodoPago;
 
-public abstract class Servicio implements IBuyable{
+public abstract class Servicio implements IBuyable, Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	protected String nombre;
 	protected Cliente cliente;
 	protected ArrayList<Producto> inventario = new ArrayList<>();
