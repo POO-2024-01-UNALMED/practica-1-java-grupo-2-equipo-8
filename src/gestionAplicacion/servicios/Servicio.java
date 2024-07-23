@@ -199,14 +199,7 @@ public abstract class Servicio implements IBuyable, Serializable{
 		
 	}
 	
-	public boolean verificarInventarioProductos() {
-		if (this.inventario.size() ==0) {
-			return false;
-		}
-		else {
-			return true;
-		}	
-	}
+
 	
 	public String getNombre() {
 		return nombre;

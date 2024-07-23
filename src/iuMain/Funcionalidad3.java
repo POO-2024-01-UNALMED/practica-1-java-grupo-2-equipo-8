@@ -6,7 +6,7 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.usuario.Cliente;
-
+import gestionAplicacion.servicios.Servicio;
 public class Funcionalidad3 {
 	static void calificacion(Cliente clienteProceso){
 		boolean verificar = true;
@@ -64,17 +64,18 @@ public class Funcionalidad3 {
 							System.out.println("Error al calificar la comida, recuerda que es del 1 al 5");
 						}
 						
-						Producto prueba=opcionPedido;
-						Servicio prueba3=opcionPedido;
+						Producto prueba = opcionPedido;
+						
 						double calificacionGlobalPedidos;
 						calificacionGlobalPedidos= (prueba.getValoracionComida() * prueba.getTotalEncuestasDeValoracionRealizadasComida()+calificacion1)/(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
-						//prueba.TotalEncuestasDeValoracionRealizadas()++;
-						prueba3.verificarInventarioProductos();
-						if (prueba3.verificarInventarioProductos()== true ) {
+						//prueba.TotalEncuestasDeValoracionRealizadas++;
+						
+						
+						if (prueba.verificarInventarioProducto(clienteProceso.getCineActual())== true ) {
 							continue;
 						}
 						else {
-							System.out.println("Esta pelicula todavia tiene horarios");
+							System.out.println("De esta comida todavia hay unidades en inventario");
 						}
 						
 					}catch(NumberFormatException e) {
