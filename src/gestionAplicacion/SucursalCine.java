@@ -30,6 +30,7 @@ public class SucursalCine implements Runnable, Serializable {
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
+	private static ArrayList<Arkade> juegos = new ArrayList<>();
 	
 	private String lugar;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
@@ -517,6 +518,15 @@ public class SucursalCine implements Runnable, Serializable {
 	public static void setClientes(ArrayList<Cliente> clientes) {
 		SucursalCine.clientes = clientes;
 	}
+
+	public static ArrayList<Arkade> getJuegos() {
+		return juegos;
+	}
+
+	public static void setJuegos(ArrayList<Arkade> juegos) {
+		SucursalCine.juegos = juegos;
+	}
+	
 	
 	
 

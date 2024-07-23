@@ -214,7 +214,20 @@ public class Serializador {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			} else if (file.getAbsolutePath().contains("juegos")) {
+				try {
+					fos = new FileOutputStream(file);
+					oos = new ObjectOutputStream(fos);
+					oos.writeObject(SucursalCine.getJuegos());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			
 		}
 	}
 	

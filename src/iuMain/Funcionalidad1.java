@@ -741,7 +741,7 @@ public class Funcionalidad1 {
 					System.out.print("\nDigite la fila de su asiento deseado: ");
 					filaProceso = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
-					System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles\n");
+					System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles");
 					continue;
 				}
 				
@@ -749,7 +749,7 @@ public class Funcionalidad1 {
 				try {
 					
 					if(!(filaProceso > 0 & filaProceso <= Integer.valueOf(peliculaProceso.getAsientosVirtuales().get(peliculaProceso.getHorarios().indexOf(horarioProceso)).length))){
-						System.out.println("\nLa fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
+						System.out.println("\nLa fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
 						continue;
 					}
 					
@@ -762,10 +762,10 @@ public class Funcionalidad1 {
 				do {
 					opcionMenu = 0;
 					try {
-						System.out.println("La fila seleccionada es: " + filaProceso + "\n1. Correcto \n2. Cambiar fila");
+						System.out.println("\nLa fila seleccionada es: " + filaProceso + "\n1. Correcto \n2. Cambiar fila");
 						opcionMenu = Integer.parseInt(sc.nextLine()); 
 					}catch (NumberFormatException e) {
-						System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 						continue;
 					}
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
@@ -786,7 +786,7 @@ public class Funcionalidad1 {
 					System.out.print("\nDigite la columna de su asiento deseado: ");
 					columnaProceso = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
-					System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
+					System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
 					continue;
 				}
 				
@@ -794,7 +794,7 @@ public class Funcionalidad1 {
 				try {
 					
 					if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(peliculaProceso.getAsientosVirtuales().get(peliculaProceso.getHorarios().indexOf(horarioProceso))[filaProceso - 1].length))){
-						System.out.println("\nLa columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
+						System.out.println("\nLa columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
 						continue;
 					}
 					
@@ -807,10 +807,10 @@ public class Funcionalidad1 {
 				do {
 					opcionMenu = 0;
 					try {
-						System.out.println("La columna seleccionada es: " + columnaProceso + "\n1. Correcto \n2. Cambiar columna");
+						System.out.println("\nLa columna seleccionada es: " + columnaProceso + "\n1. Correcto \n2. Cambiar columna");
 						opcionMenu = Integer.parseInt(sc.nextLine()); 
 					}catch (NumberFormatException e) {
-						System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 						continue;
 					}
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
@@ -877,22 +877,22 @@ public class Funcionalidad1 {
 					System.out.print("\nDigite la fila de su asiento deseado: ");
 					filaProceso = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
-						System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles\n");
+						System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las filas disponibles");
 						continue;
 				}
 						
 				if(!(filaProceso > 0 & filaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos().length))){
-					System.out.println("\nLa fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
+					System.out.println("\nLa fila seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
 					continue;
 					}
 				
 				do {
 					opcionMenu = 0;
 					try {
-						System.out.println("La fila seleccionada es: " + filaProceso + "\n1. Correcto \n2. Cambiar fila");
+						System.out.println("\nLa fila seleccionada es: " + filaProceso + "\n1. Correcto \n2. Cambiar fila");
 						opcionMenu = Integer.parseInt(sc.nextLine()); 
 					}catch (NumberFormatException e) {
-						System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 					}
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 						
@@ -907,22 +907,22 @@ public class Funcionalidad1 {
 					System.out.print("\nDigite la columna de su asiento deseado: ");
 					columnaProceso = Integer.parseInt(sc.nextLine());
 				} catch(NumberFormatException e) {
-					System.out.println("Error, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
+					System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
 					continue;
 				}
 						
 				if(!(columnaProceso > 0 & columnaProceso <= Integer.valueOf(salaDeCinePresentacionProceso.getAsientos()[filaProceso - 1].length))){
-					System.out.println("\nLa columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles\n");
+					System.out.println("\nLa columna seleccionada no se encuentra disponible, le sugerimos que eliga una entre las disponibles");
 					continue;
 				}
 					
 				do {
 					opcionMenu = 0;
 					try {
-						System.out.println("La columna seleccionada es: " + columnaProceso + "\n1. Correcto \n2. Cambiar columna");
+						System.out.println("\nLa columna seleccionada es: " + columnaProceso + "\n1. Correcto \n2. Cambiar columna");
 						opcionMenu = Integer.parseInt(sc.nextLine()); 
 					}catch (NumberFormatException e) {
-						System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 					}
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 						

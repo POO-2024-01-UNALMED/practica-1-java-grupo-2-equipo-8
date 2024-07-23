@@ -375,10 +375,7 @@ public class Membresia implements IBuyable{
 
 	@Override
 	public String factura() {
-		return  "=== Factura de compra ===\n" +
-//				"Nombre dueño: " + cliente.getNombre() + "\n" +
-//				"Documento: " + cliente.getDocumento() + "\n" +
-				"Membresia: " + this.getNombre()+ "\n" +
+		return  "Membresia: " + this.getNombre()+ "\n" +
 				"Categoria: " + this.getCategoria() + "\n" +
 				"Tipo: " + this.getTipoMembresia() + "\n" +
 				"Duración: " + this.getDuracionMembresiaDias()+ " dias.\n" +

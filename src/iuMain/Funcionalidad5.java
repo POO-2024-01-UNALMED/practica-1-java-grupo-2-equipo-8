@@ -114,7 +114,11 @@ public class Funcionalidad5 {
 				e.printStackTrace();
 			}
 		membresiaNueva.procesarPagoRealizado(clienteProceso);
-		System.out.print(membresiaNueva.factura());
+		System.out.print(
+				"=== Factura de compra ===\n" +
+				"Nombre dueño: " + clienteProceso.getNombre() + "\n" +
+				"Documento: " + clienteProceso.getDocumento() + "\n" +
+				membresiaNueva.factura());
 		TarjetaCinemar tarjetaCinemarActual = clienteProceso.getCuenta();
 		int tipoMembresia = 0;
 		if (tarjetaCinemarActual != null) {
