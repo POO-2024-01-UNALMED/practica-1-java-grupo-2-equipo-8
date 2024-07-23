@@ -444,7 +444,8 @@ public class Funcionalidad_4 {
 						codigoBono = bonoCliente.getCodigo();
 						ClienteActual.getCodigosBonos().add(codigoBono);
 						ClienteActual.getBonos().add(bonoCliente);
-						Bono.getBonosCreados().add(bonoCliente);
+						//Bono.getBonosCreados().add(bonoCliente); //Se añade al crear el bono por el constructor
+						ClienteActual.getCineActual().getBonosCreados().add(bonoCliente);
 						
 						System.out.println("•Reclama el bono con el codigo en nuestro servicio de comida");
 					}
@@ -458,7 +459,8 @@ public class Funcionalidad_4 {
 						codigoBono = bonoCliente.getCodigo();
 						ClienteActual.getCodigosBonos().add(codigoBono);
 						ClienteActual.getBonos().add(bonoCliente);
-						Bono.getBonosCreados().add(bonoCliente);
+						//Bono.getBonosCreados().add(bonoCliente); //Se añade al crear el bono por el constructor
+						ClienteActual.getCineActual().getBonosCreados().add(bonoCliente);
 						
 						System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
 					}
@@ -474,7 +476,8 @@ public class Funcionalidad_4 {
 					codigoBono = bonoCliente.getCodigo();
 					ClienteActual.getCodigosBonos().add(codigoBono);
 					ClienteActual.getBonos().add(bonoCliente);
-					Bono.getBonosCreados().add(bonoCliente);
+					//Bono.getBonosCreados().add(bonoCliente); //Se añade al crear el bono por el constructor
+					ClienteActual.getCineActual().getBonosCreados().add(bonoCliente);
 					
 					System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
 				}
