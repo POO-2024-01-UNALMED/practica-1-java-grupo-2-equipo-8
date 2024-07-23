@@ -246,6 +246,7 @@ public class Administrador {
 			MetodoPago.asignarMetodosDePago(cliente2);
 			MetodoPago.asignarMetodosDePago(cliente3);
 			MetodoPago.asignarMetodosDePago(cliente4);
+			MetodoPago.asignarMetodosDePago(cliente5);
 			
 			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
 			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));

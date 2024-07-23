@@ -2,6 +2,8 @@ package gestionAplicacion.servicios;
 
 import java.io.Serializable;
 
+import gestionAplicacion.SucursalCine;
+
 public class Producto implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -66,8 +68,9 @@ public class Producto implements Serializable {
 		this.valoracionComida= 4.0;
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
 	}
-	public boolean verificarInventarioProductos(Servicio servicio) {
-		if (servicio.getInventario().size() ==0) {
+	public boolean verificarInventarioProducto(SucursalCine sucursalCine) {
+		
+		if (sucursalCine.getInventarioCine().size() ==0) {
 			return false;
 		}
 		else {
@@ -138,5 +141,7 @@ public class Producto implements Serializable {
 	public void setTotalEncuestasDeValoracionRealizadasComida(int totalEncuestasDeValoracionRealizadasComida) {
 		this.totalEncuestasDeValoracionRealizadasComida = totalEncuestasDeValoracionRealizadasComida;
 	}
+
+
 	
 }
