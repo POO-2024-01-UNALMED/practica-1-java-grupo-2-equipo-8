@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import baseDatos.Deserializador;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Arkade;
@@ -418,6 +419,9 @@ public class SucursalCine implements Runnable, Serializable {
 	
 	
 	//Constructor
+	public SucursalCine() {
+		SucursalCine.sucursalesCine.add(this);
+	}
 	
 	public SucursalCine(String lugar) {
 		this.lugar = lugar;

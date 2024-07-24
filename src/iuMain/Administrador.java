@@ -6,6 +6,7 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.usuario.*;
+import baseDatos.Deserializador;
 import baseDatos.Serializador;
 import java.time.Duration;
 
@@ -21,250 +22,251 @@ public class Administrador {
 		return sc.nextLine();
 	}
 	
-	static ServicioComida servicioComidaM = new ServicioComida("comida");
-	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("souvenir");
-	
-	static SucursalCine sucursalCine1 = new SucursalCine("Bucaramanga");
-	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
-	static SucursalCine sucursalCine3 = new SucursalCine("Medellín");
-	
-	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,200,"Normal");
-	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",30000,200,"Comedia");
-	static Producto producto3 = new Producto("Perro caliente","Grande","comida",20000,200,"Normal");
-	static Producto producto4 = new Producto("Perro caliente","Don salchicha","comida",30000,200,"Comedia");
-	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",15000,200,"Acción");
-	static Producto producto6 = new Producto("Crispetas","Grandes","comida",16000,200,"Normal");
-	static Producto producto7 = new Producto("Gaseosa","Grande","comida",6000,200,"Normal");
-	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",3000,200,"Normal");
-	
-	static Producto producto1S = new Producto("Camisa","XL","souvenir",19000,200,"Normal");
-	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",30000,200,"Comedia");
-	static Producto producto3S = new Producto("Gorra","L","souvenir",12000,200,"Normal");
-	static Producto producto4S = new Producto("Llavero","Katana","souvenir",30000,200,"Acción");
-	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",30000,200,"Comedia");
-	
-	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
-	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
-	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
-	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
-	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
-	
-	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
-	
-	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
-	
-	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
-	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
-	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");
-	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
-	static Arkade game5= new Arkade("Hang Man", 7500, "Drama");
-	
-	
-	static SalaCine salaDeCine1_1 = new SalaCine(1, "2D", sucursalCine1);
-	static SalaCine salaDeCine1_2 = new SalaCine(2, "3D", sucursalCine1);
-	static SalaCine salaDeCine1_3 = new SalaCine(3, "4D", sucursalCine1);
-	static SalaCine salaDeCine1_4 = new SalaCine(4, "2D", sucursalCine1);
-	static SalaCine salaDeCine1_5 = new SalaCine(5, "3D", sucursalCine1);
-	static SalaCine salaDeCine1_6 = new SalaCine(6, "4D", sucursalCine1);
-	static SalaCine salaDeCine1_7 = new SalaCine(7, "2D", sucursalCine1);
-	static SalaCine salaDeCine1_8 = new SalaCine(8, "3D", sucursalCine1);
-	static SalaCine salaDeCine1_9 = new SalaCine(9, "4D", sucursalCine1);
-
-	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+18", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_2 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_3 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+18", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_4 = new Pelicula("Your name", 18000, "Romance", Duration.ofMinutes(110), "+8", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_5 = new Pelicula("Furiosa: A Mad Max Saga", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_6 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", sucursalCine1);
-	
-	static SalaCine salaDeCine2_1 = new SalaCine(1, "2D", sucursalCine2);
-	static SalaCine salaDeCine2_2 = new SalaCine(2, "3D", sucursalCine2);
-	static SalaCine salaDeCine2_3 = new SalaCine(3, "4D", sucursalCine2);
-	static SalaCine salaDeCine2_4 = new SalaCine(4, "2D", sucursalCine2);
-	static SalaCine salaDeCine2_5 = new SalaCine(5, "3D", sucursalCine2);
-	static SalaCine salaDeCine2_6 = new SalaCine(6, "4D", sucursalCine2);
-	
-	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(90), "+12", "2D", sucursalCine2); 
-	
-	static Pelicula pelicula2_4 = new Pelicula("The Strangers: Chapter 1", 20000, "Terror", Duration.ofMinutes(114), "+18", "2D", sucursalCine2);
-	
-	static Pelicula pelicula2_7 = new Pelicula("El pájaro loco", 15000, "Infantil", Duration.ofMinutes(120), "+5", "2D", sucursalCine2); 
-	
-	static Pelicula pelicula2_10 = new Pelicula("One Life", 19000, "Historia", Duration.ofMinutes(110), "+8", "2D", sucursalCine2);
-	
-	static Pelicula pelicula2_12 = new Pelicula("Challengers", 15000, "Drama", Duration.ofMinutes(132), "+12", "2D", sucursalCine2);
-
-	static Pelicula pelicula2_14 = new Pelicula("Bad Boys: Hasta la muerte", 17000, "Comedia", Duration.ofMinutes(109), "+18", "2D", sucursalCine2);
-	
-	static SalaCine salaDeCine3_1 = new SalaCine(1, "2D", sucursalCine3);
-	static SalaCine salaDeCine3_2 = new SalaCine(2, "3D", sucursalCine3);
-	static SalaCine salaDeCine3_3 = new SalaCine(3, "4D", sucursalCine3);
-	static SalaCine salaDeCine3_4 = new SalaCine(4, "2D", sucursalCine3);
-	static SalaCine salaDeCine3_5 = new SalaCine(5, "3D", sucursalCine3);
-	static SalaCine salaDeCine3_6 = new SalaCine(6, "4D", sucursalCine3);
-
-	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 1500000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
-	
-	static Pelicula pelicula3_2 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
-	
-	static Pelicula pelicula3_3 = new Pelicula("Oppenheimer", 15000, "Historia", Duration.ofMinutes(120), "+18", "2D", sucursalCine3);
-	
-	static Pelicula pelicula3_4 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
-	
-	static Pelicula pelicula3_5 = new Pelicula("Intensamente 2", 15000, "Infantil", Duration.ofMinutes(105), "+5", "2D", sucursalCine3);
-	
-	static Pelicula pelicula3_6 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+18", "2D", sucursalCine3);
-
-	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
-	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);
-	static Membresia membresia3 = new Membresia("Global", 3, 15000, 20);
-	static Membresia membresia4 = new Membresia("Challenger", 4, 25000, 25);
-	static Membresia membresia5 = new Membresia("Radiante", 5, 30000, 30);
-	
-	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 200000, 0.10);
-	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 120000, 0.05);
-	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 300000, 0.15);
-	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",5000000, 0);
-	
-	//static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000,cliente4);
-	static TarjetaCinemar tarjeta1 = new TarjetaCinemar();static TarjetaCinemar tarjeta2 = new TarjetaCinemar();static TarjetaCinemar tarjeta3 = new TarjetaCinemar();	
-	static TarjetaCinemar tarjeta4 = new TarjetaCinemar();static TarjetaCinemar tarjeta5 = new TarjetaCinemar();static TarjetaCinemar tarjeta6 = new TarjetaCinemar();
-	static TarjetaCinemar tarjeta7 = new TarjetaCinemar();static TarjetaCinemar tarjeta8 = new TarjetaCinemar();static TarjetaCinemar tarjeta9 = new TarjetaCinemar();
-	static TarjetaCinemar tarjeta10 = new TarjetaCinemar();static TarjetaCinemar tarjeta11 = new TarjetaCinemar();static TarjetaCinemar tarjeta12 = new TarjetaCinemar();
-	static TarjetaCinemar tarjeta13 = new TarjetaCinemar();static TarjetaCinemar tarjeta14 = new TarjetaCinemar();static TarjetaCinemar tarjeta15 = new TarjetaCinemar();	
-	
+//	static ServicioComida servicioComidaM = new ServicioComida("comida");
+//	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("souvenir");
+//	
+//	static SucursalCine sucursalCine1 = new SucursalCine("Bucaramanga");
+//	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
+//	static SucursalCine sucursalCine3 = new SucursalCine("Medellín");
+//	
+//	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",25000,200,"Normal");
+//	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",30000,200,"Comedia");
+//	static Producto producto3 = new Producto("Perro caliente","Grande","comida",20000,200,"Normal");
+//	static Producto producto4 = new Producto("Perro caliente","Don salchicha","comida",30000,200,"Comedia");
+//	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",15000,200,"Acción");
+//	static Producto producto6 = new Producto("Crispetas","Grandes","comida",16000,200,"Normal");
+//	static Producto producto7 = new Producto("Gaseosa","Grande","comida",6000,200,"Normal");
+//	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",3000,200,"Normal");
+//	
+//	static Producto producto1S = new Producto("Camisa","XL","souvenir",19000,200,"Normal");
+//	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",30000,200,"Comedia");
+//	static Producto producto3S = new Producto("Gorra","L","souvenir",12000,200,"Normal");
+//	static Producto producto4S = new Producto("Llavero","Katana","souvenir",30000,200,"Acción");
+//	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",30000,200,"Comedia");
+//	
+//	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
+//	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
+//	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
+//	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
+//	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
+//	
+//	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
+//	
+//	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+//	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
+//	
+//	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
+//	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
+//	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");
+//	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
+//	static Arkade game5= new Arkade("Hang Man", 7500, "Drama");
+//	
+//	
+//	static SalaCine salaDeCine1_1 = new SalaCine(1, "2D", sucursalCine1);
+//	static SalaCine salaDeCine1_2 = new SalaCine(2, "3D", sucursalCine1);
+//	static SalaCine salaDeCine1_3 = new SalaCine(3, "4D", sucursalCine1);
+//	static SalaCine salaDeCine1_4 = new SalaCine(4, "2D", sucursalCine1);
+//	static SalaCine salaDeCine1_5 = new SalaCine(5, "3D", sucursalCine1);
+//	static SalaCine salaDeCine1_6 = new SalaCine(6, "4D", sucursalCine1);
+//	static SalaCine salaDeCine1_7 = new SalaCine(7, "2D", sucursalCine1);
+//	static SalaCine salaDeCine1_8 = new SalaCine(8, "3D", sucursalCine1);
+//	static SalaCine salaDeCine1_9 = new SalaCine(9, "4D", sucursalCine1);
+//
+//	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+18", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_2 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_3 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+18", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_4 = new Pelicula("Your name", 18000, "Romance", Duration.ofMinutes(110), "+8", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_5 = new Pelicula("Furiosa: A Mad Max Saga", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_6 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", sucursalCine1);
+//	
+//	static SalaCine salaDeCine2_1 = new SalaCine(1, "2D", sucursalCine2);
+//	static SalaCine salaDeCine2_2 = new SalaCine(2, "3D", sucursalCine2);
+//	static SalaCine salaDeCine2_3 = new SalaCine(3, "4D", sucursalCine2);
+//	static SalaCine salaDeCine2_4 = new SalaCine(4, "2D", sucursalCine2);
+//	static SalaCine salaDeCine2_5 = new SalaCine(5, "3D", sucursalCine2);
+//	static SalaCine salaDeCine2_6 = new SalaCine(6, "4D", sucursalCine2);
+//	
+//	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(90), "+12", "2D", sucursalCine2); 
+//	
+//	static Pelicula pelicula2_4 = new Pelicula("The Strangers: Chapter 1", 20000, "Terror", Duration.ofMinutes(114), "+18", "2D", sucursalCine2);
+//	
+//	static Pelicula pelicula2_7 = new Pelicula("El pájaro loco", 15000, "Infantil", Duration.ofMinutes(120), "+5", "2D", sucursalCine2); 
+//	
+//	static Pelicula pelicula2_10 = new Pelicula("One Life", 19000, "Historia", Duration.ofMinutes(110), "+8", "2D", sucursalCine2);
+//	
+//	static Pelicula pelicula2_12 = new Pelicula("Challengers", 15000, "Drama", Duration.ofMinutes(132), "+12", "2D", sucursalCine2);
+//
+//	static Pelicula pelicula2_14 = new Pelicula("Bad Boys: Hasta la muerte", 17000, "Comedia", Duration.ofMinutes(109), "+18", "2D", sucursalCine2);
+//	
+//	static SalaCine salaDeCine3_1 = new SalaCine(1, "2D", sucursalCine3);
+//	static SalaCine salaDeCine3_2 = new SalaCine(2, "3D", sucursalCine3);
+//	static SalaCine salaDeCine3_3 = new SalaCine(3, "4D", sucursalCine3);
+//	static SalaCine salaDeCine3_4 = new SalaCine(4, "2D", sucursalCine3);
+//	static SalaCine salaDeCine3_5 = new SalaCine(5, "3D", sucursalCine3);
+//	static SalaCine salaDeCine3_6 = new SalaCine(6, "4D", sucursalCine3);
+//
+//	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 1500000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
+//	
+//	static Pelicula pelicula3_2 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
+//	
+//	static Pelicula pelicula3_3 = new Pelicula("Oppenheimer", 15000, "Historia", Duration.ofMinutes(120), "+18", "2D", sucursalCine3);
+//	
+//	static Pelicula pelicula3_4 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
+//	
+//	static Pelicula pelicula3_5 = new Pelicula("Intensamente 2", 15000, "Infantil", Duration.ofMinutes(105), "+5", "2D", sucursalCine3);
+//	
+//	static Pelicula pelicula3_6 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+18", "2D", sucursalCine3);
+//
+//	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
+//	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);
+//	static Membresia membresia3 = new Membresia("Global", 3, 15000, 20);
+//	static Membresia membresia4 = new Membresia("Challenger", 4, 25000, 25);
+//	static Membresia membresia5 = new Membresia("Radiante", 5, 30000, 30);
+//	
+//	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 200000, 0.10);
+//	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 120000, 0.05);
+//	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 300000, 0.15);
+//	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",5000000, 0);
+//	
+//	//static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000,cliente4);
+//	static TarjetaCinemar tarjeta1 = new TarjetaCinemar();static TarjetaCinemar tarjeta2 = new TarjetaCinemar();static TarjetaCinemar tarjeta3 = new TarjetaCinemar();	
+//	static TarjetaCinemar tarjeta4 = new TarjetaCinemar();static TarjetaCinemar tarjeta5 = new TarjetaCinemar();static TarjetaCinemar tarjeta6 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta7 = new TarjetaCinemar();static TarjetaCinemar tarjeta8 = new TarjetaCinemar();static TarjetaCinemar tarjeta9 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta10 = new TarjetaCinemar();static TarjetaCinemar tarjeta11 = new TarjetaCinemar();static TarjetaCinemar tarjeta12 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta13 = new TarjetaCinemar();static TarjetaCinemar tarjeta14 = new TarjetaCinemar();static TarjetaCinemar tarjeta15 = new TarjetaCinemar();	
+//	
 	
 	public static void main(String[] args) {
 		
-		//Llamados métodos de instancias para hacer pruebas
-		{
-			
-			sucursalCine1.getServicios().add(servicioComidaM);
-			
-			sucursalCine1.getInventarioCine().add(producto1);
-			sucursalCine1.getInventarioCine().add(producto2);
-			sucursalCine1.getInventarioCine().add(producto3);
-			sucursalCine1.getInventarioCine().add(producto4);
-			sucursalCine1.getInventarioCine().add(producto5);
-			sucursalCine1.getInventarioCine().add(producto6);
-			sucursalCine1.getInventarioCine().add(producto7);
-			sucursalCine1.getInventarioCine().add(producto8);
-			
-			
-			sucursalCine2.getServicios().add(servicioComidaM);
-			sucursalCine2.getServicios().add(servicioSouvenirsM);
-			
-			sucursalCine2.getInventarioCine().add(producto1);
-			sucursalCine2.getInventarioCine().add(producto2);
-			sucursalCine2.getInventarioCine().add(producto3);
-			sucursalCine2.getInventarioCine().add(producto4);
-			sucursalCine2.getInventarioCine().add(producto5);
-			sucursalCine2.getInventarioCine().add(producto6);
-			sucursalCine2.getInventarioCine().add(producto7);
-			sucursalCine2.getInventarioCine().add(producto8);
-			
-			sucursalCine2.getInventarioCine().add(producto1S);
-			sucursalCine2.getInventarioCine().add(producto2S);
-			sucursalCine2.getInventarioCine().add(producto3S);
-			sucursalCine2.getInventarioCine().add(producto4S);
-			sucursalCine2.getInventarioCine().add(producto5S);
-			
-			sucursalCine3.getServicios().add(servicioSouvenirsM);
-			
-			sucursalCine3.getInventarioCine().add(producto1S);
-			sucursalCine3.getInventarioCine().add(producto2S);
-			sucursalCine3.getInventarioCine().add(producto3S);
-			sucursalCine3.getInventarioCine().add(producto4S);
-			sucursalCine3.getInventarioCine().add(producto5S);
-			
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-			//Funcionalidad 1 
-			SucursalCine.logicaSistemaReservarTicket();
-			
-			//Prueba películas recomendadas
-//			cliente1.getHistorialDePeliculas().add(pelicula3_10);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_11);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_12);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_16);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_4);
-//			cliente1.getHistorialDePeliculas().add(pelicula1_1);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_15);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_1);
-//			cliente1.getHistorialDePeliculas().add(pelicula1_2);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_1);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_4);
-			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_1);
-			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_2);
-			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
-			cliente5.getHistorialDePedidos().add(producto1);
-			cliente5.getHistorialDePedidos().add(producto2);
-			cliente5.getValoracionesPeliculas().add(pelicula1_3);
+//		Llamados métodos de instancias para hacer pruebas
+//		{
+//			
+//			sucursalCine1.getServicios().add(servicioComidaM);
+//			
+//			sucursalCine1.getInventarioCine().add(producto1);
+//			sucursalCine1.getInventarioCine().add(producto2);
+//			sucursalCine1.getInventarioCine().add(producto3);
+//			sucursalCine1.getInventarioCine().add(producto4);
+//			sucursalCine1.getInventarioCine().add(producto5);
+//			sucursalCine1.getInventarioCine().add(producto6);
+//			sucursalCine1.getInventarioCine().add(producto7);
+//			sucursalCine1.getInventarioCine().add(producto8);
+//			
+//			
+//			sucursalCine2.getServicios().add(servicioComidaM);
+//			sucursalCine2.getServicios().add(servicioSouvenirsM);
+//			
+//			sucursalCine2.getInventarioCine().add(producto1);
+//			sucursalCine2.getInventarioCine().add(producto2);
+//			sucursalCine2.getInventarioCine().add(producto3);
+//			sucursalCine2.getInventarioCine().add(producto4);
+//			sucursalCine2.getInventarioCine().add(producto5);
+//			sucursalCine2.getInventarioCine().add(producto6);
+//			sucursalCine2.getInventarioCine().add(producto7);
+//			sucursalCine2.getInventarioCine().add(producto8);
+//			
+//			sucursalCine2.getInventarioCine().add(producto1S);
+//			sucursalCine2.getInventarioCine().add(producto2S);
+//			sucursalCine2.getInventarioCine().add(producto3S);
+//			sucursalCine2.getInventarioCine().add(producto4S);
+//			sucursalCine2.getInventarioCine().add(producto5S);
+//			
+//			sucursalCine3.getServicios().add(servicioSouvenirsM);
+//			
+//			sucursalCine3.getInventarioCine().add(producto1S);
+//			sucursalCine3.getInventarioCine().add(producto2S);
+//			sucursalCine3.getInventarioCine().add(producto3S);
+//			sucursalCine3.getInventarioCine().add(producto4S);
+//			sucursalCine3.getInventarioCine().add(producto5S);
+//			
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+//			//Funcionalidad 1 
+//			SucursalCine.logicaSistemaReservarTicket();
+//			
+//			//Prueba películas recomendadas
+////			cliente1.getHistorialDePeliculas().add(pelicula3_10);
+////			cliente1.getHistorialDePeliculas().add(pelicula3_11);
+////			cliente1.getHistorialDePeliculas().add(pelicula3_12);
+////			cliente1.getHistorialDePeliculas().add(pelicula2_16);
+////			cliente1.getHistorialDePeliculas().add(pelicula2_4);
+////			cliente1.getHistorialDePeliculas().add(pelicula1_1);
+////			cliente1.getHistorialDePeliculas().add(pelicula2_15);
+////			cliente1.getHistorialDePeliculas().add(pelicula2_1);
+////			cliente1.getHistorialDePeliculas().add(pelicula1_2);
+////			cliente1.getHistorialDePeliculas().add(pelicula3_1);
+////			cliente1.getHistorialDePeliculas().add(pelicula3_4);
+//			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_1);
+//			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_2);
+//			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
+//			cliente5.getHistorialDePedidos().add(producto1);
+//			cliente5.getHistorialDePedidos().add(producto2);
+//			cliente5.getValoracionesPeliculas().add(pelicula1_3);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//			
+//			//cliente4.setCuenta(tarjeta1);
+//			Membresia.asignarTipoMembresia();
+////			for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
+////				MetodoPago.metodoPagoPorTipo(metodoPago);
+////			}
+//			MetodoPago.metodoPagoPorTipo(metodoPago1);
+//			MetodoPago.metodoPagoPorTipo(metodoPago2);
+//			MetodoPago.metodoPagoPorTipo(metodoPago3);
+//			MetodoPago.metodoPagoPorTipo(metodoPago4);
+//
+////			cliente1.setMembresia(membresia1);
+//
+//			cliente1.setMembresia(membresia5);
+//			Membresia.stockMembresia(SucursalCine.getSucursalesCine());
+//
+////			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
+////			/*cliente1.setMembresia(membresia1)*/
+//			
+//			//System.out.println();
+//			
+//			
+////			//cliente1.setMembresia(membresia4);
+////			MetodoPago pago = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", cliente1);
+////			//System.out.println("\n"+cliente1.getMembresia().getTipoMembresia());
+////			System.out.println(pago.getNombre()+"\n"+pago.getTipo());
+//
+//			
+//			
+//			//cliente4.setMembresia(membresia5);
+//			cliente3.setMembresia(membresia2);
+////			ticket5.setDueno(cliente4);
+////			ticket5.setPelicula(pelicula1);
+////			ticket5.setSalaDeCine(salaDeCine1);
+//			
+//			MetodoPago.asignarMetodosDePago(cliente1);
+//			MetodoPago.asignarMetodosDePago(cliente2);
+//			MetodoPago.asignarMetodosDePago(cliente3);
+//			MetodoPago.asignarMetodosDePago(cliente4);
+//			MetodoPago.asignarMetodosDePago(cliente5);
+//			
+//			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
+//			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));
+//			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15));
+//			//System.out.println(Arkade.getTarjetasEnInventario().size());
+//			
+//			
+//			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
+//			//System.out.println(tarjeta.getSaldo());
+//		//}
+//		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			//cliente4.setCuenta(tarjeta1);
-			Membresia.asignarTipoMembresia();
-//			for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
-//				MetodoPago.metodoPagoPorTipo(metodoPago);
-//			}
-			MetodoPago.metodoPagoPorTipo(metodoPago1);
-			MetodoPago.metodoPagoPorTipo(metodoPago2);
-			MetodoPago.metodoPagoPorTipo(metodoPago3);
-			MetodoPago.metodoPagoPorTipo(metodoPago4);
-
-//			cliente1.setMembresia(membresia1);
-
-			cliente1.setMembresia(membresia5);
-			Membresia.stockMembresia(SucursalCine.getSucursalesCine());
-
-//			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
-//			/*cliente1.setMembresia(membresia1)*/
-			
-			//System.out.println();
-			
-			
-//			//cliente1.setMembresia(membresia4);
-//			MetodoPago pago = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", cliente1);
-//			//System.out.println("\n"+cliente1.getMembresia().getTipoMembresia());
-//			System.out.println(pago.getNombre()+"\n"+pago.getTipo());
-
-			
-			
-			//cliente4.setMembresia(membresia5);
-			cliente3.setMembresia(membresia2);
-//			ticket5.setDueno(cliente4);
-//			ticket5.setPelicula(pelicula1);
-//			ticket5.setSalaDeCine(salaDeCine1);
-			
-			MetodoPago.asignarMetodosDePago(cliente1);
-			MetodoPago.asignarMetodosDePago(cliente2);
-			MetodoPago.asignarMetodosDePago(cliente3);
-			MetodoPago.asignarMetodosDePago(cliente4);
-			MetodoPago.asignarMetodosDePago(cliente5);
-			
-			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
-			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));
-			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15));
-			//System.out.println(Arkade.getTarjetasEnInventario().size());
-			
-			
-			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
-			//System.out.println(tarjeta.getSaldo());
-		//}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//Print tests
-			System.out.println();
-			System.out.println();
-			
-		}
+		//Print tests
+		System.out.println();
+		System.out.println();
 		
 		//MAIN
+		inicioDelSistema();
+		
 		System.out.println("Iniciar sesión");
 		Cliente clienteProceso = iniciarSesion();
 		
@@ -279,8 +281,6 @@ public class Administrador {
 		
 		hiloLogicaProyecto.interrupt();
 		salirDelSistema();
-		
-		
 		
 	}
 	
@@ -358,16 +358,24 @@ public class Administrador {
 	
 //------------------------------------------------------------------------------------------------------------------	
 	
+	static void inicioDelSistema() {
+		
+		Deserializador.deserializarEstaticos();
+		
+		Deserializador.deserializar();
+		
+	}
+	
 	static void salirDelSistema() {
 		//Serialización
 		
-//		//Atributos estáticos
-//		Serializador.serializar();
-//		
-//		//Atributos de instancia
-//		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
-//			Serializador.serializar(sede);
-//		}
+		//Atributos estáticos
+		Serializador.serializar();
+		
+		//Atributos de instancia
+		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+			Serializador.serializar(sede);
+		}
 		
 		//Fin del programa
 		System.out.println("¡Adios, vuelva pronto!");

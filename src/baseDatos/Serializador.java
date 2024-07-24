@@ -176,24 +176,12 @@ public class Serializador {
 		//Serializamos la información
 		for (File file : docs) {
 			
-			if (file.getAbsolutePath().contains("sucursalesCine")) {
-				try {
-					fos = new FileOutputStream(file);
-					oos = new ObjectOutputStream(fos);
-					oos.writeObject(SucursalCine.getSucursalesCine());
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			} else if (file.getAbsolutePath().contains("peliculasDisponibles")) {
+			if (file.getAbsolutePath().contains("peliculasDisponibles")) {
 				try {
 					fos = new FileOutputStream(file);
 					oos = new ObjectOutputStream(fos);
 					oos.writeObject(SucursalCine.getPeliculasDisponibles());
+					System.out.println(SucursalCine.getPeliculasDisponibles().size());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -207,6 +195,7 @@ public class Serializador {
 					fos = new FileOutputStream(file);
 					oos = new ObjectOutputStream(fos);
 					oos.writeObject(SucursalCine.getClientes());
+					System.out.println(SucursalCine.getClientes().size());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -219,6 +208,7 @@ public class Serializador {
 					fos = new FileOutputStream(file);
 					oos = new ObjectOutputStream(fos);
 					oos.writeObject(SucursalCine.getJuegos());
+					System.out.println(SucursalCine.getJuegos().size());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

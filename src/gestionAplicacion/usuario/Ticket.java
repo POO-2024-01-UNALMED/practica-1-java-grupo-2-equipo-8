@@ -1,5 +1,6 @@
 package gestionAplicacion.usuario;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import gestionAplicacion.SucursalCine;
@@ -7,7 +8,7 @@ import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 //import gestionAplicacion.servicios.Arkade;
 
-public class Ticket implements IBuyable{
+public class Ticket implements IBuyable, Serializable{
 	
 	private static int cantidadTicketsCreados = 1;
 	private boolean descuento;

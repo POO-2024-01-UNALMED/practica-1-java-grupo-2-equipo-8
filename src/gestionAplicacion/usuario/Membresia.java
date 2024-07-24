@@ -1,5 +1,6 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
@@ -11,7 +12,7 @@ import gestionAplicacion.servicios.Producto;
 import iuMain.Administrador;
 import gestionAplicacion.proyecciones.SalaCine;
 
-public class Membresia implements IBuyable{
+public class Membresia implements IBuyable, Serializable{
 	
 	//Atrbutos
 	private String nombre;

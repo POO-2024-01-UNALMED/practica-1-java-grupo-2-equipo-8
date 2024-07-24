@@ -1,10 +1,11 @@
 package gestionAplicacion.usuario;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestionAplicacion.servicios.Bono;
 
-public class MetodoPago{
+public class MetodoPago implements Serializable{
 	
 	//Atributos
 	private String nombre;

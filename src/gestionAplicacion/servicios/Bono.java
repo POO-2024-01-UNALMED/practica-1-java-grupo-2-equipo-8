@@ -1,9 +1,10 @@
 package gestionAplicacion.servicios;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestionAplicacion.usuario.Cliente;
 
-public class Bono {
+public class Bono implements Serializable{
 	
 	private String codigo;
 	private static ArrayList<Bono> bonosCreados = new ArrayList<>();
