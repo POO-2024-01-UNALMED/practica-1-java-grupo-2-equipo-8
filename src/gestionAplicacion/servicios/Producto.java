@@ -68,6 +68,11 @@ public class Producto implements Serializable {
 		this.valoracionComida= 4.0;
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
 	}
+	/**
+	// Este metodo se encarga de revisar que un producto tenga unidades disponibles en el inventario, ya que con esto se hace una evaluacion a si una
+	 * producto es apta para calificar o no
+
+	* */
 	public boolean verificarInventarioProducto(SucursalCine sucursalCine) {
 		
 		if (sucursalCine.getInventarioCine().size() ==0) {

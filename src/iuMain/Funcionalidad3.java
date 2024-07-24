@@ -68,8 +68,7 @@ public class Funcionalidad3 {
 						
 						double calificacionGlobalPedidos;
 						calificacionGlobalPedidos= (prueba.getValoracionComida() * prueba.getTotalEncuestasDeValoracionRealizadasComida()+calificacion1)/(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
-						//prueba.TotalEncuestasDeValoracionRealizadas++;
-						
+						prueba.setTotalEncuestasDeValoracionRealizadasComida(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
 						
 						if (prueba.verificarInventarioProducto(clienteProceso.getCineActual())== true ) {
 							continue;
@@ -123,14 +122,17 @@ public class Funcionalidad3 {
 						Pelicula prueba1 = opcionPelicula;
 						double calificacionGlobalPeliculas;
 						calificacionGlobalPeliculas= (prueba1.getValoracion() * prueba1.getTotalEncuestasDeValoracionRealizadas()+calificacion)/(prueba1.getTotalEncuestasDeValoracionRealizadas()+1);
-						//prueba1.TotalEncuestasDeValoracionRealizadas()++;
+						prueba1.setTotalEncuestasDeValoracionRealizadas(prueba1.getTotalEncuestasDeValoracionRealizadas()+1);
 						prueba1.verificarHorariosPeliculas();
-						if ( prueba1.verificarHorariosPeliculas()==true ) {
+						prueba1.setValoracion(calificacionGlobalPeliculas);
+						
+						if ( prueba1.verificarHorariosPeliculas()== true ) {
 							continue;
 						}
 						else {
 							System.out.println("Esta pelicula todavia tiene horarios");
 						}
+						
 					
 					}catch(NumberFormatException e) {
 						System.out.println("\nError, debes ingresar un dato numérico\n");

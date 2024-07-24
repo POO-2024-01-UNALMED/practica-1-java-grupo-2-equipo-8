@@ -415,6 +415,11 @@ public class Pelicula implements Serializable{
 			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D"));
 		}
 	}
+	/**
+	// Este metodo se encarga de revisar que una pelicula tenga horarios disponibles en cartelera, ya que con esto se hace una evaluacion a si una
+	 * pelicula es apta para calificar o no
+
+	* */
 	public boolean verificarHorariosPeliculas() {
 		if (this.horarios.size() ==0) {
 			return false;

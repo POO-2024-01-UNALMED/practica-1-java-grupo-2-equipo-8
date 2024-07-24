@@ -264,7 +264,12 @@ public class Cliente implements Serializable{
 		System.out.println((this.codigosDescuento.size()+1)+". Ninguno");
 		System.out.println((this.codigosDescuento.size()+2)+". Salir");
 	}
-	
+	/**
+	// Este metodo se encarga de mostrar el historial de peliculas que cada cliente ha visto hasta el momento para poder 
+	 * hacer una calificacion en concreto de las peliculas que el cliente se vio, evitando que el cliente pueda calificar 
+	 * una pelicula que no haya vist
+
+	* */
 	public String  mostrarHistorialDePelicula() {
 		String peliculas = null;
 		int i = 1;
@@ -281,6 +286,12 @@ public class Cliente implements Serializable{
 		return peliculas;
 		
 		}
+	/**
+	// Este metodo se encarga de mostrar el historial de comida que cada cliente ha consumido hasta el momento para poder 
+	 * hacer una calificacion en concreto de los productos que el cliente cosnumio, evitando que el cliente pueda calificar 
+	 * una producto que no haya consumido
+
+	* */
 	
 	public String  mostrarHistorialDePedidos() {
 		String pedidos = null;

@@ -408,6 +408,7 @@ public class SucursalCine implements Runnable, Serializable {
 				
 				
 				
+				
 				//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
 				SucursalCine.logicaSemanalReservarTicket();
 			}
