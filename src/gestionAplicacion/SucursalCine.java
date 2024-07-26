@@ -416,7 +416,21 @@ public class SucursalCine implements Runnable, Serializable {
 		}
 		
 	}
+	public void cambiarPeliculaSede(Pelicula pelicula){
+		
+		if (pelicula.getsucursalCine()=="Medellin") {
+			setsucursalCine("Bucaramanga");
+		}
+			
+		else if (pelicula.getsucursalCine()=="Bucaramnga") {
+			setsucursalCine("Marinilla");
+		}	
+		else if pelicula.getsucursalCine()=="Marinilla") {
+			setsucursalCine("Medellin");
 	
+		}
+		
+	}
 	
 	//Constructor
 	

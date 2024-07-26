@@ -265,7 +265,7 @@ public class Cliente implements Serializable{
 		System.out.println((this.codigosDescuento.size()+2)+". Salir");
 	}
 	/**
-	// Este metodo se encarga de mostrar el historial de peliculas que cada cliente ha visto hasta el momento para poder 
+	// Description: Este metodo se encarga de mostrar el historial de peliculas que cada cliente ha visto hasta el momento para poder 
 	 * hacer una calificacion en concreto de las peliculas que el cliente se vio, evitando que el cliente pueda calificar 
 	 * una pelicula que no haya vist
 

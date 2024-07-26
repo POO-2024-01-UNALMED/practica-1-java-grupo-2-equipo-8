@@ -12,10 +12,18 @@ public class Funcionalidad3 {
 		boolean verificar = true;
 		int eleccion = 0;
 		
+		/** Description: Esta funcionalidad 3 se va a encargar de hacer la respectiva calificacion de peliculas y productos dependiendo
+		 * de los gustos del cliente, ya que con estas calificaciones vamos a hacer un proceso interno de logica de negocio 
+		 * dentro del cine, para poder saber que peliculas o productos estan funcionando bien o por consecuencia, cuales 
+		 * estan funcionando mal
+		*/
 		Scanner sc = new Scanner(System.in);
-		
+		//Le damos la bienvenida al cliente
 		System.out.println("********Bienvenido a la calificacion de productos*********");
-		 
+		
+		/** Description: Este ciclo es para preguntarle al cliente que es lo que desea hacer dentro de la funcionalidad, si calificar
+		 * una pelicula, un producto o volver al menu principal
+		 */
 		do {
 			try {
 				System.out.print("\n1.Calificar Comida.\n2.Calificar Pelicula\n3.Volver al menu.\nSeleccione una opcion: ");
@@ -69,6 +77,7 @@ public class Funcionalidad3 {
 						double calificacionGlobalPedidos;
 						calificacionGlobalPedidos= (prueba.getValoracionComida() * prueba.getTotalEncuestasDeValoracionRealizadasComida()+calificacion1)/(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
 						prueba.setTotalEncuestasDeValoracionRealizadasComida(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
+						prueba.setValoracionComida(calificacionGlobalPedidos);
 						
 						if (prueba.verificarInventarioProducto(clienteProceso.getCineActual())== true ) {
 							continue;
