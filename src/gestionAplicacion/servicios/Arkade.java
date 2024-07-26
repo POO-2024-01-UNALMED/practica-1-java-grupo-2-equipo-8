@@ -13,22 +13,20 @@ public class Arkade {
 	
 	//Atributos
 	private String nombreServicio;
-	//private static ArrayList<TarjetaCinemar> tarjetasEnInventario = new ArrayList<>();
-	private static ArrayList<Arkade> juegos = new ArrayList<>();
 	private double valorServicio;
 	private static final double puntuacionMaxima = 10.0;
 	private String generoServicio;
 	
 	//Constructores
 	
-	public Arkade(){juegos.add(this);}
+	public Arkade(){SucursalCine.getJuegos().add(this);}
 	
 	public Arkade(String nombreServicio, double valorServicio, String generoServicio) {
 		super();
 		this.nombreServicio = nombreServicio;
 		this.valorServicio = valorServicio;
 		this.generoServicio = generoServicio;
-		juegos.add(this);
+		SucursalCine.getJuegos().add(this);
 	}
 
 	//metodos
@@ -71,7 +69,7 @@ public class Arkade {
 		
 		precios.addAll(Arrays.asList(15000.0, 20000.0, 10000.0, 30000.0, 7500.0));
 		
-		for (Arkade juego : Arkade.juegos) {
+		for (Arkade juego : SucursalCine.getJuegos()) {
 			if (juegos == null) {
 				if (juego.getValorServicio()==precios.get(i-1)) {
 					juegos = i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
@@ -79,7 +77,7 @@ public class Arkade {
 				else {
 					juegos = i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+"--> Precio anterior: "+precios.get(i-1)+".\n";
 				}
-				//juegos = i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
+
 				i++;
 			}
 			else {
@@ -89,7 +87,7 @@ public class Arkade {
 				else {
 					juegos += i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+" --> Precio anterior: "+precios.get(i-1)+".\n";
 				}
-				//juegos+= i+". "+juego.nombreServicio+"--"+juego.generoServicio+"--"+juego.valorServicio+".\n";
+
 				i++;
 			}
 		}
@@ -103,7 +101,7 @@ public class Arkade {
 	*@return <b>void</b> :  No hay retorno
 	*/
 	public static void AplicarDescuentoJuegos(String genero) {
-		for (Arkade juego : Arkade.juegos) {
+		for (Arkade juego : SucursalCine.getJuegos()) {
 			if (juego.getGeneroServicio().equals(genero))
 			juego.setValorServicio(juego.getValorServicio()-(juego.getValorServicio()*20/100));
 		}
@@ -115,11 +113,11 @@ public class Arkade {
 	*@return <b>void</b> :  No hay retorno
 	*/
 	public static void reestablecerPrecioJuegos() {
-		juegos.get(0).setValorServicio(15000);
-		juegos.get(1).setValorServicio(20000);
-		juegos.get(2).setValorServicio(10000);
-		juegos.get(3).setValorServicio(30000);
-		juegos.get(4).setValorServicio(7500);
+		SucursalCine.getJuegos().get(0).setValorServicio(15000);
+		SucursalCine.getJuegos().get(1).setValorServicio(20000);
+		SucursalCine.getJuegos().get(2).setValorServicio(10000);
+		SucursalCine.getJuegos().get(3).setValorServicio(30000);
+		SucursalCine.getJuegos().get(4).setValorServicio(7500);
 	}
 	
 	
@@ -253,13 +251,6 @@ public class Arkade {
 	
 	
 	//getters y setters
-//	public static ArrayList<TarjetaCinemar> getTarjetasEnInventario() {
-//		return tarjetasEnInventario;
-//	}
-//
-//	public static void setTarjetasEnInventario(ArrayList<TarjetaCinemar> tarjetasEnInventario) {
-//		Arkade.tarjetasEnInventario = tarjetasEnInventario;
-//	}
 
 	public String getNombreServicio() {
 		return nombreServicio;
@@ -293,21 +284,6 @@ public class Arkade {
 		this.generoServicio = generoServicio;
 	}
 
-	public static ArrayList<Arkade> getJuegos() {
-		return juegos;
-	}
 
-	public static void setJuegos(ArrayList<Arkade> juegos) {
-		Arkade.juegos = juegos;
-	}
-
-
-	
-	
-	
-	
-	
-	
-	
 	
 }

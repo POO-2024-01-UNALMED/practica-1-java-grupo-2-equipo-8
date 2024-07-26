@@ -408,6 +408,7 @@ public class SucursalCine implements Runnable, Serializable {
 				
 				
 				
+				
 				//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
 				SucursalCine.logicaSemanalReservarTicket();
 			}
@@ -415,7 +416,21 @@ public class SucursalCine implements Runnable, Serializable {
 		}
 		
 	}
+	public void cambiarPeliculaSede(Pelicula pelicula){
+		
+		if (pelicula.getsucursalCine()=="Medellin") {
+			setsucursalCine("Bucaramanga");
+		}
+			
+		else if (pelicula.getsucursalCine()=="Bucaramnga") {
+			setsucursalCine("Marinilla");
+		}	
+		else if pelicula.getsucursalCine()=="Marinilla") {
+			setsucursalCine("Medellin");
 	
+		}
+		
+	}
 	
 	//Constructor
 	
