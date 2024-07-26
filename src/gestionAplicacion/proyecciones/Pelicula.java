@@ -24,6 +24,8 @@ public class Pelicula implements Serializable{
 	private int idPelicula; 
 	private double valoracion;
 	private int totalEncuestasDeValoracionRealizadas;
+	private SucursalCine sucursalCartelera;
+	private boolean strikeCambio;
 	
 	// Constructor
 	public Pelicula(){
@@ -40,10 +42,13 @@ public class Pelicula implements Serializable{
 		this.duracion = duracion;
 		this.clasificacion = clasificacion;
 		this.tipoDeFormato = tipoDeFormato;
+		
 		sucursalCine.getCartelera().add(this);
 		this.crearPelicula(sucursalCine);
+		this.sucursalCartelera = sucursalCine;
 		this.valoracion = 4.0;
 		this.totalEncuestasDeValoracionRealizadas = 25;
+		this.strikeCambio = false;
 	}
 	
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
@@ -408,13 +413,25 @@ public class Pelicula implements Serializable{
 		generos3D.add("Historia");
 		generos3D.add("Comedia");
 		
+		Pelicula peliculaCreada = null;
+		
 		if (generos4D.contains(this.genero)) {
-			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D"));
-			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 50000, this.genero, this.duracion, this.clasificacion, "4D"));
+			peliculaCreada = new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D");
+			peliculaCreada.sucursalCartelera = sucursalCine;
+			sucursalCine.getCartelera().add(peliculaCreada);
+			
+			peliculaCreada = new Pelicula(this.nombre, this.precio + 50000, this.genero, this.duracion, this.clasificacion, "4D");
+			peliculaCreada.sucursalCartelera = sucursalCine;
+			sucursalCine.getCartelera().add(peliculaCreada);
+			
 		}else if (generos3D.contains(this.genero)) {
-			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D"));
+			peliculaCreada = new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D");
+			peliculaCreada.sucursalCartelera = sucursalCine;
+			sucursalCine.getCartelera().add(peliculaCreada);
+			
 		}
 	}
+	
 	public boolean verificarHorariosPeliculas() {
 		if (this.horarios.size() ==0) {
 			return false;
