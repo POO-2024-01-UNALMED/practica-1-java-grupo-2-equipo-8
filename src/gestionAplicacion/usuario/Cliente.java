@@ -135,7 +135,7 @@ public class Cliente implements Serializable{
 	 * imprimiendo en pantalla información relevante de estos para facilitar
 	 * la elección de la sala de cine a ingresar o el ticket a usar para usar la sala de espera.
 	 * @param ticketsParaUsar : Este método retorna una lista de los tickets (De tipo ArrayList<Ticket>) que el cliente puede usar.
-	 * @return: <b>String</b> : Este método se encarga de retornar un string con el nombre de la película
+	 * @return <b>String</b> : Este método se encarga de retornar un string con el nombre de la película
 	 * el número de la sala de cine y la fecha de la película de cada uno de los tickets asociados del cliente.
 	 * */
 	public String mostrarTicketsParaUsar(ArrayList<Ticket> ticketsParaUsar) {
@@ -181,8 +181,6 @@ public class Cliente implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de retornar los tickets correspondientes a la sucursal de cine en la que se encuentra el cliente.
-	 * @param sucursalCineProceso : Este método recibe como parámetro la sede (De tipo SucursalCine) desde la cuál el cliente esta accediendo a nuestros
-	 * servicios, con el fin de hacer el filtrado.
 	 * @return ArrayList<Ticket> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
 	 * o a la sala de espera si este posee algún ticket de esta sucursal.
 	 * */

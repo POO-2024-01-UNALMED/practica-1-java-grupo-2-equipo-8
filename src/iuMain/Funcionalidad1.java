@@ -1357,10 +1357,10 @@ public class Funcionalidad1 {
 
 //1. Posible error luego de serializaren en el momento de terminar de ejecutar el programa el día anterior cuando ya las salas de cine no tienen más horarios para ese día y luego volverlo a ejecutar el
 //el día siguiente, el atributo seguirá falso y no se podrán actualizar las películas ese día (Hecho).
-//2. Hacer Tests de la lógica de la funcionalidad 1
-//3. Incluir el código de la clase Funcionalidad 1 en la clase Administrador y Estudiar serialización
-//4. Serializar
-//5. Hacer test de serialización
+//2. Hacer Tests de la lógica de la funcionalidad 1 (Hecho)
+//3. Incluir el código de la clase Funcionalidad 1 en la clase Administrador (Próximo commit) y Estudiar serialización (Hecho)
+//4. Serializar (En proceso)
+//5. Hacer test de correcta serialización de la funcionalidad 1.
 //6. Empezar el Google Document con el manual de usuario y la documentación
 
 

@@ -68,8 +68,8 @@ public class SucursalCine implements Runnable, Serializable {
 	/**
 	 * Description : Este método se encarga de actualizar las salas de todas las sedes, para esto, iteramos sobre el ArrayList de las sedes,
 	 * luego iteramos sobre el ArrayList de las salas de cine de cada sede y actualizamos la sala de cine en caso de ser necesario.
-	 * (Este método es synchronized no por el hecho de que se solicite en otro hilo al mismo tiempo, sino, porque es necesario que este método realice 
-	 * modificaciones sobre los objetos salas de cine y luego estas sean presentadas en el hilo principal).
+	 * (Este método es synchronized debido a que existe la posibilidad de que sea llamado en algún punto por ambos hilos al mismo tiempo.
+	 * En caso de que el cliente termine de ver una película o use la sala de espera).
 	 * */
 	public synchronized static void actualizarPeliculasSalasDeCine() {
 		
@@ -98,11 +98,10 @@ public class SucursalCine implements Runnable, Serializable {
 	
 	/**
 	 * Description : Este método se encarga de eliminar los horarios que ya no pueden ser presentados luego de un salto de tiempo 
-	 * (Usar la sala de espera) de todas las películas de una sucursal, para esto, obtenemos la película con la mayor duración, 
+	 * (usar la sala de espera o deserialización) de todas las películas de cada sucursal, para esto, obtenemos la película con la mayor duración, 
 	 * con la idea de no eliminar una película que aún puede ser presentada, luego, iteramos sobre los horarios de todas las películas 
 	 * y comparamos si es menor al horario actual luego de  que le restamos a este la duración máxima obtenida anteriormente, 
-	 * en caso de que sí, lo eliminamos. (Este método es synchronized con el fin de que pueda eliminar los horarios caducados sin que el hilo
-	 * esté iterando sobre ellos) 
+	 * en caso de que sí, lo eliminamos. (Este método es synchronized ya que existe un caso en el cual sea ejecutado por ambos hilos al mismo tiempo). 
 	 * */
 	public synchronized static void dropHorariosVencidos() {
 		
@@ -148,11 +147,12 @@ public class SucursalCine implements Runnable, Serializable {
 	}
 	
 	/**
-	 * Description : Este método se ecanrga de crear 15 horarios por cada película en cartelera de la sucursal de cine, teniendo en cuenta los siguientes
+	 * Description : Este método se ecanrga de crear 20 horarios por cada película en cartelera de la sucursal de cine, teniendo en cuenta los siguientes
 	 * criterios: 
-	 * 1. El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras instalaciones
-	 * 2. La hora a la que termina la película es menor a la hora de cierre 
+	 * 1. El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras instalaciones.
+	 * 2. La hora a la que termina la película es menor a la hora de cierre. 
 	 * 3. Al finalizar una película se tiene en cuenta el tiempo de limpieza de la sala de cine.
+	 * 4. La creación de horarios no exceda una semana (Para ejecutar correctamente la lógica semanal de nuestro cine).
 	 * */
 	public void crearHorariosPeliculasPorSala() {
 		
@@ -222,11 +222,8 @@ public class SucursalCine implements Runnable, Serializable {
 			
 			}
 			
-			
-			
 	}
 		
-	
 	/**
 	 * Descripition: Este método se encarga de distribuir las películas en cartelera en las distintas salas de cine de la sucursal de cine que
 	 * ejecuta este método, para esta distribución se tienen encuenta 3 casos posibles:
@@ -333,7 +330,7 @@ public class SucursalCine implements Runnable, Serializable {
 	/**
 	 * Description : Este método se encarga de revisar la posibilidad de que una sala de cine pueda ser actualizada durante ese día,
 	 * Este lógica se ejecuta con el fin de que al inicio del día se revisa si la sala de cine tendrá películas en presentación, para ser actualizada
-	 * durante la jornada laboral por el hilo
+	 * durante la jornada laboral por el hilo.
 	 * */
 	public static void actualizarPermisoPeticionActualizacionSalasCine() {
 		for (SucursalCine sede : sucursalesCine) {

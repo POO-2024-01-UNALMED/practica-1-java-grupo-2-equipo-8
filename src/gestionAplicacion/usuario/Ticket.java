@@ -36,7 +36,7 @@ public class Ticket implements IBuyable{
 	/**
 	 * Description : Este método se encarga de verificar si se puede aplicar o no un descuento sobre el precio de la pelicula
 	 * según si la cantidad de tickets creados corresponde a un cuadrado perfecto.
-	 * @return : <b>double</b> : Retorna un double (De tipo double) que corresponde al precio del ticket en caso de aplicarse
+	 * @return <b>double</b> : Retorna un double (De tipo double) que corresponde al precio del ticket en caso de aplicarse
 	 * o no el descuento.
 	 * */
 	private double clienteSuertudo() {
