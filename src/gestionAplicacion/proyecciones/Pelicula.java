@@ -202,7 +202,7 @@ public class Pelicula implements Serializable{
 	public static ArrayList<Pelicula> filtrarCarteleraPorCliente(Cliente clienteProceso, SucursalCine sucursalCine){
 		ArrayList<Pelicula> carteleraPersonalizada = new ArrayList<Pelicula>();
 		for (Pelicula pelicula : sucursalCine.getCartelera()) {
-			if (pelicula.getHorarios().size() > 0 || pelicula.IsPeliculaEnPresentacion(sucursalCine) ) {
+			if (pelicula.horarios.size() > 0 || pelicula.IsPeliculaEnPresentacion(sucursalCine) ) {
 				if ((Integer.parseInt(pelicula.getClasificacion())) <= clienteProceso.getEdad()) {
 					carteleraPersonalizada.add(pelicula);
 				}
@@ -447,7 +447,6 @@ public class Pelicula implements Serializable{
 	}
 	
 	// Getters and Setters
-	
 	public ArrayList<LocalDateTime> getHorarios() {
 		return horarios;
 	}
@@ -559,5 +558,5 @@ public class Pelicula implements Serializable{
 	public void setStrikeCambio(boolean strikeCambio) {
 		this.strikeCambio = strikeCambio;
 	}
-	
+
 }
