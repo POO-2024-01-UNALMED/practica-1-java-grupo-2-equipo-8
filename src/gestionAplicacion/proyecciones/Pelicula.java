@@ -445,7 +445,7 @@ public class Pelicula implements Serializable{
 			return true;
 		}	
 	}
-	
+	public 
 	// Getters and Setters
 	
 	public ArrayList<LocalDateTime> getHorarios() {
@@ -542,6 +542,22 @@ public class Pelicula implements Serializable{
 
 	public void setTotalEncuestasDeValoracionRealizadas(int totalEncuestasDeValoracionRealizadas) {
 		this.totalEncuestasDeValoracionRealizadas = totalEncuestasDeValoracionRealizadas;
+	}
+
+	public SucursalCine getSucursalCartelera() {
+		return sucursalCartelera;
+	}
+
+	public void setSucursalCartelera(SucursalCine sucursalCartelera) {
+		this.sucursalCartelera = sucursalCartelera;
+	}
+
+	public boolean isStrikeCambio() {
+		return strikeCambio;
+	}
+
+	public void setStrikeCambio(boolean strikeCambio) {
+		this.strikeCambio = strikeCambio;
 	}
 		
 }

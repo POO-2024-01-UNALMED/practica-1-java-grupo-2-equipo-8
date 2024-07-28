@@ -416,19 +416,58 @@ public class SucursalCine implements Runnable, Serializable {
 		}
 		
 	}
-	public void cambiarPeliculaSede(Pelicula pelicula){
+	/**public void cambiarPeliculaSede(Pelicula pelicula){
 		
-		if (pelicula.getsucursalCine()=="Medellin") {
-			setsucursalCine("Bucaramanga");
+		if (pelicula.getLugar()=="Medellin") {
+			setSucursalCartelera("Bucaramanga");
 		}
 			
-		else if (pelicula.getsucursalCine()=="Bucaramnga") {
-			setsucursalCine("Marinilla");
+		else if (pelicula.getSucursalCartelera()=="Bucaramnga") {
+			pelicula.setSucursalCartelera("Marinilla");
 		}	
-		else if pelicula.getsucursalCine()=="Marinilla") {
-			setsucursalCine("Medellin");
+		else if pelicula.getSucursalCartelera()=="Marinilla") {
+			pelicula.setSucursalCartelera("Medellin");
 	
 		}
+		
+	**/
+	
+	/**public void eliminarPelicula(Pelicula pelicula) {
+	 *  pelicula.remove
+	 */
+		
+	
+	
+	/**public verificarCambioDeSucursal(Pelicula pelicula) {
+		if (pelicula.isStrikeCambio()== false );{
+			//cambiarPeliculaSede();
+			
+		}else {	
+			pelicula.eliminarPelicula;
+		}
+		
+		
+		
+	}
+	**/
+	
+	public void logicaCalificacionPeliculas(Pelicula pelicula){	
+		
+		ArrayList <Pelicula> peliculasCalificadas = Pelicula.filtrarPorNombreDePelicula(pelicula.getNombre(), this.cartelera);
+		double promedio =0;
+		double calificacionReal=0;
+		
+		for(Pelicula peliculas : peliculasCalificadas) {
+			promedio = promedio + peliculas.getValoracion();
+			calificacionReal = promedio/peliculasCalificadas.size();
+		}
+		if (calificacionReal<3) {
+			
+		}
+		
+	
+		
+	
 		
 	}
 	
