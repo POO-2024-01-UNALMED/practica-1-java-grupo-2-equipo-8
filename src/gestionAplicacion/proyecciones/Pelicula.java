@@ -24,6 +24,8 @@ public class Pelicula implements Serializable{
 	private int idPelicula; 
 	private double valoracion;
 	private int totalEncuestasDeValoracionRealizadas;
+	private SucursalCine sucursalCartelera;
+	private boolean strikeCambio;
 	
 	// Constructor
 	public Pelicula(){
@@ -40,10 +42,13 @@ public class Pelicula implements Serializable{
 		this.duracion = duracion;
 		this.clasificacion = clasificacion;
 		this.tipoDeFormato = tipoDeFormato;
+		
 		sucursalCine.getCartelera().add(this);
 		this.crearPelicula(sucursalCine);
+		this.sucursalCartelera = sucursalCine;
 		this.valoracion = 4.0;
 		this.totalEncuestasDeValoracionRealizadas = 25;
+		this.strikeCambio = false;
 	}
 	
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
@@ -79,8 +84,8 @@ public class Pelicula implements Serializable{
 	/**
 	 * Description : Este método genera una lista filtrada según el nombre de las películas que coinciden con determinado género, sin repetición.
 	 * @param filtroPeliculasPorCliente : Este método recibe como parámetro las peliculas (De tipo ArrayList<Pelicula>) resultantes de realizar 
-	 * el filtro por cliente (Edad y tiempo en presentación).
-	 * @param genero : Este método recibe como parámetro el género (De tipo String) más visualizado por el cliente 
+	 * el filtro por cliente (Edad y disponibilidad horaria).
+	 * @param genero : Este método recibe como parámetro el género (De tipo String) más visualizado por el cliente.
 	 * @return <b>ArrayList<String></b> : Retorna una lista de nombres de las películas distintos entre sí, cuyo género es igual.
 	 * */
 	public static ArrayList<String> filtrarPorGenero(ArrayList<Pelicula> filtroPeliculasPorCliente, String genero){
@@ -102,7 +107,7 @@ public class Pelicula implements Serializable{
 	 * obtenidos de realizar el filtro de peliculas por nombre.
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente), con el fin de determinar si tiene o no membresía.
 	 * @param nombrePeliculasRecomendadas : Este método recibe como parámetro los nombres de las películas sin repeteción (De tipo ArrayList<String>)
-	 * obtenidos luego de realizar el filtro por género de película más visto por el cliente
+	 * obtenidos luego de realizar el filtro por género de película más visto por el cliente.
 	 * @return <b>String</b> : Este método retorna una lista de los nombres de las películas para ser presentadas por pantalla, con el fin de que 
 	 * el usuario elija una de estas (En caso de que el cliente tenga membresía se realiza una recomendación según el género de película que más ha visto).
 	 * */
@@ -146,7 +151,7 @@ public class Pelicula implements Serializable{
 	 * Description : Este método se encarga de retornar las películas cuyo nombre coincide con el nombre de la película seleccionada por el cliente.
 	 * @param nombrePelicula : Este método recibe como parámetro el nombre de la película (De tipo String) con el cuál se realizará el filtrado.
 	 * @param peliculasDisponiblesCliente : Este método recibe como parámetro una lista (De tipo ArrayList<Pelicula>) que contiene 
-	 * las películas previamente filtradas según los datos del cliente y su disponibilidad horaria
+	 * las películas previamente filtradas según los datos del cliente y su disponibilidad horaria.
 	 * @return <b>ArrayList<Pelicula></b> : Este método retorna un ArrayList de las películas cuyo nombre coinciden con el nombre seleccionado 
 	 * por el cliente.
 	 * */
@@ -166,9 +171,9 @@ public class Pelicula implements Serializable{
 	 * Description : Este método retorna un string con los formatos disponibles de las películas que coinciden con el nombre de la película
 	 * seleccionada por el cliente.
 	 * @param peliculasFiltradasPorNombre : Este método recibe como parámetro una lista de películas (De tipo ArrayList<Pelicula>) 
-	 * filtradas previamente por el nombre de la película seleccionado por el usuario 
+	 * filtradas previamente por el nombre de la película seleccionado por el usuario.
 	 * @return <b>String</b> : Este método retorna un String que contiene los formatos de la película seleccionada por el usuario, 
-	 * este será mostrado en pantalla con el fin de que el usuario selecccione uno de estos formatos
+	 * este será mostrado en pantalla con el fin de que el usuario selecccione uno de estos formatos.
 	 * */
 	public static String showTiposFormatoPeliculaSeleccionada(ArrayList<Pelicula> peliculasFiltradasPorNombre){
 		
@@ -186,10 +191,10 @@ public class Pelicula implements Serializable{
 
 	/**
 	 * Description : Este método se encarga de filtar las películas en cartelera con los siguientes criterios:  
-	 * 1. Su categoría es menor o igual a la edad de un cliente .
+	 * 1. Su categoría es menor o igual a la edad de un cliente.
 	 * 2. La película tiene al menos 1 horario en el cuál será presentada o se encuentra en presentación y no supera el 
 	 * límite de tiempo para comprar un ticket de una película que se encuentra en presentación (15 minutos). 
-	 * Con el fin de mostrar en pantalla, posteriormente, el array de las películas que cumplan estos criterios. 
+	 * Todo esto con el fin de mostrar en pantalla, posteriormente, el array de las películas que cumplan estos criterios. 
 	 * @param clienteProceso : Este método recibe como parámetro un cliente (De tipo cliente), que realizará el proceso de reserva de ticket.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), para acceder a la cartelera de esta misma.
 	 * @return <b>ArrayList</b> : Retorna una lista con las peliculas filtradas por el criterio anterior.
@@ -197,7 +202,7 @@ public class Pelicula implements Serializable{
 	public static ArrayList<Pelicula> filtrarCarteleraPorCliente(Cliente clienteProceso, SucursalCine sucursalCine){
 		ArrayList<Pelicula> carteleraPersonalizada = new ArrayList<Pelicula>();
 		for (Pelicula pelicula : sucursalCine.getCartelera()) {
-			if (pelicula.getHorarios().size() > 0 || pelicula.IsPeliculaEnPresentacion(sucursalCine) ) {
+			if (pelicula.horarios.size() > 0 || pelicula.IsPeliculaEnPresentacion(sucursalCine) ) {
 				if ((Integer.parseInt(pelicula.getClasificacion())) <= clienteProceso.getEdad()) {
 					carteleraPersonalizada.add(pelicula);
 				}
@@ -242,8 +247,8 @@ public class Pelicula implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga cambiar la disponibilidad de un asiento de la salaVirtual.
-	 * @param fecha : Recibe el dato de la fecha, en formato localDateTime, seleccionado por el cliente que se pasará a al array de horarios
-	 * para acceder a sus asientos correspondientes.
+	 * @param fecha : Recibe el dato de la fecha, en formato localDateTime, seleccionado por el cliente que se pasará al array de horarios
+	 * para obtener su índice y así acceder a sus asientos correspondientes.
 	 * @param fila : Recibe el número de la fila seleccionada por el cliente.
 	 * @param columna : Recibe el número de la columna seleccionada por el cliente.
 	 * */
@@ -257,7 +262,7 @@ public class Pelicula implements Serializable{
 	}
 	
 	/**
-	 * Description : Este método se encarga revisar la desponibilidad de un índice de la salaVirtual
+	 * Description : Este método se encarga revisar la desponibilidad de un asiento de la sala de cine virtual.
 	 * @param fecha : Recibe el dato del horario (De tipo localDateTime) seleccionado por el cliente con la que se obtendrán sus asientos, 
 	 * correspondientes a la sala de cine virtual.
 	 * @param fila : Recibe el número de la fila seleccionada por el cliente.
@@ -295,7 +300,7 @@ public class Pelicula implements Serializable{
 	/**
 	 * Description : Este método se encarga de filtrar los horarios de la película que no han sido presentados aún y, además, 
 	 * tienen asientos disponibles.
-	 * @return <b>ArrayList<LocalDateTime></b> : Este método se encarga de retornar los primeros 7 horarios que cumplen los criterios de filtrado
+	 * @return <b>ArrayList<LocalDateTime></b> : Este método se encarga de retornar los primeros 7 horarios que cumplen los criterios de filtrado.
 	 * */
 	public ArrayList<LocalDateTime> filtrarHorariosPelicula(){
 		ArrayList<LocalDateTime> horariosPelicula = new ArrayList<>();
@@ -339,7 +344,7 @@ public class Pelicula implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
-	 * utilidad de este método radica en que, si retorna algo distinto de null, se ejecuta un menú adicional antes de mostrar el
+	 * utilidad de este método radica en que, si retorna la sala de cine en vez de null, se ejecuta un menú adicional antes de mostrar el
 	 * listado de horarios de la pelicula seleccionada por el usuario.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza este proceso
 	 * para obtener sus salas de cine.
@@ -359,7 +364,7 @@ public class Pelicula implements Serializable{
 	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
 	 * utilidad de este método radica en que retornará true en caso de: 
 	 * 1. Encontrar la sala de cine donde está siendo presentada.
-	 * 2. No lleva más de 15 minutos en presentación 
+	 * 2. No lleva más de 15 minutos en presentación.
 	 * 3. Tenga algún asiento disponible.
 	 * Respecto a este retorno, se ejecutará un menú determinado en el proceso de la funcionalidad 1.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza este proceso, para
@@ -408,13 +413,30 @@ public class Pelicula implements Serializable{
 		generos3D.add("Historia");
 		generos3D.add("Comedia");
 		
+		Pelicula peliculaCreada = null;
+		
 		if (generos4D.contains(this.genero)) {
-			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D"));
-			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 50000, this.genero, this.duracion, this.clasificacion, "4D"));
+			peliculaCreada = new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D");
+			peliculaCreada.sucursalCartelera = sucursalCine;
+			sucursalCine.getCartelera().add(peliculaCreada);
+			
+			peliculaCreada = new Pelicula(this.nombre, this.precio + 50000, this.genero, this.duracion, this.clasificacion, "4D");
+			peliculaCreada.sucursalCartelera = sucursalCine;
+			sucursalCine.getCartelera().add(peliculaCreada);
+			
 		}else if (generos3D.contains(this.genero)) {
-			sucursalCine.getCartelera().add(new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D"));
+			peliculaCreada = new Pelicula(this.nombre, this.precio + 15000, this.genero, this.duracion, this.clasificacion, "3D");
+			peliculaCreada.sucursalCartelera = sucursalCine;
+			sucursalCine.getCartelera().add(peliculaCreada);
+			
 		}
 	}
+
+	/**
+	// Este metodo se encarga de revisar que una pelicula tenga horarios disponibles en cartelera, ya que con esto se hace una evaluacion a si una
+	 * pelicula es apta para calificar o no
+
+	* */
 	public boolean verificarHorariosPeliculas() {
 		if (this.horarios.size() ==0) {
 			return false;
@@ -425,7 +447,6 @@ public class Pelicula implements Serializable{
 	}
 	
 	// Getters and Setters
-	
 	public ArrayList<LocalDateTime> getHorarios() {
 		return horarios;
 	}
@@ -521,5 +542,21 @@ public class Pelicula implements Serializable{
 	public void setTotalEncuestasDeValoracionRealizadas(int totalEncuestasDeValoracionRealizadas) {
 		this.totalEncuestasDeValoracionRealizadas = totalEncuestasDeValoracionRealizadas;
 	}
-		
+
+	public SucursalCine getSucursalCartelera() {
+		return sucursalCartelera;
+	}
+
+	public void setSucursalCartelera(SucursalCine sucursalCartelera) {
+		this.sucursalCartelera = sucursalCartelera;
+	}
+
+	public boolean isStrikeCambio() {
+		return strikeCambio;
+	}
+
+	public void setStrikeCambio(boolean strikeCambio) {
+		this.strikeCambio = strikeCambio;
+	}
+
 }

@@ -3,6 +3,8 @@ package iuMain;
 import java.util.InputMismatchException; 
 import java.util.Scanner;
 import java.util.Random;
+
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.Arkade;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.usuario.Cliente;
@@ -103,15 +105,13 @@ public class Funcionalidad_4 {
 	
 				}catch(InputMismatchException e) {
 					System.out.println("\nError en el proceso, debe ingresar un dato numerico, vuelva a realizar el proceso");
-					//ClienteActual.restablecerLimiteMaximo(maximo, maximo2, maximo3, maximo4, maximo5);
 					Administrador.sc.nextLine();
 					casoValido = true;
 				}
 			}while(casoValido);
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			
+			//Inicio proceso de pago
 			double recargaMaxima = 0;
 			double valorRecarga = 0;
 			
@@ -221,9 +221,9 @@ public class Funcionalidad_4 {
 					}
 				}while(casoValido);
 			}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////				
+			
 	
 			else if (eleccion1==2) {
 				System.out.println("\n-----------------------------------------------------------------------------");
@@ -265,12 +265,12 @@ public class Funcionalidad_4 {
 			
 		}while(Vcase);
 		
+		//fin proceso de pago
 		
 		
 		
 		
-		
-		
+		//Inicio proceso de codigos de descuento
 		boolean caso = true;
 		boolean redimioCodigo = false;
 		String generoCodigoPelicula = null;
@@ -323,6 +323,8 @@ public class Funcionalidad_4 {
 		}while(caso);
 		
 		
+		
+		//inicio proceso de juegos
 		String game = null;
 		String generoJuego = null;
 		
@@ -339,14 +341,14 @@ public class Funcionalidad_4 {
 				Administrador.sc.nextLine();
 			}
 			
-			if (eleccion7 > 0 & eleccion7<=Arkade.getJuegos().size()) {
-				if (ClienteActual.getCuenta().getSaldo()>=Arkade.getJuegos().get(eleccion7-1).getValorServicio()) {
+			if (eleccion7 > 0 & eleccion7<=SucursalCine.getJuegos().size()) {
+				if (ClienteActual.getCuenta().getSaldo()>=SucursalCine.getJuegos().get(eleccion7-1).getValorServicio()) {
 					
-					ClienteActual.getCuenta().hacerPago(Arkade.getJuegos().get(eleccion7-1).getValorServicio());
+					ClienteActual.getCuenta().hacerPago(SucursalCine.getJuegos().get(eleccion7-1).getValorServicio());
 					System.out.println("•El juego esta por comenzar, el nuevo saldo de tu tarjeta cinemar es : " + ClienteActual.getCuenta().getSaldo());
 					espera(2000);
 					barraCarga("Iniciando");
-					generoJuego = Arkade.getJuegos().get(eleccion7-1).getGeneroServicio();
+					generoJuego = SucursalCine.getJuegos().get(eleccion7-1).getGeneroServicio();
 					System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+generoJuego);
 					switch(generoJuego) {
 					
@@ -400,12 +402,12 @@ public class Funcionalidad_4 {
 					
 				}
 			}
-			else if (eleccion7 == (Arkade.getJuegos().size()+1)) {
+			else if (eleccion7 == (SucursalCine.getJuegos().size()+1)) {
 				barraCarga("Volviendo");
 				Administrador.sc.nextLine();
 				Administrador.inicio(ClienteActual);
 			}
-			else if (eleccion7 ==(Arkade.getJuegos().size()+2)) {
+			else if (eleccion7 ==(SucursalCine.getJuegos().size()+2)) {
 				barraCarga("Saliendo");
 				Administrador.salirDelSistema();
 			}
@@ -415,7 +417,7 @@ public class Funcionalidad_4 {
 		
 		
 
-		
+		//inicio proceso de generacion de bonos
 		Random random = new Random();
 		double puntuacion = 0;
 		if (game.equals("win")) {
@@ -442,7 +444,8 @@ public class Funcionalidad_4 {
 						codigoBono = bonoCliente.getCodigo();
 						ClienteActual.getCodigosBonos().add(codigoBono);
 						ClienteActual.getBonos().add(bonoCliente);
-						Bono.getBonosCreados().add(bonoCliente);
+						//Bono.getBonosCreados().add(bonoCliente); //Se añade al crear el bono por el constructor
+						ClienteActual.getCineActual().getBonosCreados().add(bonoCliente);
 						
 						System.out.println("•Reclama el bono con el codigo en nuestro servicio de comida");
 					}
@@ -456,7 +459,8 @@ public class Funcionalidad_4 {
 						codigoBono = bonoCliente.getCodigo();
 						ClienteActual.getCodigosBonos().add(codigoBono);
 						ClienteActual.getBonos().add(bonoCliente);
-						Bono.getBonosCreados().add(bonoCliente);
+						//Bono.getBonosCreados().add(bonoCliente); //Se añade al crear el bono por el constructor
+						ClienteActual.getCineActual().getBonosCreados().add(bonoCliente);
 						
 						System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
 					}
@@ -472,7 +476,8 @@ public class Funcionalidad_4 {
 					codigoBono = bonoCliente.getCodigo();
 					ClienteActual.getCodigosBonos().add(codigoBono);
 					ClienteActual.getBonos().add(bonoCliente);
-					Bono.getBonosCreados().add(bonoCliente);
+					//Bono.getBonosCreados().add(bonoCliente); //Se añade al crear el bono por el constructor
+					ClienteActual.getCineActual().getBonosCreados().add(bonoCliente);
 					
 					System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
 				}
@@ -485,9 +490,13 @@ public class Funcionalidad_4 {
 		Administrador.sc.nextLine();
 		Administrador.inicio(ClienteActual);
 		
-	}
+	}//Fin de la funcionalidad
 	
 	
+	
+	///////////////////////////////////////////////
+	//Metodos auxiliares para la funcionalidad
+	//////////////////////////////////////////////
 	
 	
 	/**

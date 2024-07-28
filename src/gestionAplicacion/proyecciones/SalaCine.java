@@ -47,7 +47,7 @@ public class SalaCine implements Serializable{
 	/**
 	 * Description : Este método se encarga de generar un string que se imprimirá en pantalla para visualizar los
 	 * asientos y su disponiblidad
-	 * @return : <b>String</b> : Este método retorna un string que será impreso en pantalla para que el cliente 
+	 * @return <b>String</b> : Este método retorna un string que será impreso en pantalla para que el cliente 
 	 * pueda interactuar con la funcionalidad
 	 * */
 	public String mostrarAsientos() {
@@ -77,8 +77,6 @@ public class SalaCine implements Serializable{
 
 	    return resultado.toString();
 	}
-	
-	
 	
 	/**
 	 * Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
@@ -124,7 +122,7 @@ public class SalaCine implements Serializable{
 	}
 	
 	/**
-	 * Description : Este método se encarga de geneerar un listado de la salas de cine con información relevante de estas,
+	 * Description : Este método se encarga de generar un listado de la salas de cine con información relevante de estas,
 	 * con el fin de que el usuario elija una de las opciones disponibles para ingresar.
 	 * @param salasDeCine : Este método recibe como parámetro un listado de salas de cine disponibles (De tipo ArrayList<SalaCine>)
 	 * @return <b>String</b>: Retorna la lista de las salas de cine disponibles.
@@ -296,11 +294,8 @@ public class SalaCine implements Serializable{
 				}catch (NullPointerException e) {
 					continue;
 				}
-
 			}
-			
 		}
-		
 		
 		//Ejecutamos esta operación en caso de que se haya encontrado un cambio para la película en presentación
 		if (peliculaPresentacion != null) {
@@ -330,7 +325,7 @@ public class SalaCine implements Serializable{
 	/**
 	 * Description : Este método se encarga de retornar la disponibilidad de un asiento dada su fila y su columna.
 	 * @param fila : Este método recibe la fila del asiento a consultar (De tipo int).
-	 * @param columna: Este método recibe la columna del asiento a consultar (De tipo int).
+	 * @param columna : Este método recibe la columna del asiento a consultar (De tipo int).
 	 * @return <b>boolean</b> : Este método retorna la disponibilidad del asiento consultado.
 	 * */
 	public boolean isDisponibilidadAsiento(int fila, int columna) {
@@ -422,23 +417,6 @@ public class SalaCine implements Serializable{
 		
 		this.horariosPresentacionDia = horarioEncontrado;
 		
-	}
-	
-	
-	/**
-	 * Description : Este método se encarga de actualizar la sala de cine seleccionada por el usuario durate el método ingresarSalaCine() de la
-	 * funcionalidad 1, con el fin de evitar problemas en la verificación de ingreso al existir la posibilidad de que el hilo principal
-	 * trabaje con una copia local de la sala de cine en cuestión.
-	 * @return <b>SalaCine</b> : Este método se retorna la última versión de esta sala de cine.
-	 * */
-	public SalaCine verificarSalaDeCineSeleccionada() {
-		for (SalaCine salaDeCine : this.ubicacionSede.getSalasDeCine()) {
-			if (salaDeCine.equals(this)) {
-				return salaDeCine;
-			}
-		}
-		
-		return null;
 	}
 	
 	// Getters and Setters
