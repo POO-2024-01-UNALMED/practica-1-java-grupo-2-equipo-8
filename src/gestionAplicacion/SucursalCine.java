@@ -413,21 +413,20 @@ public class SucursalCine implements Runnable, Serializable {
 		}
 		
 	}
-	/**public void cambiarPeliculaSede(Pelicula pelicula){
+	public void cambiarPeliculaSede(Pelicula pelicula){
 		
-		if (pelicula.getLugar()=="Medellin") {
-			setSucursalCartelera("Bucaramanga");
-		}
+		String sucursales=null;
+		for (SucursalCine sucursal : sucursalesCine) {
 			
-		else if (pelicula.getSucursalCartelera()=="Bucaramnga") {
-			pelicula.setSucursalCartelera("Marinilla");
-		}	
-		else if pelicula.getSucursalCartelera()=="Marinilla") {
-			pelicula.setSucursalCartelera("Medellin");
-	
+			sucursales = sucursales + sucursal;
+			System.out.print(sucursales);
 		}
+	}
 		
-	**/
+		
+		  
+	   
+	
 	
 	/**public void eliminarPelicula(Pelicula pelicula) {
 	 *  pelicula.remove
@@ -435,18 +434,8 @@ public class SucursalCine implements Runnable, Serializable {
 		
 	
 	
-	/**public verificarCambioDeSucursal(Pelicula pelicula) {
-		if (pelicula.isStrikeCambio()== false );{
-			//cambiarPeliculaSede();
-			
-		}else {	
-			pelicula.eliminarPelicula;
-		}
-		
-		
-		
-	}
-	**/
+	
+	
 	
 	public void logicaCalificacionPeliculas(Pelicula pelicula){	
 		
@@ -459,9 +448,11 @@ public class SucursalCine implements Runnable, Serializable {
 			calificacionReal = promedio/peliculasCalificadas.size();
 		}
 		if (calificacionReal<3) {
-			
+			verificarCambioDeSucursal
 		}
-		
+		else if (calificacionReal>4.5) {
+			renovarstock
+		}
 	
 		
 	

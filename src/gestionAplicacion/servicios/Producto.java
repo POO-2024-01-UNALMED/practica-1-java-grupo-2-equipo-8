@@ -69,7 +69,7 @@ public class Producto implements Serializable {
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
 	}
 	/**
-	// Este metodo se encarga de revisar que un producto tenga unidades disponibles en el inventario, ya que con esto se hace una evaluacion a si una
+	// Description: Este metodo se encarga de revisar que un producto tenga unidades disponibles en el inventario, ya que con esto se hace una evaluacion a si una
 	 * producto es apta para calificar o no
 
 	* */

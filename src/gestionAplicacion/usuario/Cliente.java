@@ -285,7 +285,7 @@ public class Cliente implements Serializable{
 		
 		}
 	/**
-	// Este metodo se encarga de mostrar el historial de comida que cada cliente ha consumido hasta el momento para poder 
+	// Description:Este metodo se encarga de mostrar el historial de comida que cada cliente ha consumido hasta el momento para poder 
 	 * hacer una calificacion en concreto de los productos que el cliente cosnumio, evitando que el cliente pueda calificar 
 	 * una producto que no haya consumido
 
@@ -308,11 +308,11 @@ public class Cliente implements Serializable{
 		
 		}
 	
-	public void cambiarPeliculaSede(){
+	
 		 
 		
 		
-	}
+	
 	
 	//Getters y setters
 	public String getNombre() {

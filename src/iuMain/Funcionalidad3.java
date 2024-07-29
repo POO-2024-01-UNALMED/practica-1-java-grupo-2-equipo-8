@@ -40,7 +40,15 @@ public class Funcionalidad3 {
 				verificar = false;
 			}
 		}while(verificar);
-		
+		/**Description: En esta parte hacemos un condicional dependiendo dla opcion que el cliente escoja, si el cliente escoje
+		 * la eleccion uno se le da la bienvenida para la calificacion de comidas y por el contrario si la eleccion es dos,
+		 * se le da la bienvenida al apartado de calificacion de peliculas.
+		 * Metodo mostrarHsitorialDePedidos: Este metodo le muestra a los usuarios los pedidos que han hecho, y por ende tambien verifica
+		 * si el cliente si ha hecho almenos una compra, esto es para evitar que un cliente pueda calificar un producto que no ha 
+		 * consumido. Cuando se verifica que el cliente ha consumido un producto se le da a escojer que producto desea calificar,
+		 * y el cliente le da una valoracion del 1 al 5 dependiendo de los gustos del usuario.
+		 *  
+		 */
 		if (eleccion==1) {
 			System.out.println("\n********Bienvenido al apartado de calificacion de comida********");
 			if(clienteProceso.getHistorialDePedidos().size() > 0) {
@@ -98,6 +106,15 @@ public class Funcionalidad3 {
 				System.out.println("\n******Lastimosamente no has hecho compra de ningun alimento, por lo tanto no puedes calificar ninguno*******");
 			}
 		}  
+		
+		/**Description: En esta parte hacemos un condicional dependiendo dla opcion que el cliente escoja, si el cliente escoje
+		 * la eleccion uno se le da la bienvenida para la calificacion de comidas y por el contrario si la eleccion es dos,
+		 * se le da la bienvenida al apartado de calificacion de peliculas.
+		 * Metodo mostrarHistorialDePeliculas: Este metodo le muestra a los usuarios los pedidos que han hecho, y por ende tambien verifica
+		 * si el cliente si ha hecho almenos una compra, esto es para evitar que un cliente pueda calificar una pelicula que no ha 
+		 * visto. Cuando se verifica que el cliente ha visto una pelicula se le da a escojer que pelicula desea calificar,
+		 * y el cliente le da una valoracion del 1 al 5 dependiendo de los gustos del usuario.
+		 */
 		else if (eleccion==2) {
 			System.out.println("\n********Bienvenido al apartado de calificacion de peliculas********");
 			if(clienteProceso.getPeliculasDisponiblesParaCalificar().size() > 0) {
@@ -127,7 +144,7 @@ public class Funcionalidad3 {
 						else {
 							System.out.println("Error al calificar la pelicula, recuerda que es del 1 al 5");
 						}
-				        
+						
 						Pelicula prueba1 = opcionPelicula;
 						double calificacionGlobalPeliculas;
 						calificacionGlobalPeliculas= (prueba1.getValoracion() * prueba1.getTotalEncuestasDeValoracionRealizadas()+calificacion)/(prueba1.getTotalEncuestasDeValoracionRealizadas()+1);
@@ -141,7 +158,7 @@ public class Funcionalidad3 {
 						else {
 							System.out.println("Esta pelicula todavia tiene horarios");
 						}
-						
+					
 					
 					}catch(NumberFormatException e) {
 						System.out.println("\nError, debes ingresar un dato numérico\n");
@@ -157,7 +174,8 @@ public class Funcionalidad3 {
 				
 		}
 		
-        
+        //Si la eleccion es 3, se devuelve al menu principal
+		
 		else if (eleccion==3) {
 			Administrador.inicio(clienteProceso);
 			verificar=true;

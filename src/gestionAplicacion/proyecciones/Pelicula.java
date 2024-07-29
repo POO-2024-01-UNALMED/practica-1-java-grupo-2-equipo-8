@@ -433,7 +433,7 @@ public class Pelicula implements Serializable{
 	}
 
 	/**
-	// Este metodo se encarga de revisar que una pelicula tenga horarios disponibles en cartelera, ya que con esto se hace una evaluacion a si una
+	// Description: Este metodo se encarga de revisar que una pelicula tenga horarios disponibles en cartelera, ya que con esto se hace una evaluacion a si una
 	 * pelicula es apta para calificar o no
 
 	* */
