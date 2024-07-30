@@ -10,7 +10,8 @@ import java.io.PrintWriter;
 import gestionAplicacion.SucursalCine;
 
 public class Serializador {
-	private static File rutaTemp = new File ("src/baseDatos/temp/sucursales");
+	private static File rutaTemp = new File ("src\\baseDatos\\temp\\sucursales");
+	private static File rutaTempLinux = new File ("src/baseDatos/temp/sucursales");
 	
 	// Este método es el encargado de serializar las listas que están creadas en la clase SucursalCine.
 	public static void serializar(SucursalCine sucursalCine) {
@@ -152,7 +153,8 @@ public class Serializador {
 		}
 	}
 	
-	private static File rutaTemp2 = new File("src/baseDatos/temp/staticAttributes");
+	private static File rutaTemp2 = new File("src\\baseDatos\\temp\\staticAttributes");
+	private static File rutaTempLinux2 = new File ("src/baseDatos/temp/staticAttributes");
 	
 	//Este método se encarga de serializar las listas estáticas de la clase SucursalCine
 	public static void serializar() {
@@ -229,6 +231,19 @@ public class Serializador {
 					e.printStackTrace();
 				}
 				
+			} else if (file.getAbsolutePath().contains("metodosDePagoDisponibles")) {
+				try {
+					fos = new FileOutputStream(file);
+					oos = new ObjectOutputStream(fos);
+					oos.writeObject(SucursalCine.getMetodosDePagoDisponibles());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			} else if (file.getAbsolutePath().contains("fechaLogicaNegocio")) {
 				try {
 					fos = new FileOutputStream(file);

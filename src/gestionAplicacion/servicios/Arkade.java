@@ -11,9 +11,8 @@ import gestionAplicacion.usuario.*;
 
 
 public class Arkade implements Serializable{
-	
+
 	private static final long serialVersionUID = 1L;
-	
 	//Atributos
 	private String nombreServicio;
 	private double valorServicio;

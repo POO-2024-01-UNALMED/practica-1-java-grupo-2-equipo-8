@@ -16,12 +16,14 @@ import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.Servicio;
 import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.MetodoPago;
 import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.Ticket;
 
 public class Deserializador {
 	// Este atributo es para definir la ruta al directoria temp que contiene las clases.
-	private static File rutaTemp = new File ("src/baseDatos/temp/sucursales");
+	private static File rutaTemp = new File ("src\\baseDatos\\temp\\sucursales");
+	private static File rutaTempLinux = new File ("src/baseDatos/temp/sucursales");
 	// Este método se encarga de cargar las listas de objectos que hay almacenados (serializados).
 	public static void deserializar () {
 		File [] dirs = rutaTemp.listFiles();
@@ -173,7 +175,8 @@ public class Deserializador {
 	}
 	
 	//Creamos la ruta donde se encuentran los archivos .txt que guardan la información de los atributos estáticos
-	private static File rutaTemp2 = new File ("src/baseDatos/temp/staticAttributes");
+	private static File rutaTemp2 = new File ("src\\baseDatos\\temp\\staticAttributes");
+	private static File rutaTempLinux2 = new File ("src/baseDatos/temp/staticAttributes");
 	//Desearilzamos la información de los atributos estáticos
 	public static void deserializarEstaticos () {
 		//Definimos las variables que usaremos durante el proceso
@@ -234,7 +237,20 @@ public class Deserializador {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				
+
+			} else if (file.getAbsolutePath().contains("metodosDePagoDisponibles")) {
+				try {
+					fis = new FileInputStream(file);
+					ois = new ObjectInputStream(fis);
+					SucursalCine.setMetodosDePagoDisponibles((ArrayList<MetodoPago>) ois.readObject());
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
 			} else if (file.getAbsolutePath().contains("fechaLogicaNegocio")) {
 				try {
 					fis = new FileInputStream(file);
@@ -247,7 +263,6 @@ public class Deserializador {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				
 			}
 				
 		}
