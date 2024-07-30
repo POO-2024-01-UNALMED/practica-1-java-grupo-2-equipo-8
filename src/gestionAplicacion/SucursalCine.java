@@ -16,6 +16,7 @@ import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.Servicio;
 import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.MetodoPago;
 import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.Ticket;
 
@@ -32,6 +33,7 @@ public class SucursalCine implements Runnable, Serializable {
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private static ArrayList<Arkade> juegos = new ArrayList<>();
+	private static ArrayList<MetodoPago> metodosDePagoDisponibles = new ArrayList<>();
 	
 	private String lugar;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
@@ -581,6 +583,14 @@ public class SucursalCine implements Runnable, Serializable {
 
 	public static void setJuegos(ArrayList<Arkade> juegos) {
 		SucursalCine.juegos = juegos;
+	}
+
+	public static ArrayList<MetodoPago> getMetodosDePagoDisponibles() {
+		return metodosDePagoDisponibles;
+	}
+
+	public static void setMetodosDePagoDisponibles(ArrayList<MetodoPago> metodosDePagoDisponibles) {
+		SucursalCine.metodosDePagoDisponibles = metodosDePagoDisponibles;
 	}
 	
 	

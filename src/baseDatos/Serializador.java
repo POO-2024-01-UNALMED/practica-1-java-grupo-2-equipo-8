@@ -39,6 +39,7 @@ public class Serializador {
 					}
 				}
 				
+				//Serializa la informacion
 				for (File file : docs) {
 					
 					if (file.getAbsolutePath().contains("lugar")) {
@@ -181,7 +182,6 @@ public class Serializador {
 					fos = new FileOutputStream(file);
 					oos = new ObjectOutputStream(fos);
 					oos.writeObject(SucursalCine.getPeliculasDisponibles());
-					System.out.println(SucursalCine.getPeliculasDisponibles().size());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -195,7 +195,6 @@ public class Serializador {
 					fos = new FileOutputStream(file);
 					oos = new ObjectOutputStream(fos);
 					oos.writeObject(SucursalCine.getClientes());
-					System.out.println(SucursalCine.getClientes().size());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -203,12 +202,12 @@ public class Serializador {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
 			} else if (file.getAbsolutePath().contains("juegos")) {
 				try {
 					fos = new FileOutputStream(file);
 					oos = new ObjectOutputStream(fos);
 					oos.writeObject(SucursalCine.getJuegos());
-					System.out.println(SucursalCine.getJuegos().size());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

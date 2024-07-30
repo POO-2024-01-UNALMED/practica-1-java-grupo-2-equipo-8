@@ -3,6 +3,7 @@ package gestionAplicacion.usuario;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.Bono;
 
 public class MetodoPago implements Serializable{
@@ -11,14 +12,13 @@ public class MetodoPago implements Serializable{
 	private String nombre;
 	private double descuentoAsociado;
 	private double limiteMaximoPago;
-	private static ArrayList<MetodoPago> metodosDePagoDisponibles = new ArrayList<>();
 	//private static ArrayList<MetodoPago> metodosDePagoUsados = new ArrayList<>();
 	private int tipo;
 	
 	
 	//Constructores
 	public MetodoPago(){
-		metodosDePagoDisponibles.add(this);
+		SucursalCine.getMetodosDePagoDisponibles().add(this);
 	}
 	
 	
@@ -127,20 +127,20 @@ public class MetodoPago implements Serializable{
 				case 2: puntos = new MetodoPago("Puntos", 0.0, 10000, tipoMembresiaInt);break;
 				}
 			} else {
-				MetodoPago.getMetodosDePagoDisponibles().add(puntos);
+				SucursalCine.getMetodosDePagoDisponibles().add(puntos);
 			}
 		}
 		
 		//Se realiza un ciclo para filtrar los métodos de pago por el tipoMembresia del cliente
 		//y se añaden sus lista de métodos de pago.
-		for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
+		for (MetodoPago metodoPago : SucursalCine.getMetodosDePagoDisponibles()) {
 			if (tipoMembresiaInt == metodoPago.getTipo()) {
 				cliente.getMetodosDePago().add(metodoPago);
 				
 			}
 		}
 		//Se elimina la referencia del canje de puntos en la lista de métodos de pago estatica.
-		MetodoPago.getMetodosDePagoDisponibles().remove(puntos);
+		SucursalCine.getMetodosDePagoDisponibles().remove(puntos);
 		return cliente.getMetodosDePago();
 	}
 	
@@ -220,9 +220,9 @@ public class MetodoPago implements Serializable{
 			int tipoMembresia = cliente.getMembresia().getTipoMembresia();
 			MetodoPago puntos = null;
 			for (MetodoPago metodoPago: cliente.getMetodosDePago()) {
-				if (metodoPago.getNombre() == "Puntos") {
-						puntos = metodoPago;
-						break;
+				if (metodoPago.getNombre().equals("Puntos")) {
+					puntos = metodoPago;
+					break;
 				}
 			}
 			saldoPuntos = puntos.getLimiteMaximoPago();			
@@ -256,17 +256,6 @@ public class MetodoPago implements Serializable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-
-	public static ArrayList<MetodoPago> getMetodosDePagoDisponibles() {
-		return metodosDePagoDisponibles;
-	}
-
-
-	public static void setMetodosDePagoDisponibles(ArrayList<MetodoPago> metodosDePagoDisponibles) {
-		MetodoPago.metodosDePagoDisponibles = metodosDePagoDisponibles;
-	}
-
 
 	public int getTipo() {
 		return tipo;
