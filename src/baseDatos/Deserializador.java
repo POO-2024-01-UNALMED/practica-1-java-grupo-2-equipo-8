@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import gestionAplicacion.SucursalCine;
@@ -221,7 +222,33 @@ public class Deserializador {
 					e.printStackTrace();
 				}
 
-			} 
+			} else if (file.getAbsolutePath().contains("fechaNuevoDia")) {
+				try {
+					fis = new FileInputStream(file);
+					ois = new ObjectInputStream(fis);
+					SucursalCine.setFechaValidacionNuevoDiaDeTrabajo((LocalDate) ois.readObject());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				
+			} else if (file.getAbsolutePath().contains("fechaLogicaNegocio")) {
+				try {
+					fis = new FileInputStream(file);
+					ois = new ObjectInputStream(fis);
+					SucursalCine.setFechaRevisionLogicaDeNegocio((LocalDate) ois.readObject());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				
+			}
 				
 		}
 	}

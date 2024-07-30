@@ -23,7 +23,7 @@ public class Administrador {
 		sc.nextLine();
 		return sc.nextLine();
 	}
-
+	
 //	static ServicioComida servicioComidaM = new ServicioComida("comida");
 //	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("souvenir");
 //	
@@ -143,12 +143,12 @@ public class Administrador {
 //	static TarjetaCinemar tarjeta10 = new TarjetaCinemar();static TarjetaCinemar tarjeta11 = new TarjetaCinemar();static TarjetaCinemar tarjeta12 = new TarjetaCinemar();
 //	static TarjetaCinemar tarjeta13 = new TarjetaCinemar();static TarjetaCinemar tarjeta14 = new TarjetaCinemar();static TarjetaCinemar tarjeta15 = new TarjetaCinemar();	
 //	
-	
+//	
 	public static void main(String[] args) {
 		
 //		Llamados métodos de instancias para hacer pruebas
-//		{
-//			
+		{
+			
 //			sucursalCine1.getServicios().add(servicioComidaM);
 //			
 //			sucursalCine1.getInventarioCine().add(producto1);
@@ -260,7 +260,7 @@ public class Administrador {
 //			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
 //			//System.out.println(tarjeta.getSaldo());
 //		//}
-//		}
+		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Print tests
 		System.out.println();

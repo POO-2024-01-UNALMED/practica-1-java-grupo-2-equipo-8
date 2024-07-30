@@ -215,6 +215,33 @@ public class Serializador {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
+			} else if (file.getAbsolutePath().contains("fechaNuevoDia")) {
+				try {
+					fos = new FileOutputStream(file);
+					oos = new ObjectOutputStream(fos);
+					oos.writeObject(SucursalCine.getFechaValidacionNuevoDiaDeTrabajo());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			} else if (file.getAbsolutePath().contains("fechaLogicaNegocio")) {
+				try {
+					fos = new FileOutputStream(file);
+					oos = new ObjectOutputStream(fos);
+					oos.writeObject(SucursalCine.getFechaValidacionNuevoDiaDeTrabajo());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
 			
 		}

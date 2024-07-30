@@ -25,9 +25,11 @@ public class SucursalCine implements Runnable, Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static volatile LocalDateTime fechaActual = LocalDateTime.now();
-	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
-	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 00);
-	public static final Duration LIMPIEZA_SALA_DE_CINE = Duration.ofMinutes(30); 
+	private static LocalDate fechaValidacionNuevoDiaDeTrabajo;
+	private static LocalDate fechaRevisionLogicaDeNegocio;
+	private static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
+	private static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 00);
+	private static final Duration LIMPIEZA_SALA_DE_CINE = Duration.ofMinutes(30); 
 	
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
@@ -328,6 +330,8 @@ public class SucursalCine implements Runnable, Serializable {
 	public static void logicaSistemaReservarTicket() {
 		SucursalCine.logicaSemanalReservarTicket();
 		SucursalCine.actualizarPeliculasSalasDeCine();
+		fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
+		fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
 	}
 	
 	/**
@@ -340,6 +344,13 @@ public class SucursalCine implements Runnable, Serializable {
 			for (SalaCine salaDeCine : sede.salasDeCine) {
 				salaDeCine.tieneMasHorariosPresentacionHoy();
 			}
+		}
+	}
+	
+	/***/
+	public static void dropTicketsCaducados() {
+		for (Cliente cliente : clientes) {
+			cliente.dropTicketsCaducados();
 		}
 	}
 	
@@ -358,13 +369,10 @@ public class SucursalCine implements Runnable, Serializable {
 	 * semanal).
 	 * */
 	public void run() {
-		//Posiblemente se deban serializar estos atributos
-		LocalDate fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
-		LocalDate fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
 		
-		//Se ejecuta este método con el fin de evitar problemas con el serializador, en caso de que guarde una película que no tiene más horarios
-		//de presentación ese día. Luego al día siguiente, se ejecuta de nuevo el programa, sigue marcada como false, cuando en realidad si tiene horarios para ese día.
-		SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
+		//Lógica para ejecutar cada vez que se inicia una nueva ejecución luego de serializar
+		SucursalCine.dropHorariosVencidos();
+		SucursalCine.dropTicketsCaducados();
 		
 		while(!Thread.currentThread().isInterrupted()) {
 			
@@ -383,7 +391,7 @@ public class SucursalCine implements Runnable, Serializable {
 				
 			}
 			
-			if (fechaActual.toLocalDate().equals(fechaValidacionNuevoDiaDeTrabajo)) {
+			if (!fechaActual.toLocalDate().isBefore(fechaValidacionNuevoDiaDeTrabajo)) {
 				//Lógica a evaluar cada día
 				
 				fechaValidacionNuevoDiaDeTrabajo = fechaValidacionNuevoDiaDeTrabajo.plusDays(1);
@@ -399,7 +407,7 @@ public class SucursalCine implements Runnable, Serializable {
 				
 			}
 			
-			if(fechaActual.toLocalDate().equals(fechaRevisionLogicaDeNegocio)) {
+			if(!fechaActual.toLocalDate().isBefore(fechaRevisionLogicaDeNegocio)) {
 				//Lógica a evaluar cada semana
 				
 				fechaRevisionLogicaDeNegocio = fechaRevisionLogicaDeNegocio.plusWeeks(1);
@@ -591,6 +599,22 @@ public class SucursalCine implements Runnable, Serializable {
 
 	public static void setMetodosDePagoDisponibles(ArrayList<MetodoPago> metodosDePagoDisponibles) {
 		SucursalCine.metodosDePagoDisponibles = metodosDePagoDisponibles;
+	}
+
+	public static LocalDate getFechaValidacionNuevoDiaDeTrabajo() {
+		return fechaValidacionNuevoDiaDeTrabajo;
+	}
+
+	public static void setFechaValidacionNuevoDiaDeTrabajo(LocalDate fechaValidacionNuevoDiaDeTrabajo) {
+		SucursalCine.fechaValidacionNuevoDiaDeTrabajo = fechaValidacionNuevoDiaDeTrabajo;
+	}
+
+	public static LocalDate getFechaRevisionLogicaDeNegocio() {
+		return fechaRevisionLogicaDeNegocio;
+	}
+
+	public static void setFechaRevisionLogicaDeNegocio(LocalDate fechaRevisionLogicaDeNegocio) {
+		SucursalCine.fechaRevisionLogicaDeNegocio = fechaRevisionLogicaDeNegocio;
 	}
 	
 	
