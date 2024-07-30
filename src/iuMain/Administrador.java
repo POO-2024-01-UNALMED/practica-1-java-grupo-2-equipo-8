@@ -23,7 +23,7 @@ public class Administrador {
 		sc.nextLine();
 		return sc.nextLine();
 	}
-
+//
 //	static ServicioComida servicioComidaM = new ServicioComida("comida");
 //	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("souvenir");
 //	
@@ -143,7 +143,7 @@ public class Administrador {
 //	static TarjetaCinemar tarjeta10 = new TarjetaCinemar();static TarjetaCinemar tarjeta11 = new TarjetaCinemar();static TarjetaCinemar tarjeta12 = new TarjetaCinemar();
 //	static TarjetaCinemar tarjeta13 = new TarjetaCinemar();static TarjetaCinemar tarjeta14 = new TarjetaCinemar();static TarjetaCinemar tarjeta15 = new TarjetaCinemar();	
 //	
-	
+//	
 	public static void main(String[] args) {
 		
 //		Llamados métodos de instancias para hacer pruebas
@@ -187,8 +187,8 @@ public class Administrador {
 //			sucursalCine3.getInventarioCine().add(producto4S);
 //			sucursalCine3.getInventarioCine().add(producto5S);
 //			
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-//			//Funcionalidad 1 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+////			//Funcionalidad 1 
 //			SucursalCine.logicaSistemaReservarTicket();
 //			
 //			//Prueba películas recomendadas
@@ -209,7 +209,7 @@ public class Administrador {
 //			cliente5.getHistorialDePedidos().add(producto1);
 //			cliente5.getHistorialDePedidos().add(producto2);
 //			cliente5.getValoracionesPeliculas().add(pelicula1_3);
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //			
 //			//cliente4.setCuenta(tarjeta1);
 //			Membresia.asignarTipoMembresia();

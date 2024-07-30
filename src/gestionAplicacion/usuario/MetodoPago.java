@@ -8,6 +8,7 @@ import gestionAplicacion.servicios.Bono;
 
 public class MetodoPago implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	//Atributos
 	private String nombre;
 	private double descuentoAsociado;

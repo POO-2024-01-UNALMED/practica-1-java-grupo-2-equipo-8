@@ -1,4 +1,5 @@
 package gestionAplicacion.servicios;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -9,8 +10,12 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.*;
 
 
-public class Arkade {
+public class Arkade implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//Atributos
 	private String nombreServicio;
 	private double valorServicio;
