@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import baseDatos.Deserializador;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Arkade;
@@ -15,22 +16,26 @@ import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.Servicio;
 import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.MetodoPago;
 import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.Ticket;
 
-public class SucursalCine implements Runnable, Serializable {
+public class SucursalCine implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static volatile LocalDateTime fechaActual = LocalDateTime.now();
-	public static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
-	public static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 00);
-	public static final Duration LIMPIEZA_SALA_DE_CINE = Duration.ofMinutes(30); 
+	private static LocalDateTime fechaActual = LocalDateTime.now();
+	private static LocalDate fechaValidacionNuevoDiaDeTrabajo;
+	private static LocalDate fechaRevisionLogicaDeNegocio;
+	private static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
+	private static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 00);
+	private static final Duration LIMPIEZA_SALA_DE_CINE = Duration.ofMinutes(30); 
 	
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private static ArrayList<Arkade> juegos = new ArrayList<>();
+	private static ArrayList<MetodoPago> metodosDePagoDisponibles = new ArrayList<>();
 	
 	private String lugar;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
@@ -71,7 +76,7 @@ public class SucursalCine implements Runnable, Serializable {
 	 * (Este método es synchronized debido a que existe la posibilidad de que sea llamado en algún punto por ambos hilos al mismo tiempo.
 	 * En caso de que el cliente termine de ver una película o use la sala de espera).
 	 * */
-	public synchronized static void actualizarPeliculasSalasDeCine() {
+	public static void actualizarPeliculasSalasDeCine() {
 		
 		for (SucursalCine sede : sucursalesCine) {
 			//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
@@ -103,7 +108,7 @@ public class SucursalCine implements Runnable, Serializable {
 	 * y comparamos si es menor al horario actual luego de  que le restamos a este la duración máxima obtenida anteriormente, 
 	 * en caso de que sí, lo eliminamos. (Este método es synchronized ya que existe un caso en el cual sea ejecutado por ambos hilos al mismo tiempo). 
 	 * */
-	public synchronized static void dropHorariosVencidos() {
+	public static void dropHorariosVencidos() {
 		
 		Duration maxDuration;
 		int comparacionDuraciones;
@@ -325,6 +330,8 @@ public class SucursalCine implements Runnable, Serializable {
 	public static void logicaSistemaReservarTicket() {
 		SucursalCine.logicaSemanalReservarTicket();
 		SucursalCine.actualizarPeliculasSalasDeCine();
+		fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
+		fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
 	}
 	
 	/**
@@ -341,8 +348,18 @@ public class SucursalCine implements Runnable, Serializable {
 	}
 	
 	/**
+	 * Description : Este método se encarga de eliminar los tickets caducados de todos los clientes, con el fin de 
+	 * liberar espacio en memoria y evitar problemas en la lógica del programa, luego de ejecutar la serialización.
+	 * */
+	public static void dropTicketsCaducados() {
+		for (Cliente cliente : clientes) {
+			cliente.dropTicketsCaducados();
+		}
+	}
+	
+	/**
 	 * @Override
-	 * Description : Este método se encarga de ejecutar la lógica de negocio en 3 plazos:
+	 * Description : Este método se encarga de avanzar la hora y ejecutar la lógica de negocio en 3 plazos:
 	 * 
 	 * 1. Durante la jornada laboral: Actualiza las salas de cine, ubicando las películas en presentación en sus respectivas salas.
 	 * 
@@ -354,65 +371,66 @@ public class SucursalCine implements Runnable, Serializable {
 	 * (Cambia las películas de sucursal según su rendimiento, distribuye de nuevo las películas en sus salas de cine y crea los horarios de presentación
 	 * semanal).
 	 * */
-	public void run() {
-		//Posiblemente se deban serializar estos atributos
-		LocalDate fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
-		LocalDate fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
+	public static void avanzarTiempo() {
 		
-		//Se ejecuta este método con el fin de evitar problemas con el serializador, en caso de que guarde una película que no tiene más horarios
-		//de presentación ese día. Luego al día siguiente, se ejecuta de nuevo el programa, sigue marcada como false, cuando en realidad si tiene horarios para ese día.
-		SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
+		//Actualiza la hora a la hora actual
+		SucursalCine.setFechaActual(LocalDateTime.now());
 		
-		while(!Thread.currentThread().isInterrupted()) {
+		if (fechaActual.toLocalTime().isBefore(FIN_HORARIO_LABORAL) 
+				&& fechaActual.toLocalTime().isAfter(INICIO_HORARIO_LABORAL) ) {
+			//Lógica durante la jornada laboral
+			SucursalCine.actualizarPeliculasSalasDeCine();
 			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				//Reestablece el estado de interrupción
-				Thread.currentThread().interrupt();
-			}
-			SucursalCine.setFechaActual(fechaActual.plusSeconds(10));
+		}
+		
+		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
+		if (!fechaActual.toLocalDate().isBefore(fechaValidacionNuevoDiaDeTrabajo)) {
+			//Lógica a evaluar cada día
 			
-			if (fechaActual.toLocalTime().isBefore(FIN_HORARIO_LABORAL) 
-					&& fechaActual.toLocalTime().isAfter(INICIO_HORARIO_LABORAL) ) {
-				//Lógica durante la jornada laboral
-				SucursalCine.actualizarPeliculasSalasDeCine();
-				
-			}
+			fechaValidacionNuevoDiaDeTrabajo = fechaValidacionNuevoDiaDeTrabajo.plusDays(1);
 			
-			if (fechaActual.toLocalDate().equals(fechaValidacionNuevoDiaDeTrabajo)) {
-				//Lógica a evaluar cada día
-				
-				fechaValidacionNuevoDiaDeTrabajo = fechaValidacionNuevoDiaDeTrabajo.plusDays(1);
-				
-				//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
-				SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
-				
-				//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva (Hecho)
-				//Con el serializador presenta problemas, implementar otra solución
-				ticketsCreados.clear();
-				
-				//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
-				
-			}
+			//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
+			SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
 			
-			if(fechaActual.toLocalDate().equals(fechaRevisionLogicaDeNegocio)) {
-				//Lógica a evaluar cada semana
-				
-				fechaRevisionLogicaDeNegocio = fechaRevisionLogicaDeNegocio.plusWeeks(1);
-				
-				//Implementar método de cambio de película entre sucursales según su valoración
-				
-				
-				
-				
-				//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
-				SucursalCine.logicaSemanalReservarTicket();
-			}
+			//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva (Hecho)
+			//Con el serializador presenta problemas, implementar otra solución
+			
+			
+			//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
+			
+		}
+		
+		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
+		if(!fechaActual.toLocalDate().isBefore(fechaRevisionLogicaDeNegocio)) {
+			//Lógica a evaluar cada semana
+			
+			fechaRevisionLogicaDeNegocio = fechaRevisionLogicaDeNegocio.plusWeeks(1);
+			
+			//Implementar método de cambio de película entre sucursales según su valoración
+			
+			
+			//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
+			SucursalCine.logicaSemanalReservarTicket();
 			
 		}
 		
 	}
+	
+	/**
+	 * Description : Este método se encarga de solucionar los problemas que trae la serialización tras no ocuparse
+	 * luego de mucho tiempo.
+	 * 1. Elimina los horarios vencidos de las películas.
+	 * 2. Elimina los tickets caducados de los clientes.
+	 * 3. Actualiza los permisos de actualización de las salas de cine.
+	 * */
+	public static void repararProblemasSerializacion() {
+		
+		SucursalCine.dropHorariosVencidos();
+		SucursalCine.dropTicketsCaducados();
+		SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
+		
+	}
+	
 	/**public void cambiarPeliculaSede(Pelicula pelicula){
 		
 		if (pelicula.getLugar()=="Medellin") {
@@ -469,6 +487,9 @@ public class SucursalCine implements Runnable, Serializable {
 	}
 	
 	//Constructor
+	public SucursalCine() {
+		SucursalCine.sucursalesCine.add(this);
+	}
 	
 	public SucursalCine(String lugar) {
 		this.lugar = lugar;
@@ -577,6 +598,30 @@ public class SucursalCine implements Runnable, Serializable {
 
 	public static void setJuegos(ArrayList<Arkade> juegos) {
 		SucursalCine.juegos = juegos;
+	}
+
+	public static ArrayList<MetodoPago> getMetodosDePagoDisponibles() {
+		return metodosDePagoDisponibles;
+	}
+
+	public static void setMetodosDePagoDisponibles(ArrayList<MetodoPago> metodosDePagoDisponibles) {
+		SucursalCine.metodosDePagoDisponibles = metodosDePagoDisponibles;
+	}
+
+	public static LocalDate getFechaValidacionNuevoDiaDeTrabajo() {
+		return fechaValidacionNuevoDiaDeTrabajo;
+	}
+
+	public static void setFechaValidacionNuevoDiaDeTrabajo(LocalDate fechaValidacionNuevoDiaDeTrabajo) {
+		SucursalCine.fechaValidacionNuevoDiaDeTrabajo = fechaValidacionNuevoDiaDeTrabajo;
+	}
+
+	public static LocalDate getFechaRevisionLogicaDeNegocio() {
+		return fechaRevisionLogicaDeNegocio;
+	}
+
+	public static void setFechaRevisionLogicaDeNegocio(LocalDate fechaRevisionLogicaDeNegocio) {
+		SucursalCine.fechaRevisionLogicaDeNegocio = fechaRevisionLogicaDeNegocio;
 	}
 	
 	
