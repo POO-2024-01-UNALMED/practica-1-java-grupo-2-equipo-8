@@ -253,12 +253,13 @@ public class Pelicula implements Serializable{
 	 * @param columna : Recibe el número de la columna seleccionada por el cliente.
 	 * */
 	public void modificarSalaVirtual(LocalDateTime fecha, int fila, int columna) {
-	    
+		
 		if (this.asientosVirtuales.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] == 0) {
 			this.asientosVirtuales.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] = 1;	
 		}else {
 			this.asientosVirtuales.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] = 0;	
-		}	
+		}
+		
 	}
 	
 	/**
@@ -270,7 +271,7 @@ public class Pelicula implements Serializable{
 	 * @return <b>boolean</b> : Este método retorna un boolean que representa la disponibilidad del asiento selccionado por el cliente.
 	 * */
 	public boolean isDisponibilidadAsientoSalaVirtual(LocalDateTime fecha, int fila, int columna) {
-	    
+		
 		if (this.asientosVirtuales.get(this.horarios.indexOf(fecha))[fila - 1][columna - 1] == 0) {
 			return true;	
 		}else {

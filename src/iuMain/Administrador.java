@@ -261,8 +261,10 @@ public class Administrador {
 		//}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//Print tests
+			System.out.println(); 
 			System.out.println();
-			System.out.println();
+			
+			
 			
 		}
 		
@@ -821,7 +823,7 @@ public class Administrador {
 			//Verificamos si el cliente tiene acceso para al menos una película
 			if (carteleraPersonalizadaProceso.size() == 0) {
 				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)");
-				Administrador.inicio(clienteProceso);
+				break;
 			}
 			
 			//Tomamos los nombres de las películas para mostrarlos en pantalla
@@ -2010,7 +2012,7 @@ public class Administrador {
 			
 			//Verificamos si el ticket no ha caducado
 			if (ticketParaUsar.getHorario().isBefore(SucursalCine.getFechaActual())) {
-				System.out.println("\nEl ticket seleccionado no puede ser usado, debido a que ha caducado o su película se encuentra en presentación\n");
+				System.out.println("\nEl ticket seleccionado no puede ser usado, debido a que ha caducado o su película se encuentra en presentación");
 				continue;
 			}
 			
