@@ -415,23 +415,46 @@ public class SucursalCine implements Runnable, Serializable {
 	}
 	public void cambiarPeliculaSede(Pelicula pelicula){
 		
-		String sucursales=null;
-		for (SucursalCine sucursal : sucursalesCine) {
-			
-			sucursales = sucursales + sucursal;
-			System.out.print(sucursales);
-		}
+		
 	}
 		
 		
-		  
+	/** Description: Este metodo se encarga de seleccionar las sucursales de lugar , por ejemplo de marinilla a medellin, 
+	 * pero siempre aleatoriamente con el uso de la funcion random de la libreria math, retornando otra vez las sucursales
+	 * con otro lugar
+	 * 
+	 * */	 
+		 
+	public static SucursalCine cambiar(SucursalCine sucursalCine) {
+		while(true) {
+			int numeroAleatorio= (int)(Math.random()*10)%(sucursalesCine.size());
+			SucursalCine sucursalSeleccionada=sucursalesCine.get(numeroAleatorio);
+			if(sucursalCine.equals(sucursalSeleccionada)) {
+				continue;
+			}
+			
+			return sucursalSeleccionada;
+		}
+	    
+	
+	}
+	
+	
+	
+	
+	
 	   
 	
 	
-	/**public void eliminarPelicula(Pelicula pelicula) {
-	 *  pelicula.remove
-	 */
+	public void eliminarPeliculas(ArrayList<Pelicula> PeliculasEliminar) {
 		
+	   for(Pelicula pelicula:PeliculasEliminar) {
+		   this.cartelera.remove(pelicula);
+	   } 
+	   
+	   
+	 
+	}
 	
 	
 	
@@ -448,10 +471,12 @@ public class SucursalCine implements Runnable, Serializable {
 			calificacionReal = promedio/peliculasCalificadas.size();
 		}
 		if (calificacionReal<3) {
-			verificarCambioDeSucursal
+			if(peliculasCalificadas.get(0).isStrikeCambio()) {
+				this.eliminarPeliculas(peliculasCalificadas);
+			}
 		}
 		else if (calificacionReal>4.5) {
-			renovarstock
+			
 		}
 	
 		
