@@ -267,7 +267,10 @@ public class Administrador {
 		System.out.println();
 		
 		//MAIN
-		inicioDelSistema();
+		
+		SucursalCine.repararProblemasSerializacion();
+		
+		SucursalCine.avanzarTiempo();
 		
 		System.out.println("Iniciar sesión");
 		Cliente clienteProceso = iniciarSesion();
@@ -275,13 +278,9 @@ public class Administrador {
 		System.out.println("\nIngresar a una de nuestras sedes");
 		clienteProceso.setCineActual(ingresarASucursal());
 		
-		Thread hiloLogicaProyecto = new Thread(clienteProceso.getCineActual());
-		hiloLogicaProyecto.start();
-		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
 		inicio(clienteProceso);
 		
-		hiloLogicaProyecto.interrupt();
 		salirDelSistema();
 		
 	}
@@ -290,6 +289,10 @@ public class Administrador {
 	
 	public static void inicio(Cliente clienteProceso) {
 	int opcion = 0;
+	
+	//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
+	SucursalCine.avanzarTiempo();
+	
 	do {
 		
 		try {
@@ -817,13 +820,16 @@ public class Administrador {
 			
 			//Funcionalidad reserva de ticket
 			
+			//Avance de tiempo para ejecutar los filtros de películas correctamente
+			SucursalCine.avanzarTiempo();
+			
 			//Mostramos una cartelera personalizada de acuerdo a la edad del cliente, si la película tiene horarios disponibles o se encuentra en presentación
 			ArrayList<Pelicula> carteleraPersonalizadaProceso = Pelicula.filtrarCarteleraPorCliente(clienteProceso, clienteProceso.getCineActual());
 			
 			//Verificamos si el cliente tiene acceso para al menos una película
 			if (carteleraPersonalizadaProceso.size() == 0) {
 				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)");
-				Administrador.inicio(clienteProceso);
+				break;
 			}
 			
 			//Tomamos los nombres de las películas para mostrarlos en pantalla
@@ -956,6 +962,9 @@ public class Administrador {
 			SalaCine salaDeCineProceso = null;
 			String numeroAsientoProceso = null;
 			LocalDateTime horarioProceso = null;
+			
+			//Avance de tiempo para realizar los filtros de horarios correctamente
+			SucursalCine.avanzarTiempo();
 			
 			//Filtramos los primeros 7 horarios con asientos disponibles desde la fecha actual
 			ArrayList<LocalDateTime> horariosPeliculaProceso = peliculaProceso.filtrarHorariosPelicula();
@@ -1204,10 +1213,10 @@ public class Administrador {
 						casoValido = true;
 						
 					}else {
-						
 						System.out.println("\nSeleccione un método de pago entre los disponibles");
 						
 					}
+					
 				}while( !casoValido );
 				
 				do {
@@ -1402,7 +1411,11 @@ public class Administrador {
 					case 2: casoValidoConfirmacion = true; casoValido = false; break;
 					default : System.out.println("Opción invalida"); casoValidoConfirmacion = false; break;
 				}
+				
 			}while(!casoValidoConfirmacion);
+			
+			//Avance de tiempo para verificar la integridad del horario seleccionado
+			SucursalCine.avanzarTiempo();
 			
 			//Revisar integridad del horario seleccionado en caso de que el cliente tarde mucho tiempo en confirmar su elección
 			if (!horarioProceso.isAfter(SucursalCine.getFechaActual())) {
@@ -1454,6 +1467,9 @@ public class Administrador {
 					continue;
 				}
 				
+				//Avance de tiempo para verificar si el horario aún se encuentra disponible en la sala de cine virtual (No ha sido actualizado)
+				SucursalCine.avanzarTiempo();
+				
 				//Verificamos si el horario aún se encuentra disponible
 				try {
 					
@@ -1477,6 +1493,7 @@ public class Administrador {
 						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 						continue;
 					}
+					
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 				
 				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1498,6 +1515,9 @@ public class Administrador {
 					System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
 					continue;
 				}
+				
+				//Avance de tiempo para verificar si el horario aún se encuentra disponible en la sala de cine virtual (No ha sido actualizado)
+				SucursalCine.avanzarTiempo();
 				
 				//Revisamos si el horario aún se encuentra disponible
 				try {
@@ -1522,6 +1542,7 @@ public class Administrador {
 						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 						continue;
 					}
+					
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 				
 				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1603,6 +1624,7 @@ public class Administrador {
 					}catch (NumberFormatException e) {
 						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 					}
+					
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 						
 				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1633,6 +1655,7 @@ public class Administrador {
 					}catch (NumberFormatException e) {
 						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 					}
+					
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 						
 				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1710,6 +1733,9 @@ public class Administrador {
 				//Rompemos la lógica de ingresar a las salas de cine
 				break;
 			}
+			
+			//Avance de tiempo para tomar las salas de cine actualizadas
+			SucursalCine.avanzarTiempo();
 			
 			//Tomamos las salas de cine que aún tienen películas en presentación y no han finalizado
 			ArrayList<SalaCine> salasDeCineDisponibles = SalaCine.filtrarSalasDeCine(clienteProceso.getCineActual());
@@ -1795,6 +1821,7 @@ public class Administrador {
 						}catch(NumberFormatException e) {
 							System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
 						}
+						
 					}while(!(opcionMenu == 1 || opcionMenu == 2));
 					
 					casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1805,6 +1832,9 @@ public class Administrador {
 				if(volverAlMenu) {
 					break;
 				}
+				
+				//Avance de tiempo para aplicar correctamente la verificación de ingreso a la sala de cine
+				SucursalCine.avanzarTiempo();
 				
 				//Realizamos la verificación y evaluamos si el cliente puede ingresar a la sala de cine
 				if (salaDeCineProceso.verificarTicket(clienteProceso)) {
@@ -1901,6 +1931,9 @@ public class Administrador {
 				break;
 			}
 			
+			//Avance de tiempo para tomar los tickets más recientes
+			SucursalCine.avanzarTiempo();
+			
 			//Validamos si el cliente tiene tickets disponibles
 			clienteProceso.dropTicketsCaducados();
 			//Filtramos los tickets que el cliente puede usar
@@ -1968,6 +2001,7 @@ public class Administrador {
 					}else {
 						System.out.println("Opción inválida");
 					}
+					
 				}while(!casoValidoConfirmacion);
 				
 				casoValido = (opcionMenu == 1) ? true : false;
@@ -1979,9 +2013,12 @@ public class Administrador {
 				break;
 			}
 			
+			//Avance de tiempo para hacer la verificación de caducidad correctamente
+			SucursalCine.avanzarTiempo();
+			
 			//Verificamos si el ticket no ha caducado
 			if (ticketParaUsar.getHorario().isBefore(SucursalCine.getFechaActual())) {
-				System.out.println("\nEl ticket seleccionado no puede ser usado, debido a que ha caducado o su película se encuentra en presentación\n");
+				System.out.println("\nEl ticket seleccionado no puede ser usado, debido a que ha caducado o su película se encuentra en presentación");
 				continue;
 			}
 			
@@ -2035,6 +2072,10 @@ public class Administrador {
 	 * @return <b>boolean</b> : Este método retorna el estado de la validación para tomar determinadas acciones respecto a esta.
 	 * */
 	static boolean verificarIntegridadHorarioSeleccionado(SalaCine salaDeCineProceso, Pelicula peliculaProceso) {
+		
+		//Avance de tiempo
+		SucursalCine.avanzarTiempo();
+		
 		if((salaDeCineProceso.getPeliculaEnPresentacion().equals(peliculaProceso)) 
 		&& (salaDeCineProceso.getHorarioPeliculaEnPresentacion().plus(Duration.ofMinutes(20)).isAfter(SucursalCine.getFechaActual()))) {
 			return true;
@@ -2055,6 +2096,9 @@ public class Administrador {
 	 * */
 	static boolean verificarIntegridadHorarioSeleccionado(Pelicula peliculaProceso, LocalDateTime horarioProceso) {
 		
+		//Avance de tiempo
+		SucursalCine.avanzarTiempo();
+		
 		if (peliculaProceso.getHorarios().contains(horarioProceso)) {
 			return true;
 		}
@@ -2062,7 +2106,7 @@ public class Administrador {
 		return false;
 	}
 	
-	//4. Serializar (En proceso)
+	//4. Serializar (Hecho)
 	//5. Hacer test de correcta serialización de la funcionalidad 1.
 	//6. Empezar el Google Document con el manual de usuario y la documentación
 	

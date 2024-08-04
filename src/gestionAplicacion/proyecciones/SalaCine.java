@@ -256,6 +256,11 @@ public class SalaCine implements Serializable{
 				
 				firstTimeComparacionHorario = true;
 				
+				//Para evitar que haga la comparación y le settee el nombre de la película a un horario que no le corresponde
+				if (pelicula.getHorarios().size() == 0) {
+					continue;
+				}
+				
 				for (LocalDateTime horario : pelicula.getHorarios()) {
 					
 					//Si es la primera vez que se realiza la comparación los setteamos como el valor más cercano al actual
@@ -295,7 +300,7 @@ public class SalaCine implements Serializable{
 					continue;
 				}
 			}
-		}
+		} 
 		
 		//Ejecutamos esta operación en caso de que se haya encontrado un cambio para la película en presentación
 		if (peliculaPresentacion != null) {
