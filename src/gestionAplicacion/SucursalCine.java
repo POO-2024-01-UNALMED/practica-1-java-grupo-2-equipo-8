@@ -413,19 +413,23 @@ public class SucursalCine implements Runnable, Serializable {
 		}
 		
 	}
+	/** Description:Este metodo se encarga de cambiar peliculas de sede, ya que en nuestra logica de negocio implementamos
+	 * el sistema de calificaciones, entonces tenemos que estar constantemente pendientes de que peliculas han sido
+	 * buenas o malas recibidas por los clientes, y cambiandolas de sede, esperamos que su calificacion mejore, si esto
+	 * no se da, la pelicula es eliminada de la cartelera, ya que se considera como mala
+	 * */	
 	public void cambiarPeliculaSede(Pelicula pelicula){
 		
 		
 	}
 		
 		
-	/** Description: Este metodo se encarga de seleccionar las sucursales de lugar , por ejemplo de marinilla a medellin, 
-	 * pero siempre aleatoriamente con el uso de la funcion random de la libreria math, retornando otra vez las sucursales
-	 * con otro lugar
-	 * 
+	/** Description: Este metodo se encarga de seleccionar las sucursales del arrayList y con el uso de la funcion random de la libreria math,
+	 * se selecciona una sucursal aleatoriamente, ya que esto nos permetira mas adelante el cambio de sucursal de una
+	 * pelicula a otra
 	 * */	 
 		 
-	public static SucursalCine cambiar(SucursalCine sucursalCine) {
+	public static SucursalCine seleccionarSucursalAleatoriamente(SucursalCine sucursalCine) {
 		while(true) {
 			int numeroAleatorio= (int)(Math.random()*10)%(sucursalesCine.size());
 			SucursalCine sucursalSeleccionada=sucursalesCine.get(numeroAleatorio);
@@ -444,7 +448,11 @@ public class SucursalCine implements Runnable, Serializable {
 	
 	
 	   
-	
+	/** Description: Este metodo se encarga de remover las peliculas que fueron mal calificadas en dos sucursales, por lo
+	 * tanto por temas de negocio decidimos eliminar esta pelicula por malas ventas, usando la funcion remove, quitandola
+	 * de la cartelera principal de peliculas.
+	 *
+	 * */
 	
 	public void eliminarPeliculas(ArrayList<Pelicula> PeliculasEliminar) {
 		
@@ -457,7 +465,12 @@ public class SucursalCine implements Runnable, Serializable {
 	}
 	
 	
-	
+	/** Description: Este metodo se encarga de analizar por semana que peliculas han sido bien o mal calificadas, evaluando
+	 * las calificaciones de los clientes, si una pelicula es calificada por debajo de 3, la consideramos como mal calificada
+	 * y la cambiamos de sede, y si la pelicula esta por encima de 3 esta catalogada como bien, ya en el caso en que la 
+	 * pelicula este calificada como mayor a 4.5, la cambiamos de sede, ya que consideramos que es una muy buena pelicula, y 
+	 * nos hara ganar mayor rentablidad.
+	 * */
 	
 	
 	public void logicaCalificacionPeliculas(Pelicula pelicula){	
@@ -473,9 +486,14 @@ public class SucursalCine implements Runnable, Serializable {
 		if (calificacionReal<3) {
 			if(peliculasCalificadas.get(0).isStrikeCambio()) {
 				this.eliminarPeliculas(peliculasCalificadas);
+				 
+		  }else {
+			  ;
+				
 			}
 		}
 		else if (calificacionReal>4.5) {
+			
 			
 		}
 	
