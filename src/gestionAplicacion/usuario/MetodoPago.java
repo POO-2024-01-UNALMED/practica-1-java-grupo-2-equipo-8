@@ -32,7 +32,7 @@ public class MetodoPago implements Serializable{
 		this.tipo = 0;
 	}
 	
-	public MetodoPago(String nombre, double descuentoAsociado, double limiteMaximoPago, int tipo) {
+	public MetodoPago(String nombre, double descuentoAsociado,	 double limiteMaximoPago, int tipo) {
 		this();
 		this.nombre = nombre;
 		this.descuentoAsociado = descuentoAsociado;
@@ -73,29 +73,32 @@ public class MetodoPago implements Serializable{
 		}
 		return resultado;
 	}
-//	/**
-//	*<b>Description</b>: Este método sobrecargado se encarga de mostrar los métodos de pago disponibles con
-//	*sus limites maximos de pago para la funcionalidad 4.
-//	*El resultado puede cambiar si el cliente posee membresia y el tipo de esta.
-//	*@param metodosPagoCliente : Se usa el Array de los metodos de pago del cliente para mostrarlos por pantalla.
-//	*@return <b>string</b> : Se retorna un texto mostrando el nombre de los métodos de pago con
-//	*sus limites maximos de pago.
-//	*/
-//	public static String mostrarMetodosDePago (ArrayList<MetodoPago> metodosPagoCliente) {
-//		String resultado = null;
-//		int i = 1;
-//		
-//		//Se recorre la lista de los medios de pagos disponibles en la lista del cliente.
-//		for (MetodoPago metodoPago : metodosPagoCliente) {
-//				if (resultado == null) {
-//					resultado = i + ". "+ metodoPago.getNombre()+ " -- Recarga máxima: $" + metodoPago.getLimiteMaximoPago() +"\n";
-//				}else {
-//					resultado = resultado + i + ". " + metodoPago.getNombre() +" -- Recarga máxima: $"+ metodoPago.getLimiteMaximoPago() +"\n";
-//				}
-//				i++;
-//		}
-//		return resultado;
-//	}
+	/**
+	*<b>Description</b>: Este método sobrecargado se encarga de mostrar los métodos de pago disponibles con
+	*sus limites maximos de pago para la funcionalidad 4.
+	*El resultado puede cambiar si el cliente posee membresia y el tipo de esta.
+	*@param metodosPagoCliente : Se usa el Array de los metodos de pago del cliente para mostrarlos por pantalla.
+	*@return <b>string</b> : Se retorna un texto mostrando el nombre de los métodos de pago con
+	*sus limites maximos de pago.
+	*/
+	public static String mostrarMetodosDePago (ArrayList<MetodoPago> metodosPagoCliente) {
+		String resultado = null;
+		int i = 1;
+		
+		//Se recorre la lista de los medios de pagos disponibles en la lista del cliente.
+		for (MetodoPago metodoPago : metodosPagoCliente) {
+				if (resultado == null) {
+					resultado = i + ". "+ metodoPago.getNombre()+ " -- Recarga máxima: $" + metodoPago.getLimiteMaximoPago() +"\n";
+				}else {
+					if (metodoPago.getNombre().equals("Puntos")) {
+						resultado = resultado + i + ". "+ metodoPago.getNombre() + " Saldo: " + (int)(metodoPago.getLimiteMaximoPago());
+						continue;}
+					resultado = resultado + i + ". " + metodoPago.getNombre() +" -- Recarga máxima: $"+ metodoPago.getLimiteMaximoPago() +"\n";
+				}
+				i++;
+		}
+		return resultado;
+	}
 	
 	/**
 	*<b>Description</b>: Este método se encarga de asignar los métodos de pago disponibles por 
@@ -125,8 +128,12 @@ public class MetodoPago implements Serializable{
 			tipoMembresiaInt = tipoMembresia.getTipoMembresia();
 			if (puntos == null) {
 				switch (tipoMembresiaInt) {
-				case 1: puntos = new MetodoPago("Puntos", 0.0, 5000, tipoMembresiaInt);break;
-				case 2: puntos = new MetodoPago("Puntos", 0.0, 10000, tipoMembresiaInt);break;
+				case 1: 
+					cliente.setPuntos(5000);
+					puntos = new MetodoPago("Puntos", 0.0, cliente.getPuntos(), tipoMembresiaInt);break;
+				case 2: 
+					cliente.setPuntos(10000);
+					puntos = new MetodoPago("Puntos", 0.0, cliente.getPuntos(), tipoMembresiaInt);break;
 				}
 			} else {
 				SucursalCine.getMetodosDePagoDisponibles().add(puntos);
@@ -217,7 +224,6 @@ public class MetodoPago implements Serializable{
 		
 		//Se verifica si el cliente tiene membresia para realizar la acumulación de puntos
 		Membresia membresia = cliente.getMembresia();
-		double saldoPuntos = 0.0;
 		if (membresia != null && !this.getNombre().equals("Puntos")) {
 			int tipoMembresia = cliente.getMembresia().getTipoMembresia();
 			MetodoPago puntos = null;
@@ -226,12 +232,11 @@ public class MetodoPago implements Serializable{
 					puntos = metodoPago;
 					break;
 				}
-			}
-			saldoPuntos = puntos.getLimiteMaximoPago();			
+			}	
 			switch (tipoMembresia) {
 			
-			case 1: puntos.setLimiteMaximoPago(saldoPuntos + (precio * 0.05)); break;
-			case 2: puntos.setLimiteMaximoPago(saldoPuntos + (precio * 0.10)); break;
+			case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.05)); System.out.println(tipoMembresia);break;
+			case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.10)); System.out.println(tipoMembresia);break;
 			}
 			
 		}

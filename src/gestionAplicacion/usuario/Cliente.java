@@ -38,6 +38,7 @@ public class Cliente implements Serializable{
 	//Atributos para funcionalidad 5
 	private Membresia membresia;
 	private Duration duracionMembresiaDias;
+	private int puntos;
 	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	
 	//Posiblemente eliminar los siguientes atributos:
@@ -55,6 +56,7 @@ public class Cliente implements Serializable{
 		this.edad = edad;
 		this.documento = documento;
 		this.tipoDocumento = tipoDocumento;
+		puntos = 0;
 	}
 	
 	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Producto> historialDePedidos, ArrayList<Ticket> ticket,
@@ -451,5 +453,15 @@ public class Cliente implements Serializable{
 	public void setValoracionesPeliculas(ArrayList<Pelicula> valoracionesPeliculas) {
 		this.valoracionesPeliculas = valoracionesPeliculas;
 	}
+
+	public int getPuntos() {
+		return puntos;
+	}
+
+	public void setPuntos(int puntos) {
+		this.puntos = puntos;
+	}
+	
+	
 
 }
