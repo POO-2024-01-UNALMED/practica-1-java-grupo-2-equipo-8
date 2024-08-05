@@ -111,19 +111,21 @@ public abstract class Servicio implements IBuyable, Serializable{
 
 	//Ligadura Estatica
 	
+	
+	//Ponele documentacion care mico
 	public Producto validarBono(String codigo , Servicio servicio){
 		Producto producto = new Producto();
-		for (int i=0; i < Bono.getBonosCreados().size();i++) {
-			if (Bono.getBonosCreados().get(i).getCodigo().equalsIgnoreCase(codigo) && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
-				producto = Bono.getBonosCreados().get(i).getProducto();
-				for (int j =0; j < Bono.getBonosCreados().get(i).getCliente().getBonos().size(); j++) {
-					if (Bono.getBonosCreados().get(i).getCliente().getBonos().get(j).getCodigo().equalsIgnoreCase(codigo)) {
-						Bono.getBonosCreados().get(i).getCliente().getBonos().remove(j);
+		for (int i=0; i < cliente.getCineActual().getBonosCreados().size();i++) {
+			if (cliente.getCineActual().getBonosCreados().get(i).getCodigo().equalsIgnoreCase(codigo) && cliente.getCineActual().getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
+				producto = cliente.getCineActual().getBonosCreados().get(i).getProducto();
+				for (int j =0; j < cliente.getCineActual().getBonosCreados().get(i).getCliente().getBonos().size(); j++) {
+					if (cliente.getCineActual().getBonosCreados().get(i).getCliente().getBonos().get(j).getCodigo().equalsIgnoreCase(codigo)) {
+						cliente.getCineActual().getBonosCreados().get(i).getCliente().getBonos().remove(j);
 						ArrayList<Bono> bonosCliente1 = new ArrayList<>();
 						bonosCliente = bonosCliente1;
 					}
 				}
-				Bono.getBonosCreados().remove(i);
+				cliente.getCineActual().getBonosCreados().remove(i);
 				return producto;
 			}
 		}

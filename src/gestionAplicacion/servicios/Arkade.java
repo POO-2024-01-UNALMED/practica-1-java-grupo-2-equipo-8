@@ -129,7 +129,7 @@ public class Arkade implements Serializable{
 	*@param sucursal :  se pasa el como parametro la sucursal a la cual se le solicita el inventario
 	*@return <b>Bono</b> :  Se retorna el bono creado
 	*/
-	public static Bono generarBonoComidaJuegos(SucursalCine sucursal) {
+	public static Bono generarBonoComidaJuegos(SucursalCine sucursal, Cliente cliente) {
 	    ArrayList<Producto> productosComida = new ArrayList<>();
 	    for (Producto producto : sucursal.getInventarioCine()) {
 	        if (producto.getTipoProducto().equals("comida")) {
@@ -147,7 +147,7 @@ public class Arkade implements Serializable{
 	    
 	    int numeroAleatorio = random.nextInt(productosComida.size());
 	    String code = generarCodigoAleatorio(7);
-	    Bono bono = new Bono(code,productosComida.get(numeroAleatorio),productosComida.get(numeroAleatorio).getTipoProducto());
+	    Bono bono = new Bono(code,productosComida.get(numeroAleatorio),productosComida.get(numeroAleatorio).getTipoProducto(),cliente);
 	    productosComida.get(numeroAleatorio).setCantidad(productosComida.get(numeroAleatorio).getCantidad()-1);
 	    
 	    System.out.println("\n        ╔══════════════════════════╗");
@@ -183,7 +183,7 @@ public class Arkade implements Serializable{
 	*@param sucursal :  se pasa el como parametro la sucursal a la cual se le solicita el inventario
 	*@return <b>Bono</b> :  Se retorna el bono creado
 	*/
-	public static Bono generarBonoSouvenirJuegos(SucursalCine sucursal) {
+	public static Bono generarBonoSouvenirJuegos(SucursalCine sucursal, Cliente cliente) {
 		ArrayList<Producto> productosSouvenirs = new ArrayList<>();
 	    for (Producto producto : sucursal.getInventarioCine()) {
 	        if (producto.getTipoProducto().equals("souvenir")) {
@@ -201,7 +201,7 @@ public class Arkade implements Serializable{
 	    
 	    int numeroAleatorio = random.nextInt(productosSouvenirs.size());
 	    String code = generarCodigoAleatorio(7);
-	    Bono bono = new Bono(code,productosSouvenirs.get(numeroAleatorio),productosSouvenirs.get(numeroAleatorio).getTipoProducto());
+	    Bono bono = new Bono(code,productosSouvenirs.get(numeroAleatorio),productosSouvenirs.get(numeroAleatorio).getTipoProducto(), cliente);
 	    productosSouvenirs.get(numeroAleatorio).setCantidad(productosSouvenirs.get(numeroAleatorio).getCantidad()-1);
 	    
 	    System.out.println("\n        ╔══════════════════════════╗");

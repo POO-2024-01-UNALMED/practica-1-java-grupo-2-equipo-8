@@ -26,6 +26,7 @@ public class Funcionalidad_4 {
 	 * */
 	static void ingresoZonaJuegos(Cliente ClienteActual) {
 		
+		//ClienteActual.getCineActual().getBonosCreados().clear();
 		
 		//Se muestra el menu de opciones que el usurio desea realizar 
 		try {
@@ -41,13 +42,13 @@ public class Funcionalidad_4 {
 			Administrador.sc.nextLine(); 
 			ingresoZonaJuegos(ClienteActual);
 		}
-		
+	
 		boolean casoValido = true;
 		
 		do {
 			if (!ClienteActual.verificarCuenta()) {
 				try {
-					System.out.println("\n•No tienes una Tarjetaya Cinemar asociada, ¿Deseas Adquirirla?\n1. SI\n2. NO");
+					System.out.println("\n•No tienes una Tarjeta Cinemar asociada, ¿Deseas Adquirirla?\n1. SI\n2. NO");
 					espera(1000);
 					int option = (int)Administrador.readLong();
 					if (option==1) {
@@ -438,14 +439,14 @@ public class Funcionalidad_4 {
 					System.out.println("\nGanas un bono de comida por obtener la puntuacion maxima en un juego de tipo "+generoJuego+" y redimir un codigo de pelicula del mismo genero");
 					barraCarga("Generando bono");
 					espera(3000);
-					bonoCliente = Arkade.generarBonoComidaJuegos(ClienteActual.getCineActual());
+					bonoCliente = Arkade.generarBonoComidaJuegos(ClienteActual.getCineActual(), ClienteActual);
+					bonoCliente.setCliente(ClienteActual);
 					
 					if (!(bonoCliente == null)) {
 						codigoBono = bonoCliente.getCodigo();
 						ClienteActual.getCodigosBonos().add(codigoBono);
-						ClienteActual.getBonos().add(bonoCliente);
-						//Bono.getBonosCreados().add(bonoCliente); //Se añade al crear el bono por el constructor
-						ClienteActual.getCineActual().getBonosCreados().add(bonoCliente);
+						//ClienteActual.getBonos().add(bonoCliente);
+						
 						
 						System.out.println("•Reclama el bono con el codigo en nuestro servicio de comida");
 					}
@@ -454,13 +455,13 @@ public class Funcionalidad_4 {
 					System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡");
 					barraCarga("Generando bono");
 					espera(3000);
-					bonoCliente = Arkade.generarBonoSouvenirJuegos(ClienteActual.getCineActual());
+					bonoCliente = Arkade.generarBonoSouvenirJuegos(ClienteActual.getCineActual(), ClienteActual);
+					bonoCliente.setCliente(ClienteActual);
 					if (!(bonoCliente == null)) {
 						codigoBono = bonoCliente.getCodigo();
 						ClienteActual.getCodigosBonos().add(codigoBono);
-						ClienteActual.getBonos().add(bonoCliente);
-						//Bono.getBonosCreados().add(bonoCliente); //Se añade al crear el bono por el constructor
-						ClienteActual.getCineActual().getBonosCreados().add(bonoCliente);
+						//ClienteActual.getBonos().add(bonoCliente);
+						
 						
 						System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
 					}
@@ -471,13 +472,13 @@ public class Funcionalidad_4 {
 				System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡");
 				barraCarga("Generando bono");
 				espera(3000);
-				bonoCliente = Arkade.generarBonoSouvenirJuegos(ClienteActual.getCineActual());
+				bonoCliente = Arkade.generarBonoSouvenirJuegos(ClienteActual.getCineActual(),ClienteActual);
+				bonoCliente.setCliente(ClienteActual);
 				if (!(bonoCliente == null)) {
 					codigoBono = bonoCliente.getCodigo();
 					ClienteActual.getCodigosBonos().add(codigoBono);
-					ClienteActual.getBonos().add(bonoCliente);
-					//Bono.getBonosCreados().add(bonoCliente); //Se añade al crear el bono por el constructor
-					ClienteActual.getCineActual().getBonosCreados().add(bonoCliente);
+					//ClienteActual.getBonos().add(bonoCliente);
+					
 					
 					System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
 				}

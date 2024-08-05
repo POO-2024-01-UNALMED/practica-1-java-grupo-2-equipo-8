@@ -53,10 +53,10 @@ public class Administrador {
 //	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
 //	
 //	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
+//
 //	
 //	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
+//
 //	
 //	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 //	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
@@ -142,8 +142,8 @@ public class Administrador {
 //	static TarjetaCinemar tarjeta7 = new TarjetaCinemar();static TarjetaCinemar tarjeta8 = new TarjetaCinemar();static TarjetaCinemar tarjeta9 = new TarjetaCinemar();
 //	static TarjetaCinemar tarjeta10 = new TarjetaCinemar();static TarjetaCinemar tarjeta11 = new TarjetaCinemar();static TarjetaCinemar tarjeta12 = new TarjetaCinemar();
 //	static TarjetaCinemar tarjeta13 = new TarjetaCinemar();static TarjetaCinemar tarjeta14 = new TarjetaCinemar();static TarjetaCinemar tarjeta15 = new TarjetaCinemar();	
-//	
-//	
+	
+	
 	public static void main(String[] args) {
 		
 //		Llamados métodos de instancias para hacer pruebas
@@ -196,13 +196,13 @@ public class Administrador {
 ////			cliente1.getHistorialDePeliculas().add(pelicula3_11);
 ////			cliente1.getHistorialDePeliculas().add(pelicula3_12);
 ////			cliente1.getHistorialDePeliculas().add(pelicula2_16);
-////			cliente1.getHistorialDePeliculas().add(pelicula2_4);
-////			cliente1.getHistorialDePeliculas().add(pelicula1_1);
+//			cliente1.getHistorialDePeliculas().add(pelicula2_4);
+//			cliente1.getHistorialDePeliculas().add(pelicula1_1);
 ////			cliente1.getHistorialDePeliculas().add(pelicula2_15);
-////			cliente1.getHistorialDePeliculas().add(pelicula2_1);
-////			cliente1.getHistorialDePeliculas().add(pelicula1_2);
-////			cliente1.getHistorialDePeliculas().add(pelicula3_1);
-////			cliente1.getHistorialDePeliculas().add(pelicula3_4);
+//			cliente1.getHistorialDePeliculas().add(pelicula2_1);
+//			cliente1.getHistorialDePeliculas().add(pelicula1_2);
+//			cliente1.getHistorialDePeliculas().add(pelicula3_1);
+//			cliente1.getHistorialDePeliculas().add(pelicula3_4);
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_1);
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_2);
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
@@ -225,25 +225,11 @@ public class Administrador {
 //
 //			cliente1.setMembresia(membresia5);
 //			Membresia.stockMembresia(SucursalCine.getSucursalesCine());
-//
-////			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
-////			/*cliente1.setMembresia(membresia1)*/
-//			
-//			//System.out.println();
-//			
-//			
-////			//cliente1.setMembresia(membresia4);
-////			MetodoPago pago = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", cliente1);
-////			//System.out.println("\n"+cliente1.getMembresia().getTipoMembresia());
-////			System.out.println(pago.getNombre()+"\n"+pago.getTipo());
-//
 //			
 //			
 //			//cliente4.setMembresia(membresia5);
 //			cliente3.setMembresia(membresia2);
-////			ticket5.setDueno(cliente4);
-////			ticket5.setPelicula(pelicula1);
-////			ticket5.setSalaDeCine(salaDeCine1);
+//
 //			
 //			MetodoPago.asignarMetodosDePago(cliente1);
 //			MetodoPago.asignarMetodosDePago(cliente2);
@@ -254,12 +240,9 @@ public class Administrador {
 //			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
 //			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));
 //			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15));
-//			//System.out.println(Arkade.getTarjetasEnInventario().size());
-//			
-//			
-//			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
-//			//System.out.println(tarjeta.getSaldo());
-//		//}
+			
+			
+			
 		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Print tests
@@ -274,6 +257,8 @@ public class Administrador {
 		
 		System.out.println("\nIngresar a una de nuestras sedes");
 		clienteProceso.setCineActual(ingresarASucursal());
+		
+//		System.out.println(clienteProceso.getCineActual().getBonosCreados().size());
 		
 		Thread hiloLogicaProyecto = new Thread(clienteProceso.getCineActual());
 		hiloLogicaProyecto.start();
@@ -297,7 +282,7 @@ public class Administrador {
 			opcion = 0;
 			System.out.println("\n¿Qué operacion desea realizar?");
 			System.out.println("1. Ingresar a sistema de proyecciones de películas");
-			System.out.println("2. Ingrear a los servicios de compra"); 
+			System.out.println("2. Ingresar a los servicios de compra"); 
 			System.out.println("3. Ingresar a la zona de juegos");
 			System.out.println("4. Adquirir o actualizar membresia");
 			System.out.println("5. Hacer calificacion");
@@ -319,7 +304,7 @@ public class Administrador {
 		case 4: Funcionalidad5.adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
 		case 5: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
 		case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
-		case 7: /*salirDelSistema(); Necesito cerrar el hilo*/ break;
+		case 7: salirDelSistema(); break;
 		default: System.out.println("Opción invalida"); inicio(clienteProceso);
 	  }
 	
