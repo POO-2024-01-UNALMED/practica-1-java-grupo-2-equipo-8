@@ -32,7 +32,7 @@ public class MetodoPago implements Serializable{
 		this.tipo = 0;
 	}
 	
-	public MetodoPago(String nombre, double descuentoAsociado, double limiteMaximoPago, int tipo) {
+	public MetodoPago(String nombre, double descuentoAsociado,	 double limiteMaximoPago, int tipo) {
 		this();
 		this.nombre = nombre;
 		this.descuentoAsociado = descuentoAsociado;
@@ -63,7 +63,7 @@ public class MetodoPago implements Serializable{
 				if (resultado == null) {
 					resultado = i + ". "+ metodoPago.getNombre()+ " - Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "% - Límite Máximo de pago: " + metodoPago.limiteMaximoPago + "\n";
 				}else {
-					if (metodoPago.getNombre() == "Puntos") {
+					if (metodoPago.getNombre().equals("Puntos")) {
 						resultado = resultado + i + ". "+ metodoPago.getNombre() + " Saldo: " + (int)(metodoPago.getLimiteMaximoPago());
 						continue;}
 					resultado = resultado + i + ". " + metodoPago.getNombre() + " - Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "% -  Límite Máximo de pago: " + metodoPago.limiteMaximoPago + "\n";
@@ -90,6 +90,9 @@ public class MetodoPago implements Serializable{
 				if (resultado == null) {
 					resultado = i + ". "+ metodoPago.getNombre()+ " -- Recarga máxima: $" + metodoPago.getLimiteMaximoPago() +"\n";
 				}else {
+					if (metodoPago.getNombre().equals("Puntos")) {
+						resultado = resultado + i + ". "+ metodoPago.getNombre() + " Saldo: " + (int)(metodoPago.getLimiteMaximoPago());
+						continue;}
 					resultado = resultado + i + ". " + metodoPago.getNombre() +" -- Recarga máxima: $"+ metodoPago.getLimiteMaximoPago() +"\n";
 				}
 				i++;
@@ -125,8 +128,12 @@ public class MetodoPago implements Serializable{
 			tipoMembresiaInt = tipoMembresia.getTipoMembresia();
 			if (puntos == null) {
 				switch (tipoMembresiaInt) {
-				case 1: puntos = new MetodoPago("Puntos", 0.0, 5000, tipoMembresiaInt);break;
-				case 2: puntos = new MetodoPago("Puntos", 0.0, 10000, tipoMembresiaInt);break;
+				case 1: 
+					cliente.setPuntos(5000);
+					puntos = new MetodoPago("Puntos", 0.0, cliente.getPuntos(), tipoMembresiaInt);break;
+				case 2: 
+					cliente.setPuntos(10000);
+					puntos = new MetodoPago("Puntos", 0.0, cliente.getPuntos(), tipoMembresiaInt);break;
 				}
 			} else {
 				SucursalCine.getMetodosDePagoDisponibles().add(puntos);
@@ -217,7 +224,6 @@ public class MetodoPago implements Serializable{
 		
 		//Se verifica si el cliente tiene membresia para realizar la acumulación de puntos
 		Membresia membresia = cliente.getMembresia();
-		double saldoPuntos = 0.0;
 		if (membresia != null && !this.getNombre().equals("Puntos")) {
 			int tipoMembresia = cliente.getMembresia().getTipoMembresia();
 			MetodoPago puntos = null;
@@ -226,12 +232,11 @@ public class MetodoPago implements Serializable{
 					puntos = metodoPago;
 					break;
 				}
-			}
-			saldoPuntos = puntos.getLimiteMaximoPago();			
+			}	
 			switch (tipoMembresia) {
 			
-			case 1: puntos.setLimiteMaximoPago(saldoPuntos + (precio * 0.05)); break;
-			case 2: puntos.setLimiteMaximoPago(saldoPuntos + (precio * 0.10)); break;
+			case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.05)); System.out.println(tipoMembresia);break;
+			case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.10)); System.out.println(tipoMembresia);break;
 			}
 			
 		}
