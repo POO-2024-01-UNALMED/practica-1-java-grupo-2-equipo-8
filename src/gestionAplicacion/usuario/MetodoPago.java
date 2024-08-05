@@ -63,7 +63,7 @@ public class MetodoPago implements Serializable{
 				if (resultado == null) {
 					resultado = i + ". "+ metodoPago.getNombre()+ " - Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "% - Límite Máximo de pago: " + metodoPago.limiteMaximoPago + "\n";
 				}else {
-					if (metodoPago.getNombre() == "Puntos") {
+					if (metodoPago.getNombre().equals("Puntos")) {
 						resultado = resultado + i + ". "+ metodoPago.getNombre() + " Saldo: " + (int)(metodoPago.getLimiteMaximoPago());
 						continue;}
 					resultado = resultado + i + ". " + metodoPago.getNombre() + " - Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "% -  Límite Máximo de pago: " + metodoPago.limiteMaximoPago + "\n";
@@ -73,29 +73,29 @@ public class MetodoPago implements Serializable{
 		}
 		return resultado;
 	}
-	/**
-	*<b>Description</b>: Este método sobrecargado se encarga de mostrar los métodos de pago disponibles con
-	*sus limites maximos de pago para la funcionalidad 4.
-	*El resultado puede cambiar si el cliente posee membresia y el tipo de esta.
-	*@param metodosPagoCliente : Se usa el Array de los metodos de pago del cliente para mostrarlos por pantalla.
-	*@return <b>string</b> : Se retorna un texto mostrando el nombre de los métodos de pago con
-	*sus limites maximos de pago.
-	*/
-	public static String mostrarMetodosDePago (ArrayList<MetodoPago> metodosPagoCliente) {
-		String resultado = null;
-		int i = 1;
-		
-		//Se recorre la lista de los medios de pagos disponibles en la lista del cliente.
-		for (MetodoPago metodoPago : metodosPagoCliente) {
-				if (resultado == null) {
-					resultado = i + ". "+ metodoPago.getNombre()+ " -- Recarga máxima: $" + metodoPago.getLimiteMaximoPago() +"\n";
-				}else {
-					resultado = resultado + i + ". " + metodoPago.getNombre() +" -- Recarga máxima: $"+ metodoPago.getLimiteMaximoPago() +"\n";
-				}
-				i++;
-		}
-		return resultado;
-	}
+//	/**
+//	*<b>Description</b>: Este método sobrecargado se encarga de mostrar los métodos de pago disponibles con
+//	*sus limites maximos de pago para la funcionalidad 4.
+//	*El resultado puede cambiar si el cliente posee membresia y el tipo de esta.
+//	*@param metodosPagoCliente : Se usa el Array de los metodos de pago del cliente para mostrarlos por pantalla.
+//	*@return <b>string</b> : Se retorna un texto mostrando el nombre de los métodos de pago con
+//	*sus limites maximos de pago.
+//	*/
+//	public static String mostrarMetodosDePago (ArrayList<MetodoPago> metodosPagoCliente) {
+//		String resultado = null;
+//		int i = 1;
+//		
+//		//Se recorre la lista de los medios de pagos disponibles en la lista del cliente.
+//		for (MetodoPago metodoPago : metodosPagoCliente) {
+//				if (resultado == null) {
+//					resultado = i + ". "+ metodoPago.getNombre()+ " -- Recarga máxima: $" + metodoPago.getLimiteMaximoPago() +"\n";
+//				}else {
+//					resultado = resultado + i + ". " + metodoPago.getNombre() +" -- Recarga máxima: $"+ metodoPago.getLimiteMaximoPago() +"\n";
+//				}
+//				i++;
+//		}
+//		return resultado;
+//	}
 	
 	/**
 	*<b>Description</b>: Este método se encarga de asignar los métodos de pago disponibles por 
@@ -111,7 +111,7 @@ public class MetodoPago implements Serializable{
 		//membresia.
 		MetodoPago puntos = null;
 		for (MetodoPago metodoPagoCliente : cliente.getMetodosDePago()) {
-			if (metodoPagoCliente.getNombre() == "Puntos") {
+			if (metodoPagoCliente.getNombre().equals("Puntos")) {
 				puntos = metodoPagoCliente;
 			}
 		}

@@ -3,9 +3,12 @@ package baseDatos;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import gestionAplicacion.SucursalCine;
@@ -26,7 +29,7 @@ public class Deserializador {
 	private static File rutaTempLinux = new File ("src/baseDatos/temp/sucursales");
 	// Este método se encarga de cargar las listas de objectos que hay almacenados (serializados).
 	public static void deserializar () {
-		File [] dirs = rutaTemp.listFiles();
+		File [] dirs = rutaTempLinux.listFiles();
 		FileInputStream fis;
 		ObjectInputStream ois;
 		
@@ -168,6 +171,22 @@ public class Deserializador {
 						e.printStackTrace();
 					}
 					
+				} else if (file.getAbsolutePath().contains("cantidadTicketsCreados")) {
+					try {
+						fis = new FileInputStream(file);
+						ois = new ObjectInputStream(fis);
+						sucursalCine.setCantidadTicketsCreados((int) ois.readObject());
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}  catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				} 
 			}
 			
@@ -180,7 +199,7 @@ public class Deserializador {
 	//Desearilzamos la información de los atributos estáticos
 	public static void deserializarEstaticos () {
 		//Definimos las variables que usaremos durante el proceso
-		File [] docs = rutaTemp2.listFiles();
+		File [] docs = rutaTempLinux2.listFiles();
 		FileInputStream fis;
 		ObjectInputStream ois;
 
@@ -198,6 +217,7 @@ public class Deserializador {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
+				
 			} else if (file.getAbsolutePath().contains("peliculasDisponibles")){
 				try {
 					fis = new FileInputStream(file);
@@ -251,6 +271,7 @@ public class Deserializador {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
+				
 			} else if (file.getAbsolutePath().contains("fechaLogicaNegocio")) {
 				try {
 					fis = new FileInputStream(file);
@@ -263,6 +284,49 @@ public class Deserializador {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
+				
+			} else if (file.getAbsolutePath().contains("fechaActual")) {
+				try {
+					fis = new FileInputStream(file);
+					ois = new ObjectInputStream(fis);
+					SucursalCine.setFechaActual((LocalDateTime) ois.readObject());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				
+			} else if (file.getAbsolutePath().contains("salasDeCineDisponibles")) {
+				try {
+					fis = new FileInputStream(file);
+					ois = new ObjectInputStream(fis);
+					ArrayList<SalaCine> salas = ((ArrayList<SalaCine>) ois.readObject());
+					for (SalaCine sala: salas) {
+						System.out.println(sala.getPeliculaEnPresentacion());
+					}
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				
+			} else if (file.getAbsolutePath().contains("ticketsDisponibles")) {
+				try {
+					fis = new FileInputStream(file);
+					ois = new ObjectInputStream(fis);
+					SucursalCine.setTicketsDisponibles((ArrayList<Ticket>) ois.readObject());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				
 			}
 				
 		}

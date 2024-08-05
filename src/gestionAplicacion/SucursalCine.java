@@ -8,7 +8,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import baseDatos.Deserializador;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Arkade;
@@ -36,6 +35,8 @@ public class SucursalCine implements Serializable {
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private static ArrayList<Arkade> juegos = new ArrayList<>();
 	private static ArrayList<MetodoPago> metodosDePagoDisponibles = new ArrayList<>();
+	private static ArrayList<SalaCine> salasDeCineDisponibles = new ArrayList<>();
+	private static ArrayList<Ticket> ticketsDisponibles = new ArrayList<>();
 	
 	private String lugar;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
@@ -45,6 +46,7 @@ public class SucursalCine implements Serializable {
 	private ArrayList<Servicio> servicios = new ArrayList<>();
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private ArrayList<TarjetaCinemar> InventarioTarjetasCinemar = new ArrayList<>();
+	private int cantidadTicketsCreados;
 	
 	//Methods
 	
@@ -333,6 +335,7 @@ public class SucursalCine implements Serializable {
 	 * 3. Por último actualizar las películas cuyo horarios se esta presentando en estos momentos.
 	 * */
 	public static void logicaSistemaReservarTicket() {
+		
 		fechaActual = LocalDateTime.now();
 		SucursalCine.logicaSemanalReservarTicket();
 		SucursalCine.actualizarPeliculasSalasDeCine();
@@ -350,13 +353,6 @@ public class SucursalCine implements Serializable {
 			for (SalaCine salaDeCine : sede.salasDeCine) {
 				salaDeCine.tieneMasHorariosPresentacionHoy();
 			}
-		}
-	}
-	
-	/***/
-	public static void dropTicketsCaducados() {
-		for (Cliente cliente : clientes) {
-			cliente.dropTicketsCaducados();
 		}
 	}
 	
@@ -387,12 +383,12 @@ public class SucursalCine implements Serializable {
 	public static void avanzarTiempo() {
 		
 		//Avanza lo hora 20 segundos
-		fechaActual = fechaActual.plusSeconds(20);
+		System.out.println(fechaActual);
+		fechaActual = fechaActual.plusMinutes(5);
 		
 		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
 		if(!fechaActual.toLocalDate().isBefore(fechaRevisionLogicaDeNegocio)) {
 			//Lógica a evaluar cada semana
-			System.out.println(" Nueva semana de trabajo ======= Revisión =====" + fechaRevisionLogicaDeNegocio + " ========= Hora actual ============ " + SucursalCine.getFechaActual());
 			
 			fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
 			
@@ -407,7 +403,7 @@ public class SucursalCine implements Serializable {
 		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
 		if (!fechaActual.toLocalDate().isBefore(fechaValidacionNuevoDiaDeTrabajo)) {
 			//Lógica a evaluar cada día
-			System.out.println(" Nuevo día de trabajo ======= Revisión ============" + fechaValidacionNuevoDiaDeTrabajo + " ========== Hora actual ======== " + SucursalCine.getFechaActual());
+			
 			fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
 			
 			//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
@@ -438,7 +434,7 @@ public class SucursalCine implements Serializable {
 	 * 3. Actualiza los permisos de actualización de las salas de cine.
 	 * */
 	public static void repararProblemasSerializacion() {
-		fechaActual = LocalDateTime.now();
+		
 		SucursalCine.dropHorariosVencidos();
 		SucursalCine.dropTicketsCaducados();
 		SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
@@ -506,6 +502,7 @@ public class SucursalCine implements Serializable {
 	}
 	
 	public SucursalCine(String lugar) {
+		this.cantidadTicketsCreados = 1;
 		this.lugar = lugar;
 		SucursalCine.getSucursalesCine().add(this);
 	}
@@ -637,6 +634,31 @@ public class SucursalCine implements Serializable {
 	public static void setFechaRevisionLogicaDeNegocio(LocalDate fechaRevisionLogicaDeNegocio) {
 		SucursalCine.fechaRevisionLogicaDeNegocio = fechaRevisionLogicaDeNegocio;
 	}
+
+	public int getCantidadTicketsCreados() {
+		return cantidadTicketsCreados;
+	}
+
+	public void setCantidadTicketsCreados(int cantidadTicketsCreados) {
+		this.cantidadTicketsCreados = cantidadTicketsCreados;
+	}
+
+	public static ArrayList<SalaCine> getSalasDeCineDisponibles() {
+		return salasDeCineDisponibles;
+	}
+
+	public static void setSalasDeCineDisponibles(ArrayList<SalaCine> salasDeCineDisponibles) {
+		SucursalCine.salasDeCineDisponibles = salasDeCineDisponibles;
+	}
+
+	public static ArrayList<Ticket> getTicketsDisponibles() {
+		return ticketsDisponibles;
+	}
+
+	public static void setTicketsDisponibles(ArrayList<Ticket> ticketsDisponibles) {
+		SucursalCine.ticketsDisponibles = ticketsDisponibles;
+	}
+	
 	
 	
 	

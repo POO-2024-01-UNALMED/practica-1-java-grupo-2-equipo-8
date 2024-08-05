@@ -200,11 +200,13 @@ public class Pelicula implements Serializable{
 	 * @return <b>ArrayList</b> : Retorna una lista con las peliculas filtradas por el criterio anterior.
 	 * */
 	public static ArrayList<Pelicula> filtrarCarteleraPorCliente(Cliente clienteProceso, SucursalCine sucursalCine){
+		
 		ArrayList<Pelicula> carteleraPersonalizada = new ArrayList<Pelicula>();
 		for (Pelicula pelicula : sucursalCine.getCartelera()) {
-			if (pelicula.horarios.size() > 0 || pelicula.IsPeliculaEnPresentacion(sucursalCine) ) {
+			if (pelicula.filtrarHorariosPelicula().size() > 0 || pelicula.IsPeliculaEnPresentacion(sucursalCine) ) {
 				if ((Integer.parseInt(pelicula.getClasificacion())) <= clienteProceso.getEdad()) {
 					carteleraPersonalizada.add(pelicula);
+					
 				}
 			}
 		}
@@ -381,6 +383,7 @@ public class Pelicula implements Serializable{
 					for (Asiento[] filaAsientos : salaDeCine.getAsientos()) {
 						for (Asiento asiento : filaAsientos) {
 							if (asiento.isDisponibilidad()) {
+								System.out.println(salaDeCine.getHorarioPeliculaEnPresentacion() + " " + salaDeCine.getPeliculaEnPresentacion().getDuracion()+ " " + salaDeCine.getPeliculaEnPresentacion().getNombre() + " " + salaDeCine.getPeliculaEnPresentacion().getHorarios().size());
 								return true;
 							}
 						}

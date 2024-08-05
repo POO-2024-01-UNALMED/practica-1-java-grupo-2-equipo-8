@@ -254,19 +254,32 @@ public class Administrador {
 //			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
 //			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));
 //			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15));
-//			//System.out.println(Arkade.getTarjetasEnInventario().size());
-//			
-//			
-//			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
-//			//System.out.println(tarjeta.getSaldo());
-//		//}
+			//System.out.println(Arkade.getTarjetasEnInventario().size());
+			
+			
+			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
+			//System.out.println(tarjeta.getSaldo());
+		//}
 		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Print tests
 		System.out.println();
 		System.out.println();
 		
+		
+		
 		//MAIN
+		inicioDelSistema();
+		
+//		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+//			for (Pelicula pelicula : sede.getCartelera()) {
+//				System.out.println(pelicula.getAsientosVirtuales().size() + " " + pelicula.getHorarios().size());
+//			}
+//			for (SalaCine sala : sede.getSalasDeCine()) {
+//				System.out.println(sala.getPeliculaEnPresentacion() + " " + sala.getHorarioPeliculaEnPresentacion() + " " + sala.getNumeroSala());
+//			}
+//			System.out.println();
+//		}
 		
 		SucursalCine.repararProblemasSerializacion();
 		
@@ -1162,11 +1175,11 @@ public class Administrador {
 					System.out.println("\n🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉");
 					
 					if (peliculaProceso.getTipoDeFormato().equals("3D") || peliculaProceso.getTipoDeFormato().equals("4D") ) {
-						System.out.println("Felicidades, por ser nuestro cliente número " + Ticket.getCantidadTicketsCreados() 
+						System.out.println("Felicidades, por ser nuestro cliente número " + clienteProceso.getCineActual().getCantidadTicketsCreados() 
 						+ " has recibido un descuento del 50% por la compra de tu ticket\n"
 						+ "(Precio anterior :" + peliculaProceso.getPrecio() + " -> Precio actual: " + ticketProceso.getPrecio() + " )");
 					}else {
-						System.out.println("Felicidades, por ser nuestro cliente número: " + Ticket.getCantidadTicketsCreados() 
+						System.out.println("Felicidades, por ser nuestro cliente número: " + clienteProceso.getCineActual().getCantidadTicketsCreados() 
 						+ " has recibido un descuento del 80% por la compra de tu ticket\n"
 						+ "(Precio anterior :" + peliculaProceso.getPrecio() + " -> Precio actual: " + ticketProceso.getPrecio() + " )");
 					}
@@ -2026,6 +2039,7 @@ public class Administrador {
 			SucursalCine.setFechaActual(ticketParaUsar.getHorario());
 			SucursalCine.dropHorariosVencidos();
 			SucursalCine.actualizarPeliculasSalasDeCine();
+			SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
 			
 			//Mostramos en pantalla el resultado del proceso
 			System.out.println("\nEsperando...");

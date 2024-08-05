@@ -10,7 +10,8 @@ import gestionAplicacion.proyecciones.SalaCine;
 
 public class Ticket implements IBuyable, Serializable{
 	
-	private static int cantidadTicketsCreados = 1;
+	private static final long serialVersionUID = 1L;
+	
 	private boolean descuento;
 	private int idTicket;
 	private Cliente dueno;
@@ -25,7 +26,7 @@ public class Ticket implements IBuyable, Serializable{
 	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalDondeFueComprado) {
 		this.descuento = true;
 		this.pelicula = pelicula;
-		this.idTicket = Ticket.cantidadTicketsCreados;
+		this.idTicket = sucursalDondeFueComprado.getCantidadTicketsCreados();
 		this.numeroAsiento = numeroAsiento;
 		this.horario = horario;
 		this.sucursalCompra = sucursalDondeFueComprado;
@@ -43,7 +44,7 @@ public class Ticket implements IBuyable, Serializable{
 	private double clienteSuertudo() {
 		
 		//Verificamos si al sacarle módulo a la raíz cuadrada a los tickets creados nos da un número sin decimales (Cuadrado perfecto)
-		boolean verificacion = (Math.sqrt(Ticket.cantidadTicketsCreados) % 1 == 0) ? true : false; 
+		boolean verificacion = (Math.sqrt(sucursalCompra.getCantidadTicketsCreados()) % 1 == 0) ? true : false; 
 		//Tomamos el precio de la película asociada al ticket
 		double precio = this.pelicula.getPrecio();
 		
@@ -78,7 +79,7 @@ public class Ticket implements IBuyable, Serializable{
 		this.setDueno(cliente);
 		
 		//Se aumenta la cantidad de tickets creados
-		Ticket.cantidadTicketsCreados++;
+		cliente.getCineActual().setCantidadTicketsCreados(cliente.getCineActual().getCantidadTicketsCreados() + 1);
 		
 		//Se crea un apuntador del ticket en el array de tickets generados de la sucursal de cine
 		cliente.getCineActual().getTicketsCreados().add(this);
@@ -87,6 +88,8 @@ public class Ticket implements IBuyable, Serializable{
 		String codigoArkade = this.generarCodigoTicket();
 		//Arkade.getCodigosGenerados().add(codigoArkade);
 		this.dueno.getCodigosDescuento().add(codigoArkade);
+		
+		SucursalCine.getTicketsDisponibles().add(this);
 	}
 	
 	
@@ -180,14 +183,6 @@ public class Ticket implements IBuyable, Serializable{
 
 	public void setHorario(LocalDateTime horario) {
 		this.horario = horario;
-	}
-
-	public static int getCantidadTicketsCreados() {
-		return cantidadTicketsCreados;
-	}
-
-	public static void setCantidadTicketsCreados(int cantidadTicketsCreados) {
-		Ticket.cantidadTicketsCreados = cantidadTicketsCreados;
 	}
 
 	public int getIdTicket() {

@@ -12,6 +12,7 @@ import gestionAplicacion.usuario.Ticket;
 public class SalaCine implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
+	
 	private int numeroSala;
 	private String tipoDeSala;
 	private LocalDateTime horarioPeliculaEnPresentacion;
@@ -28,6 +29,7 @@ public class SalaCine implements Serializable{
 		ubicacionSede.getSalasDeCine().add(this);
 		this.asientos = this.crearAsientosSalaDeCine();
 		this.horariosPresentacionDia = true;
+		SucursalCine.getSalasDeCineDisponibles().add(this);
 	}
 
 	//Methods

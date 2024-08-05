@@ -1,13 +1,18 @@
 package baseDatos;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import gestionAplicacion.SucursalCine;
+import gestionAplicacion.proyecciones.SalaCine;
+import gestionAplicacion.usuario.Ticket;
 
 public class Serializador {
 	private static File rutaTemp = new File ("src\\baseDatos\\temp\\sucursales");
@@ -17,7 +22,7 @@ public class Serializador {
 	public static void serializar(SucursalCine sucursalCine) {
 		FileOutputStream fos;
 		ObjectOutputStream oos;
-		File [] dirs = rutaTemp.listFiles();
+		File [] dirs = rutaTempLinux.listFiles();
 		PrintWriter pw;
 		
 		//Iteramos sobre los directorios de nuestras distintas sucursales
@@ -147,7 +152,21 @@ public class Serializador {
 							e.printStackTrace();
 						}
 						
-					} 
+					} else if (file.getAbsolutePath().contains("cantidadTicketsCreados")) {
+						try {
+							fos = new FileOutputStream(file);
+							oos = new ObjectOutputStream(fos);
+							oos.writeObject(sucursalCine.getCantidadTicketsCreados());
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}  catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}
+					
 				}
 			}
 		}
@@ -160,7 +179,7 @@ public class Serializador {
 	public static void serializar() {
 		
 		//Creamos las variables que usaremos para este proceso
-		File [] docs = rutaTemp2.listFiles();
+		File [] docs = rutaTempLinux2.listFiles();
 		
 		FileOutputStream fos;
 		ObjectOutputStream oos;
@@ -249,6 +268,44 @@ public class Serializador {
 					fos = new FileOutputStream(file);
 					oos = new ObjectOutputStream(fos);
 					oos.writeObject(SucursalCine.getFechaValidacionNuevoDiaDeTrabajo());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			} else if (file.getAbsolutePath().contains("fechaActual")) {
+				try {
+					fos = new FileOutputStream(file);
+					oos = new ObjectOutputStream(fos);
+					oos.writeObject(SucursalCine.getFechaActual());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if (file.getAbsolutePath().contains("salasDeCineDisponibles")) {
+				try {
+					fos = new FileOutputStream(file);
+					oos = new ObjectOutputStream(fos);
+					oos.writeObject(SucursalCine.getSalasDeCineDisponibles());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			} else if (file.getAbsolutePath().contains("ticketsDisponibles")) {
+				try {
+					fos = new FileOutputStream(file);
+					oos = new ObjectOutputStream(fos);
+					oos.writeObject(SucursalCine.getTicketsDisponibles());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
