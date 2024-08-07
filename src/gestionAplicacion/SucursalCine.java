@@ -310,8 +310,14 @@ public class SucursalCine implements Runnable, Serializable {
 	 * */
 	public static void logicaSemanalReservarTicket() {
 		for (SucursalCine sede : sucursalesCine) {
+			for(Pelicula pelicula:sede.cartelera) {
+				if(pelicula.getTipoDeFormato().equals("2D")){
+					sede.logicaCalificacionPeliculas(pelicula);
+				}
+			}
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();
+			
 		}
 	}
 	
@@ -418,10 +424,7 @@ public class SucursalCine implements Runnable, Serializable {
 	 * buenas o malas recibidas por los clientes, y cambiandolas de sede, esperamos que su calificacion mejore, si esto
 	 * no se da, la pelicula es eliminada de la cartelera, ya que se considera como mala
 	 * */	
-	public void cambiarPeliculaSede(Pelicula pelicula){
-		
-		
-	}
+	
 		
 		
 	/** Description: Este metodo se encarga de seleccionar las sucursales del arrayList y con el uso de la funcion random de la libreria math,
@@ -469,35 +472,54 @@ public class SucursalCine implements Runnable, Serializable {
 	 * las calificaciones de los clientes, si una pelicula es calificada por debajo de 3, la consideramos como mal calificada
 	 * y la cambiamos de sede, y si la pelicula esta por encima de 3 esta catalogada como bien, ya en el caso en que la 
 	 * pelicula este calificada como mayor a 4.5, la cambiamos de sede, ya que consideramos que es una muy buena pelicula, y 
-	 * nos hara ganar mayor rentablidad.
+	 * nos hara ganar mayor rentabilidad.Tambien se encarga de cambiar peliculas de sede, ya que en nuestra logica de negocio implementamos
+	 * el sistema de calificaciones, entonces tenemos que estar constantemente pendientes de que peliculas han sido
+	 * buenas o malas recibidas por los clientes, y cambiandolas de sede, esperamos que su calificacion mejore, si esto
+	 * no se da, la pelicula es eliminada de la cartelera, ya que se considera como mala
 	 * */
 	
-	
+		
 	public void logicaCalificacionPeliculas(Pelicula pelicula){	
 		
 		ArrayList <Pelicula> peliculasCalificadas = Pelicula.filtrarPorNombreDePelicula(pelicula.getNombre(), this.cartelera);
 		double promedio =0;
 		double calificacionReal=0;
-		
+		boolean verificacionCambio=true;
 		for(Pelicula peliculas : peliculasCalificadas) {
 			promedio = promedio + peliculas.getValoracion();
 			calificacionReal = promedio/peliculasCalificadas.size();
+			verificacionCambio=peliculas.isStrikeCambio();
+			
+			
 		}
 		if (calificacionReal<3) {
-			if(peliculasCalificadas.get(0).isStrikeCambio()) {
-				this.eliminarPeliculas(peliculasCalificadas);
-				 
-		  }else {
-			  ;
+			if(verificacionCambio) {
+				SucursalCine sucursal=seleccionarSucursalAleatoriamente(this);
+				for (Pelicula pelicula1:peliculasCalificadas) {
+					this.getCartelera().remove(pelicula1);
+					if (pelicula1.getTipoDeFormato().equals("2D")){
+						new Pelicula(pelicula1.getNombre(),(int)(pelicula1.getPrecio()*0.9),pelicula1.getGenero(),pelicula1.getDuracion(),pelicula1.getClasificacion(),pelicula1.getTipoDeFormato(),sucursal);
+						
+					}
+				}
 				
 			}
+			else {
+				eliminarPeliculas(peliculasCalificadas);
+			}			
 		}
 		else if (calificacionReal>4.5) {
+			SucursalCine sucursal1=seleccionarSucursalAleatoriamente(this);
+			for (Pelicula pelicula2:peliculasCalificadas) {
+				if (pelicula2.getTipoDeFormato().equals("2D")){
+					new Pelicula(pelicula2.getNombre(),(int)(pelicula2.getPrecio()*1.10),pelicula2.getGenero(),pelicula2.getDuracion(),pelicula2.getClasificacion(),pelicula2.getTipoDeFormato(),sucursal1);
+					
+				}
+				
+			}
 			
-			
+						
 		}
-	
-		
 	
 		
 	}

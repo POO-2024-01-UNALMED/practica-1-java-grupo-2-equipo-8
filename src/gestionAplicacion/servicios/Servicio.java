@@ -198,7 +198,16 @@ public abstract class Servicio implements IBuyable, Serializable{
 		}
 		
 	}
-	
+	/** Description: Este metodo se encarga de remover los productos que fueron mal calificadas en dos sucursales, por lo
+	 * tanto por temas de negocio decidimos eliminar este producto por malas ventas, usando la funcion remove, quitandola
+	 * de la cartelera principal de peliculas.
+	 *
+	 * */
+	public void eliminarProducto(ArrayList<Producto> productosEliminar) {
+		for(Producto producto:productosEliminar) {
+			this.inventario.remove(producto);
+		}
+	}
 
 	
 	public String getNombre() {
