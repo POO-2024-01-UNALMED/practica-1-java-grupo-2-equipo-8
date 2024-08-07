@@ -379,11 +379,11 @@ public class Pelicula implements Serializable{
 			//Try en caso de que alguna sala de cine tenga el atributo peliculaEnPresentacion como null
 			//Caso: Ejecutar por primera vez el programa en un horario distinto a la jornada laboral 
 			try {
+				System.out.println(salaDeCine.getHorarioPeliculaEnPresentacion() + " " + salaDeCine.getPeliculaEnPresentacion().getDuracion()+ " " + salaDeCine.getUbicacionSede().equals(this.sucursalCartelera) + " " + salaDeCine.getPeliculaEnPresentacion() + " ");
 				if (salaDeCine.getPeliculaEnPresentacion().equals(this) && SucursalCine.getFechaActual().isBefore(salaDeCine.getHorarioPeliculaEnPresentacion().plus(Duration.ofMinutes(15)))) {
 					for (Asiento[] filaAsientos : salaDeCine.getAsientos()) {
 						for (Asiento asiento : filaAsientos) {
 							if (asiento.isDisponibilidad()) {
-								System.out.println(salaDeCine.getHorarioPeliculaEnPresentacion() + " " + salaDeCine.getPeliculaEnPresentacion().getDuracion()+ " " + salaDeCine.getPeliculaEnPresentacion().getNombre() + " " + salaDeCine.getPeliculaEnPresentacion().getHorarios().size());
 								return true;
 							}
 						}

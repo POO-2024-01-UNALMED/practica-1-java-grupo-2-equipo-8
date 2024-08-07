@@ -174,8 +174,10 @@ public class Cliente implements Serializable{
 			
 			//Valido si el ticket ya caducó
 			if( !(ticket.getHorario().plus(ticket.getPelicula().getDuracion()).isAfter(SucursalCine.getFechaActual())) ){
-				//Lo elimino
+				//Lo elimino de su array
 				iteradorTickets.remove();
+				//Lo elimino de los tickets disponibles
+				SucursalCine.getTicketsDisponibles().remove(ticket);
 			}
 		}
 		

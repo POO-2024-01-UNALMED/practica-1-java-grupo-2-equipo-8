@@ -115,6 +115,14 @@ public class Ticket implements IBuyable, Serializable{
 	}
 	
 	/**
+	 * Description : Este método se encarga de asignar el ticket a su respectivo dueño luego de la serialización.
+	 * */
+	public void agregarTIcketClienteSerializido() {
+		Cliente cliente = Cliente.revisarDatosCliente(this.dueno.getDocumento());
+		cliente.getTickets().add(this);
+	}
+	
+	/**
 	 * Description: Este metodo se encarga de generar un codigo de descuento que se le asocia al usuario dueño del ticket para que pueda redimirlo 
 	 * en el Arkade posteriormente.
 	 * @return <b>codigoTicket</b> : Este método retorna un String que contiene la información del codigo mas el genero de la pelicula asociada.

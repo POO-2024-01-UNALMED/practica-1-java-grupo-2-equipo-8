@@ -252,9 +252,9 @@ public class SalaCine implements Serializable{
 		
 		//Actualizamos la película
 		for (Pelicula pelicula : sucursalCine.getCartelera()) {
-			
+			System.out.println("\n"+pelicula.getNombre());
 			//Verificamos si la película tiene el mismo número de sala y tipo de formato que la sala de cine que ejecuta el método
-			if ( pelicula.getSalaPresentacion().equals(this) ) {
+			if ( pelicula.getSalaPresentacion().numeroSala == this.numeroSala ) {
 				
 				firstTimeComparacionHorario = true;
 				
@@ -264,7 +264,7 @@ public class SalaCine implements Serializable{
 				}
 				
 				for (LocalDateTime horario : pelicula.getHorarios()) {
-					
+					System.out.println(horario);
 					//Si es la primera vez que se realiza la comparación los setteamos como el valor más cercano al actual
 					if (firstTimeComparacionHorario) {
 						horarioMasCercanoAlActual = horario;
@@ -292,11 +292,13 @@ public class SalaCine implements Serializable{
 						horarioPresentacion = horarioMasCercanoAlActual;
 						peliculaPresentacion = pelicula;
 						firstTimePosiblePeliculaPresentacionEncontrada = false;
+						System.out.println("Prrimer horairo encontrado" + horarioPresentacion);
 					
 					}else if( !(horarioMasCercanoAlActual.isAfter(SucursalCine.getFechaActual()) ) && 
-							( !(horarioMasCercanoAlActual.isBefore(horarioPresentacion)) ) ){
+							( horarioMasCercanoAlActual.isAfter(horarioPresentacion))  ){
 						horarioPresentacion = horarioMasCercanoAlActual;
 						peliculaPresentacion = pelicula;
+						System.out.println("Otro horario encontrado" + horarioPresentacion);
 					}
 				}catch (NullPointerException e) {
 					continue;
@@ -321,9 +323,9 @@ public class SalaCine implements Serializable{
 		        }
 		    }
 			
-			//Eliminamos la sala de cine virtual y su horario
-			this.peliculaEnPresentacion.getAsientosVirtuales().remove(this.getPeliculaEnPresentacion().getHorarios().indexOf(horarioPresentacion));
-			this.peliculaEnPresentacion.getHorarios().remove(horarioPresentacion);
+			//Eliminamos la sala de cine virtual y su horario (Eliminamos esta lógica)
+//			this.peliculaEnPresentacion.getAsientosVirtuales().remove(this.getPeliculaEnPresentacion().getHorarios().indexOf(horarioPresentacion));
+//			this.peliculaEnPresentacion.getHorarios().remove(horarioPresentacion);
 			
 		}
 		

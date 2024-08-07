@@ -254,16 +254,6 @@ public class Administrador {
 		//MAIN
 		inicioDelSistema();
 		
-//		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
-//			for (Pelicula pelicula : sede.getCartelera()) {
-//				System.out.println(pelicula.getAsientosVirtuales().size() + " " + pelicula.getHorarios().size());
-//			}
-//			for (SalaCine sala : sede.getSalasDeCine()) {
-//				System.out.println(sala.getPeliculaEnPresentacion() + " " + sala.getHorarioPeliculaEnPresentacion() + " " + sala.getNumeroSala());
-//			}
-//			System.out.println();
-//		}
-		
 		SucursalCine.repararProblemasSerializacion();
 		
 		SucursalCine.avanzarTiempo();
@@ -275,9 +265,6 @@ public class Administrador {
 		clienteProceso.setCineActual(ingresarASucursal());
 		
 //		System.out.println(clienteProceso.getCineActual().getBonosCreados().size());
-		
-		Thread hiloLogicaProyecto = new Thread(clienteProceso.getCineActual());
-		hiloLogicaProyecto.start();
 		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
 		inicio(clienteProceso);
@@ -1861,8 +1848,6 @@ public class Administrador {
 			        
 			        //Actualizamos el estado de la fecha actual, de las películas y las salas de cine 
 			        SucursalCine.setFechaActual(salaDeCineProceso.getHorarioPeliculaEnPresentacion().plus(salaDeCineProceso.getPeliculaEnPresentacion().getDuracion()));
-			        SucursalCine.dropHorariosVencidos();
-			        SucursalCine.actualizarPeliculasSalasDeCine();
 			        
 				}else {
 					System.out.println("\nNo tienes un ticket válido o no cumple con los requisitos para ingresar a esta sala de cine" 
@@ -2025,9 +2010,6 @@ public class Administrador {
 			
 			//Actualizamos el estado de la fecha actual, de las películas y las salas de cine 
 			SucursalCine.setFechaActual(ticketParaUsar.getHorario());
-			SucursalCine.dropHorariosVencidos();
-			SucursalCine.actualizarPeliculasSalasDeCine();
-			SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
 			
 			//Mostramos en pantalla el resultado del proceso
 			System.out.println("\nEsperando...");

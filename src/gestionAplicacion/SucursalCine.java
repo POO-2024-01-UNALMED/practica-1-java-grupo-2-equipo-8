@@ -357,13 +357,26 @@ public class SucursalCine implements Serializable {
 	}
 	
 	/**
-	 * Description : Este método se encarga de eliminar los tickets caducados de todos los clientes, con el fin de 
-	 * liberar espacio en memoria y evitar problemas en la lógica del programa, luego de ejecutar la serialización.
+	 * Description : Este método se encarga de solucionar los problemas que trae la serialización tras no ocuparse
+	 * luego de mucho tiempo.
+	 * 1. Elimina los tickets caducados de los clientes.
+	 * 2. Actualiza los permisos de actualización de las salas de cine.
+	 * 3. Asigna los tickets a sus respectivos dueños.
 	 * */
-	public static void dropTicketsCaducados() {
+	public static void repararProblemasSerializacion() {
+		
+		//Eliminar tickets caducados
 		for (Cliente cliente : clientes) {
 			cliente.dropTicketsCaducados();
 		}
+		//Actualizar peticiones de actualización de las salas de cine
+		SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
+		
+		//Asignar tickets
+		for (Ticket ticket : ticketsDisponibles) {
+			ticket.agregarTIcketClienteSerializido();
+		}
+		
 	}
 	
 	/**
@@ -384,11 +397,12 @@ public class SucursalCine implements Serializable {
 		
 		//Avanza lo hora 20 segundos
 		System.out.println(fechaActual);
-		fechaActual = fechaActual.plusMinutes(5);
+		fechaActual = fechaActual.plusMinutes(2);
 		
 		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
 		if(!fechaActual.toLocalDate().isBefore(fechaRevisionLogicaDeNegocio)) {
 			//Lógica a evaluar cada semana
+			SucursalCine.dropHorariosVencidos();
 			
 			fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
 			
@@ -423,21 +437,6 @@ public class SucursalCine implements Serializable {
 			SucursalCine.actualizarPeliculasSalasDeCine();
 			
 		}
-		
-	}
-	
-	/**
-	 * Description : Este método se encarga de solucionar los problemas que trae la serialización tras no ocuparse
-	 * luego de mucho tiempo.
-	 * 1. Elimina los horarios vencidos de las películas.
-	 * 2. Elimina los tickets caducados de los clientes.
-	 * 3. Actualiza los permisos de actualización de las salas de cine.
-	 * */
-	public static void repararProblemasSerializacion() {
-		
-		SucursalCine.dropHorariosVencidos();
-		SucursalCine.dropTicketsCaducados();
-		SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
 		
 	}
 	
