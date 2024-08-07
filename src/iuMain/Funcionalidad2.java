@@ -429,76 +429,91 @@ public class Funcionalidad2 {
 		}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
 		serviciProceso.setValorPedido(serviciProceso.calcularTotal());
-		double valor = 0;
-		double valor1 = 0;
-		double descuento = 0;
-		verificacion = true;
-		boolean condicion = true;
-		System.out.print("\n------EL PEDDIDO ESTA LISTO SOLO FALTA PAGAR: $"+serviciProceso.getValorPedido()+" ------\n");
-		do {
-			try {
-				
-				System.out.println("\nMETODOS DE PEGO DISPONIBLES:\n");
-				System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso));
-				System.out.print("Seleccione una opcion: ");
-				eleccion = Integer.parseInt(sc.nextLine());
-				
-			}catch(NumberFormatException e) {
-				System.out.println("\nError, debes ingresar un dato numérico\n");
-				continue;
-			}
-			
-			MetodoPago metodoDePago = MetodoPago.usarMetodopago(clienteProceso, eleccion);
-			System.out.println("\n----------------------------------------------------------------------------------");
-			System.out.println("\n         Gracias por utilizar: "+ metodoDePago.getNombre() +" para hacer tu pago");
-			valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
-			System.out.println("          Ahora el valor a pagar es de: $"+valor+"\n");
-			
-			
-			if (condicion) {
-				condicion = false;
-				valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
-				if (serviciProceso.descuentarPorCompra(metodoDePago)) {
-					System.out.print("        ------------------------------------------------------------------- \n");
-					System.out.print("       |  🎉🎉Felicidades obtuviste un descuento sorpresa en tu compra🎉🎉 |\n");
-					System.out.print("        ------------------------------------------------------------------- \n");
-					valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
-					System.out.println("       Ahora tu cuenta quedo en: $" + valor);
-				}
-				valor1 = serviciProceso.getValorPedido();
-			}
-			descuento = descuento + (serviciProceso.getValorPedido() * metodoDePago.getDescuentoAsociado());
-			serviciProceso.setValorPedido(metodoDePago.realizarPago(serviciProceso.getValorPedido(),clienteProceso));
-			
-			
-			if (serviciProceso.getValorPedido() == 0) {
-				valor1 = valor1 - descuento;
-				serviciProceso.setValorPedido(valor1);
-				System.out.println("LA CUOTA FUE CUBIARTA EN SU TOTALIDAD 🎉🎉🎉🎉");
-				System.out.println("\nEstamos generando su factura, por favor espere...\n");
-				try {
-					Thread.sleep(3000);
-				}catch(InterruptedException e) {
-					e.printStackTrace();
-				}
-				System.out.print(serviciProceso.factura());
-				System.out.print("\n\n          Redireccionando al menu principal\n\n");
-				try {
-					Thread.sleep(3000);
-				}catch(InterruptedException e) {
-					e.printStackTrace();
-				}
-				serviciProceso.procesarPagoRealizado(clienteProceso);
-				verificacion = false;
-			}
-			else {
-				System.out.println("\n----------------------------------------------------------------------------------");
-				System.out.println("\nFALTA POR TERMINAR DE PAGAR : $" + serviciProceso.getValorPedido() + " (╥_╥)(╥_╥)(╥_╥)");
-				continue;
-			}
-			
-		}while(verificacion);
 		
+		if (serviciProceso.getValorPedido()>0) {
+			
+			double valor = 0;
+			double valor1 = 0;
+			double descuento = 0;
+			verificacion = true;
+			boolean condicion = true;
+			System.out.print("\n------EL PEDDIDO ESTA LISTO SOLO FALTA PAGAR: $"+serviciProceso.getValorPedido()+" ------\n");
+			do {
+				try {
+					
+					System.out.println("\nMETODOS DE PEGO DISPONIBLES:\n");
+					System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso));
+					System.out.print("Seleccione una opcion: ");
+					eleccion = Integer.parseInt(sc.nextLine());
+					
+				}catch(NumberFormatException e) {
+					System.out.println("\nError, debes ingresar un dato numérico\n");
+					continue;
+				}
+				
+				MetodoPago metodoDePago = MetodoPago.usarMetodopago(clienteProceso, eleccion);
+				System.out.println("\n----------------------------------------------------------------------------------");
+				System.out.println("\n         Gracias por utilizar: "+ metodoDePago.getNombre() +" para hacer tu pago");
+				valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+				System.out.println("          Ahora el valor a pagar es de: $"+valor+"\n");
+				
+				
+				if (condicion) {
+					condicion = false;
+					valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+					if (serviciProceso.descuentarPorCompra(metodoDePago)) {
+						System.out.print("        ------------------------------------------------------------------- \n");
+						System.out.print("       |  🎉🎉Felicidades obtuviste un descuento sorpresa en tu compra🎉🎉 |\n");
+						System.out.print("        ------------------------------------------------------------------- \n");
+						valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+						System.out.println("       Ahora tu cuenta quedo en: $" + valor);
+					}
+					valor1 = serviciProceso.getValorPedido();
+				}
+				descuento = descuento + (serviciProceso.getValorPedido() * metodoDePago.getDescuentoAsociado());
+				serviciProceso.setValorPedido(metodoDePago.realizarPago(serviciProceso.getValorPedido(),clienteProceso));
+				
+				
+				if (serviciProceso.getValorPedido() == 0) {
+					valor1 = valor1 - descuento;
+					serviciProceso.setValorPedido(valor1);
+					System.out.println("LA CUOTA FUE CUBIARTA EN SU TOTALIDAD 🎉🎉🎉🎉");
+					System.out.println("\nEstamos generando su factura, por favor espere...\n");
+					try {
+						Thread.sleep(3000);
+					}catch(InterruptedException e) {
+						e.printStackTrace();
+					}
+					System.out.print(serviciProceso.factura());
+					System.out.print("\n\n          Redireccionando al menu principal\n\n");
+					try {
+						Thread.sleep(3000);
+					}catch(InterruptedException e) {
+						e.printStackTrace();
+					}
+					serviciProceso.procesarPagoRealizado(clienteProceso);
+					verificacion = false;
+				}
+				else {
+					System.out.println("\n----------------------------------------------------------------------------------");
+					System.out.println("\nFALTA POR TERMINAR DE PAGAR : $" + serviciProceso.getValorPedido() + " (╥_╥)(╥_╥)(╥_╥)");
+					continue;
+				}
+				
+			}while(verificacion);
+			
+		}
+		
+		else {
+			
+			System.out.println("\n ******************** Redireccionando al menu principal ******************** \n");
+			
+			try {
+				Thread.sleep(3000);
+			}catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	
