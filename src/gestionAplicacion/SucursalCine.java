@@ -408,10 +408,6 @@ public class SucursalCine implements Runnable, Serializable {
 				fechaRevisionLogicaDeNegocio = fechaRevisionLogicaDeNegocio.plusWeeks(1);
 				
 				//Implementar método de cambio de película entre sucursales según su valoración
-				
-				
-				
-				
 				//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
 				SucursalCine.logicaSemanalReservarTicket();
 			}
@@ -419,13 +415,7 @@ public class SucursalCine implements Runnable, Serializable {
 		}
 		
 	}
-	/** Description:Este metodo se encarga de cambiar peliculas de sede, ya que en nuestra logica de negocio implementamos
-	 * el sistema de calificaciones, entonces tenemos que estar constantemente pendientes de que peliculas han sido
-	 * buenas o malas recibidas por los clientes, y cambiandolas de sede, esperamos que su calificacion mejore, si esto
-	 * no se da, la pelicula es eliminada de la cartelera, ya que se considera como mala
-	 * */	
 	
-		
 		
 	/** Description: Este metodo se encarga de seleccionar las sucursales del arrayList y con el uso de la funcion random de la libreria math,
 	 * se selecciona una sucursal aleatoriamente, ya que esto nos permetira mas adelante el cambio de sucursal de una

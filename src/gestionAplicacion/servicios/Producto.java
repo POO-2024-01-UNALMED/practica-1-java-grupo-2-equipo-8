@@ -73,6 +73,17 @@ public class Producto implements Serializable {
 	 * producto es apta para calificar o no
 
 	* */
+	public  Producto buscarProductoEnInventarioSede() {
+		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+			
+		
+			for(Producto producto:sede.getInventarioCine()) {
+				if(this.nombre.equals(producto.nombre)&&this.genero.equals(producto.genero)&&this.tipoProducto.equals(producto.tipoProducto)&&{
+					sede.logicaCalificacionPeliculas(pelic);
+				}
+			}
+		}
+	}
 	public boolean verificarInventarioProducto(SucursalCine sucursalCine) {
 		
 		if (sucursalCine.getInventarioCine().size() ==0) {
