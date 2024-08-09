@@ -253,8 +253,8 @@ public class Administrador {
 		
 		//MAIN
 		inicioDelSistema();
-		
-		SucursalCine.repararProblemasSerializacion();
+
+//		SucursalCine.repararProblemasSerializacion();
 		
 		SucursalCine.avanzarTiempo();
 		
@@ -318,9 +318,9 @@ public class Administrador {
 	
 	static void inicioDelSistema() {
 		
-		Deserializador.deserializarEstaticos();
-		
 		Deserializador.deserializar();
+		
+		Deserializador.deserializarEstaticos();
 		
 	}
 	

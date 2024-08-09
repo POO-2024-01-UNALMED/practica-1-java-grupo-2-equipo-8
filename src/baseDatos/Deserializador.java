@@ -64,6 +64,33 @@ public class Deserializador {
 						fis = new FileInputStream(file);
 						ois = new ObjectInputStream(fis);
 						sucursalCine.setSalasDeCine((ArrayList<SalaCine>) ois.readObject());
+						for (SalaCine salaDeCine : sucursalCine.getSalasDeCine()) {
+							salaDeCine.setUbicacionSede(sucursalCine);
+							salaDeCine.setPeliculaEnPresentacion(null);
+							salaDeCine.setHorarioPeliculaEnPresentacion(null);
+
+						}
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				} else if (file.getAbsolutePath().contains("tpeliculas")) {
+					try {
+						fis = new FileInputStream(file);
+						ois = new ObjectInputStream(fis);
+						sucursalCine.setCartelera((ArrayList<Pelicula>) ois.readObject());
+						for (Pelicula pelicula : sucursalCine.getCartelera()) {
+							pelicula.setSucursalCartelera(sucursalCine);
+							pelicula.setSalaPresentacion( SalaCine.buscarSalaPorNumeroDeSala(sucursalCine, pelicula.getNumeroSalaPresentacion()) );
+							
+						}
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -84,22 +111,6 @@ public class Deserializador {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}  catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				}else if (file.getAbsolutePath().contains("peliculas")) {
-					try {
-						fis = new FileInputStream(file);
-						ois = new ObjectInputStream(fis);
-						sucursalCine.setCartelera((ArrayList<Pelicula>) ois.readObject());
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (ClassNotFoundException e) {
@@ -210,6 +221,9 @@ public class Deserializador {
 					fis = new FileInputStream(file);
 					ois = new ObjectInputStream(fis);
 					SucursalCine.setClientes((ArrayList<Cliente>) ois.readObject());
+					for (Cliente cliente : SucursalCine.getClientes()) {
+						cliente.getTickets().clear();
+					}
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -303,9 +317,6 @@ public class Deserializador {
 					fis = new FileInputStream(file);
 					ois = new ObjectInputStream(fis);
 					ArrayList<SalaCine> salas = ((ArrayList<SalaCine>) ois.readObject());
-					for (SalaCine sala: salas) {
-						System.out.println(sala.getPeliculaEnPresentacion());
-					}
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -319,6 +330,13 @@ public class Deserializador {
 					fis = new FileInputStream(file);
 					ois = new ObjectInputStream(fis);
 					SucursalCine.setTicketsDisponibles((ArrayList<Ticket>) ois.readObject());
+					for (Ticket ticket : SucursalCine.getTicketsDisponibles()) {
+						ticket.agregarTIcketClienteSerializado();
+						ticket.setSucursalCompra( SucursalCine.obtenerSucursalPorId(ticket.getPelicula().getSucursalCartelera().getIdSucursal()) );
+						ticket.setPelicula( ticket.getSucursalCompra().obtenerPeliculaPorId( ticket.getPelicula().getIdPelicula() ));
+						ticket.setSalaDeCine( ticket.getPelicula().getSalaPresentacion() );
+						
+					}
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -331,5 +349,6 @@ public class Deserializador {
 				
 		}
 	}
+
 }
 
