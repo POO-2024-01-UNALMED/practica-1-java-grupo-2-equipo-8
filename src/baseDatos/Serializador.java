@@ -22,7 +22,7 @@ public class Serializador {
 	public static void serializar(SucursalCine sucursalCine) {
 		FileOutputStream fos;
 		ObjectOutputStream oos;
-		File [] dirs = rutaTempLinux.listFiles();
+		File [] dirs = rutaTemp.listFiles();
 		PrintWriter pw;
 		
 		//Iteramos sobre los directorios de nuestras distintas sucursales
@@ -87,7 +87,7 @@ public class Serializador {
 							e.printStackTrace();
 						}
 						
-					}else if (file.getAbsolutePath().contains("peliculas")) {
+					}else if (file.getAbsolutePath().contains("tpeliculas")) {
 						try {
 							fos = new FileOutputStream(file);
 							oos = new ObjectOutputStream(fos);
@@ -179,7 +179,7 @@ public class Serializador {
 	public static void serializar() {
 		
 		//Creamos las variables que usaremos para este proceso
-		File [] docs = rutaTempLinux2.listFiles();
+		File [] docs = rutaTemp2.listFiles();
 		
 		FileOutputStream fos;
 		ObjectOutputStream oos;
@@ -318,6 +318,7 @@ public class Serializador {
 			
 		}
 	}
+
 	
 }
 

@@ -12,6 +12,7 @@ public class Pelicula implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
+	private int idPelicula; 
 	private String nombre;
 	private int precio;
 	private String genero;
@@ -21,7 +22,8 @@ public class Pelicula implements Serializable{
 	private ArrayList<int[][]> asientosVirtuales = new ArrayList<>();
 	private String tipoDeFormato;
 	private SalaCine salaPresentacion;
-	private int idPelicula; 
+	private int numeroSalaPresentacion;
+	private static int cantidadPeliculasGeneradas;
 	private double valoracion;
 	private int totalEncuestasDeValoracionRealizadas;
 	private SucursalCine sucursalCartelera;
@@ -30,7 +32,8 @@ public class Pelicula implements Serializable{
 	// Constructor
 	public Pelicula(){
 		SucursalCine.getPeliculasDisponibles().add(this);
-		this.idPelicula = SucursalCine.getPeliculasDisponibles().size();
+		cantidadPeliculasGeneradas++;
+		this.idPelicula = cantidadPeliculasGeneradas;
 	}
 
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
@@ -379,7 +382,6 @@ public class Pelicula implements Serializable{
 			//Try en caso de que alguna sala de cine tenga el atributo peliculaEnPresentacion como null
 			//Caso: Ejecutar por primera vez el programa en un horario distinto a la jornada laboral 
 			try {
-				System.out.println(salaDeCine.getHorarioPeliculaEnPresentacion() + " " + salaDeCine.getPeliculaEnPresentacion().getDuracion()+ " " + salaDeCine.getUbicacionSede().equals(this.sucursalCartelera) + " " + salaDeCine.getPeliculaEnPresentacion() + " ");
 				if (salaDeCine.getPeliculaEnPresentacion().equals(this) && SucursalCine.getFechaActual().isBefore(salaDeCine.getHorarioPeliculaEnPresentacion().plus(Duration.ofMinutes(15)))) {
 					for (Asiento[] filaAsientos : salaDeCine.getAsientos()) {
 						for (Asiento asiento : filaAsientos) {
@@ -441,6 +443,7 @@ public class Pelicula implements Serializable{
 	 * pelicula es apta para calificar o no
 
 	* */
+	//Santi puede ocurrir un error
 	public boolean verificarHorariosPeliculas() {
 		if (this.horarios.size() ==0) {
 			return false;
@@ -563,4 +566,13 @@ public class Pelicula implements Serializable{
 		this.strikeCambio = strikeCambio;
 	}
 
+	public int getNumeroSalaPresentacion() {
+		return numeroSalaPresentacion;
+	}
+
+	public void setNumeroSalaPresentacion(int numeroSalaPresentacion) {
+		this.numeroSalaPresentacion = numeroSalaPresentacion;
+	}
+
 }
+

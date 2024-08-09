@@ -37,8 +37,10 @@ public class SucursalCine implements Serializable {
 	private static ArrayList<MetodoPago> metodosDePagoDisponibles = new ArrayList<>();
 	private static ArrayList<SalaCine> salasDeCineDisponibles = new ArrayList<>();
 	private static ArrayList<Ticket> ticketsDisponibles = new ArrayList<>();
+	private static int cantidadSucursales;
 	
 	private String lugar;
+	private int idSucursal;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
 	private ArrayList<Producto> inventarioCine = new ArrayList<>();
 	private ArrayList<Pelicula> cartelera = new ArrayList<>();
@@ -284,6 +286,7 @@ public class SucursalCine implements Serializable {
 				for (Pelicula pelicula : grupoPeliculasPorFormato) {
 					
 					pelicula.setSalaPresentacion(grupoSalasPorFormato.get(indice));
+					pelicula.setNumeroSalaPresentacion(grupoSalasPorFormato.get(indice).getNumeroSala());
 					contador++;
 					
 					//En caso de que el contador sea igual al número máximo de películas por sala, cambiamos de sala
@@ -300,6 +303,7 @@ public class SucursalCine implements Serializable {
 				for (Pelicula pelicula : grupoPeliculasPorFormato) {
 					
 					pelicula.setSalaPresentacion(grupoSalasPorFormato.get(indice));
+					pelicula.setNumeroSalaPresentacion(grupoSalasPorFormato.get(indice).getNumeroSala());
 					indice++;
 					
 				}
@@ -317,14 +321,18 @@ public class SucursalCine implements Serializable {
 	}
 	
 	/**
-	 * Description: Este método se encarga de realizar la distribución de películas en las salas de cine y la creación de
-	 * sus horarios, cada semana, luego de haber efectuado el cambio de películas de sucursal propio de la funcionalidad 3. 
+	 * Description: Este método se encarga de realizar los preparativos para ejecutar la lógica de la funcionalidad #3:
+	 * 1. Eliminar los horarios de la semana anterior.
+	 * 2. Distribución de películas en las salas de cine y la creación de sus horarios. 
 	 * */
 	public static void logicaSemanalReservarTicket() {
+		
+		SucursalCine.dropHorariosVencidos();
 		for (SucursalCine sede : sucursalesCine) {
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();
 		}
+		
 	}
 	
 	/**
@@ -359,13 +367,13 @@ public class SucursalCine implements Serializable {
 	/**
 	 * Description : Este método se encarga de solucionar los problemas que trae la serialización tras no ocuparse
 	 * luego de mucho tiempo.
-	 * 1. Elimina los tickets caducados de los clientes.
+	 * 1. Elimina los tickets caducados.
 	 * 2. Actualiza los permisos de actualización de las salas de cine.
 	 * 3. Asigna los tickets a sus respectivos dueños.
 	 * */
-	public static void repararProblemasSerializacion() {
+	public static void optimizarSerializacion() {
 		
-		//Eliminar tickets caducados
+		//Eliminar tickets caducados de clientes
 		for (Cliente cliente : clientes) {
 			cliente.dropTicketsCaducados();
 		}
@@ -374,9 +382,58 @@ public class SucursalCine implements Serializable {
 		
 		//Asignar tickets
 		for (Ticket ticket : ticketsDisponibles) {
-			ticket.agregarTIcketClienteSerializido();
+			ticket.agregarTIcketClienteSerializado();
 		}
 		
+		
+	}
+	
+	/**
+	 * Description : Este método se encarga de retornar la sucursal cuyo id coincida con el pasado como parámetro, del array de sucursales cine.
+	 * @param idSucursalCine : Este método recibe como parámetro el id de la sucursal (De tipo int).
+	 * @return SucursalCine : Este método retorna la sucursal (De tipo SucursalCine) cuyo id coincide con el seleccionada, con el fin de realizar las validaciones.
+	 * */
+	public static SucursalCine obtenerSucursalPorId(int idSucursalCine) {
+		
+		for (SucursalCine sede : sucursalesCine) {
+			if (sede.idSucursal == idSucursalCine) {
+				return sede;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Description : Este método se encarga de retornar la película cuyo id coincida con el pasado como parámetro, del array de peliculas en cartelera de la sucursal.
+	 * @param idPeliculaCartelera : Este método recibe como parámetro el id de la película a buscar (De tipo int).
+	 * @return Pelicula : Este método retorna la pelicula (De tipo Pelicula) cuyo id coincide con el seleccionada, con el fin de realizar las validaciones.
+	 * */
+	public Pelicula obtenerPeliculaPorId(int idPeliculaCartelera) {
+		
+		for (Pelicula pelicula : this.cartelera) {
+			if (pelicula.getIdPelicula() == idPeliculaCartelera) {
+				return pelicula;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Description : Este método se encarga de retornar la sala de cine cuyo id coincida con el pasado como parámetro, del array de salas de cine de la sucursal.
+	 * @param idSalaCineSucursal : Este método recibe como parámetro el id de la sala de cine a buscar (De tipo int).
+	 * @return SalaCine : Este método retorna la sala de cine (De tipo SalaCine) cuyo id coincide con el seleccionada, con el fin de realizar las validaciones.
+	 * */
+	public SalaCine obtenerSalaCineaPorId(int idSalaCineSucursal) {
+		
+		for (SalaCine salaDeCine : this.salasDeCine) {
+			if (salaDeCine.getIdSalaCine() == idSalaCineSucursal) {
+				return salaDeCine;
+			}
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -397,7 +454,7 @@ public class SucursalCine implements Serializable {
 		
 		//Avanza lo hora 20 segundos
 		System.out.println(fechaActual);
-		fechaActual = fechaActual.plusMinutes(2);
+		fechaActual = fechaActual.plusSeconds(20);
 		
 		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
 		if(!fechaActual.toLocalDate().isBefore(fechaRevisionLogicaDeNegocio)) {
@@ -498,9 +555,12 @@ public class SucursalCine implements Serializable {
 	//Constructor
 	public SucursalCine() {
 		SucursalCine.sucursalesCine.add(this);
+		
 	}
 	
 	public SucursalCine(String lugar) {
+		cantidadSucursales++;
+		this.idSucursal = cantidadSucursales;
 		this.cantidadTicketsCreados = 1;
 		this.lugar = lugar;
 		SucursalCine.getSucursalesCine().add(this);
@@ -657,6 +717,15 @@ public class SucursalCine implements Serializable {
 	public static void setTicketsDisponibles(ArrayList<Ticket> ticketsDisponibles) {
 		SucursalCine.ticketsDisponibles = ticketsDisponibles;
 	}
+
+	public int getIdSucursal() {
+		return idSucursal;
+	}
+
+	public void setIdSucursal(int idSucursal) {
+		this.idSucursal = idSucursal;
+	}
+
 	
 	
 	

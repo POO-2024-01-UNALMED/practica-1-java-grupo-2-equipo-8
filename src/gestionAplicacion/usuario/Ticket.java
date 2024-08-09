@@ -14,6 +14,7 @@ public class Ticket implements IBuyable, Serializable{
 	
 	private boolean descuento;
 	private int idTicket;
+	private static int cantidadTicketsCreados;
 	private Cliente dueno;
 	private SalaCine salaDeCine;
 	private Pelicula pelicula;
@@ -26,7 +27,6 @@ public class Ticket implements IBuyable, Serializable{
 	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalDondeFueComprado) {
 		this.descuento = true;
 		this.pelicula = pelicula;
-		this.idTicket = sucursalDondeFueComprado.getCantidadTicketsCreados();
 		this.numeroAsiento = numeroAsiento;
 		this.horario = horario;
 		this.sucursalCompra = sucursalDondeFueComprado;
@@ -68,6 +68,7 @@ public class Ticket implements IBuyable, Serializable{
 	 * 5. Se crea una referencia de este ticket en el arraylist de los tickets creados en el cine.
 	 * 6. Se crea la factura y se le asoscia al cliente
 	 * 7. Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.
+	 * 8. Creamos el id del ticket y aumentamos la cantidad de tickets creados en 1.
 	 * @param cliente : Se pide como parámetro el cliente (De tipo Cliente) que realizó exitosamente el pago.
 	 */
 	public void procesarPagoRealizado(Cliente cliente) {
@@ -90,6 +91,11 @@ public class Ticket implements IBuyable, Serializable{
 		this.dueno.getCodigosDescuento().add(codigoArkade);
 		
 		SucursalCine.getTicketsDisponibles().add(this);
+		
+		//Lógica id
+		cantidadTicketsCreados++;
+		this.idTicket = cantidadTicketsCreados;
+		
 	}
 	
 	
@@ -117,9 +123,10 @@ public class Ticket implements IBuyable, Serializable{
 	/**
 	 * Description : Este método se encarga de asignar el ticket a su respectivo dueño luego de la serialización.
 	 * */
-	public void agregarTIcketClienteSerializido() {
+	public void agregarTIcketClienteSerializado() {
 		Cliente cliente = Cliente.revisarDatosCliente(this.dueno.getDocumento());
 		cliente.getTickets().add(this);
+		this.dueno = cliente;
 	}
 	
 	/**
@@ -224,6 +231,15 @@ public class Ticket implements IBuyable, Serializable{
 	public void setSucursalCompra(SucursalCine sucursalCompra) {
 		this.sucursalCompra = sucursalCompra;
 	}
+
+	public static int getCantidadTicketsCreados() {
+		return cantidadTicketsCreados;
+	}
+
+	public static void setCantidadTicketsCreados(int cantidadTicketsCreados) {
+		Ticket.cantidadTicketsCreados = cantidadTicketsCreados;
+	}
+
 	
 	
 }
