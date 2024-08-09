@@ -87,7 +87,7 @@ public class Serializador {
 							e.printStackTrace();
 						}
 						
-					}else if (file.getAbsolutePath().contains("peliculas")) {
+					}else if (file.getAbsolutePath().contains("tpeliculas")) {
 						try {
 							fos = new FileOutputStream(file);
 							oos = new ObjectOutputStream(fos);
@@ -318,6 +318,7 @@ public class Serializador {
 			
 		}
 	}
+
 	
 }
 

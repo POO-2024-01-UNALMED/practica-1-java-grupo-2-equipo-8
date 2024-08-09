@@ -13,6 +13,8 @@ public class SalaCine implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
+	private int idSalaCine;
+	private static int cantidadSalasDeCineCreadas;
 	private int numeroSala;
 	private String tipoDeSala;
 	private LocalDateTime horarioPeliculaEnPresentacion;
@@ -23,6 +25,8 @@ public class SalaCine implements Serializable{
 	
 	//Constructors
 	public SalaCine(int nSala, String tipoDeSala, SucursalCine ubicacionSede){
+		cantidadSalasDeCineCreadas++;
+		this.idSalaCine = cantidadSalasDeCineCreadas;
 		this.numeroSala = nSala;
 		this.tipoDeSala = tipoDeSala;
 		this.ubicacionSede = ubicacionSede;
@@ -200,7 +204,7 @@ public class SalaCine implements Serializable{
 			
 			verificacionHorario = ticket.getHorario().equals(this.horarioPeliculaEnPresentacion) &
 			SucursalCine.getFechaActual().isBefore(this.horarioPeliculaEnPresentacion.plus( this.peliculaEnPresentacion.getDuracion() ) ); 
-			
+
 			verificacionIngresoASala = verificacionPelicula & verificacionHorario & verificacionSalaCine;
 			
 			//En caso de encontrarlo rompemos el ciclo
@@ -252,9 +256,9 @@ public class SalaCine implements Serializable{
 		
 		//Actualizamos la película
 		for (Pelicula pelicula : sucursalCine.getCartelera()) {
-			System.out.println("\n"+pelicula.getNombre());
+			
 			//Verificamos si la película tiene el mismo número de sala y tipo de formato que la sala de cine que ejecuta el método
-			if ( pelicula.getSalaPresentacion().numeroSala == this.numeroSala ) {
+			if ( pelicula.getSalaPresentacion().equals(this) ) {
 				
 				firstTimeComparacionHorario = true;
 				
@@ -264,7 +268,6 @@ public class SalaCine implements Serializable{
 				}
 				
 				for (LocalDateTime horario : pelicula.getHorarios()) {
-					System.out.println(horario);
 					//Si es la primera vez que se realiza la comparación los setteamos como el valor más cercano al actual
 					if (firstTimeComparacionHorario) {
 						horarioMasCercanoAlActual = horario;
@@ -292,13 +295,11 @@ public class SalaCine implements Serializable{
 						horarioPresentacion = horarioMasCercanoAlActual;
 						peliculaPresentacion = pelicula;
 						firstTimePosiblePeliculaPresentacionEncontrada = false;
-						System.out.println("Prrimer horairo encontrado" + horarioPresentacion);
 					
 					}else if( !(horarioMasCercanoAlActual.isAfter(SucursalCine.getFechaActual()) ) && 
 							( horarioMasCercanoAlActual.isAfter(horarioPresentacion))  ){
 						horarioPresentacion = horarioMasCercanoAlActual;
 						peliculaPresentacion = pelicula;
-						System.out.println("Otro horario encontrado" + horarioPresentacion);
 					}
 				}catch (NullPointerException e) {
 					continue;
@@ -428,6 +429,26 @@ public class SalaCine implements Serializable{
 		
 	}
 	
+	/**
+	 * Description este método se encarga de buscar la sala de cine cuyo numero de sala coincide con el seleccionado como parámetro, con el fin de 
+	 * asociar correctamente a la película la sala de cine donde será presentada, durante el proceso de la deserialización.
+	 * @param sede : Este método recibe como parámetro la sucursal cine (De tipo SucursalCIne) donde estamos realizando el proceso de deserialización.
+	 * @param numeroSala : Este método recibe como parámetro un entero que corresponde al número de sala de la sala donde iba a ser presentada la película
+	 * antes del proceso de desearilización.
+	 * @return <b>SalaCine</b> : Este método retorna el objeto sala de cine donde será presentada la película.
+	 * */
+	public static SalaCine buscarSalaPorNumeroDeSala(SucursalCine sede, int numeroSala) {
+		
+		for (SalaCine salaDeCine : sede.getSalasDeCine()) {
+			if (salaDeCine.getNumeroSala() == numeroSala){
+				return salaDeCine;
+			}
+		}
+		
+		return null;
+		
+	}
+	
 	// Getters and Setters
 	public Pelicula getPeliculaEnPresentacion() {
 		return peliculaEnPresentacion;
@@ -485,4 +506,21 @@ public class SalaCine implements Serializable{
 		this.horariosPresentacionDia = horariosPresentacionDia;
 	}
 
+	public int getIdSalaCine() {
+		return idSalaCine;
+	}
+
+	public void setIdSalaCine(int idSalaCine) {
+		this.idSalaCine = idSalaCine;
+	}
+
+	public static int getCantidadSalasDeCineCreadas() {
+		return cantidadSalasDeCineCreadas;
+	}
+
+	public static void setCantidadSalasDeCineCreadas(int cantidadSalasDeCineCreadas) {
+		SalaCine.cantidadSalasDeCineCreadas = cantidadSalasDeCineCreadas;
+	}
+
 }
+
