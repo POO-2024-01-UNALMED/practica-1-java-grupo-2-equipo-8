@@ -40,15 +40,24 @@ public class Producto implements Serializable {
 	//Constructores
 	public Producto() {}
 	
+	//Constructor para crear los productos de los bonos
 	public Producto(String nombre,String tamaño,int cantidad) {
 		this.nombre = nombre;
 		this.tamaño = tamaño;
 		this.cantidad = cantidad;
-		this.valoracionComida= 4.0;
-		this.totalEncuestasDeValoracionRealizadasComida = 25;
 	}
 	
+	//Constructor para los productos de bono pruebas 
 	public Producto(String nombre,String tamaño,String tipoProducto,double precio,int cantidad,String genero) {
+		this.genero= genero;
+		this.nombre = nombre;
+		this.precio = precio;
+		this.tamaño = tamaño;
+		this.tipoProducto = tipoProducto;
+		this.cantidad = cantidad;
+	}
+	
+	public Producto(String nombre,String tamaño,String tipoProducto,double precio,int cantidad,String genero,SucursalCine sucursalCine) {
 		this.genero= genero;
 		this.nombre = nombre;
 		this.precio = precio;
@@ -57,6 +66,7 @@ public class Producto implements Serializable {
 		this.cantidad = cantidad;
 		this.valoracionComida= 4.0;
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
+		sucursalCine.getInventarioCine().add(this);
 	}
 	
 	//Constructor para objetos de Membresia.

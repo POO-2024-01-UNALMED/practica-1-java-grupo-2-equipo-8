@@ -327,6 +327,7 @@ public class Funcionalidad2 {
 		}while(verificacion);
 		
 		String codigoBono;
+		verificacion = true;
 		if(eleccion == 1) {
 			Producto productoBono = new Producto();
 			do {
@@ -358,7 +359,6 @@ public class Funcionalidad2 {
 							System.out.print("\nSELECCIONE UNA OPCION VALIDA\n");
 						}
 					}while(eleccion != 1 && eleccion != 2);
-					
 				}
 				else {
 					System.out.print("  ----------------------------------------- ");

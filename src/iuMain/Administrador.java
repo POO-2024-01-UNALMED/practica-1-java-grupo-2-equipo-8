@@ -31,37 +31,37 @@ public class Administrador {
 	static SucursalCine sucursalCine3 = new SucursalCine("Medellín");
 	
 	//Productos de la sucursal de Bucaramanga
-	static Producto producto1M = new Producto("Hamburguesa","Grande","comida",25000,200,"Normal");
-	static Producto producto2M = new Producto("Hamburguesa","Deadpool","comida",30000,200,"Comedia");
-	static Producto producto3M = new Producto("Perro caliente","Grande","comida",20000,200,"Normal");
-	static Producto producto4M = new Producto("Perro caliente","Bolt","comida",30000,200,"Comedia");
-	static Producto producto5M = new Producto("Crispetas","Muerte","comida",15000,200,"Acción");
-	static Producto producto6M = new Producto("Crispetas","Grandes","comida",16000,200,"Normal");
-	static Producto producto7M = new Producto("Gaseosa","Grande","comida",6000,200,"Normal");
-	static Producto producto8M = new Producto("Gaseosa","Pequeña","comida",3000,200,"Normal");
+	static Producto producto1M = new Producto("Hamburguesa","Grande","comida",25000,200,"Normal",sucursalCine1);
+	static Producto producto2M = new Producto("Hamburguesa","Deadpool","comida",30000,200,"Comedia",sucursalCine1);
+	static Producto producto3M = new Producto("Perro caliente","Grande","comida",20000,200,"Normal",sucursalCine1);
+	static Producto producto4M = new Producto("Perro caliente","Bolt","comida",30000,200,"Comedia",sucursalCine1);
+	static Producto producto5M = new Producto("Crispetas","Muerte","comida",15000,200,"Acción",sucursalCine1);
+	static Producto producto6M = new Producto("Crispetas","Grandes","comida",16000,200,"Normal",sucursalCine1);
+	static Producto producto7M = new Producto("Gaseosa","Grande","comida",6000,200,"Normal",sucursalCine1);
+	static Producto producto8M = new Producto("Gaseosa","Pequeña","comida",3000,200,"Normal",sucursalCine1);
 	
 	//Productos de la sucursal de Marinilla
-	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",20000,200,"Normal");
-	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",25000,200,"Comedia");
-	static Producto producto3 = new Producto("Perro caliente","Grande","comida",15000,200,"Normal");
-	static Producto producto4 = new Producto("Perro caliente","Don salchicha","comida",20000,200,"Comedia");
-	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",14000,200,"Acción");
-	static Producto producto6 = new Producto("Crispetas","Grandes","comida",13000,200,"Normal");
-	static Producto producto7 = new Producto("Gaseosa","Grande","comida",4000,200,"Normal");
-	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",2000,200,"Normal");
+	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",20000,200,"Normal",sucursalCine2);
+	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",25000,200,"Comedia",sucursalCine2);
+	static Producto producto3 = new Producto("Perro caliente","Grande","comida",15000,200,"Normal",sucursalCine2);
+	static Producto producto4 = new Producto("Perro caliente","Don salchicha","comida",20000,200,"Comedia",sucursalCine2);
+	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",14000,200,"Acción",sucursalCine2);
+	static Producto producto6 = new Producto("Crispetas","Grandes","comida",13000,200,"Normal",sucursalCine2);
+	static Producto producto7 = new Producto("Gaseosa","Grande","comida",4000,200,"Normal",sucursalCine2);
+	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",2000,200,"Normal",sucursalCine2);
 	
-	static Producto producto1S = new Producto("Camisa","XL","souvenir",16000,200,"Normal");
-	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",27000,200,"Comedia");
-	static Producto producto3S = new Producto("Gorra","L","souvenir",11000,200,"Normal");
-	static Producto producto4S = new Producto("Llavero","Katana","souvenir",22000,200,"Acción");
-	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",29000,200,"Comedia");
+	static Producto producto1S = new Producto("Camisa","XL","souvenir",16000,200,"Normal",sucursalCine2);
+	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",27000,200,"Comedia",sucursalCine2);
+	static Producto producto3S = new Producto("Gorra","L","souvenir",11000,200,"Normal",sucursalCine2);
+	static Producto producto4S = new Producto("Llavero","Katana","souvenir",22000,200,"Acción",sucursalCine2);
+	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",29000,200,"Comedia",sucursalCine2);
 	
 	//Productos de la sucursal de Medellin
-	static Producto producto1SM = new Producto("Camisa","XL","souvenir",19000,200,"Normal");
-	static Producto producto2SM = new Producto("Camisa","Escuadron suicida","souvenir",30000,200,"Comedia");
-	static Producto producto3SM = new Producto("Gorra","L","souvenir",12000,200,"Normal");
-	static Producto producto4SM = new Producto("Llavero","Emociones","souvenir",30000,200,"Acción");
-	static Producto producto5SM = new Producto("Peluche","Deku","souvenir",30000,200,"Comedia");
+	static Producto producto1SM = new Producto("Camisa","XL","souvenir",19000,200,"Normal",sucursalCine3);
+	static Producto producto2SM = new Producto("Camisa","Escuadron suicida","souvenir",30000,200,"Comedia",sucursalCine3);
+	static Producto producto3SM = new Producto("Gorra","L","souvenir",12000,200,"Normal",sucursalCine3);
+	static Producto producto4SM = new Producto("Llavero","Emociones","souvenir",30000,200,"Acción",sucursalCine3);
+	static Producto producto5SM = new Producto("Peluche","Deku","souvenir",30000,200,"Comedia",sucursalCine3);
 	
 	//Clientes prueba
 	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
@@ -168,43 +168,12 @@ public class Administrador {
 		{
 			
 			sucursalCine1.getServicios().add(servicioComidaM);
-			
-			sucursalCine1.getInventarioCine().add(producto1M);
-			sucursalCine1.getInventarioCine().add(producto2M);
-			sucursalCine1.getInventarioCine().add(producto3M);
-			sucursalCine1.getInventarioCine().add(producto4M);
-			sucursalCine1.getInventarioCine().add(producto5M);
-			sucursalCine1.getInventarioCine().add(producto6M);
-			sucursalCine1.getInventarioCine().add(producto7M);
-			sucursalCine1.getInventarioCine().add(producto8M);
-			
-			
+
 			sucursalCine2.getServicios().add(servicioComidaM);
 			sucursalCine2.getServicios().add(servicioSouvenirsM);
 			
-			sucursalCine2.getInventarioCine().add(producto1);
-			sucursalCine2.getInventarioCine().add(producto2);
-			sucursalCine2.getInventarioCine().add(producto3);
-			sucursalCine2.getInventarioCine().add(producto4);
-			sucursalCine2.getInventarioCine().add(producto5);
-			sucursalCine2.getInventarioCine().add(producto6);
-			sucursalCine2.getInventarioCine().add(producto7);
-			sucursalCine2.getInventarioCine().add(producto8);
-			
-			sucursalCine2.getInventarioCine().add(producto1S);
-			sucursalCine2.getInventarioCine().add(producto2S);
-			sucursalCine2.getInventarioCine().add(producto3S);
-			sucursalCine2.getInventarioCine().add(producto4S);
-			sucursalCine2.getInventarioCine().add(producto5S);
-			
 			sucursalCine3.getServicios().add(servicioSouvenirsM);
-			
-			sucursalCine3.getInventarioCine().add(producto1SM);
-			sucursalCine3.getInventarioCine().add(producto2SM);
-			sucursalCine3.getInventarioCine().add(producto3SM);
-			sucursalCine3.getInventarioCine().add(producto4SM);
-			sucursalCine3.getInventarioCine().add(producto5SM);
-			
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 			//Funcionalidad 1 
 			SucursalCine.logicaSistemaReservarTicket();
