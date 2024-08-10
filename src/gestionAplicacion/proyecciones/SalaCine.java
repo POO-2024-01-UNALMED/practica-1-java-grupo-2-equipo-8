@@ -33,12 +33,13 @@ public class SalaCine implements Serializable{
 		ubicacionSede.getSalasDeCine().add(this);
 		this.asientos = this.crearAsientosSalaDeCine();
 		this.horariosPresentacionDia = true;
-		SucursalCine.getSalasDeCineDisponibles().add(this);
+
 	}
 
 	//Methods
 	/**
-	 * Description : Este método se encarga de generar asientos para la sala de cine, facilitando el proceso de crear una sala de cine
+	 * Description : Este método se encarga de generar asientos para la sala de cine, facilitando el proceso de crear una sala de cine.
+	 * @return Asiento[][] :  Este método retorna una matriz de asientos.
 	 * */
 	public Asiento[][] crearAsientosSalaDeCine() {
 		Asiento[][] DistribucionAsientosSalaDeCine = new Asiento[8][8];
@@ -52,9 +53,9 @@ public class SalaCine implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de generar un string que se imprimirá en pantalla para visualizar los
-	 * asientos y su disponiblidad
+	 * asientos y su disponiblidad.
 	 * @return <b>String</b> : Este método retorna un string que será impreso en pantalla para que el cliente 
-	 * pueda interactuar con la funcionalidad
+	 * pueda interactuar con la funcionalidad.
 	 * */
 	public String mostrarAsientos() {
 		StringBuilder resultado = new StringBuilder("\n");
@@ -86,7 +87,7 @@ public class SalaCine implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
-	 * si su disponibilidad es true la cambia a false, se usa para separar un asiento luego de ser comprado.
+	 * si su disponibilidad es verdadera la cambia a falsa, se usa para separar un asiento luego de ser comprado.
 	 * @param numeroAsiento : Este método recibe como parámetro el numero del asiento seleccionado por el cliente
 	 * (De tipo String) durante el proceso de la funcionalidad 1.
 	 * */
@@ -95,6 +96,7 @@ public class SalaCine implements Serializable{
 			for (Asiento asiento : asientos) {
 				if (asiento.getNumeroAsiento().equals(numeroAsiento)) {
 					asiento.setDisponibilidad(false);
+					break;
 				}
 			}
 		}
@@ -102,53 +104,26 @@ public class SalaCine implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
-	 * si su disponibilidad es true la cambia a false, se usa para cambiar la disponibilidad de un asiento
-	 * para actualizar la sala en base a la información de la sala virtual 
-	 * (En el método actualizarPeliculaEnPresentacion()).
-	 * @param fila : Índice de la fila del asiento que queremos modificar (De tipo Integer).
-	 * @param columna : Índice de la columna del asiento que queremos modificar (De tipo Integer).
+	 * si su disponibilidad es verdadera la cambia a falsa, se usa para cambiar la disponibilidad de un asiento
+	 * la actualizar la sala con base en la información de la sala virtual (En el método actualizarPeliculaEnPresentacion()).
+	 * @param fila : Índice de la fila del asiento que queremos modificar (De tipo int).
+	 * @param columna : Índice de la columna del asiento que queremos modificar (De tipo int).
 	 * */
-	public void cambiarDisponibilidadAsientoLibre(int fila, int columna) {
-		if (this.asientos[fila - 1][columna - 1].isDisponibilidad()) {
-			this.asientos[fila - 1][columna - 1].setDisponibilidad(false);	
-		}
+	public void cambiarDisponibilidadAsientoLibreParaOcupado(int fila, int columna) {
+		this.asientos[fila - 1][columna - 1].setDisponibilidad(false);	
 	}
 	
 	/**
 	 * Description : Este método se encarga de modificar la disponiblidad de un asiento dada su posición,
 	 * si su disponibilidad es false la cambia a true, es especialmente útil para preparar la sala de cine
 	 * para presentar una nueva película (En el método actualizarPeliculaEnPresentacion()).
-	 * @param fila : Índice de la fila del asiento que queremos modificar (De tipo Integer).
-	 * @param columna : Índice de la columna del asiento que queremos modificar(De tipo Integer).
+	 * @param fila : Índice de la fila del asiento que queremos modificar (De tipo int).
+	 * @param columna : Índice de la columna del asiento que queremos modificar(De tipo int).
 	 * */
 	public void cambiarDisponibilidadAsientoOcupadoParaLibre(int fila, int columna) {
 		if (!this.asientos[fila - 1][columna - 1].isDisponibilidad()) {
 			this.asientos[fila - 1][columna - 1].setDisponibilidad(true);
 		}
-	}
-	
-	/**
-	 * Description : Este método se encarga de generar un listado de la salas de cine con información relevante de estas,
-	 * con el fin de que el usuario elija una de las opciones disponibles para ingresar.
-	 * @param salasDeCine : Este método recibe como parámetro un listado de salas de cine disponibles (De tipo ArrayList<SalaCine>)
-	 * @return <b>String</b>: Retorna la lista de las salas de cine disponibles.
-	 * */
-	public static String mostrarSalaCine(ArrayList<SalaCine> salasDeCine) {
-		
-		StringBuilder resultado = new StringBuilder();
-		int i = 1;
-		
-		for (SalaCine salaDeCine : salasDeCine) {
-			
-			resultado.append("\n" + i + ". Número sala de cine: " + salaDeCine.numeroSala 
-			+ "; Formato de sala de cine : " + salaDeCine.tipoDeSala
-			+ "; Película en presentación : " + salaDeCine.peliculaEnPresentacion.getNombre()
-			+ "; Horario película : " + salaDeCine.horarioPeliculaEnPresentacion);
-			i++;
-			
-		}
-		
-		return resultado.toString();
 	}
 	
 	/**
@@ -177,13 +152,36 @@ public class SalaCine implements Serializable{
 	}
 	
 	/**
-	 * Description: Este método se encarga de verificar si una persona tiene al menos un ticket registrado en su array que cumpla los
-	 * siguientes criterios al mismo tiempo: 
-	 * 1. La película asociada a este ticket coincide con la peliculaEnPresentacion de la SalaDeCine.
+	 * Description : Este método se encarga de generar un listado de la salas de cine con información relevante de estas,
+	 * con el fin de que el usuario elija una de las opciones disponibles para ingresar.
+	 * @param salasDeCine : Este método recibe como parámetro un listado de salas de cine disponibles ( De tipo ArrayList(SalaCine) ).
+	 * @return <b>String</b>: Retorna un string con las salas de cine disponibles.
+	 * */
+	public static String mostrarSalaCine(ArrayList<SalaCine> salasDeCine) {
+		
+		StringBuilder resultado = new StringBuilder();
+		int i = 1;
+		
+		for (SalaCine salaDeCine : salasDeCine) {
+			resultado.append("\n" + i + ". Número sala de cine: " + salaDeCine.numeroSala 
+			+ "; Formato de sala de cine : " + salaDeCine.tipoDeSala
+			+ "; Película en presentación : " + salaDeCine.peliculaEnPresentacion.getNombre()
+			+ "; Horario película : " + salaDeCine.horarioPeliculaEnPresentacion);
+			i++;
+		}
+		
+		return resultado.toString();
+	}
+	
+	/**
+	 * Description: Este método se encarga de verificar si una persona tiene al menos un ticket registrado en su array que cumpla los 
+	 * siguientes criterios para ingresar a la sala de cine: 
+	 * 1. La película asociada al ticket coincide con la pelicula en presentacion de la sala de cine.
 	 * 2. La fecha actual es anterior a la fecha en que finaliza la película.
 	 * 3. La sala de cine asociada al ticket es la misma que la sala de cine que ejecuta este método.
 	 * @param cliente : Este método solicita al cliente (De tipo cliente) que va a ingresar a la SalaDeCine.
-	 * @return <b>boolean</b> : Este método se encarga de retornar un boolean que será el resultado del proceso de verificación de entrada a la salaDeCine.
+	 * @return <b>boolean</b> : Este método se encarga de retornar un boolean que será el resultado del proceso de verificación de entrada 
+	 * a la sala de Cine.
 	 * */
 	public boolean verificarTicket(Cliente cliente) {
 		
@@ -235,16 +233,17 @@ public class SalaCine implements Serializable{
 	
 	/**
 	 * Description: Este método se encarga actualizar la película en presentación, según los siguientes criterios: 
-	 * 1. Alguna de las películas en cartelera de la sucursal de cine coincide con alguna de las salas de cine de esta. 
+	 * 1. La sala de cine en que se presentará alguna de las películas en cartelera de la sucursal de cine 
+	 * coincide con alguna de las salas de cine de esta. 
 	 * 2. Revisamos si esa película tiene algún horario cercano o igual a la fecha actual durante el cuál estará o esta siendo presentada.
 	 * una vez hecho esto y cumpla con los dos criterios anteriores, limpiamos los asientos de la sala de cine, cambiando su disponibilidad a libre, y
-	 * por último actualizamos la información de la disponibilidad de los asientos, tomando la información del array de la sala virtual que 
-	 * coincidió en fecha y hora de la película en presentación, además modificamos el atributo horarioPeliculaEnPresentacion
-	 * y peliculaEnPresentacion de la sala de cine. 
+	 * por último actualizamos la información de la disponibilidad de los asientos, tomando como referencia la información de los asientos virtuales 
+	 * que coincidieron en fecha y hora de la película en presentación, además modificamos el atributo horario pelicula en presentación
+	 * y pelicula en presentación de la sala de cine.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), con el fin de actualizar, únicamente, las salas de cine
-	 * con las películas propias de esta sucursal.
+	 * con las películas en cartelera propias de esta sucursal.
 	 * */
-	public void actualizarPeliculasEnPresentacion(SucursalCine sucursalCine) {
+	public void actualizarPeliculasEnPresentacion() {
 		
 		Pelicula peliculaPresentacion = null;
 		LocalDateTime horarioPresentacion = null;
@@ -255,15 +254,15 @@ public class SalaCine implements Serializable{
 		boolean firstTimePosiblePeliculaPresentacionEncontrada = true;
 		
 		//Actualizamos la película
-		for (Pelicula pelicula : sucursalCine.getCartelera()) {
+		for (Pelicula pelicula : ubicacionSede.getCartelera()) {
 			
 			//Verificamos si la película tiene el mismo número de sala y tipo de formato que la sala de cine que ejecuta el método
 			if ( pelicula.getSalaPresentacion().equals(this) ) {
 				
 				firstTimeComparacionHorario = true;
-				
-				//Para evitar que haga la comparación y le settee el nombre de la película a un horario que no le corresponde
-				if (pelicula.getHorarios().size() == 0) {
+
+				//Para evitar que haga la comparación y le settee una película con un horario que no le corresponde
+				if (pelicula.filtrarHorariosPelicula().size() == 0) {
 					continue;
 				}
 				
@@ -284,13 +283,12 @@ public class SalaCine implements Serializable{
 				
 				//Este try es para dos casos: 
 				//1. No hay películas en presentación en el horario actual o la película no tenía horarios disponibles (Error en el if).
-				//2. Es la primera vez que se realiza este proceso (Error en el else if).
+				//2. Es la primera vez que se realiza este proceso (Serialización o arranque del programa fuera de la jornada laboral) (Error en el else if).
 				try {
 					//Si el horarioMasCercanoAlActual es anterior o igual a la fecha actual, y es la primera vez que realizamos el proceso.
-					//O si el horarioMasCercanoAlActual es anterior o igual a la fecha actual y este no es anterior a un horario encontrado
-					// previmente de una película cuya sala y formato coincidía también. (De esta forma no importa el orden en el que las 
+					//O si el horarioMasCercanoAlActual es anterior o igual a la fecha actual y este es posterior a al horario más cercano encontrado
+					// previmente de una película cuya sala coincida también. (De esta forma no importa el orden en el que las 
 					// películas sean analizadas y se garantiza que siempre estará la película más reciente).
-					//Se le da un valor a las variables peliculaPresentacion y horarioPresentacion.
 					if ( !(horarioMasCercanoAlActual.isAfter(SucursalCine.getFechaActual()) ) && firstTimePosiblePeliculaPresentacionEncontrada ) {
 						horarioPresentacion = horarioMasCercanoAlActual;
 						peliculaPresentacion = pelicula;
@@ -319,14 +317,10 @@ public class SalaCine implements Serializable{
 		        	this.cambiarDisponibilidadAsientoOcupadoParaLibre(i+1, j+1);
 		        	//Actualizamos el asiento según la información de la sala de cine virtual
 		        	if (!this.peliculaEnPresentacion.isDisponibilidadAsientoSalaVirtual(horarioPresentacion, i+1, j+1)) {
-		            this.cambiarDisponibilidadAsientoLibre(i+1, j+1);
+		            this.cambiarDisponibilidadAsientoLibreParaOcupado(i+1, j+1);
 		        	}
 		        }
 		    }
-			
-			//Eliminamos la sala de cine virtual y su horario (Eliminamos esta lógica)
-//			this.peliculaEnPresentacion.getAsientosVirtuales().remove(this.getPeliculaEnPresentacion().getHorarios().indexOf(horarioPresentacion));
-//			this.peliculaEnPresentacion.getHorarios().remove(horarioPresentacion);
 			
 		}
 		
@@ -345,7 +339,7 @@ public class SalaCine implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de generar un string, que se imprimirá en pantalla, para visualizar los
-	 * asientos y su número de asiento.
+	 * asientos con su respectivo número de asiento.
 	 * @return <b>String</b> : Este método retorna un string que será impreso en pantalla para que el cliente 
 	 * pueda visualizar de mejor forma el proceso de entrada a la sala de cine.
 	 * */
@@ -399,53 +393,32 @@ public class SalaCine implements Serializable{
 	/**
 	 * Description : Este método se encarga de revisar si una sala de cine tendrá durante ese día más películas en presentación,
 	 * actualizando su atributo de horariosPresentacionDia, con el fin de reducir el número de peticiones de actualización provenientes 
-	 * de esta sala de cine.
+	 * de esta sala de cine optimizando el código.
+	 * @param sede : Este método recibe como parámetro la sucursal de cine (De tipo SUcursalCine) de la cuál accederá a su cartelera
+	 * con el fin de realizar la búsqueda.
 	 * */
 	public void tieneMasHorariosPresentacionHoy() {
 		
 		LocalDate diaActual = SucursalCine.getFechaActual().toLocalDate();
-		boolean horarioEncontrado = false;		
+		boolean isHorarioEncontrado = false;		
 		
-		for (Pelicula pelicula : this.ubicacionSede.getCartelera()) {
+		for (Pelicula pelicula : ubicacionSede.getCartelera()) {
 			if (pelicula.getSalaPresentacion().equals(this)) {
 				for (LocalDateTime horario : pelicula.getHorarios()) {
 					
 					if (horario.toLocalDate().equals(diaActual)) {
-						horarioEncontrado = true;
-					}
-					
-					if (horarioEncontrado) {
+						isHorarioEncontrado = true;
 						break;
 					}
 				}
 				
-				if (horarioEncontrado) {
+				if (isHorarioEncontrado) {
 					break;
 				}
 			}
 		}
 		
-		this.horariosPresentacionDia = horarioEncontrado;
-		
-	}
-	
-	/**
-	 * Description este método se encarga de buscar la sala de cine cuyo numero de sala coincide con el seleccionado como parámetro, con el fin de 
-	 * asociar correctamente a la película la sala de cine donde será presentada, durante el proceso de la deserialización.
-	 * @param sede : Este método recibe como parámetro la sucursal cine (De tipo SucursalCIne) donde estamos realizando el proceso de deserialización.
-	 * @param numeroSala : Este método recibe como parámetro un entero que corresponde al número de sala de la sala donde iba a ser presentada la película
-	 * antes del proceso de desearilización.
-	 * @return <b>SalaCine</b> : Este método retorna el objeto sala de cine donde será presentada la película.
-	 * */
-	public static SalaCine buscarSalaPorNumeroDeSala(SucursalCine sede, int numeroSala) {
-		
-		for (SalaCine salaDeCine : sede.getSalasDeCine()) {
-			if (salaDeCine.getNumeroSala() == numeroSala){
-				return salaDeCine;
-			}
-		}
-		
-		return null;
+		this.horariosPresentacionDia = isHorarioEncontrado;
 		
 	}
 	

@@ -31,11 +31,9 @@ public class SucursalCine implements Serializable {
 	private static final Duration LIMPIEZA_SALA_DE_CINE = Duration.ofMinutes(30); 
 	
 	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
-	private static ArrayList<Pelicula> peliculasDisponibles = new ArrayList<>();
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private static ArrayList<Arkade> juegos = new ArrayList<>();
 	private static ArrayList<MetodoPago> metodosDePagoDisponibles = new ArrayList<>();
-	private static ArrayList<SalaCine> salasDeCineDisponibles = new ArrayList<>();
 	private static ArrayList<Ticket> ticketsDisponibles = new ArrayList<>();
 	private static int cantidadSucursales;
 	
@@ -54,7 +52,7 @@ public class SucursalCine implements Serializable {
 	
 	/**
 	 * Description : Este método se encarga de crear un string que se imprimirá en pantalla para visualizar las 
-	 * sucursales de nuestra franquicia a nivel nacional.
+	 * sucursales de nuestra franquicia.
 	 * @return <b>String</b> : Retorna un string con el lugar de nuestras distintas dependencias, con el fin de que el cliente 
 	 * elija a cual de estas desea ingresar.
 	 * */
@@ -76,9 +74,8 @@ public class SucursalCine implements Serializable {
 	
 	/**
 	 * Description : Este método se encarga de actualizar las salas de todas las sedes, para esto, iteramos sobre el ArrayList de las sedes,
-	 * luego iteramos sobre el ArrayList de las salas de cine de cada sede y actualizamos la sala de cine en caso de ser necesario.
-	 * (Este método es synchronized debido a que existe la posibilidad de que sea llamado en algún punto por ambos hilos al mismo tiempo.
-	 * En caso de que el cliente termine de ver una película o use la sala de espera).
+	 * luego iteramos sobre el ArrayList de las salas de cine de cada sede y en caso de que tenga que presentar películas ese día,
+	 * actualizamos la sala de cine.
 	 * */
 	public static void actualizarPeliculasSalasDeCine() {
 		
@@ -91,13 +88,16 @@ public class SucursalCine implements Serializable {
 						//Solo actualizamos las salas de cine que estrictamente deban ser actualizadas
 						if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion().plus(LIMPIEZA_SALA_DE_CINE)).isAfter(fechaActual) ) ) {
 							
-							salaDeCine.actualizarPeliculasEnPresentacion(sede);
+							salaDeCine.actualizarPeliculasEnPresentacion();
 							//Revisamos si la sala de cine tiene más presentaciones durante este día
 							salaDeCine.tieneMasHorariosPresentacionHoy();
 							
 						}
 					}catch(NullPointerException e) {
-						salaDeCine.actualizarPeliculasEnPresentacion(sede);
+						//Llegamos acá en caso de desearialización o primer inicio de programa
+						salaDeCine.actualizarPeliculasEnPresentacion();
+						//Revisamos si la sala de cine tiene más presentaciones durante este día
+						salaDeCine.tieneMasHorariosPresentacionHoy();
 						
 					}
 				}
@@ -106,32 +106,14 @@ public class SucursalCine implements Serializable {
 	}
 	
 	/**
-	 * Description : Este método se encarga de eliminar los horarios que ya no pueden ser presentados luego de un salto de tiempo 
-	 * (usar la sala de espera o deserialización) de todas las películas de cada sucursal, para esto, obtenemos la película con la mayor duración, 
-	 * con la idea de no eliminar una película que aún puede ser presentada, luego, iteramos sobre los horarios de todas las películas 
-	 * y comparamos si es menor al horario actual luego de  que le restamos a este la duración máxima obtenida anteriormente, 
-	 * en caso de que sí, lo eliminamos. (Este método es synchronized ya que existe un caso en el cual sea ejecutado por ambos hilos al mismo tiempo). 
+	 * Description : Este método se encarga de eliminar los horarios que ya no pueden ser presentados luego de una semana 
+	 * o luego de la deserialización de todas las películas de cada sucursal (Elimina los horarios anteriores al día 
+	 * de la fecha actual). 
 	 * */
 	public static void dropHorariosVencidos() {
 		
-		Duration maxDuration;
-		int comparacionDuraciones;
-		
 		//Iteramos sobre las sucursales
 		for (SucursalCine sede : sucursalesCine) {
-			maxDuration = Duration.ofSeconds(0);
-			comparacionDuraciones = 0;
-			
-			//Obtenemos la película con la duración máxima de las películas en cartelera de la sede
-			for (Pelicula pelicula : sede.cartelera) {
-				
-				comparacionDuraciones = pelicula.getDuracion().compareTo(maxDuration);
-				
-				if(comparacionDuraciones > 0) {
-					maxDuration = pelicula.getDuracion();
-				}
-				
-			}
 
 			//Iteramos sobre las películas en cartelera
 			for (Pelicula pelicula : sede.cartelera) {
@@ -142,26 +124,26 @@ public class SucursalCine implements Serializable {
 				while (horariosPelicula.hasNext()) {
 					LocalDateTime horario = (LocalDateTime) horariosPelicula.next();
 					//Verificamos si el horarios es anterior a la fecha actual menos la duración
-					if (horario.isBefore(fechaActual.minus(maxDuration))) {
+					if (horario.toLocalDate().isBefore(fechaActual.toLocalDate())) {
 						//Eliminamos su referencia de la sala de cine virtual (Asientos y horario)
 						pelicula.getAsientosVirtuales().remove(pelicula.getHorarios().indexOf(horario));
 						horariosPelicula.remove();
 					}
 				}
-				
 			}
-			
 		}
 		
 	}
 	
 	/**
-	 * Description : Este método se ecanrga de crear 20 horarios por cada película en cartelera de la sucursal de cine, teniendo en cuenta los siguientes
-	 * criterios: 
-	 * 1. El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras instalaciones.
+	 * Description : Este método se encarga de crear 20 horarios por cada película en cartelera de la sucursal de cine, 
+	 * teniendo en cuenta los siguientes criterios: 
+	 * 1. El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras 
+	 * instalaciones.
 	 * 2. La hora a la que termina la película es menor a la hora de cierre. 
 	 * 3. Al finalizar una película se tiene en cuenta el tiempo de limpieza de la sala de cine.
 	 * 4. La creación de horarios no exceda una semana (Para ejecutar correctamente la lógica semanal de nuestro cine).
+	 * 5. Si varias películas serán presentadas en una sala se presentarán de forma intercalada evitando colisiones.
 	 * */
 	public void crearHorariosPeliculasPorSala() {
 		
@@ -207,7 +189,7 @@ public class SucursalCine implements Serializable {
 					}else {
 						
 						//En caso de ejecutar el programa en la madrugada/mañana (Antes del inicio laboral) no se cumple esta condición
-						//El problema de no verficar esto es que se crearían los horarios un día después a partir del horario actual
+						//El problema de no verficar esto es que se crearían los horarios un día después a partir del horario actual.
 						//En caso de que sea necesario pasar al día siguiente para crear los próximos horarios
 						if (horarioParaPresentar.toLocalTime().isAfter(INICIO_HORARIO_LABORAL)) {
 							horarioParaPresentar = horarioParaPresentar.plusDays(1);
@@ -229,21 +211,23 @@ public class SucursalCine implements Serializable {
 						
 						}
 						
-					}
 				}
+			}
 			
+			//Limpiamos las películas que se presentarán en la sala para continuar con la siguiente sala de cine
 			peliculasDeSalaDeCine.clear();
 			
-			}
+		}
 			
 	}
 		
 	/**
-	 * Descripition: Este método se encarga de distribuir las películas en cartelera en las distintas salas de cine de la sucursal de cine que
-	 * ejecuta este método, para esta distribución se tienen encuenta 3 casos posibles:
+	 * Descripition: Este método se encarga de distribuir las películas en cartelera en las distintas salas de cine 
+	 * de la sucursal de cine que ejecuta este método, para esta distribución se tienen encuenta 3 casos posibles:
 	 * 1. Hay menos películas que salas de cine o igual cantidad de ambas.
 	 * 2. Hay más películas que salas de cine, pero caben exactamente la misma cantidad de películas en cada sala.
-	 * 3. Hay más películas que salas de cine, pero al menos una sala de cine debe tener 1 película más que todas las otras (Principio de Dirichlet).
+	 * 3. Hay más películas que salas de cine, pero al menos una sala de cine debe tener 1 película más que todas 
+	 * las otras (Principio de Dirichlet o del palomar).
 	 * */
 	public void distribuirPeliculasPorSala() {
 		
@@ -279,7 +263,7 @@ public class SucursalCine implements Serializable {
 			if (grupoPeliculasPorFormato.size() > grupoSalasPorFormato.size()) {
 				
 				//Hallamos el número máximo de películas que pueden presentarse en cada sala de cine
-				// Distribución exacta o Principio del palomar
+				//Distribución exacta o Principio del palomar
 				cantidadMaxPeliculasPorSala = grupoPeliculasPorFormato.size() % grupoSalasPorFormato.size() == 0  ? grupoPeliculasPorFormato.size() / grupoSalasPorFormato.size() : grupoPeliculasPorFormato.size() / grupoSalasPorFormato.size() + 1;
 				
 				//Setteamos la sala de cine en presentación
@@ -326,8 +310,7 @@ public class SucursalCine implements Serializable {
 	 * 2. Distribución de películas en las salas de cine y la creación de sus horarios. 
 	 * */
 	public static void logicaSemanalReservarTicket() {
-		
-		SucursalCine.dropHorariosVencidos();
+		dropHorariosVencidos();
 		for (SucursalCine sede : sucursalesCine) {
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();
@@ -340,21 +323,22 @@ public class SucursalCine implements Serializable {
 	 * se compone de 3 puntos principales:
 	 * 1. Distribuir las películas en cartelera de cada sucursal de forma equitativa respecto a sus salas de cine.
 	 * 2. Una vez realizada la distribución, crear los horarios en los que se presentará cada película.
-	 * 3. Por último actualizar las películas cuyo horarios se esta presentando en estos momentos.
+	 * 3. Actualizar las películas cuyo horario se esta presentando en estos momentos.
+	 * 4. Establecer las fechas cuando se ejecutarán la lógica diaria y semanal del negocio.
 	 * */
-	public static void logicaSistemaReservarTicket() {
+	public static void logicaInicioSistemaReservarTicket() {
 		
 		fechaActual = LocalDateTime.now();
-		SucursalCine.logicaSemanalReservarTicket();
-		SucursalCine.actualizarPeliculasSalasDeCine();
+		logicaSemanalReservarTicket();
+		actualizarPeliculasSalasDeCine();
 		fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
 		fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
 	}
 	
 	/**
 	 * Description : Este método se encarga de revisar la posibilidad de que una sala de cine pueda ser actualizada durante ese día,
-	 * Este lógica se ejecuta con el fin de que al inicio del día se revisa si la sala de cine tendrá películas en presentación, para ser actualizada
-	 * durante la jornada laboral por el hilo.
+	 * Este lógica se ejecuta con el fin de que al inicio del día se revisa si la sala de cine tendrá películas en presentación, 
+	 * para ser actualizada durante la jornada laboral.
 	 * */
 	public static void actualizarPermisoPeticionActualizacionSalasCine() {
 		for (SucursalCine sede : sucursalesCine) {
@@ -369,29 +353,28 @@ public class SucursalCine implements Serializable {
 	 * luego de mucho tiempo.
 	 * 1. Elimina los tickets caducados.
 	 * 2. Actualiza los permisos de actualización de las salas de cine.
-	 * 3. Asigna los tickets a sus respectivos dueños.
+	 * 3. Elimina los horarios caducados de las películas.
 	 * */
 	public static void optimizarSerializacion() {
+		
+		//Elimina los horarios caducados de las películas
+		dropHorariosVencidos();
 		
 		//Eliminar tickets caducados de clientes
 		for (Cliente cliente : clientes) {
 			cliente.dropTicketsCaducados();
 		}
 		//Actualizar peticiones de actualización de las salas de cine
-		SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
-		
-		//Asignar tickets
-		for (Ticket ticket : ticketsDisponibles) {
-			ticket.agregarTIcketClienteSerializado();
-		}
-		
+		actualizarPermisoPeticionActualizacionSalasCine();
 		
 	}
 	
 	/**
-	 * Description : Este método se encarga de retornar la sucursal cuyo id coincida con el pasado como parámetro, del array de sucursales cine.
+	 * Description : Este método se encarga de retornar la sucursal cuyo id coincida con el pasado como parámetro, 
+	 * del array de sucursales cine.
 	 * @param idSucursalCine : Este método recibe como parámetro el id de la sucursal (De tipo int).
-	 * @return SucursalCine : Este método retorna la sucursal (De tipo SucursalCine) cuyo id coincide con el seleccionada, con el fin de realizar las validaciones.
+	 * @return SucursalCine : Este método retorna la sucursal (De tipo SucursalCine) cuyo id coincide con el seleccionada, 
+	 * con el fin de realizar las validaciones.
 	 * */
 	public static SucursalCine obtenerSucursalPorId(int idSucursalCine) {
 		
@@ -405,9 +388,11 @@ public class SucursalCine implements Serializable {
 	}
 	
 	/**
-	 * Description : Este método se encarga de retornar la película cuyo id coincida con el pasado como parámetro, del array de peliculas en cartelera de la sucursal.
+	 * Description : Este método se encarga de retornar la película cuyo id coincida con el pasado como parámetro, 
+	 * del array de peliculas en cartelera de la sucursal.
 	 * @param idPeliculaCartelera : Este método recibe como parámetro el id de la película a buscar (De tipo int).
-	 * @return Pelicula : Este método retorna la pelicula (De tipo Pelicula) cuyo id coincide con el seleccionada, con el fin de realizar las validaciones.
+	 * @return Pelicula : Este método retorna la pelicula (De tipo Pelicula) cuyo id coincide con el seleccionada, 
+	 * con el fin de realizar las validaciones.
 	 * */
 	public Pelicula obtenerPeliculaPorId(int idPeliculaCartelera) {
 		
@@ -421,11 +406,13 @@ public class SucursalCine implements Serializable {
 	}
 	
 	/**
-	 * Description : Este método se encarga de retornar la sala de cine cuyo id coincida con el pasado como parámetro, del array de salas de cine de la sucursal.
+	 * Description : Este método se encarga de retornar la sala de cine cuyo id coincida con el pasado como parámetro, 
+	 * del array de salas de cine de la sucursal.
 	 * @param idSalaCineSucursal : Este método recibe como parámetro el id de la sala de cine a buscar (De tipo int).
-	 * @return SalaCine : Este método retorna la sala de cine (De tipo SalaCine) cuyo id coincide con el seleccionada, con el fin de realizar las validaciones.
+	 * @return SalaCine : Este método retorna la sala de cine (De tipo SalaCine) cuyo id coincide con el seleccionada, 
+	 * con el fin de realizar las validaciones.
 	 * */
-	public SalaCine obtenerSalaCineaPorId(int idSalaCineSucursal) {
+	public SalaCine obtenerSalaCinePorId(int idSalaCineSucursal) {
 		
 		for (SalaCine salaDeCine : this.salasDeCine) {
 			if (salaDeCine.getIdSalaCine() == idSalaCineSucursal) {
@@ -453,13 +440,12 @@ public class SucursalCine implements Serializable {
 	public static void avanzarTiempo() {
 		
 		//Avanza lo hora 20 segundos
-		System.out.println(fechaActual);
 		fechaActual = fechaActual.plusSeconds(20);
+		System.out.println(fechaActual);
 		
 		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
 		if(!fechaActual.toLocalDate().isBefore(fechaRevisionLogicaDeNegocio)) {
 			//Lógica a evaluar cada semana
-			SucursalCine.dropHorariosVencidos();
 			
 			fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
 			
@@ -467,7 +453,7 @@ public class SucursalCine implements Serializable {
 			
 			
 			//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
-			SucursalCine.logicaSemanalReservarTicket();
+			logicaSemanalReservarTicket();
 			
 		}
 			
@@ -478,20 +464,20 @@ public class SucursalCine implements Serializable {
 			fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
 			
 			//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
-			SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
+			actualizarPermisoPeticionActualizacionSalasCine();
 			
-			//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva (Hecho)
-			//Con el serializador presenta problemas, implementar otra solución
+			//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva
 			
 			
 			//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
+			
 			
 		}
 		
 		if (fechaActual.toLocalTime().isBefore(FIN_HORARIO_LABORAL) 
 				&& fechaActual.toLocalTime().isAfter(INICIO_HORARIO_LABORAL) ) {
 			//Lógica durante la jornada laboral
-			SucursalCine.actualizarPeliculasSalasDeCine();
+			actualizarPeliculasSalasDeCine();
 			
 		}
 		
@@ -554,16 +540,16 @@ public class SucursalCine implements Serializable {
 	
 	//Constructor
 	public SucursalCine() {
-		SucursalCine.sucursalesCine.add(this);
+		sucursalesCine.add(this);
 		
 	}
 	
 	public SucursalCine(String lugar) {
+		this();
 		cantidadSucursales++;
 		this.idSucursal = cantidadSucursales;
 		this.cantidadTicketsCreados = 1;
 		this.lugar = lugar;
-		SucursalCine.getSucursalesCine().add(this);
 	}
 	
 	//Getters and Setters
@@ -623,13 +609,6 @@ public class SucursalCine implements Serializable {
 		this.bonosCreados = bonosCreados;
 	}
 
-	public static ArrayList<Pelicula> getPeliculasDisponibles() {
-		return peliculasDisponibles;
-	}
-
-	public static void setPeliculasDisponibles(ArrayList<Pelicula> peliculasDisponibles) {
-		SucursalCine.peliculasDisponibles = peliculasDisponibles;
-	}
 	public ArrayList<Producto> getInventarioCine() {
 		return inventarioCine;
 	}
@@ -702,14 +681,6 @@ public class SucursalCine implements Serializable {
 		this.cantidadTicketsCreados = cantidadTicketsCreados;
 	}
 
-	public static ArrayList<SalaCine> getSalasDeCineDisponibles() {
-		return salasDeCineDisponibles;
-	}
-
-	public static void setSalasDeCineDisponibles(ArrayList<SalaCine> salasDeCineDisponibles) {
-		SucursalCine.salasDeCineDisponibles = salasDeCineDisponibles;
-	}
-
 	public static ArrayList<Ticket> getTicketsDisponibles() {
 		return ticketsDisponibles;
 	}
@@ -727,9 +698,19 @@ public class SucursalCine implements Serializable {
 	}
 
 	
-	
+	/*ToDo Andy's list
+	0. Optimizar código en serializador y deserializador.
+	1. Realizar testeos.
+	2. Crear reloj para mostrar la hora cada vez que avanza y mover método avanzarTiempo a Administrador.
+	3. Crear validaciones para deserializador (Verificar que guarde todo en el lugar correcto).
+	3. Documentar serializador y deserializador.
+	4. Documentar InicioDeSistema y FinDeSistema.
+	5. Hacer Merge con Master y mejorar estrucutura de paquetes.
+	6. Estudiar y crear el ejecutable.
+	7. Realizar testeos grupales.
+	8. Empezar documentación.
 	
 	
 
-	
+	*/
 }

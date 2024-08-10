@@ -135,8 +135,8 @@ public class Cliente implements Serializable{
 	/**
 	 * Description: Este método se encarga de mostrar al cliente los tickets que el cliente puede usar
 	 * imprimiendo en pantalla información relevante de estos para facilitar
-	 * la elección de la sala de cine a ingresar o el ticket a usar para usar la sala de espera.
-	 * @param ticketsParaUsar : Este método retorna una lista de los tickets (De tipo ArrayList<Ticket>) que el cliente puede usar.
+	 * la elección de la sala de cine a ingresar o del ticket a usar en la sala de espera.
+	 * @param ticketsParaUsar : Este método retorna una lista de los tickets ( De tipo ArrayList(Ticket) ) que el cliente puede usar.
 	 * @return <b>String</b> : Este método se encarga de retornar un string con el nombre de la película
 	 * el número de la sala de cine y la fecha de la película de cada uno de los tickets asociados del cliente.
 	 * */
@@ -159,8 +159,7 @@ public class Cliente implements Serializable{
 	
 	/**
 	 * Description: Este método se encarga de eliminar los tickets cuyo horario, más la duración de la película para la cuál fue adquirido 
-	 * es menor a la fecha actual, para esto, creamos un array en el cuál almacenamos los tickets que cumplan la condición anterior y posteriormente
-	 * los eliminamos.
+	 * es menor a la fecha actual.
 	 * */
 	public void dropTicketsCaducados() {
 		//Creamos un apuntador del tipo de la interfaz iterator y le asignamos los tickets del cliente que ejecuta el método
@@ -186,7 +185,7 @@ public class Cliente implements Serializable{
 	/**
 	 * Description : Este método se encarga de retornar los tickets correspondientes a la sucursal de cine en la que se encuentra el cliente.
 	 * @return ArrayList<Ticket> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
-	 * o a la sala de espera si este posee algún ticket de esta sucursal.
+	 * o a la sala de espera si este posee al menos un ticket de esta sucursal.
 	 * */
 	public ArrayList<Ticket> filtrarTicketsParaSede() {
 		
@@ -201,8 +200,8 @@ public class Cliente implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de encontrar el género más visto por un cliente, para realizar este proceso, iteramos sobre su historial
-	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en un arraylists distinto, conservando
-	 * el mismo índice, por último, evaluamos cual género tiene más visualizaciones y se retorna este, en caso de coincidir en visualizaciones con 
+	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en arraylists distintos, conservando
+	 * el mismo índice, por último, evaluamos cuál género tiene más visualizaciones y se retorna este, en caso de coincidir en visualizaciones con 
 	 * otro género, retornamos el género más reciente.
 	 * @return <b>String</b> : Este método retorna el género (De tipo String) con más visualizaciones.  
 	 * */

@@ -22,7 +22,7 @@ public class Serializador {
 	public static void serializar(SucursalCine sucursalCine) {
 		FileOutputStream fos;
 		ObjectOutputStream oos;
-		File [] dirs = rutaTemp.listFiles();
+		File [] dirs = rutaTempLinux.listFiles();
 		PrintWriter pw;
 		
 		//Iteramos sobre los directorios de nuestras distintas sucursales
@@ -179,7 +179,7 @@ public class Serializador {
 	public static void serializar() {
 		
 		//Creamos las variables que usaremos para este proceso
-		File [] docs = rutaTemp2.listFiles();
+		File [] docs = rutaTempLinux2.listFiles();
 		
 		FileOutputStream fos;
 		ObjectOutputStream oos;
@@ -198,20 +198,7 @@ public class Serializador {
 		//Serializamos la información
 		for (File file : docs) {
 			
-			if (file.getAbsolutePath().contains("peliculasDisponibles")) {
-				try {
-					fos = new FileOutputStream(file);
-					oos = new ObjectOutputStream(fos);
-					oos.writeObject(SucursalCine.getPeliculasDisponibles());
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			} else if (file.getAbsolutePath().contains("clientes")) {
+			if (file.getAbsolutePath().contains("clientes")) {
 				try {
 					fos = new FileOutputStream(file);
 					oos = new ObjectOutputStream(fos);
@@ -288,19 +275,6 @@ public class Serializador {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else if (file.getAbsolutePath().contains("salasDeCineDisponibles")) {
-				try {
-					fos = new FileOutputStream(file);
-					oos = new ObjectOutputStream(fos);
-					oos.writeObject(SucursalCine.getSalasDeCineDisponibles());
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
 			} else if (file.getAbsolutePath().contains("ticketsDisponibles")) {
 				try {
 					fos = new FileOutputStream(file);

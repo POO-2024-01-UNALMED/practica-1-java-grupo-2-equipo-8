@@ -189,7 +189,7 @@ public class Administrador {
 //			
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 ////			//Funcionalidad 1 
-//			SucursalCine.logicaSistemaReservarTicket();
+//			SucursalCine.logicaInicioSistemaReservarTicket();
 //			
 //			//Prueba películas recomendadas
 ////			cliente1.getHistorialDePeliculas().add(pelicula3_10);
@@ -254,17 +254,11 @@ public class Administrador {
 		//MAIN
 		inicioDelSistema();
 
-//		SucursalCine.repararProblemasSerializacion();
-		
-		SucursalCine.avanzarTiempo();
-		
 		System.out.println("Iniciar sesión");
 		Cliente clienteProceso = iniciarSesion();
 		
 		System.out.println("\nIngresar a una de nuestras sedes");
 		clienteProceso.setCineActual(ingresarASucursal());
-		
-//		System.out.println(clienteProceso.getCineActual().getBonosCreados().size());
 		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
 		inicio(clienteProceso);
@@ -321,6 +315,10 @@ public class Administrador {
 		Deserializador.deserializar();
 		
 		Deserializador.deserializarEstaticos();
+		
+		SucursalCine.optimizarSerializacion();
+		
+		SucursalCine.avanzarTiempo();
 		
 	}
 	

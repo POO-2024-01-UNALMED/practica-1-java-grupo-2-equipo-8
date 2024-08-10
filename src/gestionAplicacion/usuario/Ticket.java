@@ -12,7 +12,6 @@ public class Ticket implements IBuyable, Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private boolean descuento;
 	private int idTicket;
 	private static int cantidadTicketsCreados;
 	private Cliente dueno;
@@ -22,6 +21,7 @@ public class Ticket implements IBuyable, Serializable{
 	private String numeroAsiento;
 	private double precio;
 	private SucursalCine sucursalCompra;
+	private boolean descuento;
 
 	//Constructors
 	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalDondeFueComprado) {
@@ -36,7 +36,7 @@ public class Ticket implements IBuyable, Serializable{
 	
 	//Methods
 	/**
-	 * Description : Este método se encarga de verificar si se puede aplicar o no un descuento sobre el precio de la pelicula
+	 * Description : Este método se encarga de verificar si se puede aplicar o no un descuento sobre el precio de la película
 	 * según si la cantidad de tickets creados corresponde a un cuadrado perfecto.
 	 * @return <b>double</b> : Retorna un double (De tipo double) que corresponde al precio del ticket en caso de aplicarse
 	 * o no el descuento.
@@ -66,9 +66,8 @@ public class Ticket implements IBuyable, Serializable{
 	 * 3. Se pasa la referencia del cliente al atributo dueño del ticket.
 	 * 4. Se aumenta la cantidad de tickets genereados en uno.
 	 * 5. Se crea una referencia de este ticket en el arraylist de los tickets creados en el cine.
-	 * 6. Se crea la factura y se le asoscia al cliente
-	 * 7. Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.
-	 * 8. Creamos el id del ticket y aumentamos la cantidad de tickets creados en 1.
+	 * 6. Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.
+	 * 7. Creamos el id del ticket y aumentamos la cantidad de tickets creados (Lógica id).
 	 * @param cliente : Se pide como parámetro el cliente (De tipo Cliente) que realizó exitosamente el pago.
 	 */
 	public void procesarPagoRealizado(Cliente cliente) {
@@ -101,8 +100,7 @@ public class Ticket implements IBuyable, Serializable{
 	
 	/**
 	 * @Override
-	 * Description: Este método se encarga de pasar la factura de la compra del ticket al array de facturas del usuario que realizó la compra
-	 * además, retorna un string que contiene toda la información del ticket en forma de factura.
+	 * Description: Este método se encarga de retornar un string que contiene toda la información del ticket en forma de factura.
 	 * @return <b>String</b> : Este método retorna un String que representa la factura de compra con el fin de ser mostrada en pantalla
 	 * luego de realizar una compra.
 	 * */
@@ -116,12 +114,14 @@ public class Ticket implements IBuyable, Serializable{
 				"Fecha Presentación: " + this.horario.toLocalDate() + "\n" +
 				"Hora Presentación: " + this.horario.toLocalTime() + "\n" + 
 				"Valor ticket (IVA incluido): " + this.precio + "\n" + 
-				"Fecha de compra: " + SucursalCine.getFechaActual().withNano(0);
+				"Fecha de compra: " + SucursalCine.getFechaActual().withNano(0) + "\n" +
+				"Sucursal : " + this.sucursalCompra;
 				
 	}
 	
 	/**
-	 * Description : Este método se encarga de asignar el ticket a su respectivo dueño luego de la serialización.
+	 * Description : Este método se encarga de asignar el ticket a su respectivo dueño luego de la deserialización con el fin de asegurar
+	 * la integridad de la persistencia de datos.
 	 * */
 	public void agregarTIcketClienteSerializado() {
 		Cliente cliente = Cliente.revisarDatosCliente(this.dueno.getDocumento());
