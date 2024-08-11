@@ -307,9 +307,11 @@ public class SucursalCine implements Serializable {
 	/**
 	 * Description: Este método se encarga de realizar los preparativos para ejecutar la lógica de la funcionalidad #3:
 	 * 1. Eliminar los horarios de la semana anterior.
-	 * 2. Distribución de películas en las salas de cine y la creación de sus horarios. 
+	 * 2. Distribución de películas en las salas de cine y la creación de sus horarios.
+	 * 3. Eliminar los tickets comprados de películas de la semana anterior.
 	 * */
 	public static void logicaSemanalReservarTicket() {
+		ticketsDisponibles.clear();
 		dropHorariosVencidos();
 		for (SucursalCine sede : sucursalesCine) {
 			sede.distribuirPeliculasPorSala();
@@ -346,27 +348,6 @@ public class SucursalCine implements Serializable {
 				salaDeCine.tieneMasHorariosPresentacionHoy();
 			}
 		}
-	}
-	
-	/**
-	 * Description : Este método se encarga de solucionar los problemas que trae la serialización tras no ocuparse
-	 * luego de mucho tiempo.
-	 * 1. Elimina los tickets caducados.
-	 * 2. Actualiza los permisos de actualización de las salas de cine.
-	 * 3. Elimina los horarios caducados de las películas.
-	 * */
-	public static void optimizarSerializacion() {
-		
-		//Elimina los horarios caducados de las películas
-		dropHorariosVencidos();
-		
-		//Eliminar tickets caducados de clientes
-		for (Cliente cliente : clientes) {
-			cliente.dropTicketsCaducados();
-		}
-		//Actualizar peticiones de actualización de las salas de cine
-		actualizarPermisoPeticionActualizacionSalasCine();
-		
 	}
 	
 	/**
@@ -699,13 +680,13 @@ public class SucursalCine implements Serializable {
 
 	
 	/*ToDo Andy's list
-	0. Optimizar código en serializador y deserializador.
+	0. Optimizar código en serializador y deserializador (Hecho).
 	1. Realizar testeos.
-	2. Crear reloj para mostrar la hora cada vez que avanza y mover método avanzarTiempo a Administrador.
+	2. Crear reloj para mostrar la hora cada vez que avanza y mover método avanzarTiempo a Administrador (Juan).
 	3. Crear validaciones para deserializador (Verificar que guarde todo en el lugar correcto).
-	3. Documentar serializador y deserializador.
-	4. Documentar InicioDeSistema y FinDeSistema.
-	5. Hacer Merge con Master y mejorar estrucutura de paquetes.
+	3. Documentar serializador (Pendiente) y deserializador (Hecho).
+	4. Documentar InicioDeSistema y FinDeSistema (Hecho).
+	5. Hacer Merge con Master (Pendiente) y mejorar estrucutura de paquetes (Rusbel).
 	6. Estudiar y crear el ejecutable.
 	7. Realizar testeos grupales.
 	8. Empezar documentación.

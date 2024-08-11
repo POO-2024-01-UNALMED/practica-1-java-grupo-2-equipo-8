@@ -24,6 +24,10 @@ public class SalaCine implements Serializable{
 	private boolean horariosPresentacionDia;
 	
 	//Constructors
+	public SalaCine() {
+		
+	}
+	
 	public SalaCine(int nSala, String tipoDeSala, SucursalCine ubicacionSede){
 		cantidadSalasDeCineCreadas++;
 		this.idSalaCine = cantidadSalasDeCineCreadas;

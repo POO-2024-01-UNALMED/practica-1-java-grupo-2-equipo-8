@@ -310,18 +310,22 @@ public class Administrador {
 	
 	}
 	
+	/**
+	 * Description : Este método se encarga de ejecutar la lógica de aranque del programa, deserializa toda la información
+	 * primero deserializa los atributos de instancia y luego deserializa los atributos estáticos, y avanza el tiempo 
+	 * ejecutando toda la lógica que este implica.
+	 * */
 	static void inicioDelSistema() {
 		
 		Deserializador.deserializar();
-		
 		Deserializador.deserializarEstaticos();
-		
-		SucursalCine.optimizarSerializacion();
-		
 		SucursalCine.avanzarTiempo();
 		
 	}
 	
+	/**
+	 * Description: Este método se encarga de serializar toda la información del programa y salir del sistema.
+	 * */
 	static void salirDelSistema() {
 		//Serialización
 		

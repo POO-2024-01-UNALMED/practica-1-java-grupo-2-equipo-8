@@ -24,6 +24,10 @@ public class Ticket implements IBuyable, Serializable{
 	private boolean descuento;
 
 	//Constructors
+	public Ticket() {
+		
+	}
+	
 	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalDondeFueComprado) {
 		this.descuento = true;
 		this.pelicula = pelicula;
@@ -115,7 +119,7 @@ public class Ticket implements IBuyable, Serializable{
 				"Hora Presentación: " + this.horario.toLocalTime() + "\n" + 
 				"Valor ticket (IVA incluido): " + this.precio + "\n" + 
 				"Fecha de compra: " + SucursalCine.getFechaActual().withNano(0) + "\n" +
-				"Sucursal : " + this.sucursalCompra;
+				"Sucursal : " + this.sucursalCompra.getLugar();
 				
 	}
 	
