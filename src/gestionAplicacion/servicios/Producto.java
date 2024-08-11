@@ -1,8 +1,10 @@
 package gestionAplicacion.servicios;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import gestionAplicacion.SucursalCine;
+import gestionAplicacion.proyecciones.Pelicula;
 
 public class Producto implements Serializable {
 	
@@ -18,6 +20,7 @@ public class Producto implements Serializable {
 	//Atributos Valoraciones Comida
 	private double valoracionComida;
 	private int totalEncuestasDeValoracionRealizadasComida;
+	private boolean strikeCambio;
 	
 	public void descontarPrecioDeBono() {
 		
@@ -67,6 +70,7 @@ public class Producto implements Serializable {
 		this.valoracionComida= 4.0;
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
 		sucursalCine.getInventarioCine().add(this);
+		this.strikeCambio = false;
 	}
 	
 	//Constructor para objetos de Membresia.
@@ -78,22 +82,13 @@ public class Producto implements Serializable {
 		this.valoracionComida= 4.0;
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
 	}
+	
+	
 	/**
 	// Description: Este metodo se encarga de revisar que un producto tenga unidades disponibles en el inventario, ya que con esto se hace una evaluacion a si una
 	 * producto es apta para calificar o no
 
 	* */
-	public  Producto buscarProductoEnInventarioSede() {
-		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
-			
-		
-			for(Producto producto:sede.getInventarioCine()) {
-				if(this.nombre.equals(producto.nombre)&&this.genero.equals(producto.genero)&&this.tipoProducto.equals(producto.tipoProducto)&&{
-					sede.logicaCalificacionPeliculas(pelic);
-				}
-			}
-		}
-	}
 	public boolean verificarInventarioProducto(SucursalCine sucursalCine) {
 		
 		if (sucursalCine.getInventarioCine().size() ==0) {
@@ -103,6 +98,8 @@ public class Producto implements Serializable {
 			return true;
 		}	
 	}
+     
+	
 
 	public String getTipoProducto() {
 		return tipoProducto;
@@ -166,6 +163,14 @@ public class Producto implements Serializable {
 
 	public void setTotalEncuestasDeValoracionRealizadasComida(int totalEncuestasDeValoracionRealizadasComida) {
 		this.totalEncuestasDeValoracionRealizadasComida = totalEncuestasDeValoracionRealizadasComida;
+	}
+
+	public boolean isStrikeCambio() {
+		return strikeCambio;
+	}
+
+	public void setStrikeCambio(boolean strikeCambio) {
+		this.strikeCambio = strikeCambio;
 	}
 
 

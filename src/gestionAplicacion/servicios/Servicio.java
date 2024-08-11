@@ -210,6 +210,65 @@ public abstract class Servicio implements IBuyable, Serializable{
 		}
 	}
 
+ 
+		 
+	public static ArrayList<Producto> filtrarPorNombreDeProducto(String nombreProducto, ArrayList<Producto> Inventario){
+		ArrayList<Producto> productosEncontrados = new ArrayList<>();
+		
+		for (Producto producto : Inventario) {
+			if (producto.getNombre().equals(nombreProducto)) {
+				productosEncontrados.add(producto);
+			}
+		}
+		
+		return productosEncontrados;
+	}
+
+	
+	public void logicaCalificacionProductos(Producto producto){	
+		
+		ArrayList <Producto> productosCalificados = filtrarPorNombreDeProducto(producto.getNombre(), this.inventario);
+		double promedio =0;
+		double calificacionReal=0;
+		boolean verificacionCambio=true;
+		for(Producto productos : productosCalificados) {
+			promedio = promedio + productos.getValoracionComida();
+			calificacionReal = promedio/productosCalificados.size();
+			verificacionCambio=productos.isStrikeCambio();
+			
+			
+		}
+		if (calificacionReal<3) {
+			if(verificacionCambio) {
+				SucursalCine sucursal=seleccionarSucursalAleatoriamente(this);
+				for (Producto productos1:productosCalificados) {
+					this.inventario.remove(productos1);
+					if (productos1.getTipoDeFormato().equals("2D")){
+						new Pelicula(pelicula1.getNombre(),(int)(pelicula1.getPrecio()*0.9),pelicula1.getGenero(),pelicula1.getDuracion(),pelicula1.getClasificacion(),pelicula1.getTipoDeFormato(),sucursal);
+						
+					}
+				}
+				
+			}
+			else {
+				eliminarProducto(peliculasCalificadas);
+			}			
+		}
+		else if (calificacionReal>4.5) {
+			SucursalCine sucursal1=seleccionarSucursalAleatoriamente(this);
+			for (Pelicula pelicula2:peliculasCalificadas) {
+				if (pelicula2.getTipoDeFormato().equals("2D")){
+					new Pelicula(pelicula2.getNombre(),(int)(pelicula2.getPrecio()*1.10),pelicula2.getGenero(),pelicula2.getDuracion(),pelicula2.getClasificacion(),pelicula2.getTipoDeFormato(),sucursal1);
+					
+				}
+				
+			}
+			
+						
+		}
+	
+		
+	}
 	
 	public String getNombre() {
 		return nombre;
