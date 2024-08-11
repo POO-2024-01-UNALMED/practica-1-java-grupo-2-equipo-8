@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 import iuMain.Administrador;
+import iuMain.Funcionalidad_4;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.*;
 
@@ -138,7 +139,7 @@ public class Arkade implements Serializable{
 	    }
 	    
 	    if (productosComida.isEmpty()) {
-	        System.out.println("•Error al generar bono, no hay productos de comida disponibles, lo sentimos.");
+
 	        return null;
 	    }
 
@@ -150,28 +151,9 @@ public class Arkade implements Serializable{
 	    Bono bono = new Bono(code,productosComida.get(numeroAleatorio),productosComida.get(numeroAleatorio).getTipoProducto(),cliente);
 	    productosComida.get(numeroAleatorio).setCantidad(productosComida.get(numeroAleatorio).getCantidad()-1);
 	    
-	    System.out.println("\n        ╔══════════════════════════╗");
-	    System.out.println("        ║        Bono Comida       ║");
-	    System.out.println("        ╠══════════════════════════╣");
-	    String linea = "        ║ Producto: " + productosComida.get(numeroAleatorio).getNombre();
-	    for (int i = linea.length(); i < 36; i++) {
-	        if (i == 35) {
-	            linea = linea + "║";
-	        } else {
-	            linea = linea + " ";
-	        }
-	    }
-	    System.out.println(linea);
-	    String line = "        ║ Codigo:   " + code;
-	    for (int i = line.length(); i < 38; i++) {
-	        if (i == 35) {
-	            line = line + "║";
-	        } else {
-	            line = line + " ";
-	        }
-	    }
-	    System.out.println(line);
-	    System.out.println("        ╚══════════════════════════╝\n");
+	    String tipoProducto = "Comida";
+	    
+	    Funcionalidad_4.mostrarBono(productosComida, numeroAleatorio, tipoProducto, code);
 	    
 	    return bono;
 	}
@@ -192,9 +174,9 @@ public class Arkade implements Serializable{
 	    }
 	    
 	    if (productosSouvenirs.isEmpty()) {
-	        System.out.println("•Error al generar bono, no hay productos de souvenir disponibles, lo sentimos.");
-	        return null;
+	    	return null;
 	    }
+	        
 
 	    Random random = new Random();
 
@@ -204,28 +186,9 @@ public class Arkade implements Serializable{
 	    Bono bono = new Bono(code,productosSouvenirs.get(numeroAleatorio),productosSouvenirs.get(numeroAleatorio).getTipoProducto(), cliente);
 	    productosSouvenirs.get(numeroAleatorio).setCantidad(productosSouvenirs.get(numeroAleatorio).getCantidad()-1);
 	    
-	    System.out.println("\n        ╔══════════════════════════╗");
-	    System.out.println("        ║        Bono Souvenir     ║");
-	    System.out.println("        ╠══════════════════════════╣");
-	    String linea = "        ║ Producto: " + productosSouvenirs.get(numeroAleatorio).getNombre();
-	    for (int i = linea.length(); i < 36; i++) {
-	        if (i == 35) {
-	            linea = linea + "║";
-	        } else {
-	            linea = linea + " ";
-	        }
-	    }
-	    System.out.println(linea);
-	    String line = "        ║ Codigo:   " + code;
-	    for (int i = line.length(); i < 38; i++) {
-	        if (i == 35) {
-	            line = line + "║";
-	        } else {
-	            line = line + " ";
-	        }
-	    }
-	    System.out.println(line);
-	    System.out.println("        ╚══════════════════════════╝\n");
+	    String tipoProducto = "Souvenir";
+	    
+	    Funcionalidad_4.mostrarBono(productosSouvenirs, numeroAleatorio, tipoProducto, code);
 	    
 	    return bono;
 	}

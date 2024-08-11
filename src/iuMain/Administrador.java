@@ -11,6 +11,7 @@ import baseDatos.Deserializador;
 import baseDatos.Serializador;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Administrador {
 	
@@ -273,7 +274,7 @@ public class Administrador {
 	int opcion = 0;
 	
 	//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
-	SucursalCine.avanzarTiempo();
+	avanzarTiempo();
 	
 	do {
 		
@@ -319,7 +320,7 @@ public class Administrador {
 		
 		Deserializador.deserializar();
 		Deserializador.deserializarEstaticos();
-		SucursalCine.avanzarTiempo();
+		avanzarTiempo();
 		
 	}
 	
@@ -811,7 +812,7 @@ public class Administrador {
 			//Funcionalidad reserva de ticket
 			
 			//Avance de tiempo para ejecutar los filtros de películas correctamente
-			SucursalCine.avanzarTiempo();
+			avanzarTiempo();
 			
 			//Mostramos una cartelera personalizada de acuerdo a la edad del cliente, si la película tiene horarios disponibles o se encuentra en presentación
 			ArrayList<Pelicula> carteleraPersonalizadaProceso = Pelicula.filtrarCarteleraPorCliente(clienteProceso, clienteProceso.getCineActual());
@@ -954,7 +955,7 @@ public class Administrador {
 			LocalDateTime horarioProceso = null;
 			
 			//Avance de tiempo para realizar los filtros de horarios correctamente
-			SucursalCine.avanzarTiempo();
+			avanzarTiempo();
 			
 			//Filtramos los primeros 7 horarios con asientos disponibles desde la fecha actual
 			ArrayList<LocalDateTime> horariosPeliculaProceso = peliculaProceso.filtrarHorariosPelicula();
@@ -1405,7 +1406,7 @@ public class Administrador {
 			}while(!casoValidoConfirmacion);
 			
 			//Avance de tiempo para verificar la integridad del horario seleccionado
-			SucursalCine.avanzarTiempo();
+			avanzarTiempo();
 			
 			//Revisar integridad del horario seleccionado en caso de que el cliente tarde mucho tiempo en confirmar su elección
 			if (!horarioProceso.isAfter(SucursalCine.getFechaActual())) {
@@ -1458,7 +1459,7 @@ public class Administrador {
 				}
 				
 				//Avance de tiempo para verificar si el horario aún se encuentra disponible en la sala de cine virtual (No ha sido actualizado)
-				SucursalCine.avanzarTiempo();
+				avanzarTiempo();
 				
 				//Verificamos si el horario aún se encuentra disponible
 				try {
@@ -1507,7 +1508,7 @@ public class Administrador {
 				}
 				
 				//Avance de tiempo para verificar si el horario aún se encuentra disponible en la sala de cine virtual (No ha sido actualizado)
-				SucursalCine.avanzarTiempo();
+				avanzarTiempo();
 				
 				//Revisamos si el horario aún se encuentra disponible
 				try {
@@ -1725,7 +1726,7 @@ public class Administrador {
 			}
 			
 			//Avance de tiempo para tomar las salas de cine actualizadas
-			SucursalCine.avanzarTiempo();
+			avanzarTiempo();
 			
 			//Tomamos las salas de cine que aún tienen películas en presentación y no han finalizado
 			ArrayList<SalaCine> salasDeCineDisponibles = SalaCine.filtrarSalasDeCine(clienteProceso.getCineActual());
@@ -1824,7 +1825,7 @@ public class Administrador {
 				}
 				
 				//Avance de tiempo para aplicar correctamente la verificación de ingreso a la sala de cine
-				SucursalCine.avanzarTiempo();
+				avanzarTiempo();
 				
 				//Realizamos la verificación y evaluamos si el cliente puede ingresar a la sala de cine
 				if (salaDeCineProceso.verificarTicket(clienteProceso)) {
@@ -1920,7 +1921,7 @@ public class Administrador {
 			}
 			
 			//Avance de tiempo para tomar los tickets más recientes
-			SucursalCine.avanzarTiempo();
+			avanzarTiempo();
 			
 			//Validamos si el cliente tiene tickets disponibles
 			clienteProceso.dropTicketsCaducados();
@@ -2002,7 +2003,7 @@ public class Administrador {
 			}
 			
 			//Avance de tiempo para hacer la verificación de caducidad correctamente
-			SucursalCine.avanzarTiempo();
+			avanzarTiempo();
 			
 			//Verificamos si el ticket no ha caducado
 			if (ticketParaUsar.getHorario().isBefore(SucursalCine.getFechaActual())) {
@@ -2060,7 +2061,7 @@ public class Administrador {
 	static boolean verificarIntegridadHorarioSeleccionado(SalaCine salaDeCineProceso, Pelicula peliculaProceso) {
 		
 		//Avance de tiempo
-		SucursalCine.avanzarTiempo();
+		avanzarTiempo();
 		
 		if((salaDeCineProceso.getPeliculaEnPresentacion().equals(peliculaProceso)) 
 		&& (salaDeCineProceso.getHorarioPeliculaEnPresentacion().plus(Duration.ofMinutes(20)).isAfter(SucursalCine.getFechaActual()))) {
@@ -2083,13 +2084,102 @@ public class Administrador {
 	static boolean verificarIntegridadHorarioSeleccionado(Pelicula peliculaProceso, LocalDateTime horarioProceso) {
 		
 		//Avance de tiempo
-		SucursalCine.avanzarTiempo();
+		avanzarTiempo();
 		
 		if (peliculaProceso.getHorarios().contains(horarioProceso)) {
 			return true;
 		}
 		
 		return false;
+	}
+	
+	
+	
+	/**
+	 * @Override
+	 * Description : Este método se encarga de avanzar la hora y ejecutar la lógica de negocio en 3 plazos:
+	 * 
+	 * 1. Durante la jornada laboral: Actualiza las salas de cine, ubicando las películas en presentación en sus respectivas salas.
+	 * 
+	 * 2. Diariamente: Mejorar documentación
+	 * (Limpia el array de tickets generados, con el fin de tener únicamente aquellos tickets que pueden usarse para generar descuentos
+	 * y verifica la fecha de expedición de las memebresías de cada uno de los clientes).
+	 * 
+	 * 3. Semanalmente: Mejorar documentación
+	 * (Cambia las películas de sucursal según su rendimiento, distribuye de nuevo las películas en sus salas de cine y crea los horarios de presentación
+	 * semanal).
+	 * 
+	 * */
+	public static void avanzarTiempo() {
+		
+		//Avanza lo hora 20 segundos
+		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusSeconds(20)); 
+		relojDigital(SucursalCine.getFechaActual());
+		
+		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
+		if(!SucursalCine.getFechaActual().toLocalDate().isBefore(SucursalCine.getFechaRevisionLogicaDeNegocio())) {
+			//Lógica a evaluar cada semana
+			
+			SucursalCine.setFechaRevisionLogicaDeNegocio(SucursalCine.getFechaActual().toLocalDate().plusWeeks(1)); 
+			
+			//Implementar método de cambio de película entre sucursales según su valoración
+			
+			
+			//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
+			SucursalCine.logicaSemanalReservarTicket();
+			
+		}
+			
+		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
+		if (!SucursalCine.getFechaActual().toLocalDate().isBefore(SucursalCine.getFechaValidacionNuevoDiaDeTrabajo())) {
+			//Lógica a evaluar cada día
+			
+			SucursalCine.setFechaValidacionNuevoDiaDeTrabajo(SucursalCine.getFechaActual().toLocalDate().plusDays(1));
+			
+			//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
+			SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
+			
+			//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva
+			
+			
+			//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
+			
+			
+		}
+		
+		if (SucursalCine.getFechaActual().toLocalTime().isBefore(SucursalCine.getFinHorarioLaboral()) 
+				&& SucursalCine.getFechaActual().toLocalTime().isAfter(SucursalCine.getInicioHorarioLaboral()) ) {
+			//Lógica durante la jornada laboral
+			SucursalCine.actualizarPeliculasSalasDeCine();
+			
+		}
+		
+	}
+	
+	
+	/**
+	* Description: Este metodo se encarga de mostrar por pantalla la hora actual de una manera mas organzida y estética.
+	* @params date: Se pasa un localDateTime para ejecutar la logica del método.
+	* */
+	public static void relojDigital(LocalDateTime date) {
+		
+		// Formatear la hora en formato hh:mm:ss a AM/PM
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+        String formattedTime = date.format(timeFormatter);
+
+        // Formatear la fecha en un formato amigable
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy");
+        String formattedDate = date.format(dateFormatter);
+        
+        
+     // Imprimir la hora en un estilo más decorativo
+        System.out.println("╔══════════════════════════════╗");
+        System.out.println("║     ⏰⏰Current Date⏰⏰      ║");
+        System.out.println("    •" + formattedDate + "     ");
+        System.out.println("║                              ║");
+        System.out.println("         •" + formattedTime +"        ");
+        System.out.println("╚══════════════════════════════╝");
+        System.out.println();
 	}
 	
 	//4. Serializar (Hecho)

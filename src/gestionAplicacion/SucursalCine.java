@@ -404,65 +404,7 @@ public class SucursalCine implements Serializable {
 		return null;
 	}
 	
-	/**
-	 * @Override
-	 * Description : Este método se encarga de avanzar la hora y ejecutar la lógica de negocio en 3 plazos:
-	 * 
-	 * 1. Durante la jornada laboral: Actualiza las salas de cine, ubicando las películas en presentación en sus respectivas salas.
-	 * 
-	 * 2. Diariamente: Mejorar documentación
-	 * (Limpia el array de tickets generados, con el fin de tener únicamente aquellos tickets que pueden usarse para generar descuentos
-	 * y verifica la fecha de expedición de las memebresías de cada uno de los clientes).
-	 * 
-	 * 3. Semanalmente: Mejorar documentación
-	 * (Cambia las películas de sucursal según su rendimiento, distribuye de nuevo las películas en sus salas de cine y crea los horarios de presentación
-	 * semanal).
-	 * */
-	public static void avanzarTiempo() {
-		
-		//Avanza lo hora 20 segundos
-		fechaActual = fechaActual.plusSeconds(20);
-		System.out.println(fechaActual);
-		
-		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
-		if(!fechaActual.toLocalDate().isBefore(fechaRevisionLogicaDeNegocio)) {
-			//Lógica a evaluar cada semana
-			
-			fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
-			
-			//Implementar método de cambio de película entre sucursales según su valoración
-			
-			
-			//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
-			logicaSemanalReservarTicket();
-			
-		}
-			
-		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
-		if (!fechaActual.toLocalDate().isBefore(fechaValidacionNuevoDiaDeTrabajo)) {
-			//Lógica a evaluar cada día
-			
-			fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
-			
-			//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
-			actualizarPermisoPeticionActualizacionSalasCine();
-			
-			//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva
-			
-			
-			//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
-			
-			
-		}
-		
-		if (fechaActual.toLocalTime().isBefore(FIN_HORARIO_LABORAL) 
-				&& fechaActual.toLocalTime().isAfter(INICIO_HORARIO_LABORAL) ) {
-			//Lógica durante la jornada laboral
-			actualizarPeliculasSalasDeCine();
-			
-		}
-		
-	}
+
 	
 	/**public void cambiarPeliculaSede(Pelicula pelicula){
 		
@@ -677,6 +619,16 @@ public class SucursalCine implements Serializable {
 	public void setIdSucursal(int idSucursal) {
 		this.idSucursal = idSucursal;
 	}
+
+	public static LocalTime getFinHorarioLaboral() {
+		return FIN_HORARIO_LABORAL;
+	}
+
+	public static LocalTime getInicioHorarioLaboral() {
+		return INICIO_HORARIO_LABORAL;
+	}
+	
+	
 
 	
 	/*ToDo Andy's list

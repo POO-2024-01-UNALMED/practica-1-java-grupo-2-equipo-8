@@ -254,17 +254,30 @@ public class Cliente implements Serializable{
 		return generoMasVisto;
 	}
 	
-	//No se puede usar System.out.println(), Cambiar lógica del método.
-	public void mostrarCodigosDescuento() {
+	
+	/**
+	Description: Este metodo se encarga de retornar la lista de los codigos de descuento que el usuario
+	 * tiene disponibles para redimir por la compra de tickets de peliculas
+	 
+	  @return <b>String</b> : Lista de codigos disponibles
+
+	* */
+	public String mostrarCodigosDescuento() {
+		
+		String cadena ="";
 		
 		for (int i = 0; i < this.codigosDescuento.size(); i++) {
-            System.out.println((i + 1) + ". " + this.codigosDescuento.get(i));
+			
+			cadena+= (i + 1) + ". " + this.codigosDescuento.get(i)+"\n";
+            //System.out.println((i + 1) + ". " + this.codigosDescuento.get(i));
             
         }
+		cadena+=this.codigosDescuento.size()+1+". Ninguno\n";
+		cadena+=this.codigosDescuento.size()+2+". Salir\n";
 		
-		System.out.println((this.codigosDescuento.size()+1)+". Ninguno");
-		System.out.println((this.codigosDescuento.size()+2)+". Salir");
+		return cadena;
 	}
+	
 	/**
 	// Description: Este metodo se encarga de mostrar el historial de peliculas que cada cliente ha visto hasta el momento para poder 
 	 * hacer una calificacion en concreto de las peliculas que el cliente se vio, evitando que el cliente pueda calificar 
