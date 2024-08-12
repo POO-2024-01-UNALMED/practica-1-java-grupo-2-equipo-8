@@ -19,6 +19,7 @@ import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.Servicio;
 import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.Membresia;
 import gestionAplicacion.usuario.MetodoPago;
 import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.Ticket;
@@ -252,6 +253,7 @@ public class Deserializador {
 	 * 5. Fecha lógica de negocio (Para ejecutar la lógica semanal del negocio).
 	 * 6. Fecha actual (Mantiene la hora en la cual se está ejecutando el programa).
 	 * 7. Tickets Disponibles (Renueva las referencias de sus atributos para hacer correctamente las validaciones).
+	 * 8. Membresias.
 	 * */
 	public static void deserializarEstaticos () {
 		//Definimos las variables que usaremos durante el proceso
@@ -366,6 +368,32 @@ public class Deserializador {
 					e.printStackTrace();
 				}
 				
+			} else if (file.getAbsolutePath().contains("membresias")) {
+				try {
+					fis = new FileInputStream(file);
+					ois = new ObjectInputStream(fis);
+					SucursalCine.setTiposDeMembresia((ArrayList<Membresia>) ois.readObject());
+					
+					//Se itera sobre las membresias para actualizar los apuntadores a los clientes que han adquirido la membresia.
+					for (Membresia membresia : SucursalCine.getTiposDeMembresia()) {
+						ArrayList<Cliente> clienteTemp = new ArrayList<>();
+						//Se obtiene los nuevos apuntadores para el arreglo de clientes en Membresia
+						for (Cliente cliente : membresia.getClientes()) {
+							clienteTemp.add(Cliente.revisarDatosCliente(cliente.getDocumento()));
+						} membresia.setClientes(clienteTemp);
+						//Una vez actualizado el arreglo de clientes, se actualizan los apuntadores de Membresia que tiene cada cliente.
+						for (Cliente cliente : membresia.getClientes()) {
+							cliente.setMembresia(membresia);
+						}
+
+					}
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
 			}
 				
 		}

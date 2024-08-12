@@ -288,6 +288,18 @@ public class Serializador {
 					e.printStackTrace();
 				}
 				
+			} else if (file.getAbsolutePath().contains("membresias")) {
+				try {
+					fos = new FileOutputStream(file);
+					oos = new ObjectOutputStream(fos);
+					oos.writeObject(SucursalCine.getTiposDeMembresia());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 		}

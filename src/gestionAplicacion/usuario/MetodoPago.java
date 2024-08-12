@@ -127,14 +127,8 @@ public class MetodoPago implements Serializable{
 		if (tipoMembresia != null) {
 			tipoMembresiaInt = tipoMembresia.getTipoMembresia();
 			if (puntos == null) {
-				switch (tipoMembresiaInt) {
-				case 1: 
-					cliente.setPuntos(5000);
-					puntos = new MetodoPago("Puntos", 0.0, cliente.getPuntos(), tipoMembresiaInt);break;
-				case 2: 
-					cliente.setPuntos(10000);
-					puntos = new MetodoPago("Puntos", 0.0, cliente.getPuntos(), tipoMembresiaInt);break;
-				}
+				cliente.setPuntos(2500);
+				puntos = new MetodoPago("Puntos", 0.0, cliente.getPuntos(), tipoMembresiaInt);
 			} else {
 				SucursalCine.getMetodosDePagoDisponibles().add(puntos);
 			}
@@ -235,8 +229,8 @@ public class MetodoPago implements Serializable{
 			}	
 			switch (tipoMembresia) {
 			
-			case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.05)); System.out.println(tipoMembresia);break;
-			case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.10)); System.out.println(tipoMembresia);break;
+			case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.05));break;
+			case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.10));break;
 			}
 			
 		}

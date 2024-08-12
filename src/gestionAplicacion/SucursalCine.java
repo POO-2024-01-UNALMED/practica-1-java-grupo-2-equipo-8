@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -15,6 +16,7 @@ import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.Servicio;
 import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.Membresia;
 import gestionAplicacion.usuario.MetodoPago;
 import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.Ticket;
@@ -23,22 +25,18 @@ public class SucursalCine implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	//Atributos estaticos serializables
 	private static LocalDateTime fechaActual;
 	private static LocalDate fechaValidacionNuevoDiaDeTrabajo;
-	private static LocalDate fechaRevisionLogicaDeNegocio;
-	private static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
-	private static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 00);
-	private static final Duration LIMPIEZA_SALA_DE_CINE = Duration.ofMinutes(30); 
-	
-	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
+	private static LocalDate fechaRevisionLogicaDeNegocio; 
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private static ArrayList<Arkade> juegos = new ArrayList<>();
 	private static ArrayList<MetodoPago> metodosDePagoDisponibles = new ArrayList<>();
 	private static ArrayList<Ticket> ticketsDisponibles = new ArrayList<>();
-	private static int cantidadSucursales;
-	
+	private static ArrayList<Membresia> tiposDeMembresia = new ArrayList<>();
+		
+	//Atributos de instancia serializables
 	private String lugar;
-	private int idSucursal;
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
 	private ArrayList<Producto> inventarioCine = new ArrayList<>();
 	private ArrayList<Pelicula> cartelera = new ArrayList<>();
@@ -47,6 +45,14 @@ public class SucursalCine implements Serializable {
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private ArrayList<TarjetaCinemar> InventarioTarjetasCinemar = new ArrayList<>();
 	private int cantidadTicketsCreados;
+	
+	//Atributos variables
+	private int idSucursal;
+	private static int cantidadSucursales;
+	private static final LocalTime FIN_HORARIO_LABORAL = LocalTime.of(23, 00);
+	private static final LocalTime INICIO_HORARIO_LABORAL = LocalTime.of(10, 00);
+	private static final Duration LIMPIEZA_SALA_DE_CINE = Duration.ofMinutes(30);
+	private static ArrayList<SucursalCine> sucursalesCine = new ArrayList<>();
 	
 	//Methods
 	
@@ -454,11 +460,51 @@ public class SucursalCine implements Serializable {
 		if (calificacionReal<3) {
 			
 		}
+	}
 		
-	
+	//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
+	public static String notificarFechaLimiteMembresia(Cliente cliente) {
 		
-	
-		
+		String mensaje = "";
+		//Se obtiene el objeto MetodoPago Puntos con apuntador puntos.
+		if (cliente.getMembresia()!= null) {
+			MetodoPago puntos = null;
+			for (MetodoPago metodoPago : cliente.getMetodosDePago()) {
+				if (metodoPago.getNombre().equals("Puntos")) {
+					puntos = metodoPago;
+					break;
+				}
+			}
+			//Se verifica si la fecha actual esta pasada a la fecha limite de la membresia.
+			if (!fechaActual.toLocalDate().isBefore(cliente.getFechaLimiteMembresia())) {
+				//Se guardan la cantidad de puntos en el atributo de Cliente para no perder la acumulación.
+				cliente.setPuntos(cliente.getPuntos()+(int)puntos.getLimiteMaximoPago());
+				//Se obtiene el nombre de la membresia y se desvincula del cliente.
+				String nombreMembresia = cliente.getMembresia().getNombre();
+				cliente.getMembresia().getClientes().remove(cliente);
+				cliente.setMembresia(null);
+				mensaje = "Su membresia ha expirado. Le invitamos a renovarla para no perder sus beneficios.";
+				
+				//Para volver a asignar la membresia expirada al stock de inventario, se valida con el nombre.
+				for (SucursalCine sucursal : SucursalCine.getSucursalesCine()) {
+					if (sucursal.getIdSucursal() == cliente.getOrigenMembresia()) {
+						for (Producto productoMembresia : sucursal.getInventarioCine()) {
+							if (productoMembresia.getNombre().equals(nombreMembresia)) {
+								productoMembresia.setCantidad(productoMembresia.getCantidad()+1);
+								break;
+							}
+						}
+					}
+				}
+			} else if (fechaActual.toLocalDate().isAfter(cliente.getFechaLimiteMembresia().minusDays(6))
+					&& fechaActual.toLocalDate().isBefore(cliente.getFechaLimiteMembresia())) {
+				mensaje = "Estimado cliente, recuerde que le quedan " + 
+					ChronoUnit.DAYS.between(fechaActual.toLocalDate(), cliente.getFechaLimiteMembresia()) + 
+					" dia(s) para que caduzca su membresía.\nLo invitamos a actualizar su suscripción para poder disfrutar de sus beneficios.";
+				
+			}
+		}
+		return mensaje;
 	}
 	
 	//Constructor
@@ -626,6 +672,14 @@ public class SucursalCine implements Serializable {
 
 	public static LocalTime getInicioHorarioLaboral() {
 		return INICIO_HORARIO_LABORAL;
+	}
+
+	public static ArrayList<Membresia> getTiposDeMembresia() {
+		return tiposDeMembresia;
+	}
+
+	public static void setTiposDeMembresia(ArrayList<Membresia> tiposDeMembresia) {
+		SucursalCine.tiposDeMembresia = tiposDeMembresia;
 	}
 	
 	

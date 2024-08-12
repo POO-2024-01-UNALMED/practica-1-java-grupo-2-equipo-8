@@ -225,11 +225,15 @@ public class Administrador {
 ////			cliente1.setMembresia(membresia1);
 //
 //			cliente1.setMembresia(membresia5);
+//			membresia5.getClientes().add(cliente1);
+//			cliente1.setFechaLimiteMembresia(SucursalCine.getFechaActual().toLocalDate().plusDays(30));
 //			Membresia.stockMembresia(SucursalCine.getSucursalesCine());
 //			
 //			
 //			//cliente4.setMembresia(membresia5);
 //			cliente3.setMembresia(membresia2);
+//			cliente3.setFechaLimiteMembresia(SucursalCine.getFechaActual().toLocalDate().plusDays(20));
+//			membresia2.getClientes().add(cliente3);
 //
 //			
 //			MetodoPago.asignarMetodosDePago(cliente1);
@@ -254,7 +258,6 @@ public class Administrador {
 		
 		//MAIN
 		inicioDelSistema();
-
 		System.out.println("Iniciar sesión");
 		Cliente clienteProceso = iniciarSesion();
 		
@@ -267,12 +270,13 @@ public class Administrador {
 		salirDelSistema();
 		
 	}
-	
-      
+	      
 	
 	public static void inicio(Cliente clienteProceso) {
 	int opcion = 0;
 	
+	
+	logicaMembresia(clienteProceso);
 	//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
 	avanzarTiempo();
 	
@@ -302,7 +306,7 @@ public class Administrador {
 		case 1: ingresarASistemaDeProyecciones(clienteProceso); break;
 		case 2: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
 		case 3: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
-		case 4: Funcionalidad5.adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
+		case 4: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
 		case 5: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
 		case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
 		case 7: salirDelSistema(); break;
@@ -320,7 +324,7 @@ public class Administrador {
 		
 		Deserializador.deserializar();
 		Deserializador.deserializarEstaticos();
-		avanzarTiempo();
+		//avanzarTiempo();
 		
 	}
 	
@@ -341,6 +345,73 @@ public class Administrador {
 		//Fin del programa
 		System.out.println("¡Adios, vuelva pronto!");
 		System.exit(0);
+		
+	}
+	
+	/**
+	 * @Override
+	 * Description : Este método se encarga de avanzar la hora y ejecutar la lógica de negocio en 3 plazos:
+	 * 
+	 * 1. Durante la jornada laboral: Actualiza las salas de cine, ubicando las películas en presentación en sus respectivas salas.
+	 * 
+	 * 2. Diariamente: Mejorar documentación
+	 * (Limpia el array de tickets generados, con el fin de tener únicamente aquellos tickets que pueden usarse para generar descuentos
+	 * y verifica la fecha de expedición de las memebresías de cada uno de los clientes).
+	 * 
+	 * 3. Semanalmente: Mejorar documentación
+	 * (Cambia las películas de sucursal según su rendimiento, distribuye de nuevo las películas en sus salas de cine y crea los horarios de presentación
+	 * semanal).
+	 * 
+	 * */
+	public static void avanzarTiempo() {
+		
+		//Avanza lo hora 20 segundos
+		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusSeconds(20)); 
+		relojDigital(SucursalCine.getFechaActual());
+		
+		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
+		if(!SucursalCine.getFechaActual().toLocalDate().isBefore(SucursalCine.getFechaRevisionLogicaDeNegocio())) {
+			//Lógica a evaluar cada semana
+			
+			SucursalCine.setFechaRevisionLogicaDeNegocio(SucursalCine.getFechaActual().toLocalDate().plusWeeks(1)); 
+			
+			//Implementar método de cambio de película entre sucursales según su valoración
+			
+			
+			//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
+			SucursalCine.logicaSemanalReservarTicket();
+			
+		}
+			
+		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
+		if (!SucursalCine.getFechaActual().toLocalDate().isBefore(SucursalCine.getFechaValidacionNuevoDiaDeTrabajo())) {
+			//Lógica a evaluar cada día
+			
+			SucursalCine.setFechaValidacionNuevoDiaDeTrabajo(SucursalCine.getFechaActual().toLocalDate().plusDays(1));
+			
+			//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
+			SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
+			
+			//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva
+			
+			
+			//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
+
+			
+		}
+		
+		if (SucursalCine.getFechaActual().toLocalTime().isBefore(SucursalCine.getFinHorarioLaboral()) 
+				&& SucursalCine.getFechaActual().toLocalTime().isAfter(SucursalCine.getInicioHorarioLaboral()) ) {
+			//Lógica durante la jornada laboral
+			SucursalCine.actualizarPeliculasSalasDeCine();
+			
+		}
+		
+	}
+	
+	private static void logicaMembresia(Cliente cliente) {
+		
+		System.out.println(SucursalCine.notificarFechaLimiteMembresia(cliente));
 		
 	}
 	
@@ -2094,69 +2165,6 @@ public class Administrador {
 	}
 	
 	
-	
-	/**
-	 * @Override
-	 * Description : Este método se encarga de avanzar la hora y ejecutar la lógica de negocio en 3 plazos:
-	 * 
-	 * 1. Durante la jornada laboral: Actualiza las salas de cine, ubicando las películas en presentación en sus respectivas salas.
-	 * 
-	 * 2. Diariamente: Mejorar documentación
-	 * (Limpia el array de tickets generados, con el fin de tener únicamente aquellos tickets que pueden usarse para generar descuentos
-	 * y verifica la fecha de expedición de las memebresías de cada uno de los clientes).
-	 * 
-	 * 3. Semanalmente: Mejorar documentación
-	 * (Cambia las películas de sucursal según su rendimiento, distribuye de nuevo las películas en sus salas de cine y crea los horarios de presentación
-	 * semanal).
-	 * 
-	 * */
-	public static void avanzarTiempo() {
-		
-		//Avanza lo hora 20 segundos
-		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusSeconds(20)); 
-		relojDigital(SucursalCine.getFechaActual());
-		
-		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
-		if(!SucursalCine.getFechaActual().toLocalDate().isBefore(SucursalCine.getFechaRevisionLogicaDeNegocio())) {
-			//Lógica a evaluar cada semana
-			
-			SucursalCine.setFechaRevisionLogicaDeNegocio(SucursalCine.getFechaActual().toLocalDate().plusWeeks(1)); 
-			
-			//Implementar método de cambio de película entre sucursales según su valoración
-			
-			
-			//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
-			SucursalCine.logicaSemanalReservarTicket();
-			
-		}
-			
-		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
-		if (!SucursalCine.getFechaActual().toLocalDate().isBefore(SucursalCine.getFechaValidacionNuevoDiaDeTrabajo())) {
-			//Lógica a evaluar cada día
-			
-			SucursalCine.setFechaValidacionNuevoDiaDeTrabajo(SucursalCine.getFechaActual().toLocalDate().plusDays(1));
-			
-			//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
-			SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
-			
-			//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva
-			
-			
-			//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
-			
-			
-		}
-		
-		if (SucursalCine.getFechaActual().toLocalTime().isBefore(SucursalCine.getFinHorarioLaboral()) 
-				&& SucursalCine.getFechaActual().toLocalTime().isAfter(SucursalCine.getInicioHorarioLaboral()) ) {
-			//Lógica durante la jornada laboral
-			SucursalCine.actualizarPeliculasSalasDeCine();
-			
-		}
-		
-	}
-	
-	
 	/**
 	* Description: Este metodo se encarga de mostrar por pantalla la hora actual de una manera mas organzida y estética.
 	* @params date: Se pasa un localDateTime para ejecutar la logica del método.
@@ -2212,8 +2220,162 @@ public class Administrador {
 	
 	//Bloque funcionalidad 5
 	
+	
+	static void adquirirMembresia(Cliente clienteProceso) {
+		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla, " + clienteProceso.getNombre() + ".");
+		boolean casoValido = false;
+		int opcionMenu = 0;
+		do {
+			try {
+				System.out.println("¿Desea ingresar o volver?" +"\n1.Ingresar" + "\n2.Volver al menú principal" + "\n3.Salir");
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debes ingresar un dato numérico");
+				continue;
+			}
+			
+			switch (opcionMenu) {
+				case 1: casoValido = true; break;
+				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
+				case 3: Administrador.salirDelSistema(); casoValido = true; break;
+				default: System.out.println("Opción invalida."); break;
+			}
+			
+		}while(!casoValido);
+		//Se da a escoger al usuario la membresia
+		Membresia membresiaNueva = null;
+		do {
+			opcionMenu = 0;
+			System.out.print(Membresia.verificarMembresiaActual(clienteProceso));
+			System.out.print(Membresia.mostrarCategoria(clienteProceso, clienteProceso.getCineActual()) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
+			opcionMenu = Integer.parseInt(sc.nextLine());
+			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
+			else if (opcionMenu >0 && opcionMenu <6) {
+				//Se verifica si se cumple con los requisitos para adquirir la membresia.
+				boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(clienteProceso, opcionMenu, clienteProceso.getCineActual());
+				System.out.print("\nCargando...\n");
+				try {
+				Thread.sleep(3000);
+				}catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+					if (requisitosMembresia == false) {
+						System.out.print("\nNo puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello o no hay unidades en el momento.\n"
+								+ "Redirigiendo al menú de membresias\n");
+						continue;
+					} else {
+						membresiaNueva = Membresia.asignarMembresiaNueva(opcionMenu);
+					}
+			} else {
+				continue;
+			}
+		} while (membresiaNueva == null);
+		
+		//Una vez se ha escogido la membresia, se pasa a realizar el pago
+		double valorAPagar = membresiaNueva.getValorSuscripcionMensual();
+		do {
+			opcionMenu = 0;
+			System.out.print("El precio de la membresia es de " + valorAPagar 
+			+ ". Por favor, seleccione el método de pago a usar:\n"
+			+ MetodoPago.mostrarMetodosDePago(clienteProceso) + "\n6. Volver al inicio \nIngrese la opción: ");
+			opcionMenu = Integer.parseInt(sc.nextLine());
+			if (opcionMenu == 6) {Administrador.inicio(clienteProceso);}
+			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(clienteProceso, opcionMenu);
+			try {
+				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {
+					valorAPagar = valorAPagar - valorAPagar * metodoPagoSeleccionado.getDescuentoAsociado();
+					System.out.print("Con el método de pago " 
+						+ metodoPagoSeleccionado.getNombre()+ ", el nuevo monto a pagar es " 
+						+ valorAPagar +".\n1. Confirmar pago. \n2. Cambiar método de pago. \nPor favor, seleccione una opción: ");
+					
+				}else {
+					System.out.print("\nEl monto a pagar con el método de pago " 
+						+ metodoPagoSeleccionado.getNombre()+ " es " 
+						+ valorAPagar + ". \n1. Confirmar pago. \n2. Cambiar método de pago. \nPor favor, seleccione una opción: ");
+				}
+			opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch (NumberFormatException e) {
+			System.out.print("Error, debes ingresar un dato numérico");}
+			
+			if (opcionMenu == 1) {
+				valorAPagar = metodoPagoSeleccionado.realizarPago(valorAPagar, clienteProceso);
+			} else if (opcionMenu == 2) {
+				valorAPagar = membresiaNueva.getValorSuscripcionMensual();
+				continue;
+			}
+		}while (valorAPagar != 0); 
+		
+		System.out.print("\nEstamos procesando su pago...\n");
+		try {
+			Thread.sleep(3000);
+			}catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		membresiaNueva.procesarPagoRealizado(clienteProceso);
+		System.out.print(
+				"=== Factura de compra ===\n" +
+				"Nombre dueño: " + clienteProceso.getNombre() + "\n" +
+				"Documento: " + clienteProceso.getDocumento() + "\n" +
+				membresiaNueva.factura());
+		TarjetaCinemar tarjetaCinemarActual = clienteProceso.getCuenta();
+		int tipoMembresia = 0;
+		if (tarjetaCinemarActual != null) {
+			tipoMembresia = clienteProceso.getMembresia().getTipoMembresia();
+			if (tipoMembresia == 1) {
+				tarjetaCinemarActual.ingresarSaldo(10000);
+			}else {
+				tarjetaCinemarActual.ingresarSaldo(20000);
+			}
+		}else {
+			boolean finalizarCompra = false;
+			double saldoCuenta = 0.0;
+			tipoMembresia = clienteProceso.getMembresia().getTipoMembresia();
+			if (tipoMembresia == 1) {
+				saldoCuenta = 5000.0;
+			} else {
+				saldoCuenta = 20000.0;
+			}
+			do {
+				try{
+					opcionMenu = 0;
+					System.out.print("\nGracias por adquirir el programa de membresia. Su nueva membresia es " + clienteProceso.getMembresia().getNombre() + " de categoria" + clienteProceso.getMembresia().getCategoria()+"\nComo regalo, le otorgamos una tarjeta cinemar con "
+							+ (int)saldoCuenta + " recargados.\n1. Confirmar.\n2. Rechazar. \nPor favor, seleccione una opción: ");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				}catch (NumberFormatException e){
+					System.out.print("Error. Por favor, escriba un dato numérico");}
+				if (opcionMenu == 1) {
+					Arkade.asociarTarjetaCliente(clienteProceso);
+					clienteProceso.getCuenta().ingresarSaldo(saldoCuenta);
+					System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+clienteProceso.getCuenta().getDueno().getNombre()+"\nSaldo: $"+clienteProceso.getCuenta().getSaldo());
+					System.out.print("\nGracias por su compra. Redirigiendo al menú principal.");
+					finalizarCompra = true;
+				} else {
+					try {
+						opcionMenu = 0;
+						System.out.print("Recuerde que esta oferta es única. ¿Esta seguro? \n1. Si. \n2. No. \nIngrese la opción: ");	
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch (NumberFormatException e){
+						System.out.print("Error. Por favor, escriba un dato numérico");}
+					if (opcionMenu == 1 ) {
+						System.out.print("Gracias por su compra. Redirigiendo al menú principal.");
+						finalizarCompra = true;
+					} else {
+						continue;
+					}
+				}
+				try {
+					Thread.sleep(3000);
+					}catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+			} while (!finalizarCompra);
+		}
+	}
+}
+
+	
 //------------------------------------------------------------------------------------------------------------------	
 	
 	
-}
+
 

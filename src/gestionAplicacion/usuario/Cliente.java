@@ -2,6 +2,7 @@ package gestionAplicacion.usuario;
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Iterator;
 
 import gestionAplicacion.SucursalCine;
@@ -37,8 +38,9 @@ public class Cliente implements Serializable{
 	
 	//Atributos para funcionalidad 5
 	private Membresia membresia;
-	private Duration duracionMembresiaDias;
+	private LocalDate fechaLimiteMembresia;
 	private int puntos;
+	private int origenMembresia;
 	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	
 	//Posiblemente eliminar los siguientes atributos:
@@ -60,7 +62,7 @@ public class Cliente implements Serializable{
 	}
 	
 	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Producto> historialDePedidos, ArrayList<Ticket> ticket,
-			int edad, Membresia membresia, long documento, Duration duracionMembresiaDias,
+			int edad, Membresia membresia, long documento, LocalDate fechaLimiteMembresia,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<String> codigosDescuento) {
 		this();
@@ -71,7 +73,7 @@ public class Cliente implements Serializable{
 		this.edad = edad;
 		this.membresia = membresia;
 		this.documento = documento;
-		this.duracionMembresiaDias = duracionMembresiaDias;
+		this.fechaLimiteMembresia = fechaLimiteMembresia;
 		this.tipoDocumento = tipoDocumento;
 		this.cuenta = cuenta;
 		this.metodosDePago = metodosDePago;
@@ -387,14 +389,6 @@ public class Cliente implements Serializable{
 		this.documento = documento;
 	}
 
-	public Duration getDuracionMembresiaDias() {
-		return duracionMembresiaDias;
-	}
-
-	public void setDuracionMembresiaDias(Duration duracionMembresiaDias) {
-		this.duracionMembresiaDias = duracionMembresiaDias;
-	}
-
 	public TipoDeDocumento getTipoDocumento() {
 		return tipoDocumento;
 	}
@@ -474,6 +468,26 @@ public class Cliente implements Serializable{
 
 	public void setPuntos(int puntos) {
 		this.puntos = puntos;
+	}
+
+
+	public LocalDate getFechaLimiteMembresia() {
+		return fechaLimiteMembresia;
+	}
+
+
+	public void setFechaLimiteMembresia(LocalDate fechaLimiteMembresia) {
+		this.fechaLimiteMembresia = fechaLimiteMembresia;
+	}
+
+
+	public int getOrigenMembresia() {
+		return origenMembresia;
+	}
+
+
+	public void setOrigenMembresia(int origenMembresia) {
+		this.origenMembresia = origenMembresia;
 	}
 	
 	
