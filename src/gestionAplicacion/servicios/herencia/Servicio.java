@@ -1,4 +1,4 @@
-package gestionAplicacion.servicios;
+package gestionAplicacion.servicios.herencia;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
+import gestionAplicacion.servicios.Bono;
+import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.IBuyable;
 import gestionAplicacion.usuario.MetodoPago;
@@ -54,8 +56,8 @@ public abstract class Servicio implements IBuyable, Serializable{
 		for (int i = 0;i < orden.size();i++) {
 			for(int j = 0; j < cine.getTicketsCreados().size(); j++) {
 				if(orden.get(i).getGenero().equalsIgnoreCase(cine.getTicketsCreados().get(j).getPelicula().getGenero()) && cliente.equals(cine.getTicketsCreados().get(j).getDueno())){
-					LocalDate fecha = LocalDate.now();
-					if (fecha.equals(cine.getTicketsCreados().get(j).getHorario().toLocalDate()) && cine.getTicketsCreados().get(j).isDescuento()) {
+					LocalDate fecha = SucursalCine.getFechaActual().toLocalDate();
+					if (fecha.isEqual(cine.getTicketsCreados().get(j).getHorario().toLocalDate()) && cine.getTicketsCreados().get(j).isDescuento()) {
 						cine.getTicketsCreados().get(j).setDescuento(false);
 						return orden.get(i);
 					}
@@ -224,7 +226,7 @@ public abstract class Servicio implements IBuyable, Serializable{
 		return productosEncontrados;
 	}
 
-	
+/*	
 	public void logicaCalificacionProductos(Producto producto){	
 		
 		ArrayList <Producto> productosCalificados = filtrarPorNombreDeProducto(producto.getNombre(), this.inventario);
@@ -269,7 +271,7 @@ public abstract class Servicio implements IBuyable, Serializable{
 	
 		
 	}
-	
+	*/
 	public String getNombre() {
 		return nombre;
 	}

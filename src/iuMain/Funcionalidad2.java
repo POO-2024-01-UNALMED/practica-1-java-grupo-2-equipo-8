@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.Producto;
-import gestionAplicacion.servicios.Servicio;
+import gestionAplicacion.servicios.herencia.Servicio;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
 
@@ -17,6 +17,9 @@ public class Funcionalidad2 {
 		boolean verificacion = true;
 		int servicio = 0;
 		int cantidad = 0;
+		
+		//////////////////////////////////////   Seleccion del servicio   ///////////////////////////////////////////
+		
 		System.out.println("\n ====== Bienvenido a los servicios de compra ====== \n");
 		
 		//Le pedimos el servicio al cual desea acceder
@@ -53,6 +56,7 @@ public class Funcionalidad2 {
 		serviciProceso.setCliente(clienteProceso);
 		serviciProceso.setInventario(clienteProceso.getCineActual().getServicios().get(servicio).actualizarInventario());
 		
+		/////////////////////////////////  Busqueda inteligente de los productos disponibles segun el pedido   ///////////////////////////////////////////
 		
 		//Mostramos los productos que hay disponibles en la sucursal y 
 		//le pedimos que seleccione uno y la cantidad de producto que desea
@@ -192,7 +196,11 @@ public class Funcionalidad2 {
 			}
 		}while(verificacion);
 		
-		//////////// Espacio para descuento por genero con horario para hacer con Andy///////////////////////
+		//////////////////////////////////////   Descuento asociado a las peliculas   ///////////////////////////////////////////
+		
+		/* Se verifica si tiene un producto con el mismo genero de un ticket y si es asi se le aplica el descuento,
+		 * solo se hace un decuento por compra
+		 */
 		
 		if(serviciProceso.getOrden().size()>0) {
 			Producto productoDescuento = serviciProceso.descuentarPorGenero(clienteProceso.getCineActual());
@@ -213,8 +221,7 @@ public class Funcionalidad2 {
 			}
 		}
 		
-		
-		/////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////  Validacion de los bonos  y codigos de bonos   ///////////////////////////////////////////
 		
 		//Validacion de los bonos
 		boolean verificacionR = true;
@@ -427,7 +434,9 @@ public class Funcionalidad2 {
 				}
 			}while(verificacion);
 		}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+		
+		//////////////////////////////////////   Proceso de pago y descuento por valor de compras   ///////////////////////////////////////////
+		
 		serviciProceso.setValorPedido(serviciProceso.calcularTotal());
 		
 		if (serviciProceso.getValorPedido()>0) {

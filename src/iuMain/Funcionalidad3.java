@@ -5,8 +5,8 @@ import java.util.Scanner;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Producto;
+import gestionAplicacion.servicios.herencia.Servicio;
 import gestionAplicacion.usuario.Cliente;
-import gestionAplicacion.servicios.Servicio;
 public class Funcionalidad3 {
 	static void calificacion(Cliente clienteProceso){
 		boolean verificar = true;

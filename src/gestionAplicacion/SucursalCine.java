@@ -13,7 +13,7 @@ import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Arkade;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
-import gestionAplicacion.servicios.Servicio;
+import gestionAplicacion.servicios.herencia.Servicio;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.Ticket;
@@ -396,7 +396,7 @@ public class SucursalCine implements Runnable, Serializable {
 				
 				//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva (Hecho)
 				//Con el serializador presenta problemas, implementar otra solución
-				ticketsCreados.clear();
+				//ticketsCreados.clear();
 				
 				//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
 				

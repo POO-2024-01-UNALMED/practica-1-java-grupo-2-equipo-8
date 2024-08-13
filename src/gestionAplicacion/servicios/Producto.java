@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
+import gestionAplicacion.servicios.herencia.Servicio;
 
 public class Producto implements Serializable {
 	

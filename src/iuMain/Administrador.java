@@ -6,6 +6,8 @@ import java.util.Scanner;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
+import gestionAplicacion.servicios.herencia.ServicioComida;
+import gestionAplicacion.servicios.herencia.ServicioSouvenirs;
 import gestionAplicacion.usuario.*;
 import baseDatos.Serializador;
 import java.time.Duration;
@@ -260,14 +262,14 @@ public class Administrador {
 		
 		System.out.println("\nIngresar a una de nuestras sedes");
 		clienteProceso.setCineActual(ingresarASucursal());
-		
+		/*
 		Thread hiloLogicaProyecto = new Thread(clienteProceso.getCineActual());
-		hiloLogicaProyecto.start();
+		hiloLogicaProyecto.start();*/
 		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
 		inicio(clienteProceso);
-		
-		hiloLogicaProyecto.interrupt();
+		/*
+		hiloLogicaProyecto.interrupt();*/
 		salirDelSistema();
 		
 		
