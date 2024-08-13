@@ -15,10 +15,31 @@ import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.usuario.Ticket;
 
 public class Serializador {
+	// Este atributo es para definir la ruta al directoria temp que contiene las clases.
 	private static File rutaTemp = new File ("src\\baseDatos\\temp\\sucursales");
 	private static File rutaTempLinux = new File ("src/baseDatos/temp/sucursales");
 	
 	// Este método es el encargado de serializar las listas que están creadas en la clase SucursalCine.
+	
+	/**
+	 * Description : Este método se encarga de serializar los atributos de instancia de sus
+	 * instancias de SucursalCine. Primero, iteramos sobre los directorios de las sucursales,
+	 * se borra el contenido de los .txt para evitar redundancia y una vez le damos formato,
+	 * extraemos la información de los objetos que se esten ejecutando y se guardan dentro de
+	 * los archivos en binarios.
+	 * 
+	 * Atributos que serializa:
+	 * 1. Lugar.
+	 * 2. Salas de cine.
+	 * 3. Peliculas.
+	 * 4. Bonos.
+	 * 5. Cantidad de tickets creados.
+	 * 6. Inventario.
+	 * 7. Servicios.
+	 * 8. Tarjetas cinemar.
+	 * 9. Tickets creados.
+	 *
+	 * */
 	public static void serializar(SucursalCine sucursalCine) {
 		FileOutputStream fos;
 		ObjectOutputStream oos;
@@ -47,9 +68,10 @@ public class Serializador {
 				
 				//Serializa la informacion
 				for (File file : docs) {
-					
+					//Se revisa la ruta que contenga el archivos con los objetos solicitados.
 					if (file.getAbsolutePath().contains("lugar")) {
 						try {
+							//Se abren los flujos para hacer la escritura en los .txt
 							fos = new FileOutputStream(file);
 							oos = new ObjectOutputStream(fos);
 							oos.writeObject(sucursalCine.getLugar());
@@ -171,16 +193,32 @@ public class Serializador {
 			}
 		}
 	}
-	
+	//Creamos la ruta donde se encuentran los archivos .txt que guardan la información de los atributos estáticos
 	private static File rutaTemp2 = new File("src\\baseDatos\\temp\\staticAttributes");
 	private static File rutaTempLinux2 = new File ("src/baseDatos/temp/staticAttributes");
 	
-	//Este método se encarga de serializar las listas estáticas de la clase SucursalCine
+	/**
+	 * Description: Este método se encarga de serializar los atributos estáticos de la clase SucursalCine.
+	 * Se realiza el mismo proceso que con los objetos de instancia, pero como son atributos de clase,
+	 * estos son compartidos por cada sucursal, por lo que solo es necesario hacerlo una vez en un método
+	 * aparte.
+	 * 
+	 * Atributos que serializa:
+	 * 1. Clientes (Mantiene el registro de los clientes que han usado la sucursal).
+	 * 2. Juegos.
+	 * 3. Fecha nuevo día (Para ejecutar la lógica diaria del negocio).
+	 * 4. Métodos de pago disponibles
+	 * 5. Fecha lógica de negocio (Para ejecutar la lógica semanal del negocio).
+	 * 6. Fecha actual (Mantiene la hora en la cual se está ejecutando el programa).
+	 * 7. Tickets Disponibles (Renueva las referencias de sus atributos para hacer correctamente las validaciones).
+	 * 8. Membresias.
+	 * */
 	public static void serializar() {
 		
 		//Creamos las variables que usaremos para este proceso
 		File [] docs = rutaTemp2.listFiles();
-		
+		// Al crear este objeto PrintWriter y pasarle como parámetro, la ruta de cada
+		// archivo borra lo que haya en ellos automáticamente.
 		FileOutputStream fos;
 		ObjectOutputStream oos;
 		PrintWriter pw;

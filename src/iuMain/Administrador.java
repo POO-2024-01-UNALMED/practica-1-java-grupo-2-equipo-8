@@ -271,11 +271,15 @@ public class Administrador {
 		
 	}
 	      
-	
+	/**
+	 * Description : Este método se encarga de iniciar el programa mostrando las opciones de las funcionalidades en
+	 * un menú.
+	 * @param clienteProceso : Se usa a un objeto de tipo Cliente para que pueda ser usado en las funcionalidades
+	 */
 	public static void inicio(Cliente clienteProceso) {
 	int opcion = 0;
-	
-	
+	System.out.println(clienteProceso.getFechaLimiteMembresia());
+	//Cada vez que se va al inicio, se verifica si ya ha pasado el dia para revisar la validez de la membresia.
 	logicaMembresia(clienteProceso);
 	//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
 	avanzarTiempo();
@@ -408,105 +412,15 @@ public class Administrador {
 		}
 		
 	}
-	
-	private static void logicaMembresia(Cliente cliente) {
-		
-		System.out.println(SucursalCine.notificarFechaLimiteMembresia(cliente));
-		
+	/**
+	 * Description : Este método se encarga de ejecutar el proceso de revisar y notificar la validez de la membresía de cliente
+	 * con respecto a su fecha de caducidad. Si la membresia esta por expirar en 5 días o menos, se arroja un mensaje en pantalla.
+	 * @param clienteProceso : Se pide un objeto de tipo Cliente para obtener los datos necesarios en la ejecución de la lógica.
+	 */
+	private static void logicaMembresia(Cliente clienteProceso) {
+		System.out.println(SucursalCine.notificarFechaLimiteMembresia(clienteProceso));
 	}
-	
-	public static Cliente validarCliente() {
-		TipoDeDocumento documentoCliente = null;
-		boolean casoValido = true;
-		int opcionMenu;
-		do{
-			try {
-				System.out.println("\n------------------Tipos de documentos-------------------\n"+ 
-				TipoDeDocumento.mostrarTiposDeDocumento());
-				System.out.print("Seleccione una opcion:");
-				opcionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e){
-				System.out.println("\n*****Error, debes ingresar un dato numérico*****\n");
-				continue;
-			}
-			switch (opcionMenu) {
-				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
-				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
-				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
-				default: System.out.println("**********Opcion invalida**********");break;
-			}
-		}while(casoValido);
-		
-		//Se le pide el numero de documento y se verifica si ya esta registrado como cliente
-		Cliente cliente1 = null;
-		long numeroDocumentoCliente = 0;
-		casoValido = true;
-		boolean casoValido2 = true;
-		do {
-			try {
-				System.out.print("Ingrese el numero de documento: ");
-				numeroDocumentoCliente = Long.parseLong(sc.nextLine());
-			}catch(NumberFormatException e) {
-				System.out.println("\n*****Error, debes ingresar datos numéricos correspondientes a tu número de documento\n*****");
-				continue;
-			}
-			//Se verficia si el cliente existe
-			cliente1=Cliente.revisarDatosCliente(numeroDocumentoCliente);
-			
-			//En caso de que no exista, lo creamos
-			if (cliente1==null) {
-				System.out.println("\nHemos detectado que es la primera vez que visita nuestro cine, " +
-						"Por políticas de seguridad de nuestra compañia, le solicitamos que amablemente responda las siguientes preguntas");
-				int edadCliente = 0;
-				
-				//Se registra la edad
-				do {
-					try {
-						System.out.print("\nIngrese su edad: ");
-						edadCliente = Integer.parseInt(sc.nextLine());
-						casoValido2 = false;
-					}catch (NumberFormatException e) {
-						System.out.println("\nError, debes ingresar datos numéricos correspondientes a tu edad\n");
-						continue;
-					}
-				}while(casoValido2);
-				
-				//Se registra el nombre
-				System.out.print("\nIngrese su nombre: ");
-				String nombreCliente = sc.nextLine(); 
 
-				//Se asocia todo a la nueva instancia del cliente
-				cliente1 = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
-				return cliente1;
-			}
-			
-			//En caso de que el cliente ya esta registrado
-			else{
-				do{
-					try {
-						System.out.println("\n¿Eres "+cliente1.getNombre()+"?");
-						System.out.println("1. SI\n2. NO");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-						casoValido2 = false;
-					}catch(NumberFormatException e){
-						System.out.println("\nError, debes ingresar un único dato numérico\n");
-						continue;
-					}
-					if (opcionMenu==1) {
-						return cliente1;
-						}
-					else if(opcionMenu==2){
-						System.out.println("\nVerifica el numero de documento\n");
-					}
-					else {
-						System.out.println("\nOpcion invalida\n");
-					}
-				}while(casoValido2);
-			}
-		}while(casoValido);
-		return null;
-	}
-	
 	/**
 	 * Description : Este método se encarga de iniciar sesión, para esto se le pregunta al cliente el tipo de documento y el número de documento,
 	 * en caso de que se encuentre registrado, se verfica su nombre y se retorna ese cliente, en caso de que no, se crea un nuevo cliente, solicitando
@@ -2182,10 +2096,10 @@ public class Administrador {
         
      // Imprimir la hora en un estilo más decorativo
         System.out.println("╔══════════════════════════════╗");
-        System.out.println("║     ⏰⏰Current Date⏰⏰      ║");
-        System.out.println("    •" + formattedDate + "     ");
+        System.out.println("║     ⏰⏰Current Date⏰⏰	  ║");
+        System.out.println("║   •" + formattedDate + "     ║");
         System.out.println("║                              ║");
-        System.out.println("         •" + formattedTime +"        ");
+        System.out.println("║   •" + formattedTime +"	   ║");
         System.out.println("╚══════════════════════════════╝");
         System.out.println();
 	}

@@ -203,7 +203,7 @@ public class MetodoPago implements Serializable{
 			valorPagar = 0;
 		}
 				
-		//Cuando el método usado sea efectivo, no se pasará a usados
+		//Cuando el método usado sea efectivo, no se pasará a usados y no se acumularan los puntos por la logica de negocios gracias a los convenios.
 		if (this.getNombre().equals("Efectivo")) {
 			return valorPagar;
 		}

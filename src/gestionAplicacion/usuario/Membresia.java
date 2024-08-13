@@ -51,11 +51,6 @@ public class Membresia implements IBuyable, Serializable{
 		SucursalCine.getTiposDeMembresia().add(this);
 	}
 	
-	
-	public void crearBonoRecargaTarjetaCinemar() {
-		
-	}
-	
 	/**
 	*<b>Description</b>: Este método se encarga de verificar si el cliente tiene membresia activa
 	*@param cliente : Se pide al cliente para revisar su atributo de tipo Membresia
@@ -111,24 +106,6 @@ public class Membresia implements IBuyable, Serializable{
 		
 		return true;}
 	
-	
-	public void adquirirSuscripcion() {
-		
-	}
-	
-	public ArrayList<Pelicula> recomendacionPeliculas(){
-		
-		return new ArrayList<>();
-		}
-	
-	public double aumentaLimiteDePago() {
-		
-		return 2.73;}
-	
-	
-	public void recargarRegaloTarjetaCinemar() {
-		
-	}
 	/**
 	*<b>Description</b>: Este método se encarga de mostrar las categorias de membresias disponibles
 	*@param none : No se pide parametros
@@ -138,7 +115,7 @@ public class Membresia implements IBuyable, Serializable{
 		String resultado = null;
 		int i = 1;
 		Membresia membresiaActual = clienteProceso.getMembresia();
-		String nombreMembresiaActual = null;
+		String nombreMembresiaActual = null; 
 		
 		//Se actualiza el nombre de la membresia.
 		if (membresiaActual == null) {
@@ -157,7 +134,10 @@ public class Membresia implements IBuyable, Serializable{
 						i++;
 						continue;
 					}
-					else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
+					//Si el cliente ya tiene esta membresia y además, le faltan más de 5 dias para que expire, no se muestra en el menu.
+					else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre()) && 
+							(clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())
+							&& clienteProceso.getFechaLimiteMembresia().isAfter(SucursalCine.getFechaActual().toLocalDate()))) {
 						i++;
 						continue;
 					} else {
@@ -168,7 +148,10 @@ public class Membresia implements IBuyable, Serializable{
 					i++;
 					continue;
 				}
-				else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
+				//Si el cliente ya tiene esta membresia y además, le faltan más de 5 dias para que expire, no se muestra en el menu.
+				else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre()) && 
+						(clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())
+						&& clienteProceso.getFechaLimiteMembresia().isAfter(SucursalCine.getFechaActual().toLocalDate()))) {
 					i++;
 					continue;
 				} else {
@@ -216,7 +199,7 @@ public class Membresia implements IBuyable, Serializable{
 		case 2: esValido = (membresiaStock > 0 && puntos >= 5000) ? true : false; break;
 		case 3: esValido = (membresiaStock > 0 && puntos >= 10000) ? true : false; break;
 		case 4: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 15000) ? true : false; break;
-		case 5: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 20 && puntos >= 20000) ? true : false; break;
+		case 5: esValido = (membresiaStock > 0 && puntos >= 20000) ? true : false; break;
 		}
 		
 		return esValido;
@@ -251,7 +234,6 @@ public class Membresia implements IBuyable, Serializable{
 	public static Membresia asignarMembresiaNueva(int categoriaMembresia) {
 		//Se crea una instancia de tipo Membresia null
 		Membresia membresiaNueva = null;
-		System.out.println(SucursalCine.getTiposDeMembresia());
 		//Se busca las instancias de tipo Membresia en Tipos de Membresia y si la categoria coincide, la instancia anterior apunta a este resultado
 		for (Membresia membresia2 : SucursalCine.getTiposDeMembresia()) {
 			if (membresia2.getCategoria() == categoriaMembresia) {
@@ -348,12 +330,19 @@ public class Membresia implements IBuyable, Serializable{
 	@Override
 	public void procesarPagoRealizado(Cliente cliente) {
 		//Se asigna la referencia de la membresia adquirida en el cliente y se actualizan sus métodos de pago.
-		cliente.setMembresia(this);
+		boolean isPrimerMembresia = true;
+		//Si el cliente no tiene membresia al momento de la compra, se le asigna y se cambia el boolean.
+		if (cliente.getMembresia()==null || !cliente.getMembresia().getNombre().equals(this.getNombre())) {
+			cliente.setMembresia(this);
+			isPrimerMembresia = false;
+		}
+		
 		cliente.setFechaLimiteMembresia(SucursalCine.getFechaActual().toLocalDate().plusDays(this.duracionMembresiaDias));
 		
-		//Se va al inventario del cine para restar la cantidad de membresias.
+		//Se va al inventario del cine para restar la cantidad de membresias si el cliente no esta renovando.
+		if (this.getNombre().equals(cliente.getMembresia().getNombre()) && isPrimerMembresia == false)
 		for (Producto membresiaStock : cliente.getCineActual().getInventarioCine()) {
-			if (membresiaStock.getNombre() == this.getNombre()) {
+			if (membresiaStock.getNombre().equals(this.getNombre())) {
 				membresiaStock.setCantidad(membresiaStock.getCantidad() - 1);
 				break;
 			}

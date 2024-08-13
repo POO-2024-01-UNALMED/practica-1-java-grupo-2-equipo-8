@@ -461,8 +461,14 @@ public class SucursalCine implements Serializable {
 			
 		}
 	}
-		
-	//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
+	
+	/**
+	 * Description : Este método se encarga de revisar la validez de la membresia del cliente y,
+	 * en caso de que este apunto de expirar, se le notificará con antelación (5 dias) para que pueda
+	 * renovar su membresia. En caso de que se expire, se notifica y se desvincula del cliente.
+	 * @param cliente : Se usa el cliente para obtener los datos de las membresias
+	 * @return String : Se retorna el mensaje de advertencia en caso de que la membresia esta apunto de expirar o ya expiró.
+	 */
 	public static String notificarFechaLimiteMembresia(Cliente cliente) {
 		
 		String mensaje = "";
@@ -483,6 +489,8 @@ public class SucursalCine implements Serializable {
 				String nombreMembresia = cliente.getMembresia().getNombre();
 				cliente.getMembresia().getClientes().remove(cliente);
 				cliente.setMembresia(null);
+				//Se reinician sus métodos de pago en caso de perder la membresia.
+				MetodoPago.asignarMetodosDePago(cliente);
 				mensaje = "Su membresia ha expirado. Le invitamos a renovarla para no perder sus beneficios.";
 				
 				//Para volver a asignar la membresia expirada al stock de inventario, se valida con el nombre.
@@ -493,7 +501,7 @@ public class SucursalCine implements Serializable {
 								productoMembresia.setCantidad(productoMembresia.getCantidad()+1);
 								break;
 							}
-						}
+						} break;
 					}
 				}
 			} else if (fechaActual.toLocalDate().isAfter(cliente.getFechaLimiteMembresia().minusDays(6))
