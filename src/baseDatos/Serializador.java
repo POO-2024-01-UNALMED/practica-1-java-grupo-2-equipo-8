@@ -43,7 +43,7 @@ public class Serializador {
 	public static void serializar(SucursalCine sucursalCine) {
 		FileOutputStream fos;
 		ObjectOutputStream oos;
-		File [] dirs = rutaTemp.listFiles();
+		File [] dirs = rutaTempLinux.listFiles();
 		PrintWriter pw;
 		
 		//Iteramos sobre los directorios de nuestras distintas sucursales
@@ -216,7 +216,7 @@ public class Serializador {
 	public static void serializar() {
 		
 		//Creamos las variables que usaremos para este proceso
-		File [] docs = rutaTemp2.listFiles();
+		File [] docs = rutaTempLinux2.listFiles();
 		// Al crear este objeto PrintWriter y pasarle como parámetro, la ruta de cada
 		// archivo borra lo que haya en ellos automáticamente.
 		FileOutputStream fos;

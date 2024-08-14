@@ -56,7 +56,7 @@ public class Deserializador {
 	 * el objeto correctamente deserializado se encuntra en un espacio en memoria nuevo y esto genera conflictos al realizar validaciones. 
 	 * */
 	public static void deserializar () {
-		File [] dirs = rutaTemp.listFiles();
+		File [] dirs = rutaTempLinux.listFiles();
 		FileInputStream fis;
 		ObjectInputStream ois;
 		
@@ -257,7 +257,7 @@ public class Deserializador {
 	 * */
 	public static void deserializarEstaticos () {
 		//Definimos las variables que usaremos durante el proceso
-		File [] docs = rutaTemp2.listFiles();
+		File [] docs = rutaTempLinux2.listFiles();
 		FileInputStream fis;
 		ObjectInputStream ois;
 
