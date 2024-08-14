@@ -32,18 +32,26 @@ public abstract class Servicio implements IBuyable, Serializable{
 	}
 	
 	//ligadura estatica
-	
-	public String  mostrarBonos() {
+	/**
+	*Description: Me muestra los bonos que tengo disponible para decidir si reclamo uno de esos
+	*@param servicio : Recibe un parametro de tipo servicio para poder ver los 
+	*@return <b>bono</b> :Retorna un string con los tipos de bonos que tengo disponible por reclamar
+	*/
+	public static String  mostrarBonos(Servicio servicio) {
 		int n = 0;
 		String bono = "\n ====== Tienes los siguientes bonos disponibles ======\n"+
 						"\n0. No reclamar ningun bono.";
-		for(int i = 0;i < bonosCliente.size();i++) {
+		for(int i = 0;i < servicio.getBonosCliente().size();i++) {
 				n = i + 1;
-				bono = bono + "\n" + n + ". " + bonosCliente.get(i).getProducto().getNombre() + " " + bonosCliente.get(i).getProducto().getTamaño();
+				bono = bono + "\n" + n + ". " + servicio.getBonosCliente().get(i).getProducto().getNombre() + " " + servicio.getBonosCliente().get(i).getProducto().getTamaño();
 		}
 		return bono;
 	}
 	
+	/**
+	*Description: Me filtra los bonos dependiendo del servicio al cual se esta accediendo, asi separando 
+	*los distintos tipos de bonos y solo mostrando los requeridos para este servicio
+	*/
 	public void actualizarBonos() {
 		for(int i = 0;i < cliente.getBonos().size();i++) {
 			if (cliente.getBonos().get(i).getTipoServicio().equalsIgnoreCase(nombre)) {
@@ -51,6 +59,15 @@ public abstract class Servicio implements IBuyable, Serializable{
 			}
 		}
 	}
+	
+	/**
+	*Description: Me verifica si tiene un producto del mismo genero que un ticke que hallas comprado y ademas
+	*que fecha de la pelicula sea la misma del dia de la compra
+	*@param cine : Recibe un parametro de tipo sucursalCine para poder ver los tickes creados y hacer 
+	*la comparacion
+	*@return <b>orden</b> :Retorna el primer producto que coincida con la condicion para poder generarle
+	*su respectivo descuento
+	*/
 	
 	public Producto descuentarPorGenero (SucursalCine cine) {
 		for (int i = 0;i < orden.size();i++) {
@@ -72,8 +89,6 @@ public abstract class Servicio implements IBuyable, Serializable{
 	public abstract boolean descuentarPorCompra (MetodoPago metodo);
 	
 	public abstract ArrayList<Producto> actualizarInventario();
-	
-	// Metodos
 	
 	public double calcularTotal() {
 		double total = 0;
@@ -113,16 +128,14 @@ public abstract class Servicio implements IBuyable, Serializable{
 
 	//Ligadura Estatica
 	
-	public Producto validarBono(String codigo , Servicio servicio){
-		Producto producto = new Producto();
+	public static Producto validarBono(String codigo , Servicio servicio){
+		Producto producto;
 		for (int i=0; i < Bono.getBonosCreados().size();i++) {
 			if (Bono.getBonosCreados().get(i).getCodigo().equalsIgnoreCase(codigo) && Bono.getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
 				producto = Bono.getBonosCreados().get(i).getProducto();
 				for (int j =0; j < Bono.getBonosCreados().get(i).getCliente().getBonos().size(); j++) {
 					if (Bono.getBonosCreados().get(i).getCliente().getBonos().get(j).getCodigo().equalsIgnoreCase(codigo)) {
 						Bono.getBonosCreados().get(i).getCliente().getBonos().remove(j);
-						ArrayList<Bono> bonosCliente1 = new ArrayList<>();
-						bonosCliente = bonosCliente1;
 					}
 				}
 				Bono.getBonosCreados().remove(i);

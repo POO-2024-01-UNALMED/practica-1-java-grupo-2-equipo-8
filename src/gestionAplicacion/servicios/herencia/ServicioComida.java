@@ -1,5 +1,6 @@
 package gestionAplicacion.servicios.herencia;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -8,13 +9,31 @@ import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
 
 public class ServicioComida extends Servicio {
-
+	
+	public static final Duration TIEMPO_DE_ESPERA = Duration.ofMinutes(15);
+	private boolean[] asignacionDeMesas = new boolean[10];
+	
 	public ServicioComida() {
 	}
 
 	public ServicioComida(String nombre) {
 		super(nombre);
 	}
+	
+	
+	
+	public void organizarMesas() {
+		for (int i=0;i<5;i++) {
+			int indiceCambio = ((int) (Math.random()*10))%10;
+			if (asignacionDeMesas[indiceCambio]) {
+				continue;
+			}
+			else {
+				asignacionDeMesas[indiceCambio]=false;
+			}
+		}
+	}
+	
 
 	/**
 	 * Description: Este metodo filtra y actualiza los productos que hay en el

@@ -89,9 +89,8 @@ public class Producto implements Serializable {
 	
 	
 	/**
-	// Description: Este metodo se encarga de revisar que un producto tenga unidades disponibles en el inventario, ya que con esto se hace una evaluacion a si una
-	 * producto es apta para calificar o no
-
+	// Description: Este metodo se encarga de revisar que un producto tenga unidades disponibles en el inventario, 
+	 * ya que con esto se hace una evaluacion a si unaproducto es apta para calificar o no
 	* */
 	public boolean verificarInventarioProducto(SucursalCine sucursalCine) {
 		
@@ -103,7 +102,28 @@ public class Producto implements Serializable {
 		}	
 	}
      
+	//Ligadura Estatica
 	
+		/**
+		*Description: Me verifica si tiene un producto del mismo tipo del bono para poder hacer 
+		*su efectivo descuento
+		*@param servicio : Recibe un parametro de tipo servicio para poder ver la orden que 
+		*se esta haciendo en el momento
+		*@return <b>verificacion</b> :Retorna un boolean para poder verificar la condicion 
+		*planteada en el administrador
+		*/
+		
+		public boolean comprobarBonoEnOrden(Servicio servicio) {
+			boolean verificacion = false;
+			for(int i = 0; i < servicio.getOrden().size();i++) {
+				if(servicio.getOrden().get(i).getNombre() == this.getNombre() && servicio.getOrden().get(i).getTamaño() == this.getTamaño() && servicio.getOrden().get(i).getPrecio() > 0) {
+					verificacion = true;
+					break;
+				}
+			}
+			return verificacion;
+			
+		}
 
 	public String getTipoProducto() {
 		return tipoProducto;
