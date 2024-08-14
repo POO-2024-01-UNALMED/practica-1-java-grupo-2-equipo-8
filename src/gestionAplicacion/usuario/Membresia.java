@@ -199,7 +199,7 @@ public class Membresia implements IBuyable, Serializable{
 		case 2: esValido = (membresiaStock > 0 && puntos >= 5000) ? true : false; break;
 		case 3: esValido = (membresiaStock > 0 && puntos >= 10000) ? true : false; break;
 		case 4: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 15000) ? true : false; break;
-		case 5: esValido = (membresiaStock > 0 && puntos >= 20000) ? true : false; break;
+		case 5: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 20000) ? true : false; break;
 		}
 		
 		return esValido;
@@ -334,10 +334,14 @@ public class Membresia implements IBuyable, Serializable{
 		//Si el cliente no tiene membresia al momento de la compra, se le asigna y se cambia el boolean.
 		if (cliente.getMembresia()==null || !cliente.getMembresia().getNombre().equals(this.getNombre())) {
 			cliente.setMembresia(this);
+			cliente.setOrigenMembresia(cliente.getCineActual().getIdSucursal());
+			cliente.setFechaLimiteMembresia(SucursalCine.getFechaActual().toLocalDate().plusDays(this.duracionMembresiaDias));
 			isPrimerMembresia = false;
+			
+		//En caso de tener una membresia se puede renovar y no se resta el stock de su inventario por lo que ya esta asignada.
+		} else {
+			cliente.setFechaLimiteMembresia(cliente.getFechaLimiteMembresia().plusDays(this.duracionMembresiaDias));
 		}
-		
-		cliente.setFechaLimiteMembresia(SucursalCine.getFechaActual().toLocalDate().plusDays(this.duracionMembresiaDias));
 		
 		//Se va al inventario del cine para restar la cantidad de membresias si el cliente no esta renovando.
 		if (this.getNombre().equals(cliente.getMembresia().getNombre()) && isPrimerMembresia == false)

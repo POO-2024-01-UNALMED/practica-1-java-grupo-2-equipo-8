@@ -245,8 +245,8 @@ public class Administrador {
 //			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
 //			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));
 //			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15));
-			
-			
+//			
+//			cliente1.setOrigenMembresia(sucursalCine1.getIdSucursal());
 			
 		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,11 +279,11 @@ public class Administrador {
 	 */
 	public static void inicio(Cliente clienteProceso) {
 	int opcion = 0;
-	System.out.println(clienteProceso.getFechaLimiteMembresia());
-	//Cada vez que se va al inicio, se verifica si ya ha pasado el dia para revisar la validez de la membresia.
-	logicaMembresia(clienteProceso);
 	//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
 	avanzarTiempo();
+	
+	//Cada vez que se va al inicio, se verifica si ya ha pasado el dia para revisar la validez de la membresia.
+	logicaMembresia(clienteProceso);
 	
 	do {
 		
