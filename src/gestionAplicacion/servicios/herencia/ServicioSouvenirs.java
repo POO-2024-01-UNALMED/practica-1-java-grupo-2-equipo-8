@@ -2,6 +2,7 @@ package gestionAplicacion.servicios.herencia;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
@@ -14,7 +15,15 @@ public class ServicioSouvenirs extends Servicio{
 		super(nombre);
 	}
 	
-	@Override
+
+	/**
+	* @Override
+	*Description: Me verifica si el metodo de pago tiene un descuento asociado y si 
+	*cumple la condicion para generar su descuento
+	*@param metodo : Recibe un parametro de tipo metodo de pago el cual 
+	*nos sirve para saber si tiene descuento o no
+	*@return <b>boolean</b> :Retorna un boolean para informarle al usuario que si se hizo el descuento
+	*/
 	public boolean descuentarPorCompra(MetodoPago metodo) {
 		if (!metodo.getNombre().equalsIgnoreCase("Efectivo")) {
 			for(int i = 0; i < orden.size(); i++) {

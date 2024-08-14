@@ -231,7 +231,7 @@ public class Funcionalidad2 {
 			if (0 < serviciProceso.getBonosCliente().size()) {
 				do {
 					try {
-						System.out.println(serviciProceso.mostrarBonos());
+						System.out.println(Servicio.mostrarBonos(serviciProceso));
 						System.out.print("Seleccione una opcion: ");
 						eleccion = Integer.parseInt(sc.nextLine());
 						if (eleccion > serviciProceso.getBonosCliente().size()) {
