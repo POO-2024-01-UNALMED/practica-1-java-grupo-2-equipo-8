@@ -513,6 +513,94 @@ public class SucursalCine implements Runnable, Serializable {
 	
 		
 	}
+	/** Description: Este metodo se encarga de revisar en el arrayList de peliculasDisponibles que pelicula ha tenido
+	 * la peor calificacion, osea, la pelicula mas deficiente segun los gustos de los clientes, con esta pelicula vamos 
+	 * a generar combos en recompensa a los clientes que nos dejaron sus reseñas
+	 * */
+	public Pelicula peorPelicula() {
+		Pelicula peliculaPeorCalificada=null;
+		boolean primeraComparacion=true;
+		
+		for(Pelicula peliculas : peliculasDisponibles) {
+			if(peliculas.filtrarHorariosPeliculaParaSalaCine()!=null) {
+				continue;
+			}
+			if(primeraComparacion) {
+				peliculaPeorCalificada=peliculas;
+				
+			}
+			if(peliculas.getValoracion()<peliculaPeorCalificada.getValoracion()) {
+				peliculaPeorCalificada=peliculas;
+			}
+			
+		}
+		return peliculaPeorCalificada;
+
+	}
+	/** Description: Este metodo se encarga de revisar en el arrayList de peliculasDisponibles que pelicula ha tenido
+	 * la mejor calificacion, osea, la pelicula mas eficiente segun los gustos de los clientes, con esta pelicula vamos 
+	 * a generar combos en recompensa a los clientes que nos dejaron sus reseñas
+	 * */
+	public Pelicula mejorPelicula() {
+		Pelicula peliculaMejorCalificada=null;
+		boolean primeraComparacion=true;
+		for(Pelicula peliculas : peliculasDisponibles) {
+			if(peliculas.filtrarHorariosPeliculaParaSalaCine()!=null) {
+				continue;
+			}
+			if(primeraComparacion) {
+				peliculaMejorCalificada=peliculas;
+				
+			}
+			if(peliculas.getValoracion()>peliculaMejorCalificada.getValoracion()) {
+				peliculaMejorCalificada=peliculas;
+			}
+			
+		}
+		return peliculaMejorCalificada;
+
+	}
+	/** Description: Este metodo se encarga de revisar en el arrayList de inventario que producto ha tenido
+	 * la peor calificacion, osea, el producto mas deficiente segun los gustos de los clientes, con este producto vamos 
+	 * a generar combos en recompensa a los clientes que nos dejaron sus reseñas
+	 * */
+	
+	public Producto peorProducto() {
+		Producto productoPeorCalificado=null;
+		boolean primeraComparacion=true;
+		for(Producto producto : inventarioCine) {
+			if(primeraComparacion) {
+				productoPeorCalificado=producto;
+				
+			}
+			if(producto.getValoracionComida()<productoPeorCalificado.getValoracionComida()) {
+				productoPeorCalificado=producto;
+			}
+			
+		}
+		return productoPeorCalificado;
+
+	}
+	/** Description: Este metodo se encarga de revisar en el arrayList de inventario que producto ha tenido
+	 * la mejor calificacion, osea, el producto mas eficiente segun los gustos de los clientes, con este producto vamos 
+	 * a generar combos en recompensa a los clientes que nos dejaron sus reseñas
+	 * */
+	public Producto mejorProducto() {
+		Producto productoMejorCalificado=null;
+		boolean primeraComparacion=true;
+		for(Producto producto : inventarioCine) {
+			if(primeraComparacion) {
+				productoMejorCalificado=producto;
+				
+			}
+			if(producto.getValoracionComida()>productoMejorCalificado.getValoracionComida()) {
+				productoMejorCalificado=producto;
+			}
+			
+		}
+		return productoMejorCalificado;
+
+	}
 	
 	//Constructor
 	

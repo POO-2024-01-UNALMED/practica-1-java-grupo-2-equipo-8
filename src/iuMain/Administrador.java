@@ -170,6 +170,7 @@ public class Administrador {
 		{
 			
 			sucursalCine1.getServicios().add(servicioComidaM);
+			
 
 			sucursalCine2.getServicios().add(servicioComidaM);
 			sucursalCine2.getServicios().add(servicioSouvenirsM);

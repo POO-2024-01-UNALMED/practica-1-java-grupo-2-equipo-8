@@ -7,11 +7,14 @@ import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.servicios.herencia.Servicio;
 import gestionAplicacion.usuario.Cliente;
+import gestionAplicacion.usuario.MetodoPago;
 public class Funcionalidad3 {
 	static void calificacion(Cliente clienteProceso){
 		boolean verificar = true;
 		int eleccion = 0;
-		
+		int eleccion1=0;
+		int eleccion2=0;
+		int eleccion3=0;
 		/** Description: Esta funcionalidad 3 se va a encargar de hacer la respectiva calificacion de peliculas y productos dependiendo
 		 * de los gustos del cliente, ya que con estas calificaciones vamos a hacer un proceso interno de logica de negocio 
 		 * dentro del cine, para poder saber que peliculas o productos estan funcionando bien o por consecuencia, cuales 
@@ -93,6 +96,14 @@ public class Funcionalidad3 {
 						else {
 							System.out.println("De esta comida todavia hay unidades en inventario");
 						}
+						System.out.print("\nComo calificaste un producto te queremos hacer la oferta de un combo especial, deseas verlo?/1.Si/2.No : ");
+						eleccion1 = Integer.parseInt(sc.nextLine());
+						if (eleccion1==1) {
+							mostrarCombo();
+						}
+						else {
+							System.out.println("Gracias por tu tiempo... Adios ");
+						}
 						
 					}catch(NumberFormatException e) {
 						System.out.println("\nError, debes ingresar un dato numérico\n");
@@ -102,6 +113,7 @@ public class Funcionalidad3 {
 					
 				}while(verificar);
 				}
+			
 			else {
 				System.out.println("\n******Lastimosamente no has hecho compra de ningun alimento, por lo tanto no puedes calificar ninguno*******");
 			}
@@ -157,6 +169,45 @@ public class Funcionalidad3 {
 						}
 						else {
 							System.out.println("Esta pelicula todavia tiene horarios");
+						}
+						System.out.print("\nComo calificaste una pelicula te queremos hacer la oferta de un combo especial, deseas verlo?/1.Si/2.No : ");
+						eleccion1 = Integer.parseInt(sc.nextLine());
+						if (eleccion1==1) {
+							Pelicula peliculaCombo=clienteProceso.getCineActual().mejorPelicula();
+							Producto productoCombo1=clienteProceso.getCineActual().peorProducto();
+							System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula" +
+							peliculaCombo.getNombre() + "y el producto " + productoCombo1.getNombre() + productoCombo1.getTamaño()) ;
+							double precioTotal=0;
+							precioTotal=peliculaCombo.getPrecio()+productoCombo1.getPrecio();
+							System.out.println("Este combo tiene un precio de: " + precioTotal + ",deseas adquirirlo? /1.Si/2.No:  ");
+							eleccion2 = Integer.parseInt(sc.nextLine());
+							
+							do {
+								try {
+									
+									System.out.println("\nMETODOS DE PEGO DISPONIBLES:\n");
+									System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso));
+									System.out.print("Seleccione una opcion: ");
+									eleccion = Integer.parseInt(sc.nextLine());
+									
+								}catch(NumberFormatException e) {
+									System.out.println("\nError, debes ingresar un dato numérico\n");
+									continue;
+								}
+								
+								MetodoPago metodoDePago = MetodoPago.usarMetodopago(clienteProceso, eleccion);
+								System.out.println("\n----------------------------------------------------------------------------------");
+								System.out.println("\n         Gracias por utilizar: "+ metodoDePago.getNombre() +" para hacer tu pago");
+								
+								
+								
+								
+								clienteProceso.setValorPedido(metodoDePago.realizarPago(clienteProceso.getValorPedido(),clienteProceso));	
+							}
+						}
+						else {
+							System.out.println("Gracias por tu tiempo... Adios ");
+							Administrador.inicio(clienteProceso);
 						}
 					
 					

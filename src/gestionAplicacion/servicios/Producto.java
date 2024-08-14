@@ -22,7 +22,7 @@ public class Producto implements Serializable {
 	private double valoracionComida;
 	private int totalEncuestasDeValoracionRealizadasComida;
 	private boolean strikeCambio;
-	
+	private SucursalCine sucursalSede;
 	public void descontarPrecioDeBono() {
 		
 	}
@@ -41,6 +41,8 @@ public class Producto implements Serializable {
 		
 	}
 	
+	
+
 	//Constructores
 	public Producto() {}
 	
@@ -69,6 +71,7 @@ public class Producto implements Serializable {
 		this.tipoProducto = tipoProducto;
 		this.cantidad = cantidad;
 		this.valoracionComida= 4.0;
+		this.sucursalSede = sucursalCine;
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
 		sucursalCine.getInventarioCine().add(this);
 		this.strikeCambio = false;
@@ -172,6 +175,14 @@ public class Producto implements Serializable {
 
 	public void setStrikeCambio(boolean strikeCambio) {
 		this.strikeCambio = strikeCambio;
+	}
+
+	public SucursalCine getSucursalSede() {
+		return sucursalSede;
+	}
+
+	public void setSucursalSede(SucursalCine sucursalSede) {
+		this.sucursalSede = sucursalSede;
 	}
 
 

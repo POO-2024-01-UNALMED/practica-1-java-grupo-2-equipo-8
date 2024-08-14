@@ -445,7 +445,56 @@ public class Pelicula implements Serializable{
 			return true;
 		}	
 	}
+	/**
+	 * Description: Este método se encarga de filtrar los horarios de la película ejecutando el método
+	 * que están disponibles durante el día actual, retornando la lista de horarios encontrados, con 
+	 * el fin de efectuar la actualización y solicitud de actualización de las salas de cine.
+	 * @return <b>ArrayList(LocalDateTime)</b> : Este método retorna los horarios de la película que 
+	 * serán o fueron presentados el día de hoy.
+	 * */
+	public LocalDateTime filtrarHorariosPeliculas() {
+	    LocalDateTime horariosPelicula = null;
+		boolean isAsientosDisponibles = false;
+		if(this.filtrarHorariosPelicula().size()>0) {
+			
+			for (LocalDateTime horario : this.filtrarHorariosPelicula()) {
+
+				isAsientosDisponibles = this.hasDisponibilidadAsientos(horario);
+
+				if  (isAsientosDisponibles) {
+					horariosPelicula=horario;
+					
+						
+					}
+				
+				}
+			
+			}
+		 
+		return horariosPelicula;
+		}
+
+	 
+
+		
 	
+
+	/**
+	 * Description : Este método se encarga de evaluar si la película dado un horario tiene asientos disponibles para este.
+	 * @param horario : Este método recibe como parámetro un horario (De tipo LocalDateTime) del cuál accederá a su
+	 * matriz de asientos.
+	 * @return <b>boolean</b> : Este método retorna un boolean que representa si tiene asientos disponibles en ese horario.
+	 * */
+	public boolean hasDisponibilidadAsientos(LocalDateTime horario) {
+		for (int[] filaAsientos : this.asientosVirtuales.get(horarios.indexOf(horario))) {
+			for (int asiento : filaAsientos) {
+				if (asiento == 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	// Getters and Setters
 	public ArrayList<LocalDateTime> getHorarios() {
 		return horarios;
