@@ -25,12 +25,12 @@ public class SalaCine implements Serializable{
 	
 	//Constructors
 	public SalaCine() {
-		
+		cantidadSalasDeCineCreadas++;
+		this.idSalaCine = cantidadSalasDeCineCreadas;
 	}
 	
 	public SalaCine(int nSala, String tipoDeSala, SucursalCine ubicacionSede){
-		cantidadSalasDeCineCreadas++;
-		this.idSalaCine = cantidadSalasDeCineCreadas;
+		this();
 		this.numeroSala = nSala;
 		this.tipoDeSala = tipoDeSala;
 		this.ubicacionSede = ubicacionSede;
@@ -266,11 +266,11 @@ public class SalaCine implements Serializable{
 				firstTimeComparacionHorario = true;
 
 				//Para evitar que haga la comparación y le settee una película con un horario que no le corresponde
-				if (pelicula.filtrarHorariosPelicula().size() == 0) {
+				if (pelicula.filtrarHorariosPeliculaParaSalaCine().size() == 0) {
 					continue;
 				}
 				
-				for (LocalDateTime horario : pelicula.getHorarios()) {
+				for (LocalDateTime horario : pelicula.filtrarHorariosPeliculaParaSalaCine()) {
 					//Si es la primera vez que se realiza la comparación los setteamos como el valor más cercano al actual
 					if (firstTimeComparacionHorario) {
 						horarioMasCercanoAlActual = horario;
@@ -408,9 +408,9 @@ public class SalaCine implements Serializable{
 		
 		for (Pelicula pelicula : ubicacionSede.getCartelera()) {
 			if (pelicula.getSalaPresentacion().equals(this)) {
-				for (LocalDateTime horario : pelicula.getHorarios()) {
+				for (LocalDateTime horario : pelicula.filtrarHorariosPeliculaParaSalaCine()) {
 					
-					if (horario.toLocalDate().equals(diaActual)) {
+					if (horario.toLocalDate().isEqual(diaActual)) {
 						isHorarioEncontrado = true;
 						break;
 					}

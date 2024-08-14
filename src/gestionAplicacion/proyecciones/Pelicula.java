@@ -292,6 +292,23 @@ public class Pelicula implements Serializable{
 	}
 	
 	/**
+	 * Description : Este método se encarga de evaluar si la película dado un horario tiene asientos disponibles para este.
+	 * @param horario : Este método recibe como parámetro un horario (De tipo LocalDateTime) del cuál accederá a su
+	 * matriz de asientos.
+	 * @return <b>boolean</b> : Este método retorna un boolean que representa si tiene asientos disponibles en ese horario.
+	 * */
+	public boolean hasDisponibilidadAsientos(LocalDateTime horario) {
+		for (int[] filaAsientos : this.asientosVirtuales.get(horarios.indexOf(horario))) {
+			for (int asiento : filaAsientos) {
+				if (asiento == 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Description : Este método se encarga de filtrar los horarios de la película más próximos que no han sido presentados aún y, además, 
 	 * tienen asientos disponibles.
 	 * @return <b>ArrayList(LocalDateTime)</b> : Este método se encarga de retornar los primeros 7 horarios más cercanos a la fecha actual 
@@ -303,17 +320,34 @@ public class Pelicula implements Serializable{
 		
 		for (LocalDateTime horario : this.horarios) {
 			
-			for (int[] filaAsientos : this.asientosVirtuales.get(horarios.indexOf(horario))) {
-				for (int asiento : filaAsientos) {
-					if (asiento == 0) {
-						isAsientosDisponibles = true;
-					}
-				}
-			}
+			isAsientosDisponibles = this.hasDisponibilidadAsientos(horario);
 			
 			if (horario.isAfter(SucursalCine.getFechaActual()) && isAsientosDisponibles) {
 				horariosPelicula.add(horario);
 				if (horariosPelicula.size() == 7) break;
+			}
+		}
+		
+		return horariosPelicula;
+	}
+	
+	/**
+	 * Description: Este método se encarga de filtrar los horarios de la película ejecutando el método
+	 * que están disponibles durante el día actual, retornando la lista de horarios encontrados, con 
+	 * el fin de efectuar la actualización y solicitud de actualización de las salas de cine.
+	 * @return <b>ArrayList(LocalDateTime)</b> : Este método retorna los horarios de la película que 
+	 * serán o fueron presentados el día de hoy.
+	 * */
+	public ArrayList<LocalDateTime> filtrarHorariosPeliculaParaSalaCine() {
+		ArrayList<LocalDateTime> horariosPelicula = new ArrayList<>();
+		boolean isAsientosDisponibles = false;
+		
+		for (LocalDateTime horario : this.horarios) {
+			
+			isAsientosDisponibles = this.hasDisponibilidadAsientos(horario);
+			
+			if (horario.toLocalDate().isEqual(SucursalCine.getFechaActual().toLocalDate()) && isAsientosDisponibles) {
+				horariosPelicula.add(horario);
 			}
 		}
 		

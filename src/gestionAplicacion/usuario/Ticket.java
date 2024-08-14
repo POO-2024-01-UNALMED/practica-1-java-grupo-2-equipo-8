@@ -24,10 +24,6 @@ public class Ticket implements IBuyable, Serializable{
 	private boolean descuento;
 
 	//Constructors
-	public Ticket() {
-		
-	}
-	
 	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalDondeFueComprado) {
 		this.descuento = true;
 		this.pelicula = pelicula;

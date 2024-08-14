@@ -518,13 +518,13 @@ public class SucursalCine implements Serializable {
 	//Constructor
 	public SucursalCine() {
 		sucursalesCine.add(this);
+		cantidadSucursales++;
+		this.idSucursal = cantidadSucursales;
 		
 	}
 	
 	public SucursalCine(String lugar) {
 		this();
-		cantidadSucursales++;
-		this.idSucursal = cantidadSucursales;
 		this.cantidadTicketsCreados = 1;
 		this.lugar = lugar;
 	}
@@ -695,6 +695,7 @@ public class SucursalCine implements Serializable {
 	
 	/*ToDo Andy's list
 	0. Optimizar código en serializador y deserializador (Hecho).
+	0.1.
 	1. Realizar testeos.
 	2. Crear reloj para mostrar la hora cada vez que avanza y mover método avanzarTiempo a Administrador (Juan).
 	3. Crear validaciones para deserializador (Verificar que guarde todo en el lugar correcto).

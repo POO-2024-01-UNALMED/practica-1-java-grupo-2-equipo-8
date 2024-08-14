@@ -292,7 +292,7 @@ public class Serializador {
 				try {
 					fos = new FileOutputStream(file);
 					oos = new ObjectOutputStream(fos);
-					oos.writeObject(SucursalCine.getFechaValidacionNuevoDiaDeTrabajo());
+					oos.writeObject(SucursalCine.getFechaRevisionLogicaDeNegocio());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

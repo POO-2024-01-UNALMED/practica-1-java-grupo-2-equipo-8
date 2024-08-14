@@ -258,6 +258,7 @@ public class Administrador {
 		
 		//MAIN
 		inicioDelSistema();
+		
 		System.out.println("Iniciar sesión");
 		Cliente clienteProceso = iniciarSesion();
 		
@@ -328,7 +329,6 @@ public class Administrador {
 		
 		Deserializador.deserializar();
 		Deserializador.deserializarEstaticos();
-		//avanzarTiempo();
 		
 	}
 	
@@ -397,10 +397,7 @@ public class Administrador {
 			SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
 			
 			//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva
-			
-			
-			//Implementar método aquí para revisar estados de membresías y en caso de ser necesario desvincularla del cliente
-
+			//Crear método
 			
 		}
 		
@@ -1836,6 +1833,7 @@ public class Administrador {
 			        
 			        //Actualizamos el estado de la fecha actual, de las películas y las salas de cine 
 			        SucursalCine.setFechaActual(salaDeCineProceso.getHorarioPeliculaEnPresentacion().plus(salaDeCineProceso.getPeliculaEnPresentacion().getDuracion()));
+			        avanzarTiempo();
 			        
 				}else {
 					System.out.println("\nNo tienes un ticket válido o no cumple con los requisitos para ingresar a esta sala de cine" 
@@ -1998,6 +1996,7 @@ public class Administrador {
 			
 			//Actualizamos el estado de la fecha actual, de las películas y las salas de cine 
 			SucursalCine.setFechaActual(ticketParaUsar.getHorario());
+			avanzarTiempo();
 			
 			//Mostramos en pantalla el resultado del proceso
 			System.out.println("\nEsperando...");
