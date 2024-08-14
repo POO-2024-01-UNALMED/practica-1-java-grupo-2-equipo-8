@@ -1266,6 +1266,17 @@ public class Administrador {
 						ticketProceso.procesarPagoRealizado(clienteProceso);
 						salaDeCineProceso.cambiarDisponibilidadAsientoLibre(numeroAsientoProceso);
 						
+						//Generamos la fila y la columna a partir del número de asiento seleccionado para modificar su disponibilidad
+						//Nota : Esto es para preservar la persistencia, en caso de reservar un ticket de una película en presentación,
+						//también debemos añadir este cambio a la sala virtual, ya que luego de deserializar se ponen falsos todas las
+						//disponibilidades de asientos y renovamos los valores con los asientos virtuales de la película que debe estar 
+						//en presentación en ese momento del tiempo, es por esto que debemos actualizar también la matriz de asientos
+						//en película, ya que sin esto, se pierde este dato de la compra y permitiría comprar varios tickets para el
+						//mismo asiento.
+						int filaProceso = Character.getNumericValue(numeroAsientoProceso.charAt(0));
+						int columnaProceso = Character.getNumericValue(numeroAsientoProceso.charAt(2));
+						peliculaProceso.modificarSalaVirtual( salaDeCineProceso.getHorarioPeliculaEnPresentacion(), filaProceso, columnaProceso );
+						
 						System.out.println( ticketProceso.factura() );
 						pagoRealizado = true;
 						
@@ -1994,10 +2005,6 @@ public class Administrador {
 				continue;
 			}
 			
-			//Actualizamos el estado de la fecha actual, de las películas y las salas de cine 
-			SucursalCine.setFechaActual(ticketParaUsar.getHorario());
-			avanzarTiempo();
-			
 			//Mostramos en pantalla el resultado del proceso
 			System.out.println("\nEsperando...");
 			try {
@@ -2005,6 +2012,10 @@ public class Administrador {
 			}catch(InterruptedException e) {
 				e.printStackTrace();
 			}
+			
+			//Actualizamos el estado de la fecha actual, de las películas y las salas de cine 
+			SucursalCine.setFechaActual(ticketParaUsar.getHorario());
+			avanzarTiempo();
 			System.out.println("La fecha actual ha sido actualizada con éxito ( " + SucursalCine.getFechaActual() + " )\n(Redireccionando al menú principal...)");
 			
 			finalizarLogicaSalaDeEspera = true;
