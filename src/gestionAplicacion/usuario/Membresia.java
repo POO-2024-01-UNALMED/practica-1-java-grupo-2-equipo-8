@@ -341,6 +341,7 @@ public class Membresia implements IBuyable, Serializable{
 		//En caso de tener una membresia se puede renovar y no se resta el stock de su inventario por lo que ya esta asignada.
 		} else {
 			cliente.setFechaLimiteMembresia(cliente.getFechaLimiteMembresia().plusDays(this.duracionMembresiaDias));
+			cliente.getMembresia().getClientes().remove(cliente);
 		}
 		
 		//Se va al inventario del cine para restar la cantidad de membresias si el cliente no esta renovando.

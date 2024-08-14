@@ -39,6 +39,14 @@ public class MetodoPago implements Serializable{
 		this.limiteMaximoPago = limiteMaximoPago;
 		this.tipo = tipo;
 	}
+	
+	public MetodoPago(double descuentoAsociado, String nombre, double limiteMaximoPago, int tipo) {
+		this.nombre = nombre;
+		this.descuentoAsociado = descuentoAsociado;
+		this.limiteMaximoPago = limiteMaximoPago;
+		this.tipo = tipo;
+	}
+	
 
 	public void cambiarDisponibilidadMetodoPago() {
 		
@@ -128,9 +136,7 @@ public class MetodoPago implements Serializable{
 			tipoMembresiaInt = tipoMembresia.getTipoMembresia();
 			if (puntos == null) {
 				cliente.setPuntos(2500);
-				puntos = new MetodoPago("Puntos", 0.0, cliente.getPuntos(), tipoMembresiaInt);
-			} else {
-				SucursalCine.getMetodosDePagoDisponibles().add(puntos);
+				puntos = new MetodoPago(0.0, "Puntos", cliente.getPuntos(), tipoMembresiaInt);
 			}
 		}
 		
@@ -143,7 +149,10 @@ public class MetodoPago implements Serializable{
 			}
 		}
 		//Se elimina la referencia del canje de puntos en la lista de métodos de pago estatica.
-		SucursalCine.getMetodosDePagoDisponibles().remove(puntos);
+//		SucursalCine.getMetodosDePagoDisponibles().remove(puntos);
+		if (puntos != null) {
+			cliente.getMetodosDePago().add(puntos);
+		}
 		return cliente.getMetodosDePago();
 	}
 	
