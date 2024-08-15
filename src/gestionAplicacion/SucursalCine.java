@@ -522,7 +522,7 @@ public class SucursalCine implements Runnable, Serializable {
 		boolean primeraComparacion=true;
 		
 		for(Pelicula peliculas : peliculasDisponibles) {
-			if(peliculas.filtrarHorariosPeliculaParaSalaCine()!=null) {
+			if(peliculas.filtrarHorariosPeliculas()!=null) {
 				continue;
 			}
 			if(primeraComparacion) {
@@ -545,7 +545,7 @@ public class SucursalCine implements Runnable, Serializable {
 		Pelicula peliculaMejorCalificada=null;
 		boolean primeraComparacion=true;
 		for(Pelicula peliculas : peliculasDisponibles) {
-			if(peliculas.filtrarHorariosPeliculaParaSalaCine()!=null) {
+			if(peliculas.filtrarHorariosPeliculas()!=null) {
 				continue;
 			}
 			if(primeraComparacion) {
@@ -601,7 +601,112 @@ public class SucursalCine implements Runnable, Serializable {
 		return productoMejorCalificado;
 
 	}
+	/**
+	 * Description: Este método se encarga de realizar la distribución de productos en los inventarios de los productos
+	 * ccada semana
+	 *  luego de haber efectuado el cambio de producto de sucursal propio de la funcionalidad 3. 
+	 * */
+	public static void logicaSemanalProducto() {
+		for (SucursalCine sede : sucursalesCine) {
+			for(Producto producto:sede.getInventarioCine()) {
+				if(producto.getTipoProducto().equals("comida")){
+					
+					sede.logicaCalificacionProductos(producto);
+					
+				}
+				else if(producto.getTipoProducto().equals("souvenir")){
+					
+					sede.logicaCalificacionProductos(producto);
+					
+				}
+			}
+		}
+	}	
+	/** Description: Este metodo se encarga de analizar por semana que productos han sido bien o mal calificadas, evaluando
+	 * las calificaciones de los clientes, si un producto es calificado por debajo de 3, lo consideramos como mal calificado
+	 * y lo cambiamos de sede, y si la valoracion del producto esta por encima de 3 esta catalogada como bien, ya en el caso en que el 
+	 * bono este calificado como mayor a 4.5, lo cambiamos de sede, ya que consideramos que es un muy buen producto, y 
+	 * nos hara ganar mayor rentabilidad.Tambien se encarga de cambiar productos de sede, ya que en nuestra logica de negocio implementamos
+	 * el sistema de calificaciones, entonces tenemos que estar constantemente pendientes de que productos han sido
+	 * bien o mal recibidos por los clientes, y cambiandolos de sede, esperamos que su calificacion mejore, si esto
+	 * no se da, el producto es eliminado del inventario, ya que se considera como malo
+	 * */
+	public  void logicaCalificacionProductos(Producto producto){	
+		
+		ArrayList <Producto> productosCalificados = filtrarPorNombreDeProducto(producto.getNombre(), this.inventarioCine);
+		
+		
+		boolean verificacionCambio=true;
+		
+			
+			
+		
+		if (producto.getValoracionComida()<3) {
+			if(verificacionCambio) {
+				SucursalCine sucursal=seleccionarSucursalAleatoriamente(producto.getSucursalSede());
+				for (Producto productos1:productosCalificados) {
+					this.inventarioCine.remove(productos1);
+					if (productos1.getTipoProducto().equals("comida")){
+						new Producto(productos1.getNombre(),productos1.getTamaño(),productos1.getTipoProducto(),(productos1.getPrecio()*0.9),productos1.getCantidad(),productos1.getGenero(),sucursal);
+						if (productos1.getTipoProducto().equals("souvenir")){
+							new Producto(productos1.getNombre(),productos1.getTamaño(),productos1.getTipoProducto(),(productos1.getPrecio()*0.9),productos1.getCantidad(),productos1.getGenero(),sucursal);
+					}
+				   }
+				}
+			}
+			else {
+				eliminarProducto(productosCalificados);
+			}			
+		}
+		else if (producto.getValoracionComida()>4.5) {
+			SucursalCine sucursal1=seleccionarSucursalAleatoriamente(producto.getSucursalSede());
+			for (Producto productos2:productosCalificados) {
+				if (productos2.getTipoProducto().equals("comida")){
+					new Producto(productos2.getNombre(),productos2.getTamaño(),productos2.getTipoProducto(),(productos2.getPrecio()*1.10),productos2.getCantidad(),productos2.getGenero(),sucursal1);
+					if (productos2.getTipoProducto().equals("souvenir")){
+						new Producto(productos2.getNombre(),productos2.getTamaño(),productos2.getTipoProducto(),(productos2.getPrecio()*1.10),productos2.getCantidad(),productos2.getGenero(),sucursal1);
+						
+					}
+				}
+				
+			}
+			
+						
+		}
 	
+		
+	}
+	/** Description: Este metodo se encarga de remover los productos que fueron mal calificadas en dos sucursales, por lo
+	 * tanto por temas de negocio decidimos eliminar este producto por malas ventas, usando la funcion remove, quitandola
+	 * de la cartelera principal de peliculas.
+	 *
+	 * */
+	public void eliminarProducto(ArrayList<Producto> productosEliminar) {
+		for(Producto producto:productosEliminar) {
+			this.inventarioCine.remove(producto);
+		}
+	}
+
+ 
+	/**
+	 * Description : Este método se encarga de retornar los productos cuyo nombre coincide con el nombre del producto seleccionada por el cliente.
+	 * @param nombreProducto : Este método recibe como parámetro el nombre del producto (De tipo String) con el cuál se realizará el filtrado.
+	 * @param Inventario : Este método recibe como parámetro una lista (De tipo ArrayList<Producto>) que contiene 
+	 * los productos previamente filtrados según los datos del cliente y su disponibilidad horaria.
+	 * @return <b>ArrayList<Producto></b> : Este método retorna un ArrayList de los productos cuyo nombre coinciden con el nombre seleccionado 
+	 * por el cliente.
+	 * */	 
+	public static ArrayList<Producto> filtrarPorNombreDeProducto(String nombreProducto, ArrayList<Producto> Inventario){
+		ArrayList<Producto> productosEncontrados = new ArrayList<>();
+		
+		for (Producto producto : Inventario) {
+			if (producto.getNombre().equals(nombreProducto)) {
+				productosEncontrados.add(producto);
+			}
+		}
+		
+		return productosEncontrados;
+	}
 	//Constructor
 	
 	public SucursalCine(String lugar) {

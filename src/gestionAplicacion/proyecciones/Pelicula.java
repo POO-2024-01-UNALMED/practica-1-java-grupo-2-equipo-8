@@ -449,8 +449,7 @@ public class Pelicula implements Serializable{
 	 * Description: Este método se encarga de filtrar los horarios de la película ejecutando el método
 	 * que están disponibles durante el día actual, retornando la lista de horarios encontrados, con 
 	 * el fin de efectuar la actualización y solicitud de actualización de las salas de cine.
-	 * @return <b>ArrayList(LocalDateTime)</b> : Este método retorna los horarios de la película que 
-	 * serán o fueron presentados el día de hoy.
+	 * 
 	 * */
 	public LocalDateTime filtrarHorariosPeliculas() {
 	    LocalDateTime horariosPelicula = null;
@@ -474,7 +473,17 @@ public class Pelicula implements Serializable{
 		return horariosPelicula;
 		}
 
-	 
+	 public String seleccionarAsientoAleatorio(LocalDateTime horarioProceso) {
+		 boolean validacion=true;
+		 String numAsiento=null;
+		 while (validacion) {
+			int fila=((int)Math.random()*10)%8;
+			int columna=((int)Math.random()*10)%8;
+			validacion=!this.isDisponibilidadAsientoSalaVirtual(horarioProceso, fila, columna);
+			numAsiento=fila+"-"+columna;
+		 }
+		 return numAsiento;
+	 }
 
 		
 	

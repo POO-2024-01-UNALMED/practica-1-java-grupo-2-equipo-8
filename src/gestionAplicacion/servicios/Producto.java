@@ -2,6 +2,7 @@ package gestionAplicacion.servicios;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
@@ -41,6 +42,23 @@ public class Producto implements Serializable {
 		
 	}
 	
+	/**
+	*Description: Este metodo se encarga de generar un codigo aleatorio para los bonos creados.
+	*@param longitud :  se pasa el como parametro la longitud que se desea el codigo
+	*@return <b>Bono</b> :  Se retorna el bono creado
+	*/
+	public String generarCodigoAleatorio(int longitud) {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder codigo = new StringBuilder(longitud);
+
+        for (int i = 0; i < longitud; i++) {
+            int index = random.nextInt(caracteres.length());
+            codigo.append(caracteres.charAt(index));
+        }
+
+        return codigo.toString();
+    }
 	
 
 	//Constructores

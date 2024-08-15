@@ -263,14 +263,13 @@ public class Administrador {
 		
 		System.out.println("\nIngresar a una de nuestras sedes");
 		clienteProceso.setCineActual(ingresarASucursal());
-		/*
-		Thread hiloLogicaProyecto = new Thread(clienteProceso.getCineActual());
-		hiloLogicaProyecto.start();*/
+		
+		
 		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
 		inicio(clienteProceso);
-		/*
-		hiloLogicaProyecto.interrupt();*/
+		
+		
 		salirDelSistema();
 		
 		
