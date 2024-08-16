@@ -2103,11 +2103,11 @@ public class Administrador {
         
         
      // Imprimir la hora en un estilo más decorativo
-        System.out.println("╔══════════════════════════════╗");
-        System.out.println("║     ⏰⏰Current Date⏰⏰	  ║");
-        System.out.println("║   •" + formattedDate + "     ║");
+        System.out.println("\n╔══════════════════════════════╗");
+        System.out.println("║     ⏰⏰Current Date⏰⏰      ║");
+        System.out.println("    •" + formattedDate + "     ");
         System.out.println("║                              ║");
-        System.out.println("║   •" + formattedTime +"	   ║");
+        System.out.println("         •" + formattedTime +"        ");
         System.out.println("╚══════════════════════════════╝");
         System.out.println();
 	}
