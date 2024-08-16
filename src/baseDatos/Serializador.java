@@ -37,8 +37,6 @@ public class Serializador {
 	 * 6. Inventario.
 	 * 7. Servicios.
 	 * 8. Tarjetas cinemar.
-	 * 9. Tickets creados.
-	 *
 	 * */
 	public static void serializar(SucursalCine sucursalCine) {
 		FileOutputStream fos;
@@ -118,19 +116,6 @@ public class Serializador {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-					} else if (file.getAbsolutePath().contains("ticketsCreados")) {
-						try {
-							fos = new FileOutputStream(file);
-							oos = new ObjectOutputStream(fos);
-							oos.writeObject(sucursalCine.getTicketsCreados());
-						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}  catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}

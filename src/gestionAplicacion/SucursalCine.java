@@ -40,7 +40,7 @@ public class SucursalCine implements Serializable {
 	private ArrayList<SalaCine> salasDeCine = new ArrayList<>();
 	private ArrayList<Producto> inventarioCine = new ArrayList<>();
 	private ArrayList<Pelicula> cartelera = new ArrayList<>();
-	private ArrayList<Ticket> ticketsCreados = new ArrayList<>();
+	private ArrayList<Ticket> ticketsParaDescuento = new ArrayList<>();
 	private ArrayList<Servicio> servicios = new ArrayList<>();
 	private ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private ArrayList<TarjetaCinemar> InventarioTarjetasCinemar = new ArrayList<>();
@@ -100,10 +100,11 @@ public class SucursalCine implements Serializable {
 							
 						}
 					}catch(NullPointerException e) {
-						//Llegamos acá en caso de desearialización o primer inicio de programa
-						salaDeCine.actualizarPeliculasEnPresentacion();
 						//Revisamos si la sala de cine tiene más presentaciones durante este día
 						salaDeCine.tieneMasHorariosPresentacionHoy();
+						//Llegamos acá en caso de desearialización o primer inicio de programa
+						salaDeCine.actualizarPeliculasEnPresentacion();
+						
 						
 					}
 				}
@@ -318,7 +319,6 @@ public class SucursalCine implements Serializable {
 	 * */
 	public static void logicaSemanalReservarTicket() {
 		ticketsDisponibles.clear();
-		dropHorariosVencidos();
 		for (SucursalCine sede : sucursalesCine) {
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();
@@ -344,16 +344,53 @@ public class SucursalCine implements Serializable {
 	}
 	
 	/**
-	 * Description : Este método se encarga de revisar la posibilidad de que una sala de cine pueda ser actualizada durante ese día,
-	 * Este lógica se ejecuta con el fin de que al inicio del día se revisa si la sala de cine tendrá películas en presentación, 
-	 * para ser actualizada durante la jornada laboral.
+	 * Description : Este método se encarga de evaluar la lógica diaria de la reserva de tickets, para esto evalua los siguientes criterios:
+	 * 1. Revisa la posibilidad de que una sala de cine pueda ser actualizada durante ese día,
+	 * Esta lógica se ejecuta con el fin de que al inicio del día se revisa si la sala de cine tendrá películas en presentación, 
+	 * durante este día para que pueda realizar peticiones de actualización durante la jornada laboral.
+	 * 2. Añade los tickets de películas que serán presentadas el día de hoy al array de tickets para descuento y elimina los tickets
+	 * caducados de los clientes y del array de tickets disponibles.
+	 * 3. Elimina los horarios de películas que ya no serán presentados.
 	 * */
-	public static void actualizarPermisoPeticionActualizacionSalasCine() {
+	public static void logicaDiariaReservarTicket() {
+		
+		ArrayList<Ticket> ticketsAEliminar = new ArrayList<Ticket>();
+		
 		for (SucursalCine sede : sucursalesCine) {
+			
+			//Revisamos si las salas de cine presentarán películas el día de hoy
 			for (SalaCine salaDeCine : sede.salasDeCine) {
 				salaDeCine.tieneMasHorariosPresentacionHoy();
 			}
+			
+			//Añadimos los tickets que podrán recibir descuentos a su array de tickets para descuento de su respectiva sucursal
+			sede.ticketsParaDescuento.clear();
+			for (Ticket ticket : ticketsDisponibles) {
+				if (ticket.getSucursalCompra().equals(sede) &&
+					ticket.getHorario().toLocalDate().isEqual(fechaActual.toLocalDate())) {
+					sede.ticketsParaDescuento.add(ticket);
+					
+				}
+				
+				if (ticket.getHorario().plus(ticket.getPelicula().getDuracion()).isBefore(fechaActual)) {
+					ticketsAEliminar.add(ticket);
+				}
+			}
 		}
+		
+		//Eliminamos los horarios caducados
+		dropHorariosVencidos();
+		
+		//Eliminamos los tickets caducados
+		for (Ticket ticket : ticketsAEliminar) {
+			SucursalCine.ticketsDisponibles.remove(ticket);
+		}
+		
+		//Eliminamos los tickets caducados de los clientes
+		for (Cliente cliente : clientes) {
+			cliente.dropTicketsCaducados();
+		}
+		
 	}
 	
 	/**
@@ -562,14 +599,6 @@ public class SucursalCine implements Serializable {
 		this.salasDeCine = salasDeCine;
 	}
 	
-	public ArrayList<Ticket> getTicketsCreados() {
-		return ticketsCreados;
-	}
-	
-	public void setTicketsCreados(ArrayList<Ticket> ticketsCreados) {
-		this.ticketsCreados = ticketsCreados;
-	}
-	
 	public static ArrayList<SucursalCine> getSucursalesCine() {
 		return sucursalesCine;
 	}
@@ -689,9 +718,14 @@ public class SucursalCine implements Serializable {
 	public static void setTiposDeMembresia(ArrayList<Membresia> tiposDeMembresia) {
 		SucursalCine.tiposDeMembresia = tiposDeMembresia;
 	}
-	
-	
 
+	public ArrayList<Ticket> getTicketsParaDescuento() {
+		return ticketsParaDescuento;
+	}
+
+	public void setTicketsParaDescuento(ArrayList<Ticket> ticketsParaDescuento) {
+		this.ticketsParaDescuento = ticketsParaDescuento;
+	}
 	
 	/*ToDo Andy's list
 	0. Optimizar código en serializador y deserializador (Hecho).

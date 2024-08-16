@@ -81,15 +81,16 @@ public class Ticket implements IBuyable, Serializable{
 		//Se aumenta la cantidad de tickets creados
 		cliente.getCineActual().setCantidadTicketsCreados(cliente.getCineActual().getCantidadTicketsCreados() + 1);
 		
-		//Se crea un apuntador del ticket en el array de tickets generados de la sucursal de cine
-		cliente.getCineActual().getTicketsCreados().add(this);
+		//Se crea un apuntador del ticket en el array de tickets disponibles y se evalua si aplica para algún descuento
+		SucursalCine.getTicketsDisponibles().add(this);
+		if (this.horario.toLocalDate().isEqual(SucursalCine.getFechaActual().toLocalDate())) {
+			cliente.getCineActual().getTicketsParaDescuento().add(this);
+		}
 		
 		//Proceso para funcionalidad 4
 		String codigoArkade = this.generarCodigoTicket();
 		//Arkade.getCodigosGenerados().add(codigoArkade);
 		this.dueno.getCodigosDescuento().add(codigoArkade);
-		
-		SucursalCine.getTicketsDisponibles().add(this);
 		
 		//Lógica id
 		cantidadTicketsCreados++;
@@ -239,7 +240,6 @@ public class Ticket implements IBuyable, Serializable{
 	public static void setCantidadTicketsCreados(int cantidadTicketsCreados) {
 		Ticket.cantidadTicketsCreados = cantidadTicketsCreados;
 	}
-
 	
 	
 }

@@ -47,7 +47,6 @@ public class Deserializador {
 	 * 6. Inventario.
 	 * 7. Servicios.
 	 * 8. Tarjetas cinemar.
-	 * 9. Tickets creados.
 	 * 
 	 * Motivo de corrección de referencias: Al deserializar cambia el espacio en memoria del objeto deserializado
 	 * (Investigar esto, ya que ocurre al menos la primera vez que se realiza este proceso) (Crea un nuevo objeto)
@@ -138,22 +137,10 @@ public class Deserializador {
 						fis = new FileInputStream(file);
 						ois = new ObjectInputStream(fis);
 						sucursalCine.setInventarioCine((ArrayList<Producto>) ois.readObject());
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}  catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				} else if (file.getAbsolutePath().contains("ticketsCreados")) {
-					try {
-						fis = new FileInputStream(file);
-						ois = new ObjectInputStream(fis);
-						sucursalCine.setTicketsCreados((ArrayList<Ticket>) ois.readObject());
+//						for (Producto producto : sucursalCine.getInventarioCine()) {
+//							Añadir setter de sucursal
+//							producto.setSucursalSede(sucursalCine);
+//						}
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -285,7 +272,6 @@ public class Deserializador {
 					fis = new FileInputStream(file);
 					ois = new ObjectInputStream(fis);
 					SucursalCine.setJuegos((ArrayList<Arkade>) ois.readObject());
-					
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -312,7 +298,6 @@ public class Deserializador {
 					fis = new FileInputStream(file);
 					ois = new ObjectInputStream(fis);
 					SucursalCine.setMetodosDePagoDisponibles((ArrayList<MetodoPago>) ois.readObject());
-					
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -399,7 +384,7 @@ public class Deserializador {
 		}
 		
 		//Renueva referencias de atributos de instacia que necesitan de atributos estáticos
-		asignarReferenciasDeserializador();
+		asignarReferenciasDeserializadorYoptimizaciones();
 		
 	}
 	
@@ -408,21 +393,37 @@ public class Deserializador {
 	 * sucursal en caso de que estos dependan de alguno de los atributos estáticos, que por orden de deserialización, 
 	 * se deserializan antes. Todo esto con el fin de conservar la persistencia de datos.
 	 * 
-	 * 1. Asigna a cada sucursal los tickets propios de cada una, luego de corregir sus referencias
-	 * a cliente, película y sala de presentación en el deserializador estático (Ver método)
+	 * 1. Asigna a cada sucursal los tickets que pueden recibir algún descuento, luego de corregir sus referencias
+	 * a sucursal, cliente, película y sala de presentación en el deserializador estático.
+	 * 2. Elimina los tickets que ya han caducado de los tickets disponibles.
+	 * 3. Elimina los tickets de clientes que ya han caducado.
 	 * */
-	private static void asignarReferenciasDeserializador() {
+	private static void asignarReferenciasDeserializadorYoptimizaciones() {
+		ArrayList<Ticket> ticketsAEliminar = new ArrayList<Ticket>();
+		
 		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
 			
 			//Borramos los tickets con las referencias antiguas
-			sede.getTicketsCreados().clear();
+			sede.getTicketsParaDescuento().clear();
 			
 			for (Ticket ticket : SucursalCine.getTicketsDisponibles()) {
 				//Validamos si la sede es la misma y su horario de presentación es igual o posterior a la hora actual
 				if (ticket.getSucursalCompra().equals(sede) && 
-					!ticket.getHorario().toLocalDate().isBefore(SucursalCine.getFechaActual().toLocalDate())) {
-					sede.getTicketsCreados().add(ticket);
+					ticket.getHorario().toLocalDate().isEqual(SucursalCine.getFechaActual().toLocalDate())) {
+					sede.getTicketsParaDescuento().add(ticket);
+				} else if (ticket.getHorario().toLocalDate().isBefore(SucursalCine.getFechaActual().toLocalDate())) {
+					ticketsAEliminar.add(ticket);
 				}
+			}
+			
+			//Eliminamos los tickets de tickets disponibles
+			for (Ticket ticket : ticketsAEliminar) {
+				SucursalCine.getTicketsDisponibles().remove(ticket);
+			}
+			
+			//Eliminamos los tickets de clientes
+			for (Cliente cliente : SucursalCine.getClientes()) {
+				cliente.dropTicketsCaducados();
 			}
 			
 		}

@@ -186,7 +186,7 @@ public class Cliente implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de retornar los tickets correspondientes a la sucursal de cine en la que se encuentra el cliente.
-	 * @return ArrayList<Ticket> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
+	 * @return <b>ArrayList(Ticket)</b> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
 	 * o a la sala de espera si este posee al menos un ticket de esta sucursal.
 	 * */
 	public ArrayList<Ticket> filtrarTicketsParaSede() {

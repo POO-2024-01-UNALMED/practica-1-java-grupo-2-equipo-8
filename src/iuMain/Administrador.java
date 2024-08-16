@@ -278,45 +278,48 @@ public class Administrador {
 	 * @param clienteProceso : Se usa a un objeto de tipo Cliente para que pueda ser usado en las funcionalidades
 	 */
 	public static void inicio(Cliente clienteProceso) {
-	int opcion = 0;
-	//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
-	avanzarTiempo();
-	
-	//Cada vez que se va al inicio, se verifica si ya ha pasado el dia para revisar la validez de la membresia.
-	logicaMembresia(clienteProceso);
-	
-	do {
+		int opcion = 0;
 		
-		try {
-			
-			opcion = 0;
-			System.out.println("\n¿Qué operacion desea realizar?");
-			System.out.println("1. Ingresar a sistema de proyecciones de películas");
-			System.out.println("2. Ingresar a los servicios de compra"); 
-			System.out.println("3. Ingresar a la zona de juegos");
-			System.out.println("4. Adquirir o actualizar membresia");
-			System.out.println("5. Hacer calificacion");
-			System.out.println("6. Cambiar de sucursal");
-			System.out.println("7. Salir");
-			opcion = Integer.parseInt(sc.nextLine());
-			
-		}catch(NumberFormatException e) {
-			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-		}
+		//Método de avanzar días
 		
-	}while(!(opcion > 0 & opcion <= 7));
-	
-	
-	switch (opcion) {
-		case 1: ingresarASistemaDeProyecciones(clienteProceso); break;
-		case 2: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
-		case 3: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
-		case 4: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
-		case 5: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
-		case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
-		case 7: salirDelSistema(); break;
-		default: System.out.println("Opción invalida"); inicio(clienteProceso);
-	  }
+		//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
+		avanzarTiempo();
+		
+		//Cada vez que se va al inicio, se verifica si ya ha pasado el dia para revisar la validez de la membresia.
+		logicaMembresia(clienteProceso);
+		
+		do {
+			
+			try {
+				
+				opcion = 0;
+				System.out.println("\n¿Qué operacion desea realizar?");
+				System.out.println("1. Ingresar a sistema de proyecciones de películas");
+				System.out.println("2. Ingresar a los servicios de compra"); 
+				System.out.println("3. Ingresar a la zona de juegos");
+				System.out.println("4. Adquirir o actualizar membresia");
+				System.out.println("5. Hacer calificacion");
+				System.out.println("6. Cambiar de sucursal");
+				System.out.println("7. Salir");
+				opcion = Integer.parseInt(sc.nextLine());
+				
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+			}
+			
+		}while(!(opcion > 0 & opcion <= 7));
+		
+		
+		switch (opcion) {
+			case 1: ingresarASistemaDeProyecciones(clienteProceso); break;
+			case 2: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
+			case 3: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
+			case 4: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
+			case 5: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
+			case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
+			case 7: salirDelSistema(); break;
+			default: System.out.println("Opción invalida"); inicio(clienteProceso);
+		  }
 	
 	}
 	
@@ -393,12 +396,7 @@ public class Administrador {
 			
 			SucursalCine.setFechaValidacionNuevoDiaDeTrabajo(SucursalCine.getFechaActual().toLocalDate().plusDays(1));
 			
-			//Se reestablece la posibilidad de consultar si una sala tiene actualizaciones durante este día
-			SucursalCine.actualizarPermisoPeticionActualizacionSalasCine();
-			
-			//Implementar método aquí para eliminar TicketsCreados para aplicar descuentos por productos de forma efectiva
-			//Crear método
-			
+			SucursalCine.logicaDiariaReservarTicket();		
 		}
 		
 		if (SucursalCine.getFechaActual().toLocalTime().isBefore(SucursalCine.getFinHorarioLaboral()) 

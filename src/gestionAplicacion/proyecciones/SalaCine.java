@@ -134,7 +134,7 @@ public class SalaCine implements Serializable{
 	 * Description : Este método se encarga de filtrar las salas de cine según si su película aún se encuentra en presentación,
 	 * para esto verifica que el horario de la película en presentación más su duración no sea menor a la hora actual.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza la busqueda desde sus salas de cine
-	 * @return  <b>ArrayList<SalaCine></b> : Este método retorna las salas de cine, (De tipo ArrayList<SalaCine>),
+	 * @return  <b>ArrayList(SalaCine)</b> : Este método retorna las salas de cine, ( De tipo ArrayList(SalaCine) ),
 	 * que aún tienen su película en presentación, con el fin de ser las únicas que serán mostradas en pantalla durante el proceso de la funcionalidad 1. 
 	 * */
 	public static ArrayList<SalaCine> filtrarSalasDeCine(SucursalCine sucursalCine) {
