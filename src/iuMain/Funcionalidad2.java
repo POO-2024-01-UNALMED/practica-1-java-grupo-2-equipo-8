@@ -12,7 +12,6 @@ public class Funcionalidad2 {
 	public static void compras(Cliente clienteProceso){
 		// Seleccion del servicio que se desea acceder
 		Scanner sc = new Scanner(System.in);
-		//clienteProceso.setCineActual(sucursalCineProceso);
 		Servicio serviciProceso;
 		boolean verificacion = true;
 		int servicio = 0;

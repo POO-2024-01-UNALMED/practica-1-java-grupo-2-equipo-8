@@ -28,20 +28,6 @@ public class Producto implements Serializable {
 		
 	}
 	
-	//Ligadura Estatica
-	
-	public boolean comprobarBonoEnOrden(Servicio servicio) {
-		boolean verificacion = false;
-		for(int i = 0; i < servicio.getOrden().size();i++) {
-			if(servicio.getOrden().get(i).getNombre() == this.getNombre() && servicio.getOrden().get(i).getTamaño() == this.getTamaño()) {
-				verificacion = true;
-				break;
-			}
-		}
-		return verificacion;
-		
-	}
-	
 	/**
 	*Description: Este metodo se encarga de generar un codigo aleatorio para los bonos creados.
 	*@param longitud :  se pasa el como parametro la longitud que se desea el codigo

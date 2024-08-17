@@ -75,10 +75,10 @@ public class Administrador {
 //	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
 //	
 //	//Bonos de prueba
-////	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-////	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
-////	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-////	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
+//	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
+//	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+//	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
 //	
 //	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 //	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
