@@ -138,7 +138,7 @@ public abstract class Servicio implements IBuyable, Serializable{
 						Bono.getBonosCreados().get(i).getCliente().getBonos().remove(j);
 					}
 				}
-				Bono.getBonosCreados().remove(i);
+				cliente.getCineActual().getBonosCreados().remove(i);
 				return producto;
 			}
 		}

@@ -1,31 +1,31 @@
 package gestionAplicacion.servicios;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestionAplicacion.usuario.Cliente;
 
-public class Bono {
+public class Bono implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String codigo;
-	private static ArrayList<Bono> bonosCreados = new ArrayList<>();
+//	private static ArrayList<Bono> bonosCreados = new ArrayList<>();
 	private Producto producto;
 	private String tipoServicio;
 	private Cliente cliente;
 	
 	public Bono(){}
 	
-	public Bono(String code, Producto producto, String tipoServicio) {
-		this.codigo = code;
-		this.producto = producto;
-		this.tipoServicio = tipoServicio;
-		bonosCreados.add(this);
-	}
+
 	public Bono(String code, Producto producto, String tipoServicio, Cliente cliente) {
 		this.codigo = code;
 		this.producto = producto;
 		this.tipoServicio = tipoServicio;
 		this.cliente = cliente;
 		cliente.getBonos().add(this);
-		bonosCreados.add(this);
+		cliente.getCineActual().getBonosCreados().add(this);
 	}
 	
 	public String getCodigo() {
@@ -36,13 +36,13 @@ public class Bono {
 		this.codigo = codigo;
 	}
 
-	public static ArrayList<Bono> getBonosCreados() {
-		return bonosCreados;
-	}
-
-	public static void setBonosCreados(ArrayList<Bono> bonosCreados) {
-		Bono.bonosCreados = bonosCreados;
-	}
+//	public static ArrayList<Bono> getBonosCreados() {
+//		return bonosCreados;
+//	}
+//
+//	public static void setBonosCreados(ArrayList<Bono> bonosCreados) {
+//		Bono.bonosCreados = bonosCreados;
+//	}
 
 
 	public String getTipoServicio() {

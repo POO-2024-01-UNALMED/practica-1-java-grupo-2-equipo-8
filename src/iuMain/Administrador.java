@@ -9,9 +9,11 @@ import gestionAplicacion.servicios.*;
 import gestionAplicacion.servicios.herencia.ServicioComida;
 import gestionAplicacion.servicios.herencia.ServicioSouvenirs;
 import gestionAplicacion.usuario.*;
+import baseDatos.Deserializador;
 import baseDatos.Serializador;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Administrador {
 	
@@ -25,162 +27,162 @@ public class Administrador {
 		return sc.nextLine();
 	}
 	
-	static ServicioComida servicioComidaM = new ServicioComida("comida");
-	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("souvenir");
-	
-	static SucursalCine sucursalCine1 = new SucursalCine("Bucaramanga");
-	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
-	static SucursalCine sucursalCine3 = new SucursalCine("Medellín");
-	
-	//Productos de la sucursal de Bucaramanga
-	static Producto producto1M = new Producto("Hamburguesa","Grande","comida",25000,200,"Normal",sucursalCine1);
-	static Producto producto2M = new Producto("Hamburguesa","Deadpool","comida",30000,200,"Comedia",sucursalCine1);
-	static Producto producto3M = new Producto("Perro caliente","Grande","comida",20000,200,"Normal",sucursalCine1);
-	static Producto producto4M = new Producto("Perro caliente","Bolt","comida",30000,200,"Comedia",sucursalCine1);
-	static Producto producto5M = new Producto("Crispetas","Muerte","comida",15000,200,"Acción",sucursalCine1);
-	static Producto producto6M = new Producto("Crispetas","Grandes","comida",16000,200,"Normal",sucursalCine1);
-	static Producto producto7M = new Producto("Gaseosa","Grande","comida",6000,200,"Normal",sucursalCine1);
-	static Producto producto8M = new Producto("Gaseosa","Pequeña","comida",3000,200,"Normal",sucursalCine1);
-	
-	//Productos de la sucursal de Marinilla
-	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",20000,200,"Normal",sucursalCine2);
-	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",25000,200,"Comedia",sucursalCine2);
-	static Producto producto3 = new Producto("Perro caliente","Grande","comida",15000,200,"Normal",sucursalCine2);
-	static Producto producto4 = new Producto("Perro caliente","Don salchicha","comida",20000,200,"Comedia",sucursalCine2);
-	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",14000,200,"Acción",sucursalCine2);
-	static Producto producto6 = new Producto("Crispetas","Grandes","comida",13000,200,"Normal",sucursalCine2);
-	static Producto producto7 = new Producto("Gaseosa","Grande","comida",4000,200,"Normal",sucursalCine2);
-	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",2000,200,"Normal",sucursalCine2);
-	
-	static Producto producto1S = new Producto("Camisa","XL","souvenir",16000,200,"Normal",sucursalCine2);
-	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",27000,200,"Comedia",sucursalCine2);
-	static Producto producto3S = new Producto("Gorra","L","souvenir",11000,200,"Normal",sucursalCine2);
-	static Producto producto4S = new Producto("Llavero","Katana","souvenir",22000,200,"Acción",sucursalCine2);
-	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",29000,200,"Comedia",sucursalCine2);
-	
-	//Productos de la sucursal de Medellin
-	static Producto producto1SM = new Producto("Camisa","XL","souvenir",19000,200,"Normal",sucursalCine3);
-	static Producto producto2SM = new Producto("Camisa","Escuadron suicida","souvenir",30000,200,"Comedia",sucursalCine3);
-	static Producto producto3SM = new Producto("Gorra","L","souvenir",12000,200,"Normal",sucursalCine3);
-	static Producto producto4SM = new Producto("Llavero","Emociones","souvenir",30000,200,"Acción",sucursalCine3);
-	static Producto producto5SM = new Producto("Peluche","Deku","souvenir",30000,200,"Comedia",sucursalCine3);
-	
-	//Clientes prueba
-	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
-	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
-	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
-	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
-	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
-	
-	//Bonos de prueba
-	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
-	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
-	
-	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
-	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
-	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");
-	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
-	static Arkade game5= new Arkade("Hang Man", 7500, "Drama");
-	
-	
-	static SalaCine salaDeCine1_1 = new SalaCine(1, "2D", sucursalCine1);
-	static SalaCine salaDeCine1_2 = new SalaCine(2, "3D", sucursalCine1);
-	static SalaCine salaDeCine1_3 = new SalaCine(3, "4D", sucursalCine1);
-	static SalaCine salaDeCine1_4 = new SalaCine(4, "2D", sucursalCine1);
-	static SalaCine salaDeCine1_5 = new SalaCine(5, "3D", sucursalCine1);
-	static SalaCine salaDeCine1_6 = new SalaCine(6, "4D", sucursalCine1);
-	static SalaCine salaDeCine1_7 = new SalaCine(7, "2D", sucursalCine1);
-	static SalaCine salaDeCine1_8 = new SalaCine(8, "3D", sucursalCine1);
-	static SalaCine salaDeCine1_9 = new SalaCine(9, "4D", sucursalCine1);
-
-	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+18", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_2 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_3 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+18", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_4 = new Pelicula("Your name", 18000, "Romance", Duration.ofMinutes(110), "+8", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_5 = new Pelicula("Furiosa: A Mad Max Saga", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "2D", sucursalCine1);
-	
-	static Pelicula pelicula1_6 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", sucursalCine1);
-	
-	static SalaCine salaDeCine2_1 = new SalaCine(1, "2D", sucursalCine2);
-	static SalaCine salaDeCine2_2 = new SalaCine(2, "3D", sucursalCine2);
-	static SalaCine salaDeCine2_3 = new SalaCine(3, "4D", sucursalCine2);
-	static SalaCine salaDeCine2_4 = new SalaCine(4, "2D", sucursalCine2);
-	static SalaCine salaDeCine2_5 = new SalaCine(5, "3D", sucursalCine2);
-	static SalaCine salaDeCine2_6 = new SalaCine(6, "4D", sucursalCine2);
-	
-	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(90), "+12", "2D", sucursalCine2); 
-	
-	static Pelicula pelicula2_4 = new Pelicula("The Strangers: Chapter 1", 20000, "Terror", Duration.ofMinutes(114), "+18", "2D", sucursalCine2);
-	
-	static Pelicula pelicula2_7 = new Pelicula("El pájaro loco", 15000, "Infantil", Duration.ofMinutes(120), "+5", "2D", sucursalCine2); 
-	
-	static Pelicula pelicula2_10 = new Pelicula("One Life", 19000, "Historia", Duration.ofMinutes(110), "+8", "2D", sucursalCine2);
-	
-	static Pelicula pelicula2_12 = new Pelicula("Challengers", 15000, "Drama", Duration.ofMinutes(132), "+12", "2D", sucursalCine2);
-
-	static Pelicula pelicula2_14 = new Pelicula("Bad Boys: Hasta la muerte", 17000, "Comedia", Duration.ofMinutes(109), "+18", "2D", sucursalCine2);
-	
-	static SalaCine salaDeCine3_1 = new SalaCine(1, "2D", sucursalCine3);
-	static SalaCine salaDeCine3_2 = new SalaCine(2, "3D", sucursalCine3);
-	static SalaCine salaDeCine3_3 = new SalaCine(3, "4D", sucursalCine3);
-	static SalaCine salaDeCine3_4 = new SalaCine(4, "2D", sucursalCine3);
-	static SalaCine salaDeCine3_5 = new SalaCine(5, "3D", sucursalCine3);
-	static SalaCine salaDeCine3_6 = new SalaCine(6, "4D", sucursalCine3);
-
-	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 15000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
-	
-	static Pelicula pelicula3_2 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
-	
-	static Pelicula pelicula3_3 = new Pelicula("Oppenheimer", 15000, "Historia", Duration.ofMinutes(120), "+18", "2D", sucursalCine3);
-	
-	static Pelicula pelicula3_4 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
-	
-	static Pelicula pelicula3_5 = new Pelicula("Intensamente 2", 15000, "Infantil", Duration.ofMinutes(105), "+5", "2D", sucursalCine3);
-	
-	static Pelicula pelicula3_6 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+18", "2D", sucursalCine3);
-
-	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
-	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);
-	static Membresia membresia3 = new Membresia("Global", 3, 15000, 20);
-	static Membresia membresia4 = new Membresia("Challenger", 4, 25000, 25);
-	static Membresia membresia5 = new Membresia("Radiante", 5, 30000, 30);
-	
-	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 200000, 0.10);
-	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 120000, 0.05);
-	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 300000, 0.15);
-	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",5000000, 0);
-	
-	//static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000,cliente4);
-	static TarjetaCinemar tarjeta1 = new TarjetaCinemar();static TarjetaCinemar tarjeta2 = new TarjetaCinemar();static TarjetaCinemar tarjeta3 = new TarjetaCinemar();	
-	static TarjetaCinemar tarjeta4 = new TarjetaCinemar();static TarjetaCinemar tarjeta5 = new TarjetaCinemar();static TarjetaCinemar tarjeta6 = new TarjetaCinemar();
-	static TarjetaCinemar tarjeta7 = new TarjetaCinemar();static TarjetaCinemar tarjeta8 = new TarjetaCinemar();static TarjetaCinemar tarjeta9 = new TarjetaCinemar();
-	static TarjetaCinemar tarjeta10 = new TarjetaCinemar();static TarjetaCinemar tarjeta11 = new TarjetaCinemar();static TarjetaCinemar tarjeta12 = new TarjetaCinemar();
-	static TarjetaCinemar tarjeta13 = new TarjetaCinemar();static TarjetaCinemar tarjeta14 = new TarjetaCinemar();static TarjetaCinemar tarjeta15 = new TarjetaCinemar();	
+//	static ServicioComida servicioComidaM = new ServicioComida("comida");
+//	static ServicioSouvenirs servicioSouvenirsM = new ServicioSouvenirs("souvenir");
+//	
+//	static SucursalCine sucursalCine1 = new SucursalCine("Bucaramanga");
+//	static SucursalCine sucursalCine2 = new SucursalCine("Marinilla");
+//	static SucursalCine sucursalCine3 = new SucursalCine("Medellín");
+//	
+//	//Productos de la sucursal de Bucaramanga
+//	static Producto producto1M = new Producto("Hamburguesa","Grande","comida",25000,200,"Normal",sucursalCine1);
+//	static Producto producto2M = new Producto("Hamburguesa","Deadpool","comida",30000,200,"Comedia",sucursalCine1);
+//	static Producto producto3M = new Producto("Perro caliente","Grande","comida",20000,200,"Normal",sucursalCine1);
+//	static Producto producto4M = new Producto("Perro caliente","Bolt","comida",30000,200,"Comedia",sucursalCine1);
+//	static Producto producto5M = new Producto("Crispetas","Muerte","comida",15000,200,"Acción",sucursalCine1);
+//	static Producto producto6M = new Producto("Crispetas","Grandes","comida",16000,200,"Normal",sucursalCine1);
+//	static Producto producto7M = new Producto("Gaseosa","Grande","comida",6000,200,"Normal",sucursalCine1);
+//	static Producto producto8M = new Producto("Gaseosa","Pequeña","comida",3000,200,"Normal",sucursalCine1);
+//	
+//	//Productos de la sucursal de Marinilla
+//	static Producto producto1 = new Producto("Hamburguesa","Grande","comida",20000,200,"Normal",sucursalCine2);
+//	static Producto producto2 = new Producto("Hamburguesa","Cangreburger","comida",25000,200,"Comedia",sucursalCine2);
+//	static Producto producto3 = new Producto("Perro caliente","Grande","comida",15000,200,"Normal",sucursalCine2);
+//	static Producto producto4 = new Producto("Perro caliente","Don salchicha","comida",20000,200,"Comedia",sucursalCine2);
+//	static Producto producto5 = new Producto("Crispetas","cazador de Demonios","comida",14000,200,"Acción",sucursalCine2);
+//	static Producto producto6 = new Producto("Crispetas","Grandes","comida",13000,200,"Normal",sucursalCine2);
+//	static Producto producto7 = new Producto("Gaseosa","Grande","comida",4000,200,"Normal",sucursalCine2);
+//	static Producto producto8 = new Producto("Gaseosa","Pequeña","comida",2000,200,"Normal",sucursalCine2);
+//	
+//	static Producto producto1S = new Producto("Camisa","XL","souvenir",16000,200,"Normal",sucursalCine2);
+//	static Producto producto2S = new Producto("Camisa","Bob Esponja","souvenir",27000,200,"Comedia",sucursalCine2);
+//	static Producto producto3S = new Producto("Gorra","L","souvenir",11000,200,"Normal",sucursalCine2);
+//	static Producto producto4S = new Producto("Llavero","Katana","souvenir",22000,200,"Acción",sucursalCine2);
+//	static Producto producto5S = new Producto("Peluche","Pajaro loco","souvenir",29000,200,"Comedia",sucursalCine2);
+//	
+//	//Productos de la sucursal de Medellin
+//	static Producto producto1SM = new Producto("Camisa","XL","souvenir",19000,200,"Normal",sucursalCine3);
+//	static Producto producto2SM = new Producto("Camisa","Escuadron suicida","souvenir",30000,200,"Comedia",sucursalCine3);
+//	static Producto producto3SM = new Producto("Gorra","L","souvenir",12000,200,"Normal",sucursalCine3);
+//	static Producto producto4SM = new Producto("Llavero","Emociones","souvenir",30000,200,"Acción",sucursalCine3);
+//	static Producto producto5SM = new Producto("Peluche","Deku","souvenir",30000,200,"Comedia",sucursalCine3);
+//	
+//	//Clientes prueba
+//	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
+//	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
+//	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
+//	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
+//	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
+//	
+//	//Bonos de prueba
+//	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
+//	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+//	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
+//	
+//	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
+//	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
+//	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");
+//	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
+//	static Arkade game5= new Arkade("Hang Man", 7500, "Drama");
+//	
+//	
+//	static SalaCine salaDeCine1_1 = new SalaCine(1, "2D", sucursalCine1);
+//	static SalaCine salaDeCine1_2 = new SalaCine(2, "3D", sucursalCine1);
+//	static SalaCine salaDeCine1_3 = new SalaCine(3, "4D", sucursalCine1);
+//	static SalaCine salaDeCine1_4 = new SalaCine(4, "2D", sucursalCine1);
+//	static SalaCine salaDeCine1_5 = new SalaCine(5, "3D", sucursalCine1);
+//	static SalaCine salaDeCine1_6 = new SalaCine(6, "4D", sucursalCine1);
+//	static SalaCine salaDeCine1_7 = new SalaCine(7, "2D", sucursalCine1);
+//	static SalaCine salaDeCine1_8 = new SalaCine(8, "3D", sucursalCine1);
+//	static SalaCine salaDeCine1_9 = new SalaCine(9, "4D", sucursalCine1);
+//
+//	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+18", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_2 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_3 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+18", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_4 = new Pelicula("Your name", 18000, "Romance", Duration.ofMinutes(110), "+8", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_5 = new Pelicula("Furiosa: A Mad Max Saga", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "2D", sucursalCine1);
+//	
+//	static Pelicula pelicula1_6 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", sucursalCine1);
+//	
+//	static SalaCine salaDeCine2_1 = new SalaCine(1, "2D", sucursalCine2);
+//	static SalaCine salaDeCine2_2 = new SalaCine(2, "3D", sucursalCine2);
+//	static SalaCine salaDeCine2_3 = new SalaCine(3, "4D", sucursalCine2);
+//	static SalaCine salaDeCine2_4 = new SalaCine(4, "2D", sucursalCine2);
+//	static SalaCine salaDeCine2_5 = new SalaCine(5, "3D", sucursalCine2);
+//	static SalaCine salaDeCine2_6 = new SalaCine(6, "4D", sucursalCine2);
+//	
+//	static Pelicula pelicula2_1 = new Pelicula("Jujutsu Kaisen Cero", 17000, "Acción", Duration.ofMinutes(90), "+12", "2D", sucursalCine2); 
+//	
+//	static Pelicula pelicula2_4 = new Pelicula("The Strangers: Chapter 1", 20000, "Terror", Duration.ofMinutes(114), "+18", "2D", sucursalCine2);
+//	
+//	static Pelicula pelicula2_7 = new Pelicula("El pájaro loco", 15000, "Infantil", Duration.ofMinutes(120), "+5", "2D", sucursalCine2); 
+//	
+//	static Pelicula pelicula2_10 = new Pelicula("One Life", 19000, "Historia", Duration.ofMinutes(110), "+8", "2D", sucursalCine2);
+//	
+//	static Pelicula pelicula2_12 = new Pelicula("Challengers", 15000, "Drama", Duration.ofMinutes(132), "+12", "2D", sucursalCine2);
+//
+//	static Pelicula pelicula2_14 = new Pelicula("Bad Boys: Hasta la muerte", 17000, "Comedia", Duration.ofMinutes(109), "+18", "2D", sucursalCine2);
+//	
+//	static SalaCine salaDeCine3_1 = new SalaCine(1, "2D", sucursalCine3);
+//	static SalaCine salaDeCine3_2 = new SalaCine(2, "3D", sucursalCine3);
+//	static SalaCine salaDeCine3_3 = new SalaCine(3, "4D", sucursalCine3);
+//	static SalaCine salaDeCine3_4 = new SalaCine(4, "2D", sucursalCine3);
+//	static SalaCine salaDeCine3_5 = new SalaCine(5, "3D", sucursalCine3);
+//	static SalaCine salaDeCine3_6 = new SalaCine(6, "4D", sucursalCine3);
+//
+//	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 1500000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
+//	
+//	static Pelicula pelicula3_2 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
+//	
+//	static Pelicula pelicula3_3 = new Pelicula("Oppenheimer", 15000, "Historia", Duration.ofMinutes(120), "+18", "2D", sucursalCine3);
+//	
+//	static Pelicula pelicula3_4 = new Pelicula("Jhon Wick 4", 17000, "Acción", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
+//	
+//	static Pelicula pelicula3_5 = new Pelicula("Intensamente 2", 15000, "Infantil", Duration.ofMinutes(105), "+5", "2D", sucursalCine3);
+//	
+//	static Pelicula pelicula3_6 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+18", "2D", sucursalCine3);
+//
+//	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
+//	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);
+//	static Membresia membresia3 = new Membresia("Global", 3, 15000, 20);
+//	static Membresia membresia4 = new Membresia("Challenger", 4, 25000, 25);
+//	static Membresia membresia5 = new Membresia("Radiante", 5, 30000, 30);
+//	
+//	static MetodoPago metodoPago1 = new MetodoPago("Bancolombia", 200000, 0.10);
+//	static MetodoPago metodoPago2 = new MetodoPago("AV Villas", 120000, 0.05);
+//	static MetodoPago metodoPago3 = new MetodoPago("Banco Agrario", 300000, 0.15);
+//	static MetodoPago metodoPago4 = new MetodoPago("Efectivo",5000000, 0);
+//	
+//	//static TarjetaCinemar tarjeta1 = new TarjetaCinemar(32000,cliente4);
+//	static TarjetaCinemar tarjeta1 = new TarjetaCinemar();static TarjetaCinemar tarjeta2 = new TarjetaCinemar();static TarjetaCinemar tarjeta3 = new TarjetaCinemar();	
+//	static TarjetaCinemar tarjeta4 = new TarjetaCinemar();static TarjetaCinemar tarjeta5 = new TarjetaCinemar();static TarjetaCinemar tarjeta6 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta7 = new TarjetaCinemar();static TarjetaCinemar tarjeta8 = new TarjetaCinemar();static TarjetaCinemar tarjeta9 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta10 = new TarjetaCinemar();static TarjetaCinemar tarjeta11 = new TarjetaCinemar();static TarjetaCinemar tarjeta12 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta13 = new TarjetaCinemar();static TarjetaCinemar tarjeta14 = new TarjetaCinemar();static TarjetaCinemar tarjeta15 = new TarjetaCinemar();	
 	
 	
 	public static void main(String[] args) {
 		
-		//Llamados métodos de instancias para hacer pruebas
+//		Llamados métodos de instancias para hacer pruebas
 		{
 			
-			sucursalCine1.getServicios().add(servicioComidaM);
-			
-
-			sucursalCine2.getServicios().add(servicioComidaM);
-			sucursalCine2.getServicios().add(servicioSouvenirsM);
-			
-			sucursalCine3.getServicios().add(servicioSouvenirsM);
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+//			sucursalCine1.getServicios().add(servicioComidaM);
+//			
+//
+//			sucursalCine2.getServicios().add(servicioComidaM);
+//			sucursalCine2.getServicios().add(servicioSouvenirsM);
+//			
+//			sucursalCine3.getServicios().add(servicioSouvenirsM);
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 			//Funcionalidad 1 
-			SucursalCine.logicaSistemaReservarTicket();
-			
+//			SucursalCine.logicaSistemaReservarTicket();
+//			
 			//Prueba películas recomendadas
 //			cliente1.getHistorialDePeliculas().add(pelicula3_10);
 //			cliente1.getHistorialDePeliculas().add(pelicula3_11);
@@ -188,143 +190,155 @@ public class Administrador {
 //			cliente1.getHistorialDePeliculas().add(pelicula2_16);
 //			cliente1.getHistorialDePeliculas().add(pelicula2_4);
 //			cliente1.getHistorialDePeliculas().add(pelicula1_1);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_15);
+////			cliente1.getHistorialDePeliculas().add(pelicula2_15);
 //			cliente1.getHistorialDePeliculas().add(pelicula2_1);
 //			cliente1.getHistorialDePeliculas().add(pelicula1_2);
 //			cliente1.getHistorialDePeliculas().add(pelicula3_1);
 //			cliente1.getHistorialDePeliculas().add(pelicula3_4);
-			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_1);
-			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_2);
-			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
-			cliente5.getHistorialDePedidos().add(producto1);
-			cliente5.getHistorialDePedidos().add(producto2);
-			cliente5.getValoracionesPeliculas().add(pelicula1_3);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			//cliente4.setCuenta(tarjeta1);
-			Membresia.asignarTipoMembresia();
-//			for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
-//				MetodoPago.metodoPagoPorTipo(metodoPago);
-//			}
-			MetodoPago.metodoPagoPorTipo(metodoPago1);
-			MetodoPago.metodoPagoPorTipo(metodoPago2);
-			MetodoPago.metodoPagoPorTipo(metodoPago3);
-			MetodoPago.metodoPagoPorTipo(metodoPago4);
-
-//			cliente1.setMembresia(membresia1);
-
-			cliente1.setMembresia(membresia5);
-			Membresia.stockMembresia(SucursalCine.getSucursalesCine());
-
-//			//System.out.println(MetodoPago.mostrarMetodosDePago(cliente1));
-//			/*cliente1.setMembresia(membresia1)*/
-			
-			//System.out.println();
-			
-			
-//			//cliente1.setMembresia(membresia4);
-//			MetodoPago pago = ServicioEntretenimiento.encontrarMetodoPagoCliente("Banco Agrario", cliente1);
-//			//System.out.println("\n"+cliente1.getMembresia().getTipoMembresia());
-//			System.out.println(pago.getNombre()+"\n"+pago.getTipo());
-
-			
-			
-			//cliente4.setMembresia(membresia5);
-			cliente3.setMembresia(membresia2);
-//			ticket5.setDueno(cliente4);
-//			ticket5.setPelicula(pelicula1);
-//			ticket5.setSalaDeCine(salaDeCine1);
-			
-			MetodoPago.asignarMetodosDePago(cliente1);
-			MetodoPago.asignarMetodosDePago(cliente2);
-			MetodoPago.asignarMetodosDePago(cliente3);
-			MetodoPago.asignarMetodosDePago(cliente4);
-			MetodoPago.asignarMetodosDePago(cliente5);
-			
-			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
-			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));
-			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15));
-			//System.out.println(Arkade.getTarjetasEnInventario().size());
-			
-			
-			//for (TarjetaCinemar tarjeta : Arkade.getTarjetasEnInventario()) {
-			//System.out.println(tarjeta.getSaldo());
-		//}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//Print tests
-			System.out.println();
-			System.out.println();
+//			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_1);
+//			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_2);
+//			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
+//			cliente5.getHistorialDePedidos().add(producto1);
+//			cliente5.getHistorialDePedidos().add(producto2);
+//			cliente5.getValoracionesPeliculas().add(pelicula1_3);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//			
+//			//cliente4.setCuenta(tarjeta1);
+//			Membresia.asignarTipoMembresia();
+////			for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
+////				MetodoPago.metodoPagoPorTipo(metodoPago);
+////			}
+//			MetodoPago.metodoPagoPorTipo(metodoPago1);
+//			MetodoPago.metodoPagoPorTipo(metodoPago2);
+//			MetodoPago.metodoPagoPorTipo(metodoPago3);
+//			MetodoPago.metodoPagoPorTipo(metodoPago4);
+//
+////			cliente1.setMembresia(membresia1);
+//
+//			cliente1.setMembresia(membresia5);
+//			membresia5.getClientes().add(cliente1);
+//			cliente1.setFechaLimiteMembresia(SucursalCine.getFechaActual().toLocalDate().plusDays(30));
+//			Membresia.stockMembresia(SucursalCine.getSucursalesCine());
+//			
+//			
+//			//cliente4.setMembresia(membresia5);
+//			cliente3.setMembresia(membresia2);
+//			cliente3.setFechaLimiteMembresia(SucursalCine.getFechaActual().toLocalDate().plusDays(20));
+//			membresia2.getClientes().add(cliente3);
+//
+//			
+//			MetodoPago.asignarMetodosDePago(cliente1);
+//			MetodoPago.asignarMetodosDePago(cliente2);
+//			MetodoPago.asignarMetodosDePago(cliente3);
+//			MetodoPago.asignarMetodosDePago(cliente4);
+//			MetodoPago.asignarMetodosDePago(cliente5);
+//			
+//			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
+//			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));
+//			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15));
+//			
+//			cliente1.setOrigenMembresia(sucursalCine1.getIdSucursal());
 			
 		}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Print tests
+		System.out.println();
+		System.out.println();
+		
+		
 		
 		//MAIN
+		inicioDelSistema();
+		
 		System.out.println("Iniciar sesión");
 		Cliente clienteProceso = iniciarSesion();
 		
 		System.out.println("\nIngresar a una de nuestras sedes");
 		clienteProceso.setCineActual(ingresarASucursal());
 		
-		
-		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
 		inicio(clienteProceso);
 		
-		
 		salirDelSistema();
 		
-		
-		
 	}
-	
-      
-	
+	      
+	/**
+	 * Description : Este método se encarga de iniciar el programa mostrando las opciones de las funcionalidades en
+	 * un menú.
+	 * @param clienteProceso : Se usa a un objeto de tipo Cliente para que pueda ser usado en las funcionalidades
+	 */
 	public static void inicio(Cliente clienteProceso) {
-	int opcion = 0;
-	do {
+		int opcion = 0;
 		
-		try {
-			
-			opcion = 0;
-			System.out.println("\n¿Qué operacion desea realizar?");
-			System.out.println("1. Ingresar a sistema de proyecciones de películas");
-			System.out.println("2. Ingrear a los servicios de compra"); 
-			System.out.println("3. Ingresar a la zona de juegos");
-			System.out.println("4. Adquirir o actualizar membresia");
-			System.out.println("5. Hacer calificacion");
-			System.out.println("6. Cambiar de sucursal");
-			System.out.println("7. Salir");
-			opcion = Integer.parseInt(sc.nextLine());
-			
-		}catch(NumberFormatException e) {
-			System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
-		}
+		//Método de avanzar días
 		
-	}while(!(opcion > 0 & opcion <= 7));
-	
-	
-	switch (opcion) {
-		case 1: ingresarASistemaDeProyecciones(clienteProceso); break;
-		case 2: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
-		case 3: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
-		case 4: Funcionalidad5.adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
-		case 5: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
-		case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
-		case 7: /*salirDelSistema(); Necesito cerrar el hilo*/ break;
-		default: System.out.println("Opción invalida"); inicio(clienteProceso);
-	  }
+		//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
+		avanzarTiempo();
+		
+		//Cada vez que se va al inicio, se verifica si ya ha pasado el dia para revisar la validez de la membresia.
+		logicaMembresia(clienteProceso);
+		
+		do {
+			
+			try {
+				
+				opcion = 0;
+				System.out.println("\n¿Qué operacion desea realizar?");
+				System.out.println("1. Ingresar a sistema de proyecciones de películas");
+				System.out.println("2. Ingresar a los servicios de compra"); 
+				System.out.println("3. Ingresar a la zona de juegos");
+				System.out.println("4. Adquirir o actualizar membresia");
+				System.out.println("5. Hacer calificacion");
+				System.out.println("6. Cambiar de sucursal");
+				System.out.println("7. Salir");
+				opcion = Integer.parseInt(sc.nextLine());
+				
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+			}
+			
+		}while(!(opcion > 0 & opcion <= 7));
+		
+		
+		switch (opcion) {
+			case 1: ingresarASistemaDeProyecciones(clienteProceso); break;
+			case 2: Funcionalidad2.compras(clienteProceso); inicio(clienteProceso); break;
+			case 3: Funcionalidad_4.ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
+			case 4: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
+			case 5: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
+			case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
+			case 7: salirDelSistema(); break;
+			default: System.out.println("Opción invalida"); inicio(clienteProceso);
+		  }
 	
 	}
 	
+	/**
+	 * Description : Este método se encarga de ejecutar la lógica de aranque del programa, deserializa toda la información
+	 * primero deserializa los atributos de instancia y luego deserializa los atributos estáticos, y avanza el tiempo 
+	 * ejecutando toda la lógica que este implica.
+	 * */
+	static void inicioDelSistema() {
+		
+		Deserializador.deserializar();
+		Deserializador.deserializarEstaticos();
+		
+	}
+	
+	/**
+	 * Description: Este método se encarga de serializar toda la información del programa y salir del sistema.
+	 * */
 	static void salirDelSistema() {
 		//Serialización
 		
-//		//Atributos estáticos
-//		Serializador.serializar();
-//		
-//		//Atributos de instancia
-//		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
-//			Serializador.serializar(sede);
-//		}
+		//Atributos estáticos
+		Serializador.serializar();
+		
+		//Atributos de instancia
+		for (SucursalCine sede : SucursalCine.getSucursalesCine()) {
+			Serializador.serializar(sede);
+		}
 		
 		//Fin del programa
 		System.out.println("¡Adios, vuelva pronto!");
@@ -332,98 +346,67 @@ public class Administrador {
 		
 	}
 	
-	public static Cliente validarCliente() {
-		TipoDeDocumento documentoCliente = null;
-		boolean casoValido = true;
-		int opcionMenu;
-		do{
-			try {
-				System.out.println("\n------------------Tipos de documentos-------------------\n"+ 
-				TipoDeDocumento.mostrarTiposDeDocumento());
-				System.out.print("Seleccione una opcion:");
-				opcionMenu = Integer.parseInt(sc.nextLine());
-			}catch(NumberFormatException e){
-				System.out.println("\n*****Error, debes ingresar un dato numérico*****\n");
-				continue;
-			}
-			switch (opcionMenu) {
-				case 1: documentoCliente = TipoDeDocumento.CC;casoValido=false;break;
-				case 2: documentoCliente = TipoDeDocumento.TI;casoValido=false;break;
-				case 3: documentoCliente = TipoDeDocumento.CE;casoValido=false;break;
-				default: System.out.println("**********Opcion invalida**********");break;
-			}
-		}while(casoValido);
+	/**
+	 * @Override
+	 * Description : Este método se encarga de avanzar la hora y ejecutar la lógica de negocio en 3 plazos:
+	 * 
+	 * 1. Durante la jornada laboral: Actualiza las salas de cine, ubicando las películas en presentación en sus respectivas salas.
+	 * 
+	 * 2. Diariamente: Mejorar documentación
+	 * (Limpia el array de tickets generados, con el fin de tener únicamente aquellos tickets que pueden usarse para generar descuentos
+	 * y verifica la fecha de expedición de las memebresías de cada uno de los clientes).
+	 * 
+	 * 3. Semanalmente: Mejorar documentación
+	 * (Cambia las películas de sucursal según su rendimiento, distribuye de nuevo las películas en sus salas de cine y crea los horarios de presentación
+	 * semanal).
+	 * 
+	 * */
+	public static void avanzarTiempo() {
 		
-		//Se le pide el numero de documento y se verifica si ya esta registrado como cliente
-		Cliente cliente1 = null;
-		long numeroDocumentoCliente = 0;
-		casoValido = true;
-		boolean casoValido2 = true;
-		do {
-			try {
-				System.out.print("Ingrese el numero de documento: ");
-				numeroDocumentoCliente = Long.parseLong(sc.nextLine());
-			}catch(NumberFormatException e) {
-				System.out.println("\n*****Error, debes ingresar datos numéricos correspondientes a tu número de documento\n*****");
-				continue;
-			}
-			//Se verficia si el cliente existe
-			cliente1=Cliente.revisarDatosCliente(numeroDocumentoCliente);
+		//Avanza lo hora 20 segundos
+		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusSeconds(20)); 
+		relojDigital(SucursalCine.getFechaActual());
+		
+		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
+		if(!SucursalCine.getFechaActual().toLocalDate().isBefore(SucursalCine.getFechaRevisionLogicaDeNegocio())) {
+			//Lógica a evaluar cada semana
 			
-			//En caso de que no exista, lo creamos
-			if (cliente1==null) {
-				System.out.println("\nHemos detectado que es la primera vez que visita nuestro cine, " +
-						"Por políticas de seguridad de nuestra compañia, le solicitamos que amablemente responda las siguientes preguntas");
-				int edadCliente = 0;
-				
-				//Se registra la edad
-				do {
-					try {
-						System.out.print("\nIngrese su edad: ");
-						edadCliente = Integer.parseInt(sc.nextLine());
-						casoValido2 = false;
-					}catch (NumberFormatException e) {
-						System.out.println("\nError, debes ingresar datos numéricos correspondientes a tu edad\n");
-						continue;
-					}
-				}while(casoValido2);
-				
-				//Se registra el nombre
-				System.out.print("\nIngrese su nombre: ");
-				String nombreCliente = sc.nextLine(); 
-
-				//Se asocia todo a la nueva instancia del cliente
-				cliente1 = new Cliente(nombreCliente,edadCliente,numeroDocumentoCliente,documentoCliente);
-				return cliente1;
-			}
+			SucursalCine.setFechaRevisionLogicaDeNegocio(SucursalCine.getFechaActual().toLocalDate().plusWeeks(1)); 
 			
-			//En caso de que el cliente ya esta registrado
-			else{
-				do{
-					try {
-						System.out.println("\n¿Eres "+cliente1.getNombre()+"?");
-						System.out.println("1. SI\n2. NO");
-						opcionMenu = Integer.parseInt(sc.nextLine());
-						casoValido2 = false;
-					}catch(NumberFormatException e){
-						System.out.println("\nError, debes ingresar un único dato numérico\n");
-						continue;
-					}
-					if (opcionMenu==1) {
-						return cliente1;
-						}
-					else if(opcionMenu==2){
-						System.out.println("\nVerifica el numero de documento\n");
-					}
-					else {
-						System.out.println("\nOpcion invalida\n");
-					}
-				}while(casoValido2);
-			}
-		}while(casoValido);
-		return null;
+			//Implementar método de cambio de película entre sucursales según su valoración
+			
+			
+			//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
+			SucursalCine.logicaSemanalReservarTicket();
+			
+		}
+			
+		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
+		if (!SucursalCine.getFechaActual().toLocalDate().isBefore(SucursalCine.getFechaValidacionNuevoDiaDeTrabajo())) {
+			//Lógica a evaluar cada día
+			
+			SucursalCine.setFechaValidacionNuevoDiaDeTrabajo(SucursalCine.getFechaActual().toLocalDate().plusDays(1));
+			
+			SucursalCine.logicaDiariaReservarTicket();		
+		}
+		
+		if (SucursalCine.getFechaActual().toLocalTime().isBefore(SucursalCine.getFinHorarioLaboral()) 
+				&& SucursalCine.getFechaActual().toLocalTime().isAfter(SucursalCine.getInicioHorarioLaboral()) ) {
+			//Lógica durante la jornada laboral
+			SucursalCine.actualizarPeliculasSalasDeCine();
+			
+		}
+		
 	}
-	
+	/**
+	 * Description : Este método se encarga de ejecutar el proceso de revisar y notificar la validez de la membresía de cliente
+	 * con respecto a su fecha de caducidad. Si la membresia esta por expirar en 5 días o menos, se arroja un mensaje en pantalla.
+	 * @param clienteProceso : Se pide un objeto de tipo Cliente para obtener los datos necesarios en la ejecución de la lógica.
+	 */
+	private static void logicaMembresia(Cliente clienteProceso) {
+		System.out.println(SucursalCine.notificarFechaLimiteMembresia(clienteProceso));
+	}
+
 	/**
 	 * Description : Este método se encarga de iniciar sesión, para esto se le pregunta al cliente el tipo de documento y el número de documento,
 	 * en caso de que se encuentre registrado, se verfica su nombre y se retorna ese cliente, en caso de que no, se crea un nuevo cliente, solicitando
@@ -799,13 +782,16 @@ public class Administrador {
 			
 			//Funcionalidad reserva de ticket
 			
+			//Avance de tiempo para ejecutar los filtros de películas correctamente
+			avanzarTiempo();
+			
 			//Mostramos una cartelera personalizada de acuerdo a la edad del cliente, si la película tiene horarios disponibles o se encuentra en presentación
 			ArrayList<Pelicula> carteleraPersonalizadaProceso = Pelicula.filtrarCarteleraPorCliente(clienteProceso, clienteProceso.getCineActual());
 			
 			//Verificamos si el cliente tiene acceso para al menos una película
 			if (carteleraPersonalizadaProceso.size() == 0) {
 				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)");
-				Administrador.inicio(clienteProceso);
+				break;
 			}
 			
 			//Tomamos los nombres de las películas para mostrarlos en pantalla
@@ -938,6 +924,9 @@ public class Administrador {
 			SalaCine salaDeCineProceso = null;
 			String numeroAsientoProceso = null;
 			LocalDateTime horarioProceso = null;
+			
+			//Avance de tiempo para realizar los filtros de horarios correctamente
+			avanzarTiempo();
 			
 			//Filtramos los primeros 7 horarios con asientos disponibles desde la fecha actual
 			ArrayList<LocalDateTime> horariosPeliculaProceso = peliculaProceso.filtrarHorariosPelicula();
@@ -1135,11 +1124,11 @@ public class Administrador {
 					System.out.println("\n🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉");
 					
 					if (peliculaProceso.getTipoDeFormato().equals("3D") || peliculaProceso.getTipoDeFormato().equals("4D") ) {
-						System.out.println("Felicidades, por ser nuestro cliente número " + Ticket.getCantidadTicketsCreados() 
+						System.out.println("Felicidades, por ser nuestro cliente número " + clienteProceso.getCineActual().getCantidadTicketsCreados() 
 						+ " has recibido un descuento del 50% por la compra de tu ticket\n"
 						+ "(Precio anterior :" + peliculaProceso.getPrecio() + " -> Precio actual: " + ticketProceso.getPrecio() + " )");
 					}else {
-						System.out.println("Felicidades, por ser nuestro cliente número: " + Ticket.getCantidadTicketsCreados() 
+						System.out.println("Felicidades, por ser nuestro cliente número: " + clienteProceso.getCineActual().getCantidadTicketsCreados() 
 						+ " has recibido un descuento del 80% por la compra de tu ticket\n"
 						+ "(Precio anterior :" + peliculaProceso.getPrecio() + " -> Precio actual: " + ticketProceso.getPrecio() + " )");
 					}
@@ -1186,10 +1175,10 @@ public class Administrador {
 						casoValido = true;
 						
 					}else {
-						
 						System.out.println("\nSeleccione un método de pago entre los disponibles");
 						
 					}
+					
 				}while( !casoValido );
 				
 				do {
@@ -1265,6 +1254,17 @@ public class Administrador {
 						//Realizamos el proceso correspondiente luego de ser verificado
 						ticketProceso.procesarPagoRealizado(clienteProceso);
 						salaDeCineProceso.cambiarDisponibilidadAsientoLibre(numeroAsientoProceso);
+						
+						//Generamos la fila y la columna a partir del número de asiento seleccionado para modificar su disponibilidad
+						//Nota : Esto es para preservar la persistencia, en caso de reservar un ticket de una película en presentación,
+						//también debemos añadir este cambio a la sala virtual, ya que luego de deserializar se ponen falsos todas las
+						//disponibilidades de asientos y renovamos los valores con los asientos virtuales de la película que debe estar 
+						//en presentación en ese momento del tiempo, es por esto que debemos actualizar también la matriz de asientos
+						//en película, ya que sin esto, se pierde este dato de la compra y permitiría comprar varios tickets para el
+						//mismo asiento.
+						int filaProceso = Character.getNumericValue(numeroAsientoProceso.charAt(0));
+						int columnaProceso = Character.getNumericValue(numeroAsientoProceso.charAt(2));
+						peliculaProceso.modificarSalaVirtual( salaDeCineProceso.getHorarioPeliculaEnPresentacion(), filaProceso, columnaProceso );
 						
 						System.out.println( ticketProceso.factura() );
 						pagoRealizado = true;
@@ -1384,7 +1384,11 @@ public class Administrador {
 					case 2: casoValidoConfirmacion = true; casoValido = false; break;
 					default : System.out.println("Opción invalida"); casoValidoConfirmacion = false; break;
 				}
+				
 			}while(!casoValidoConfirmacion);
+			
+			//Avance de tiempo para verificar la integridad del horario seleccionado
+			avanzarTiempo();
 			
 			//Revisar integridad del horario seleccionado en caso de que el cliente tarde mucho tiempo en confirmar su elección
 			if (!horarioProceso.isAfter(SucursalCine.getFechaActual())) {
@@ -1436,6 +1440,9 @@ public class Administrador {
 					continue;
 				}
 				
+				//Avance de tiempo para verificar si el horario aún se encuentra disponible en la sala de cine virtual (No ha sido actualizado)
+				avanzarTiempo();
+				
 				//Verificamos si el horario aún se encuentra disponible
 				try {
 					
@@ -1459,6 +1466,7 @@ public class Administrador {
 						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 						continue;
 					}
+					
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 				
 				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1480,6 +1488,9 @@ public class Administrador {
 					System.out.println("\nError, debe ingresar un dato numérico correspondiente a alguna de las columnas disponibles");
 					continue;
 				}
+				
+				//Avance de tiempo para verificar si el horario aún se encuentra disponible en la sala de cine virtual (No ha sido actualizado)
+				avanzarTiempo();
 				
 				//Revisamos si el horario aún se encuentra disponible
 				try {
@@ -1504,6 +1515,7 @@ public class Administrador {
 						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 						continue;
 					}
+					
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 				
 				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1585,6 +1597,7 @@ public class Administrador {
 					}catch (NumberFormatException e) {
 						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 					}
+					
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 						
 				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1615,6 +1628,7 @@ public class Administrador {
 					}catch (NumberFormatException e) {
 						System.out.println("\nError, debe ingresar un único dato numérico entre los disponibles");
 					}
+					
 				}while(!(opcionMenu == 1 || opcionMenu == 2));
 						
 				casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1692,6 +1706,9 @@ public class Administrador {
 				//Rompemos la lógica de ingresar a las salas de cine
 				break;
 			}
+			
+			//Avance de tiempo para tomar las salas de cine actualizadas
+			avanzarTiempo();
 			
 			//Tomamos las salas de cine que aún tienen películas en presentación y no han finalizado
 			ArrayList<SalaCine> salasDeCineDisponibles = SalaCine.filtrarSalasDeCine(clienteProceso.getCineActual());
@@ -1777,6 +1794,7 @@ public class Administrador {
 						}catch(NumberFormatException e) {
 							System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
 						}
+						
 					}while(!(opcionMenu == 1 || opcionMenu == 2));
 					
 					casoValidoConfirmacion = (opcionMenu == 1) ? true : false;
@@ -1787,6 +1805,9 @@ public class Administrador {
 				if(volverAlMenu) {
 					break;
 				}
+				
+				//Avance de tiempo para aplicar correctamente la verificación de ingreso a la sala de cine
+				avanzarTiempo();
 				
 				//Realizamos la verificación y evaluamos si el cliente puede ingresar a la sala de cine
 				if (salaDeCineProceso.verificarTicket(clienteProceso)) {
@@ -1812,8 +1833,7 @@ public class Administrador {
 			        
 			        //Actualizamos el estado de la fecha actual, de las películas y las salas de cine 
 			        SucursalCine.setFechaActual(salaDeCineProceso.getHorarioPeliculaEnPresentacion().plus(salaDeCineProceso.getPeliculaEnPresentacion().getDuracion()));
-			        SucursalCine.dropHorariosVencidos();
-			        SucursalCine.actualizarPeliculasSalasDeCine();
+			        avanzarTiempo();
 			        
 				}else {
 					System.out.println("\nNo tienes un ticket válido o no cumple con los requisitos para ingresar a esta sala de cine" 
@@ -1883,6 +1903,9 @@ public class Administrador {
 				break;
 			}
 			
+			//Avance de tiempo para tomar los tickets más recientes
+			avanzarTiempo();
+			
 			//Validamos si el cliente tiene tickets disponibles
 			clienteProceso.dropTicketsCaducados();
 			//Filtramos los tickets que el cliente puede usar
@@ -1950,6 +1973,7 @@ public class Administrador {
 					}else {
 						System.out.println("Opción inválida");
 					}
+					
 				}while(!casoValidoConfirmacion);
 				
 				casoValido = (opcionMenu == 1) ? true : false;
@@ -1961,16 +1985,14 @@ public class Administrador {
 				break;
 			}
 			
+			//Avance de tiempo para hacer la verificación de caducidad correctamente
+			avanzarTiempo();
+			
 			//Verificamos si el ticket no ha caducado
 			if (ticketParaUsar.getHorario().isBefore(SucursalCine.getFechaActual())) {
-				System.out.println("\nEl ticket seleccionado no puede ser usado, debido a que ha caducado o su película se encuentra en presentación\n");
+				System.out.println("\nEl ticket seleccionado no puede ser usado, debido a que ha caducado o su película se encuentra en presentación");
 				continue;
 			}
-			
-			//Actualizamos el estado de la fecha actual, de las películas y las salas de cine 
-			SucursalCine.setFechaActual(ticketParaUsar.getHorario());
-			SucursalCine.dropHorariosVencidos();
-			SucursalCine.actualizarPeliculasSalasDeCine();
 			
 			//Mostramos en pantalla el resultado del proceso
 			System.out.println("\nEsperando...");
@@ -1979,6 +2001,10 @@ public class Administrador {
 			}catch(InterruptedException e) {
 				e.printStackTrace();
 			}
+			
+			//Actualizamos el estado de la fecha actual, de las películas y las salas de cine 
+			SucursalCine.setFechaActual(ticketParaUsar.getHorario());
+			avanzarTiempo();
 			System.out.println("La fecha actual ha sido actualizada con éxito ( " + SucursalCine.getFechaActual() + " )\n(Redireccionando al menú principal...)");
 			
 			finalizarLogicaSalaDeEspera = true;
@@ -2017,6 +2043,10 @@ public class Administrador {
 	 * @return <b>boolean</b> : Este método retorna el estado de la validación para tomar determinadas acciones respecto a esta.
 	 * */
 	static boolean verificarIntegridadHorarioSeleccionado(SalaCine salaDeCineProceso, Pelicula peliculaProceso) {
+		
+		//Avance de tiempo
+		avanzarTiempo();
+		
 		if((salaDeCineProceso.getPeliculaEnPresentacion().equals(peliculaProceso)) 
 		&& (salaDeCineProceso.getHorarioPeliculaEnPresentacion().plus(Duration.ofMinutes(20)).isAfter(SucursalCine.getFechaActual()))) {
 			return true;
@@ -2037,6 +2067,9 @@ public class Administrador {
 	 * */
 	static boolean verificarIntegridadHorarioSeleccionado(Pelicula peliculaProceso, LocalDateTime horarioProceso) {
 		
+		//Avance de tiempo
+		avanzarTiempo();
+		
 		if (peliculaProceso.getHorarios().contains(horarioProceso)) {
 			return true;
 		}
@@ -2044,7 +2077,33 @@ public class Administrador {
 		return false;
 	}
 	
-	//4. Serializar (En proceso)
+	
+	/**
+	* Description: Este metodo se encarga de mostrar por pantalla la hora actual de una manera mas organzida y estética.
+	* @params date: Se pasa un localDateTime para ejecutar la logica del método.
+	* */
+	public static void relojDigital(LocalDateTime date) {
+		
+		// Formatear la hora en formato hh:mm:ss a AM/PM
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+        String formattedTime = date.format(timeFormatter);
+
+        // Formatear la fecha en un formato amigable
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy");
+        String formattedDate = date.format(dateFormatter);
+        
+        
+     // Imprimir la hora en un estilo más decorativo
+        System.out.println("\n╔══════════════════════════════╗");
+        System.out.println("║     ⏰⏰Current Date⏰⏰      ║");
+        System.out.println("    •" + formattedDate + "     ");
+        System.out.println("║                              ║");
+        System.out.println("         •" + formattedTime +"        ");
+        System.out.println("╚══════════════════════════════╝");
+        System.out.println();
+	}
+	
+	//4. Serializar (Hecho)
 	//5. Hacer test de correcta serialización de la funcionalidad 1.
 	//6. Empezar el Google Document con el manual de usuario y la documentación
 	
@@ -2074,8 +2133,162 @@ public class Administrador {
 	
 	//Bloque funcionalidad 5
 	
+	
+	static void adquirirMembresia(Cliente clienteProceso) {
+		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla, " + clienteProceso.getNombre() + ".");
+		boolean casoValido = false;
+		int opcionMenu = 0;
+		do {
+			try {
+				System.out.println("¿Desea ingresar o volver?" +"\n1.Ingresar" + "\n2.Volver al menú principal" + "\n3.Salir");
+				opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch(NumberFormatException e) {
+				System.out.println("Error, debes ingresar un dato numérico");
+				continue;
+			}
+			
+			switch (opcionMenu) {
+				case 1: casoValido = true; break;
+				case 2: Administrador.inicio(clienteProceso); casoValido = true; break;
+				case 3: Administrador.salirDelSistema(); casoValido = true; break;
+				default: System.out.println("Opción invalida."); break;
+			}
+			
+		}while(!casoValido);
+		//Se da a escoger al usuario la membresia
+		Membresia membresiaNueva = null;
+		do {
+			opcionMenu = 0;
+			System.out.print(Membresia.verificarMembresiaActual(clienteProceso));
+			System.out.print(Membresia.mostrarCategoria(clienteProceso, clienteProceso.getCineActual()) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
+			opcionMenu = Integer.parseInt(sc.nextLine());
+			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
+			else if (opcionMenu >0 && opcionMenu <6) {
+				//Se verifica si se cumple con los requisitos para adquirir la membresia.
+				boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(clienteProceso, opcionMenu, clienteProceso.getCineActual());
+				System.out.print("\nCargando...\n");
+				try {
+				Thread.sleep(3000);
+				}catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+					if (requisitosMembresia == false) {
+						System.out.print("\nNo puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello o no hay unidades en el momento.\n"
+								+ "Redirigiendo al menú de membresias\n");
+						continue;
+					} else {
+						membresiaNueva = Membresia.asignarMembresiaNueva(opcionMenu);
+					}
+			} else {
+				continue;
+			}
+		} while (membresiaNueva == null);
+		
+		//Una vez se ha escogido la membresia, se pasa a realizar el pago
+		double valorAPagar = membresiaNueva.getValorSuscripcionMensual();
+		do {
+			opcionMenu = 0;
+			System.out.print("El precio de la membresia es de " + valorAPagar 
+			+ ". Por favor, seleccione el método de pago a usar:\n"
+			+ MetodoPago.mostrarMetodosDePago(clienteProceso) + "\n6. Volver al inicio \nIngrese la opción: ");
+			opcionMenu = Integer.parseInt(sc.nextLine());
+			if (opcionMenu == 6) {Administrador.inicio(clienteProceso);}
+			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(clienteProceso, opcionMenu);
+			try {
+				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {
+					valorAPagar = valorAPagar - valorAPagar * metodoPagoSeleccionado.getDescuentoAsociado();
+					System.out.print("Con el método de pago " 
+						+ metodoPagoSeleccionado.getNombre()+ ", el nuevo monto a pagar es " 
+						+ valorAPagar +".\n1. Confirmar pago. \n2. Cambiar método de pago. \nPor favor, seleccione una opción: ");
+					
+				}else {
+					System.out.print("\nEl monto a pagar con el método de pago " 
+						+ metodoPagoSeleccionado.getNombre()+ " es " 
+						+ valorAPagar + ". \n1. Confirmar pago. \n2. Cambiar método de pago. \nPor favor, seleccione una opción: ");
+				}
+			opcionMenu = Integer.parseInt(sc.nextLine());
+			}catch (NumberFormatException e) {
+			System.out.print("Error, debes ingresar un dato numérico");}
+			
+			if (opcionMenu == 1) {
+				valorAPagar = metodoPagoSeleccionado.realizarPago(valorAPagar, clienteProceso);
+			} else if (opcionMenu == 2) {
+				valorAPagar = membresiaNueva.getValorSuscripcionMensual();
+				continue;
+			}
+		}while (valorAPagar != 0); 
+		
+		System.out.print("\nEstamos procesando su pago...\n");
+		try {
+			Thread.sleep(3000);
+			}catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		membresiaNueva.procesarPagoRealizado(clienteProceso);
+		System.out.print(
+				"=== Factura de compra ===\n" +
+				"Nombre dueño: " + clienteProceso.getNombre() + "\n" +
+				"Documento: " + clienteProceso.getDocumento() + "\n" +
+				membresiaNueva.factura());
+		TarjetaCinemar tarjetaCinemarActual = clienteProceso.getCuenta();
+		int tipoMembresia = 0;
+		if (tarjetaCinemarActual != null) {
+			tipoMembresia = clienteProceso.getMembresia().getTipoMembresia();
+			if (tipoMembresia == 1) {
+				tarjetaCinemarActual.ingresarSaldo(10000);
+			}else {
+				tarjetaCinemarActual.ingresarSaldo(20000);
+			}
+		}else {
+			boolean finalizarCompra = false;
+			double saldoCuenta = 0.0;
+			tipoMembresia = clienteProceso.getMembresia().getTipoMembresia();
+			if (tipoMembresia == 1) {
+				saldoCuenta = 5000.0;
+			} else {
+				saldoCuenta = 20000.0;
+			}
+			do {
+				try{
+					opcionMenu = 0;
+					System.out.print("\nGracias por adquirir el programa de membresia. Su nueva membresia es " + clienteProceso.getMembresia().getNombre() + " de categoria" + clienteProceso.getMembresia().getCategoria()+"\nComo regalo, le otorgamos una tarjeta cinemar con "
+							+ (int)saldoCuenta + " recargados.\n1. Confirmar.\n2. Rechazar. \nPor favor, seleccione una opción: ");
+					opcionMenu = Integer.parseInt(sc.nextLine());
+				}catch (NumberFormatException e){
+					System.out.print("Error. Por favor, escriba un dato numérico");}
+				if (opcionMenu == 1) {
+					Arkade.asociarTarjetaCliente(clienteProceso);
+					clienteProceso.getCuenta().ingresarSaldo(saldoCuenta);
+					System.out.println("\nEstos son los datos de su tarjeta:\nDueño: "+clienteProceso.getCuenta().getDueno().getNombre()+"\nSaldo: $"+clienteProceso.getCuenta().getSaldo());
+					System.out.print("\nGracias por su compra. Redirigiendo al menú principal.");
+					finalizarCompra = true;
+				} else {
+					try {
+						opcionMenu = 0;
+						System.out.print("Recuerde que esta oferta es única. ¿Esta seguro? \n1. Si. \n2. No. \nIngrese la opción: ");	
+						opcionMenu = Integer.parseInt(sc.nextLine());
+					}catch (NumberFormatException e){
+						System.out.print("Error. Por favor, escriba un dato numérico");}
+					if (opcionMenu == 1 ) {
+						System.out.print("Gracias por su compra. Redirigiendo al menú principal.");
+						finalizarCompra = true;
+					} else {
+						continue;
+					}
+				}
+				try {
+					Thread.sleep(3000);
+					}catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+			} while (!finalizarCompra);
+		}
+	}
+}
+
+	
 //------------------------------------------------------------------------------------------------------------------	
 	
 	
-}
+
 

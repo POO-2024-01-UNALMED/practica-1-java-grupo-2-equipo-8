@@ -1,5 +1,6 @@
 package gestionAplicacion.usuario;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import gestionAplicacion.SucursalCine;
@@ -7,11 +8,12 @@ import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 //import gestionAplicacion.servicios.Arkade;
 
-public class Ticket implements IBuyable{
+public class Ticket implements IBuyable, Serializable{
 	
-	private static int cantidadTicketsCreados = 1;
-	private boolean descuento;
+	private static final long serialVersionUID = 1L;
+	
 	private int idTicket;
+	private static int cantidadTicketsCreados;
 	private Cliente dueno;
 	private SalaCine salaDeCine;
 	private Pelicula pelicula;
@@ -19,12 +21,12 @@ public class Ticket implements IBuyable{
 	private String numeroAsiento;
 	private double precio;
 	private SucursalCine sucursalCompra;
+	private boolean descuento;
 
 	//Constructors
 	public Ticket(Pelicula pelicula, LocalDateTime horario, String numeroAsiento, SucursalCine sucursalDondeFueComprado) {
 		this.descuento = true;
 		this.pelicula = pelicula;
-		this.idTicket = Ticket.cantidadTicketsCreados;
 		this.numeroAsiento = numeroAsiento;
 		this.horario = horario;
 		this.sucursalCompra = sucursalDondeFueComprado;
@@ -34,7 +36,7 @@ public class Ticket implements IBuyable{
 	
 	//Methods
 	/**
-	 * Description : Este método se encarga de verificar si se puede aplicar o no un descuento sobre el precio de la pelicula
+	 * Description : Este método se encarga de verificar si se puede aplicar o no un descuento sobre el precio de la película
 	 * según si la cantidad de tickets creados corresponde a un cuadrado perfecto.
 	 * @return <b>double</b> : Retorna un double (De tipo double) que corresponde al precio del ticket en caso de aplicarse
 	 * o no el descuento.
@@ -42,7 +44,7 @@ public class Ticket implements IBuyable{
 	private double clienteSuertudo() {
 		
 		//Verificamos si al sacarle módulo a la raíz cuadrada a los tickets creados nos da un número sin decimales (Cuadrado perfecto)
-		boolean verificacion = (Math.sqrt(Ticket.cantidadTicketsCreados) % 1 == 0) ? true : false; 
+		boolean verificacion = (Math.sqrt(sucursalCompra.getCantidadTicketsCreados()) % 1 == 0) ? true : false; 
 		//Tomamos el precio de la película asociada al ticket
 		double precio = this.pelicula.getPrecio();
 		
@@ -64,8 +66,8 @@ public class Ticket implements IBuyable{
 	 * 3. Se pasa la referencia del cliente al atributo dueño del ticket.
 	 * 4. Se aumenta la cantidad de tickets genereados en uno.
 	 * 5. Se crea una referencia de este ticket en el arraylist de los tickets creados en el cine.
-	 * 6. Se crea la factura y se le asoscia al cliente
-	 * 7. Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.
+	 * 6. Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.
+	 * 7. Creamos el id del ticket y aumentamos la cantidad de tickets creados (Lógica id).
 	 * @param cliente : Se pide como parámetro el cliente (De tipo Cliente) que realizó exitosamente el pago.
 	 */
 	public void procesarPagoRealizado(Cliente cliente) {
@@ -77,22 +79,29 @@ public class Ticket implements IBuyable{
 		this.setDueno(cliente);
 		
 		//Se aumenta la cantidad de tickets creados
-		Ticket.cantidadTicketsCreados++;
+		cliente.getCineActual().setCantidadTicketsCreados(cliente.getCineActual().getCantidadTicketsCreados() + 1);
 		
-		//Se crea un apuntador del ticket en el array de tickets generados de la sucursal de cine
-		cliente.getCineActual().getTicketsCreados().add(this);
+		//Se crea un apuntador del ticket en el array de tickets disponibles y se evalua si aplica para algún descuento
+		SucursalCine.getTicketsDisponibles().add(this);
+		if (this.horario.toLocalDate().isEqual(SucursalCine.getFechaActual().toLocalDate())) {
+			cliente.getCineActual().getTicketsParaDescuento().add(this);
+		}
 		
 		//Proceso para funcionalidad 4
 		String codigoArkade = this.generarCodigoTicket();
 		//Arkade.getCodigosGenerados().add(codigoArkade);
 		this.dueno.getCodigosDescuento().add(codigoArkade);
+		
+		//Lógica id
+		cantidadTicketsCreados++;
+		this.idTicket = cantidadTicketsCreados;
+		
 	}
 	
 	
 	/**
 	 * @Override
-	 * Description: Este método se encarga de pasar la factura de la compra del ticket al array de facturas del usuario que realizó la compra
-	 * además, retorna un string que contiene toda la información del ticket en forma de factura.
+	 * Description: Este método se encarga de retornar un string que contiene toda la información del ticket en forma de factura.
 	 * @return <b>String</b> : Este método retorna un String que representa la factura de compra con el fin de ser mostrada en pantalla
 	 * luego de realizar una compra.
 	 * */
@@ -106,8 +115,19 @@ public class Ticket implements IBuyable{
 				"Fecha Presentación: " + this.horario.toLocalDate() + "\n" +
 				"Hora Presentación: " + this.horario.toLocalTime() + "\n" + 
 				"Valor ticket (IVA incluido): " + this.precio + "\n" + 
-				"Fecha de compra: " + SucursalCine.getFechaActual().withNano(0);
+				"Fecha de compra: " + SucursalCine.getFechaActual().withNano(0) + "\n" +
+				"Sucursal : " + this.sucursalCompra.getLugar();
 				
+	}
+	
+	/**
+	 * Description : Este método se encarga de asignar el ticket a su respectivo dueño luego de la deserialización con el fin de asegurar
+	 * la integridad de la persistencia de datos.
+	 * */
+	public void agregarTIcketClienteSerializado() {
+		Cliente cliente = Cliente.revisarDatosCliente(this.dueno.getDocumento());
+		cliente.getTickets().add(this);
+		this.dueno = cliente;
 	}
 	
 	/**
@@ -181,14 +201,6 @@ public class Ticket implements IBuyable{
 		this.horario = horario;
 	}
 
-	public static int getCantidadTicketsCreados() {
-		return cantidadTicketsCreados;
-	}
-
-	public static void setCantidadTicketsCreados(int cantidadTicketsCreados) {
-		Ticket.cantidadTicketsCreados = cantidadTicketsCreados;
-	}
-
 	public int getIdTicket() {
 		return idTicket;
 	}
@@ -219,6 +231,14 @@ public class Ticket implements IBuyable{
 
 	public void setSucursalCompra(SucursalCine sucursalCompra) {
 		this.sucursalCompra = sucursalCompra;
+	}
+
+	public static int getCantidadTicketsCreados() {
+		return cantidadTicketsCreados;
+	}
+
+	public static void setCantidadTicketsCreados(int cantidadTicketsCreados) {
+		Ticket.cantidadTicketsCreados = cantidadTicketsCreados;
 	}
 	
 	

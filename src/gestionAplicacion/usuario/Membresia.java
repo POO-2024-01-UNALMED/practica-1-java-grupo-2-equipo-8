@@ -1,5 +1,6 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
@@ -11,12 +12,13 @@ import gestionAplicacion.servicios.Producto;
 import iuMain.Administrador;
 import gestionAplicacion.proyecciones.SalaCine;
 
-public class Membresia implements IBuyable{
+public class Membresia implements IBuyable, Serializable{
 	
+
 	//Atrbutos
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private int categoria;
-	private static ArrayList<Membresia> tiposDeMembresia = new ArrayList<>();
 	private ArrayList<Cliente> clientes = new ArrayList<>();
 	private double descuentoAsociado;
 	private int valorSuscripcionMensual;
@@ -34,7 +36,7 @@ public class Membresia implements IBuyable{
 	}
 
 	public Membresia(){
-		tiposDeMembresia.add(this);
+		SucursalCine.getTiposDeMembresia().add(this);
 	}
 	
 	public Membresia(String nombre, int categoria, ArrayList<Cliente> clientes, double descuentoAsociado,
@@ -46,12 +48,7 @@ public class Membresia implements IBuyable{
 		this.valorSuscripcionMensual = valorSuscripcionMensual;
 		this.duracionMembresiaDias = duracionMembresiaDias;
 		this.tipoMembresia = tipo;
-		tiposDeMembresia.add(this);
-	}
-	
-	
-	public void crearBonoRecargaTarjetaCinemar() {
-		
+		SucursalCine.getTiposDeMembresia().add(this);
 	}
 	
 	/**
@@ -88,7 +85,7 @@ public class Membresia implements IBuyable{
 	*/
 	public static void asignarDescuento() {
 		//Se realiza un ciclo y se toma la categoria de cada membresia para asignar el descuento con switch.
-		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
+		for (Membresia membresia : SucursalCine.getTiposDeMembresia()) {
 			//Se realiza el ciclo tomando la categoria de cada membresia.
 	 		int categoria = membresia.getCategoria();
 	 		double descuento = 0.05;
@@ -109,24 +106,6 @@ public class Membresia implements IBuyable{
 		
 		return true;}
 	
-	
-	public void adquirirSuscripcion() {
-		
-	}
-	
-	public ArrayList<Pelicula> recomendacionPeliculas(){
-		
-		return new ArrayList<>();
-		}
-	
-	public double aumentaLimiteDePago() {
-		
-		return 2.73;}
-	
-	
-	public void recargarRegaloTarjetaCinemar() {
-		
-	}
 	/**
 	*<b>Description</b>: Este método se encarga de mostrar las categorias de membresias disponibles
 	*@param none : No se pide parametros
@@ -136,7 +115,7 @@ public class Membresia implements IBuyable{
 		String resultado = null;
 		int i = 1;
 		Membresia membresiaActual = clienteProceso.getMembresia();
-		String nombreMembresiaActual = null;
+		String nombreMembresiaActual = null; 
 		
 		//Se actualiza el nombre de la membresia.
 		if (membresiaActual == null) {
@@ -155,7 +134,10 @@ public class Membresia implements IBuyable{
 						i++;
 						continue;
 					}
-					else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
+					//Si el cliente ya tiene esta membresia y además, le faltan más de 5 dias para que expire, no se muestra en el menu.
+					else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre()) && 
+							(clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())
+							&& clienteProceso.getFechaLimiteMembresia().isAfter(SucursalCine.getFechaActual().toLocalDate()))) {
 						i++;
 						continue;
 					} else {
@@ -166,7 +148,10 @@ public class Membresia implements IBuyable{
 					i++;
 					continue;
 				}
-				else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre())) {
+				//Si el cliente ya tiene esta membresia y además, le faltan más de 5 dias para que expire, no se muestra en el menu.
+				else if (nombreMembresiaActual.equalsIgnoreCase(membresia.getNombre()) && 
+						(clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())
+						&& clienteProceso.getFechaLimiteMembresia().isAfter(SucursalCine.getFechaActual().toLocalDate()))) {
 					i++;
 					continue;
 				} else {
@@ -194,7 +179,7 @@ public class Membresia implements IBuyable{
 		//Se obtiene los puntos que posea el cliente.
 		double puntos = 0.0;
 		for (MetodoPago metodoPago : clienteProceso.getMetodosDePago()) {
-			if (metodoPago.getNombre() == "Puntos") {
+			if (metodoPago.getNombre().equals("Puntos")) {
 				puntos = metodoPago.getLimiteMaximoPago();
 				break;
 			}
@@ -202,7 +187,7 @@ public class Membresia implements IBuyable{
 		//Se obtiene la cantidad de la membresia que hayan en el cine.
 		int membresiaStock = 0;
 		for (Producto membresiaInventario : sucursalCineProceso.getInventarioCine()) {
-			if (membresiaInventario.getNombre() == membresiaProceso.getNombre()) {
+			if (membresiaInventario.getNombre().equals(membresiaProceso.getNombre())) {
 				membresiaStock = membresiaInventario.getCantidad();
 				break;
 			}
@@ -214,7 +199,7 @@ public class Membresia implements IBuyable{
 		case 2: esValido = (membresiaStock > 0 && puntos >= 5000) ? true : false; break;
 		case 3: esValido = (membresiaStock > 0 && puntos >= 10000) ? true : false; break;
 		case 4: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 15000) ? true : false; break;
-		case 5: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 20 && puntos >= 20000) ? true : false; break;
+		case 5: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 20000) ? true : false; break;
 		}
 		
 		return esValido;
@@ -228,7 +213,7 @@ public class Membresia implements IBuyable{
 	*/
 	public static void asignarTipoMembresia () {
 		//Se revisa la lista de Tipos de Membresia y se asigna el tipo
-		for (Membresia membresia : Membresia.getTiposDeMembresia()) {
+		for (Membresia membresia : SucursalCine.getTiposDeMembresia()) {
 			if (membresia.getCategoria() > 0 && membresia.getCategoria() <= 3) {
 				membresia.setTipoMembresia(1);
 			} 
@@ -250,7 +235,7 @@ public class Membresia implements IBuyable{
 		//Se crea una instancia de tipo Membresia null
 		Membresia membresiaNueva = null;
 		//Se busca las instancias de tipo Membresia en Tipos de Membresia y si la categoria coincide, la instancia anterior apunta a este resultado
-		for (Membresia membresia2 : Membresia.getTiposDeMembresia()) {
+		for (Membresia membresia2 : SucursalCine.getTiposDeMembresia()) {
 			if (membresia2.getCategoria() == categoriaMembresia) {
 					membresiaNueva = membresia2;
 					break;
@@ -271,7 +256,7 @@ public class Membresia implements IBuyable{
 		//Se revisa la lista de las sucursales de cine creadas.
 		for (SucursalCine sucursalCine : sucursalesCine) {
 			//Por cada membresia, se crea un producto de este tipo y se añade al inventario de la sucursal.
-			for (Membresia membresia : Membresia.getTiposDeMembresia()) {
+			for (Membresia membresia : SucursalCine.getTiposDeMembresia()) {
 					Producto membresiaSucursal = new Producto("Membresia", membresia.getNombre(), puntos, i);
 					sucursalCine.getInventarioCine().add(membresiaSucursal);
 					puntos+=5000;
@@ -279,6 +264,7 @@ public class Membresia implements IBuyable{
 			}
 			//Se reinicia el contador de cantidad cada vez que se itere a una nueva sucursal de la lista.	
 			i = 50;
+			puntos = 0;
 		}
 	}
 
@@ -305,14 +291,6 @@ public class Membresia implements IBuyable{
 
 	public void setCategoria(int categoria) {
 		this.categoria = categoria;
-	}
-
-	public static ArrayList<Membresia> getTiposDeMembresia() {
-		return tiposDeMembresia;
-	}
-
-	public static void setTiposDeMembresia(ArrayList<Membresia> tiposDeMembresia) {
-		Membresia.tiposDeMembresia = tiposDeMembresia;
 	}
 
 	public int getTipoMembresia() {
@@ -352,12 +330,24 @@ public class Membresia implements IBuyable{
 	@Override
 	public void procesarPagoRealizado(Cliente cliente) {
 		//Se asigna la referencia de la membresia adquirida en el cliente y se actualizan sus métodos de pago.
-		cliente.setMembresia(this);
-		cliente.setDuracionMembresiaDias(Duration.ofDays(this.duracionMembresiaDias));
+		boolean isPrimerMembresia = true;
+		//Si el cliente no tiene membresia al momento de la compra, se le asigna y se cambia el boolean.
+		if (cliente.getMembresia()==null || !cliente.getMembresia().getNombre().equals(this.getNombre())) {
+			cliente.setMembresia(this);
+			cliente.setOrigenMembresia(cliente.getCineActual().getIdSucursal());
+			cliente.setFechaLimiteMembresia(SucursalCine.getFechaActual().toLocalDate().plusDays(this.duracionMembresiaDias));
+			isPrimerMembresia = false;
+			
+		//En caso de tener una membresia se puede renovar y no se resta el stock de su inventario por lo que ya esta asignada.
+		} else {
+			cliente.setFechaLimiteMembresia(cliente.getFechaLimiteMembresia().plusDays(this.duracionMembresiaDias));
+			cliente.getMembresia().getClientes().remove(cliente);
+		}
 		
-		//Se va al inventario del cine para restar la cantidad de membresias.
+		//Se va al inventario del cine para restar la cantidad de membresias si el cliente no esta renovando.
+		if (this.getNombre().equals(cliente.getMembresia().getNombre()) && isPrimerMembresia == false)
 		for (Producto membresiaStock : cliente.getCineActual().getInventarioCine()) {
-			if (membresiaStock.getNombre() == this.getNombre()) {
+			if (membresiaStock.getNombre().equals(this.getNombre())) {
 				membresiaStock.setCantidad(membresiaStock.getCantidad() - 1);
 				break;
 			}

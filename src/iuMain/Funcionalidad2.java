@@ -218,6 +218,7 @@ public class Funcionalidad2 {
 				System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
 				System.out.print(serviciProceso.mostrarOrden());
 				
+				
 			}
 		}
 		

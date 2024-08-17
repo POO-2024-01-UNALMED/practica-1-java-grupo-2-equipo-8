@@ -1,23 +1,26 @@
 package gestionAplicacion.usuario;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.Bono;
 
-public class MetodoPago{
+public class MetodoPago implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	//Atributos
 	private String nombre;
 	private double descuentoAsociado;
 	private double limiteMaximoPago;
-	private static ArrayList<MetodoPago> metodosDePagoDisponibles = new ArrayList<>();
 	//private static ArrayList<MetodoPago> metodosDePagoUsados = new ArrayList<>();
 	private int tipo;
 	
 	
 	//Constructores
 	public MetodoPago(){
-		metodosDePagoDisponibles.add(this);
+		SucursalCine.getMetodosDePagoDisponibles().add(this);
 	}
 	
 	
@@ -29,13 +32,21 @@ public class MetodoPago{
 		this.tipo = 0;
 	}
 	
-	public MetodoPago(String nombre, double descuentoAsociado, double limiteMaximoPago, int tipo) {
+	public MetodoPago(String nombre, double descuentoAsociado,	 double limiteMaximoPago, int tipo) {
 		this();
 		this.nombre = nombre;
 		this.descuentoAsociado = descuentoAsociado;
 		this.limiteMaximoPago = limiteMaximoPago;
 		this.tipo = tipo;
 	}
+	
+	public MetodoPago(double descuentoAsociado, String nombre, double limiteMaximoPago, int tipo) {
+		this.nombre = nombre;
+		this.descuentoAsociado = descuentoAsociado;
+		this.limiteMaximoPago = limiteMaximoPago;
+		this.tipo = tipo;
+	}
+	
 
 	public void cambiarDisponibilidadMetodoPago() {
 		
@@ -60,7 +71,7 @@ public class MetodoPago{
 				if (resultado == null) {
 					resultado = i + ". "+ metodoPago.getNombre()+ " - Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "% - Límite Máximo de pago: " + metodoPago.limiteMaximoPago + "\n";
 				}else {
-					if (metodoPago.getNombre() == "Puntos") {
+					if (metodoPago.getNombre().equals("Puntos")) {
 						resultado = resultado + i + ". "+ metodoPago.getNombre() + " Saldo: " + (int)(metodoPago.getLimiteMaximoPago());
 						continue;}
 					resultado = resultado + i + ". " + metodoPago.getNombre() + " - Descuento: " + (int)(metodoPago.getDescuentoAsociado()*100) + "% -  Límite Máximo de pago: " + metodoPago.limiteMaximoPago + "\n";
@@ -87,6 +98,9 @@ public class MetodoPago{
 				if (resultado == null) {
 					resultado = i + ". "+ metodoPago.getNombre()+ " -- Recarga máxima: $" + metodoPago.getLimiteMaximoPago() +"\n";
 				}else {
+					if (metodoPago.getNombre().equals("Puntos")) {
+						resultado = resultado + i + ". "+ metodoPago.getNombre() + " Saldo: " + (int)(metodoPago.getLimiteMaximoPago());
+						continue;}
 					resultado = resultado + i + ". " + metodoPago.getNombre() +" -- Recarga máxima: $"+ metodoPago.getLimiteMaximoPago() +"\n";
 				}
 				i++;
@@ -108,7 +122,7 @@ public class MetodoPago{
 		//membresia.
 		MetodoPago puntos = null;
 		for (MetodoPago metodoPagoCliente : cliente.getMetodosDePago()) {
-			if (metodoPagoCliente.getNombre() == "Puntos") {
+			if (metodoPagoCliente.getNombre().equals("Puntos")) {
 				puntos = metodoPagoCliente;
 			}
 		}
@@ -121,25 +135,24 @@ public class MetodoPago{
 		if (tipoMembresia != null) {
 			tipoMembresiaInt = tipoMembresia.getTipoMembresia();
 			if (puntos == null) {
-				switch (tipoMembresiaInt) {
-				case 1: puntos = new MetodoPago("Puntos", 0.0, 5000, tipoMembresiaInt);break;
-				case 2: puntos = new MetodoPago("Puntos", 0.0, 10000, tipoMembresiaInt);break;
-				}
-			} else {
-				MetodoPago.getMetodosDePagoDisponibles().add(puntos);
+				cliente.setPuntos(2500);
+				puntos = new MetodoPago(0.0, "Puntos", cliente.getPuntos(), tipoMembresiaInt);
 			}
 		}
 		
 		//Se realiza un ciclo para filtrar los métodos de pago por el tipoMembresia del cliente
 		//y se añaden sus lista de métodos de pago.
-		for (MetodoPago metodoPago : MetodoPago.getMetodosDePagoDisponibles()) {
+		for (MetodoPago metodoPago : SucursalCine.getMetodosDePagoDisponibles()) {
 			if (tipoMembresiaInt == metodoPago.getTipo()) {
 				cliente.getMetodosDePago().add(metodoPago);
 				
 			}
 		}
 		//Se elimina la referencia del canje de puntos en la lista de métodos de pago estatica.
-		MetodoPago.getMetodosDePagoDisponibles().remove(puntos);
+//		SucursalCine.getMetodosDePagoDisponibles().remove(puntos);
+		if (puntos != null) {
+			cliente.getMetodosDePago().add(puntos);
+		}
 		return cliente.getMetodosDePago();
 	}
 	
@@ -199,7 +212,7 @@ public class MetodoPago{
 			valorPagar = 0;
 		}
 				
-		//Cuando el método usado sea efectivo, no se pasará a usados
+		//Cuando el método usado sea efectivo, no se pasará a usados y no se acumularan los puntos por la logica de negocios gracias a los convenios.
 		if (this.getNombre().equals("Efectivo")) {
 			return valorPagar;
 		}
@@ -214,21 +227,19 @@ public class MetodoPago{
 		
 		//Se verifica si el cliente tiene membresia para realizar la acumulación de puntos
 		Membresia membresia = cliente.getMembresia();
-		double saldoPuntos = 0.0;
 		if (membresia != null && !this.getNombre().equals("Puntos")) {
 			int tipoMembresia = cliente.getMembresia().getTipoMembresia();
 			MetodoPago puntos = null;
 			for (MetodoPago metodoPago: cliente.getMetodosDePago()) {
-				if (metodoPago.getNombre() == "Puntos") {
-						puntos = metodoPago;
-						break;
+				if (metodoPago.getNombre().equals("Puntos")) {
+					puntos = metodoPago;
+					break;
 				}
-			}
-			saldoPuntos = puntos.getLimiteMaximoPago();			
+			}	
 			switch (tipoMembresia) {
 			
-			case 1: puntos.setLimiteMaximoPago(saldoPuntos + (precio * 0.05)); break;
-			case 2: puntos.setLimiteMaximoPago(saldoPuntos + (precio * 0.10)); break;
+			case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.05));break;
+			case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.10));break;
 			}
 			
 		}
@@ -255,17 +266,6 @@ public class MetodoPago{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-
-	public static ArrayList<MetodoPago> getMetodosDePagoDisponibles() {
-		return metodosDePagoDisponibles;
-	}
-
-
-	public static void setMetodosDePagoDisponibles(ArrayList<MetodoPago> metodosDePagoDisponibles) {
-		MetodoPago.metodosDePagoDisponibles = metodosDePagoDisponibles;
-	}
-
 
 	public int getTipo() {
 		return tipo;

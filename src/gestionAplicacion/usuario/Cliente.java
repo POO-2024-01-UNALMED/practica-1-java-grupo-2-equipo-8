@@ -2,6 +2,7 @@ package gestionAplicacion.usuario;
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Iterator;
 
 import gestionAplicacion.SucursalCine;
@@ -37,7 +38,9 @@ public class Cliente implements Serializable{
 	
 	//Atributos para funcionalidad 5
 	private Membresia membresia;
-	private Duration duracionMembresiaDias;
+	private LocalDate fechaLimiteMembresia;
+	private int puntos;
+	private int origenMembresia;
 	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	
 	//Posiblemente eliminar los siguientes atributos:
@@ -55,10 +58,11 @@ public class Cliente implements Serializable{
 		this.edad = edad;
 		this.documento = documento;
 		this.tipoDocumento = tipoDocumento;
+		puntos = 0;
 	}
 	
 	public Cliente(String nombre, ArrayList<Pelicula> historialDePeliculas, ArrayList<Producto> historialDePedidos, ArrayList<Ticket> ticket,
-			int edad, Membresia membresia, long documento, Duration duracionMembresiaDias,
+			int edad, Membresia membresia, long documento, LocalDate fechaLimiteMembresia,
 			TipoDeDocumento tipoDocumento, TarjetaCinemar cuenta, ArrayList<MetodoPago> metodosDePago,
 			ArrayList<String> codigosDescuento) {
 		this();
@@ -69,7 +73,7 @@ public class Cliente implements Serializable{
 		this.edad = edad;
 		this.membresia = membresia;
 		this.documento = documento;
-		this.duracionMembresiaDias = duracionMembresiaDias;
+		this.fechaLimiteMembresia = fechaLimiteMembresia;
 		this.tipoDocumento = tipoDocumento;
 		this.cuenta = cuenta;
 		this.metodosDePago = metodosDePago;
@@ -133,8 +137,8 @@ public class Cliente implements Serializable{
 	/**
 	 * Description: Este método se encarga de mostrar al cliente los tickets que el cliente puede usar
 	 * imprimiendo en pantalla información relevante de estos para facilitar
-	 * la elección de la sala de cine a ingresar o el ticket a usar para usar la sala de espera.
-	 * @param ticketsParaUsar : Este método retorna una lista de los tickets (De tipo ArrayList<Ticket>) que el cliente puede usar.
+	 * la elección de la sala de cine a ingresar o del ticket a usar en la sala de espera.
+	 * @param ticketsParaUsar : Este método retorna una lista de los tickets ( De tipo ArrayList(Ticket) ) que el cliente puede usar.
 	 * @return <b>String</b> : Este método se encarga de retornar un string con el nombre de la película
 	 * el número de la sala de cine y la fecha de la película de cada uno de los tickets asociados del cliente.
 	 * */
@@ -157,8 +161,7 @@ public class Cliente implements Serializable{
 	
 	/**
 	 * Description: Este método se encarga de eliminar los tickets cuyo horario, más la duración de la película para la cuál fue adquirido 
-	 * es menor a la fecha actual, para esto, creamos un array en el cuál almacenamos los tickets que cumplan la condición anterior y posteriormente
-	 * los eliminamos.
+	 * es menor a la fecha actual.
 	 * */
 	public void dropTicketsCaducados() {
 		//Creamos un apuntador del tipo de la interfaz iterator y le asignamos los tickets del cliente que ejecuta el método
@@ -172,8 +175,10 @@ public class Cliente implements Serializable{
 			
 			//Valido si el ticket ya caducó
 			if( !(ticket.getHorario().plus(ticket.getPelicula().getDuracion()).isAfter(SucursalCine.getFechaActual())) ){
-				//Lo elimino
+				//Lo elimino de su array
 				iteradorTickets.remove();
+				//Lo elimino de los tickets disponibles
+				SucursalCine.getTicketsDisponibles().remove(ticket);
 			}
 		}
 		
@@ -181,8 +186,8 @@ public class Cliente implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de retornar los tickets correspondientes a la sucursal de cine en la que se encuentra el cliente.
-	 * @return ArrayList<Ticket> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
-	 * o a la sala de espera si este posee algún ticket de esta sucursal.
+	 * @return <b>ArrayList(Ticket)</b> : Este método retorna el resultado de la verifcación, con el fin de que el cliente solo pueda acceder a las salas de cine
+	 * o a la sala de espera si este posee al menos un ticket de esta sucursal.
 	 * */
 	public ArrayList<Ticket> filtrarTicketsParaSede() {
 		
@@ -197,8 +202,8 @@ public class Cliente implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de encontrar el género más visto por un cliente, para realizar este proceso, iteramos sobre su historial
-	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en un arraylists distinto, conservando
-	 * el mismo índice, por último, evaluamos cual género tiene más visualizaciones y se retorna este, en caso de coincidir en visualizaciones con 
+	 * de películas, luego, obtenemos el género de cada una y alamacenamos las veces que se repite este género en arraylists distintos, conservando
+	 * el mismo índice, por último, evaluamos cuál género tiene más visualizaciones y se retorna este, en caso de coincidir en visualizaciones con 
 	 * otro género, retornamos el género más reciente.
 	 * @return <b>String</b> : Este método retorna el género (De tipo String) con más visualizaciones.  
 	 * */
@@ -251,17 +256,30 @@ public class Cliente implements Serializable{
 		return generoMasVisto;
 	}
 	
-	//No se puede usar System.out.println(), Cambiar lógica del método.
-	public void mostrarCodigosDescuento() {
+	
+	/**
+	Description: Este metodo se encarga de retornar la lista de los codigos de descuento que el usuario
+	 * tiene disponibles para redimir por la compra de tickets de peliculas
+	 
+	  @return <b>String</b> : Lista de codigos disponibles
+
+	* */
+	public String mostrarCodigosDescuento() {
+		
+		String cadena ="";
 		
 		for (int i = 0; i < this.codigosDescuento.size(); i++) {
-            System.out.println((i + 1) + ". " + this.codigosDescuento.get(i));
+			
+			cadena+= (i + 1) + ". " + this.codigosDescuento.get(i)+"\n";
+            //System.out.println((i + 1) + ". " + this.codigosDescuento.get(i));
             
         }
+		cadena+=this.codigosDescuento.size()+1+". Ninguno\n";
+		cadena+=this.codigosDescuento.size()+2+". Salir\n";
 		
-		System.out.println((this.codigosDescuento.size()+1)+". Ninguno");
-		System.out.println((this.codigosDescuento.size()+2)+". Salir");
+		return cadena;
 	}
+	
 	/**
 	// Description: Este metodo se encarga de mostrar el historial de peliculas que cada cliente ha visto hasta el momento para poder 
 	 * hacer una calificacion en concreto de las peliculas que el cliente se vio, evitando que el cliente pueda calificar 
@@ -371,14 +389,6 @@ public class Cliente implements Serializable{
 		this.documento = documento;
 	}
 
-	public Duration getDuracionMembresiaDias() {
-		return duracionMembresiaDias;
-	}
-
-	public void setDuracionMembresiaDias(Duration duracionMembresiaDias) {
-		this.duracionMembresiaDias = duracionMembresiaDias;
-	}
-
 	public TipoDeDocumento getTipoDocumento() {
 		return tipoDocumento;
 	}
@@ -451,5 +461,35 @@ public class Cliente implements Serializable{
 	public void setValoracionesPeliculas(ArrayList<Pelicula> valoracionesPeliculas) {
 		this.valoracionesPeliculas = valoracionesPeliculas;
 	}
+
+	public int getPuntos() {
+		return puntos;
+	}
+
+	public void setPuntos(int puntos) {
+		this.puntos = puntos;
+	}
+
+
+	public LocalDate getFechaLimiteMembresia() {
+		return fechaLimiteMembresia;
+	}
+
+
+	public void setFechaLimiteMembresia(LocalDate fechaLimiteMembresia) {
+		this.fechaLimiteMembresia = fechaLimiteMembresia;
+	}
+
+
+	public int getOrigenMembresia() {
+		return origenMembresia;
+	}
+
+
+	public void setOrigenMembresia(int origenMembresia) {
+		this.origenMembresia = origenMembresia;
+	}
+	
+	
 
 }
