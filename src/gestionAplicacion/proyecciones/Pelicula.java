@@ -87,10 +87,12 @@ public class Pelicula implements Serializable{
 	}
 	
 	/**
-	 * Description : Este método se encarga de filtar las películas en cartelera con los siguientes criterios:  
-	 * 1. Su categoría es menor o igual a la edad del cliente.
-	 * 2. La película tiene al menos 1 horario en el cuál será presentada o se encuentra en presentación y no supera el 
-	 * límite de tiempo para comprar un ticket de una película que se encuentra en presentación (15 minutos). 
+	 * Description : Este método se encarga de filtar las películas en cartelera con los siguientes criterios:
+	 * <ol>  
+	 * <li>Su categoría es menor o igual a la edad del cliente.</li>
+	 * <li>La película tiene al menos 1 horario en el cuál será presentada o se encuentra en presentación y no supera el
+	 * límite de tiempo para comprar un ticket de una película que se encuentra en presentación (15 minutos).</li>  
+	 * </ol>
 	 * Todo esto con el fin de mostrar en pantalla, posteriormente, el array de las películas que cumplan estos criterios. 
 	 * @param clienteProceso : Este método recibe como parámetro un cliente (De tipo cliente), que realizará el proceso de reserva de ticket.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), para acceder a la cartelera de esta misma.
@@ -374,10 +376,12 @@ public class Pelicula implements Serializable{
 	
 	/**
 	 * Description : Este método se encarga de buscar si la pelicula que ejecuta este método se encuentra en presentación, la 
-	 * utilidad de este método radica en que retornará verdadero en caso de: 
-	 * 1. Encontrar la sala de cine donde está siendo presentada.
-	 * 2. No lleva más de 15 minutos en presentación.
-	 * 3. Tenga algún asiento disponible.
+	 * utilidad de este método radica en que retornará verdadero en caso de:
+	 * <ol> 
+	 * <li> Encontrar la sala de cine donde está siendo presentada.</li>
+	 * <li> No lleva más de 15 minutos en presentación.</li>
+	 * <li> Tenga algún asiento disponible.</li>
+	 * </ol>
 	 * Respecto a este retorno, se ejecutará un menú determinado en el proceso de la funcionalidad 1.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en donde se realiza este proceso, para
 	 * obtener sus salas de cine.
@@ -500,7 +504,7 @@ public class Pelicula implements Serializable{
 			}
 		 
 		return horariosPelicula;
-		}
+	}
 
 	 public String seleccionarAsientoAleatorio(LocalDateTime horarioProceso) {
 		 boolean validacion=true;
@@ -513,26 +517,7 @@ public class Pelicula implements Serializable{
 		 }
 		 return numAsiento;
 	 }
-
-		
-	
-
-	/**
-	 * Description : Este método se encarga de evaluar si la película dado un horario tiene asientos disponibles para este.
-	 * @param horario : Este método recibe como parámetro un horario (De tipo LocalDateTime) del cuál accederá a su
-	 * matriz de asientos.
-	 * @return <b>boolean</b> : Este método retorna un boolean que representa si tiene asientos disponibles en ese horario.
-	 * */
-	public boolean hasDisponibilidadAsientos(LocalDateTime horario) {
-		for (int[] filaAsientos : this.asientosVirtuales.get(horarios.indexOf(horario))) {
-			for (int asiento : filaAsientos) {
-				if (asiento == 0) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+	 
 	// Getters and Setters
 	public ArrayList<LocalDateTime> getHorarios() {
 		return horarios;

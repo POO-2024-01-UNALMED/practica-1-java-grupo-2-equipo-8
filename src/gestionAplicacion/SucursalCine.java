@@ -145,12 +145,14 @@ public class SucursalCine implements Serializable {
 	/**
 	 * Description : Este método se encarga de crear 20 horarios por cada película en cartelera de la sucursal de cine, 
 	 * teniendo en cuenta los siguientes criterios: 
-	 * 1. El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras 
-	 * instalaciones.
-	 * 2. La hora a la que termina la película es menor a la hora de cierre. 
-	 * 3. Al finalizar una película se tiene en cuenta el tiempo de limpieza de la sala de cine.
-	 * 4. La creación de horarios no exceda una semana (Para ejecutar correctamente la lógica semanal de nuestro cine).
-	 * 5. Si varias películas serán presentadas en una sala se presentarán de forma intercalada evitando colisiones.
+	 * <ol>
+	 * <li>El horario en el que se presentará la película se encuentra entre el horario de apertura y cierre de nuestras 
+	 * instalaciones.</li>
+	 * <li>La hora a la que termina la película es menor a la hora de cierre. </li>
+	 * <li>Al finalizar una película se tiene en cuenta el tiempo de limpieza de la sala de cine.</li>
+	 * <li>La creación de horarios no exceda una semana (Para ejecutar correctamente la lógica semanal de nuestro cine).</li>
+	 * <li>Si varias películas serán presentadas en una sala se presentarán de forma intercalada evitando colisiones.</li>
+	 * </ol>
 	 * */
 	public void crearHorariosPeliculasPorSala() {
 		
@@ -231,10 +233,12 @@ public class SucursalCine implements Serializable {
 	/**
 	 * Descripition: Este método se encarga de distribuir las películas en cartelera en las distintas salas de cine 
 	 * de la sucursal de cine que ejecuta este método, para esta distribución se tienen encuenta 3 casos posibles:
-	 * 1. Hay menos películas que salas de cine o igual cantidad de ambas.
-	 * 2. Hay más películas que salas de cine, pero caben exactamente la misma cantidad de películas en cada sala.
-	 * 3. Hay más películas que salas de cine, pero al menos una sala de cine debe tener 1 película más que todas 
-	 * las otras (Principio de Dirichlet o del palomar).
+	 * <ol>
+	 * <li>Hay menos películas que salas de cine o igual cantidad de ambas.</li>
+	 * <li>Hay más películas que salas de cine, pero caben exactamente la misma cantidad de películas en cada sala.</li>
+	 * <li>Hay más películas que salas de cine, pero al menos una sala de cine debe tener 1 película más que todas 
+	 * las otras (Principio de Dirichlet o del palomar).</li>
+	 * </ol>
 	 * */
 	public void distribuirPeliculasPorSala() {
 		
@@ -313,9 +317,11 @@ public class SucursalCine implements Serializable {
 	
 	/**
 	 * Description: Este método se encarga de realizar los preparativos para ejecutar la lógica de la funcionalidad #3:
-	 * 1. Eliminar los horarios de la semana anterior.
-	 * 2. Distribución de películas en las salas de cine y la creación de sus horarios.
-	 * 3. Eliminar los tickets comprados de películas de la semana anterior.
+	 * <ol>
+	 * <li>Eliminar los horarios de la semana anterior.</li>
+	 * <li>Distribución de películas en las salas de cine y la creación de sus horarios.</li>
+	 * <li>Eliminar los tickets comprados de películas de la semana anterior.</li>
+	 * </ol>
 	 * */
 	public static void logicaSemanalReservarTicket() {
 		ticketsDisponibles.clear();
@@ -335,10 +341,12 @@ public class SucursalCine implements Serializable {
 	/**
 	 * Description: Este método se encarga de ejecutar toda la lógica para realizar reservas de ticket por primera vez,
 	 * se compone de 3 puntos principales:
-	 * 1. Distribuir las películas en cartelera de cada sucursal de forma equitativa respecto a sus salas de cine.
-	 * 2. Una vez realizada la distribución, crear los horarios en los que se presentará cada película.
-	 * 3. Actualizar las películas cuyo horario se esta presentando en estos momentos.
-	 * 4. Establecer las fechas cuando se ejecutarán la lógica diaria y semanal del negocio.
+	 * <ol>
+	 * <li>Distribuir las películas en cartelera de cada sucursal de forma equitativa respecto a sus salas de cine.</li>
+	 * <li>Una vez realizada la distribución, crear los horarios en los que se presentará cada película.</li>
+	 * <li>Actualizar las películas cuyo horario se esta presentando en estos momentos.</li>
+	 * <li>Establecer las fechas cuando se ejecutarán la lógica diaria y semanal del negocio.</li>
+	 * </ol>
 	 * */
 	public static void logicaInicioSistemaReservarTicket() {
 		
@@ -351,12 +359,12 @@ public class SucursalCine implements Serializable {
 	
 	/**
 	 * Description : Este método se encarga de evaluar la lógica diaria de la reserva de tickets, para esto evalua los siguientes criterios:
-	 * 1. Revisa la posibilidad de que una sala de cine pueda ser actualizada durante ese día,
-	 * Esta lógica se ejecuta con el fin de que al inicio del día se revisa si la sala de cine tendrá películas en presentación, 
-	 * durante este día para que pueda realizar peticiones de actualización durante la jornada laboral.
-	 * 2. Añade los tickets de películas que serán presentadas el día de hoy al array de tickets para descuento y elimina los tickets
-	 * caducados de los clientes y del array de tickets disponibles.
-	 * 3. Elimina los horarios de películas que ya no serán presentados.
+	 * <ol>
+	 * <li>Revisa la posibilidad de que una sala de cine pueda ser actualizada durante ese día.</li>
+	 * <li>Añade los tickets de películas que serán presentadas el día de hoy al array de tickets para descuento y elimina los tickets
+	 * caducados de los clientes y del array de tickets disponibles.</li>
+	 * <li>Elimina los horarios de películas que ya no serán presentados.</li>
+	 * </ol>
 	 * */
 	public static void logicaDiariaReservarTicket() {
 		
@@ -612,7 +620,7 @@ public class SucursalCine implements Serializable {
 		Pelicula peliculaPeorCalificada=null;
 		boolean primeraComparacion=true;
 		
-		for(Pelicula peliculas : peliculasDisponibles) {
+		for(Pelicula peliculas : this.cartelera) {
 			if(peliculas.filtrarHorariosPeliculas()!=null) {
 				continue;
 			}
@@ -635,7 +643,7 @@ public class SucursalCine implements Serializable {
 	public Pelicula mejorPelicula() {
 		Pelicula peliculaMejorCalificada=null;
 		boolean primeraComparacion=true;
-		for(Pelicula peliculas : peliculasDisponibles) {
+		for(Pelicula peliculas : this.cartelera) {
 			if(peliculas.filtrarHorariosPeliculas()!=null) {
 				continue;
 			}
@@ -975,13 +983,10 @@ public class SucursalCine implements Serializable {
 	
 	/*ToDo Andy's list
 	0. Optimizar código en serializador y deserializador (Hecho).
-	0.1.
+	0.1. Hablar con santi sobre métodos en Película y documentación de métodos compartidos en sucursal.
+	0.2. Corregir documentación métodos en Administrador en formato HTML.
 	1. Realizar testeos.
-	2. Crear reloj para mostrar la hora cada vez que avanza y mover método avanzarTiempo a Administrador (Juan).
-	3. Crear validaciones para deserializador (Verificar que guarde todo en el lugar correcto).
-	3. Documentar serializador (Pendiente) y deserializador (Hecho).
-	4. Documentar InicioDeSistema y FinDeSistema (Hecho).
-	5. Hacer Merge con Master (Pendiente) y mejorar estrucutura de paquetes (Rusbel).
+	2. Crear método que avance el día cuando estemos fuera de la jornada laboral.
 	6. Estudiar y crear el ejecutable.
 	7. Realizar testeos grupales.
 	8. Empezar documentación.

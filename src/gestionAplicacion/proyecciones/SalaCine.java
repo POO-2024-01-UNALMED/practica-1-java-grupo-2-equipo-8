@@ -179,10 +179,12 @@ public class SalaCine implements Serializable{
 	
 	/**
 	 * Description: Este método se encarga de verificar si una persona tiene al menos un ticket registrado en su array que cumpla los 
-	 * siguientes criterios para ingresar a la sala de cine: 
-	 * 1. La película asociada al ticket coincide con la pelicula en presentacion de la sala de cine.
-	 * 2. La fecha actual es anterior a la fecha en que finaliza la película.
-	 * 3. La sala de cine asociada al ticket es la misma que la sala de cine que ejecuta este método.
+	 * siguientes criterios para ingresar a la sala de cine:
+	 * <ol>
+	 * <li> La película asociada al ticket coincide con la pelicula en presentacion de la sala de cine.</li>
+	 * <li> La fecha actual es anterior a la fecha en que finaliza la película.</li>
+	 * <li>La sala de cine asociada al ticket es la misma que la sala de cine que ejecuta este método.</li>
+	 * </ol>
 	 * @param cliente : Este método solicita al cliente (De tipo cliente) que va a ingresar a la SalaDeCine.
 	 * @return <b>boolean</b> : Este método se encarga de retornar un boolean que será el resultado del proceso de verificación de entrada 
 	 * a la sala de Cine.
@@ -237,15 +239,15 @@ public class SalaCine implements Serializable{
 	
 	/**
 	 * Description: Este método se encarga actualizar la película en presentación, según los siguientes criterios: 
-	 * 1. La sala de cine en que se presentará alguna de las películas en cartelera de la sucursal de cine 
-	 * coincide con alguna de las salas de cine de esta. 
-	 * 2. Revisamos si esa película tiene algún horario cercano o igual a la fecha actual durante el cuál estará o esta siendo presentada.
+	 * <ol>
+	 * <li>La sala de cine en que se presentará alguna de las películas en cartelera de la sucursal de cine 
+	 * coincide con alguna de las salas de cine de esta. </li>
+	 * <li>Revisamos si esa película tiene algún horario cercano o igual a la fecha actual durante el cuál estará o esta siendo presentada.</li>
+	 * </ol>
 	 * una vez hecho esto y cumpla con los dos criterios anteriores, limpiamos los asientos de la sala de cine, cambiando su disponibilidad a libre, y
 	 * por último actualizamos la información de la disponibilidad de los asientos, tomando como referencia la información de los asientos virtuales 
 	 * que coincidieron en fecha y hora de la película en presentación, además modificamos el atributo horario pelicula en presentación
 	 * y pelicula en presentación de la sala de cine.
-	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine), con el fin de actualizar, únicamente, las salas de cine
-	 * con las películas en cartelera propias de esta sucursal.
 	 * */
 	public void actualizarPeliculasEnPresentacion() {
 		
@@ -398,8 +400,6 @@ public class SalaCine implements Serializable{
 	 * Description : Este método se encarga de revisar si una sala de cine tendrá durante ese día más películas en presentación,
 	 * actualizando su atributo de horariosPresentacionDia, con el fin de reducir el número de peticiones de actualización provenientes 
 	 * de esta sala de cine optimizando el código.
-	 * @param sede : Este método recibe como parámetro la sucursal de cine (De tipo SUcursalCine) de la cuál accederá a su cartelera
-	 * con el fin de realizar la búsqueda.
 	 * */
 	public void tieneMasHorariosPresentacionHoy() {
 		

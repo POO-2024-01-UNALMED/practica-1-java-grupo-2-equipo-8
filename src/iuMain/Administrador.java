@@ -75,10 +75,10 @@ public class Administrador {
 //	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
 //	
 //	//Bonos de prueba
-//	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
-//	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
+////	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+////	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
+////	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+////	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
 //	
 //	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 //	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
@@ -180,14 +180,14 @@ public class Administrador {
 //			sucursalCine3.getServicios().add(servicioSouvenirsM);
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-			//Funcionalidad 1 
-//			SucursalCine.logicaSistemaReservarTicket();
+////			Funcionalidad 1 
+//			SucursalCine.logicaInicioSistemaReservarTicket();
 //			
-			//Prueba películas recomendadas
-//			cliente1.getHistorialDePeliculas().add(pelicula3_10);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_11);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_12);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_16);
+////			Prueba películas recomendadas
+////			cliente1.getHistorialDePeliculas().add(pelicula3_10);
+////			cliente1.getHistorialDePeliculas().add(pelicula3_11);
+////			cliente1.getHistorialDePeliculas().add(pelicula3_12);
+////			cliente1.getHistorialDePeliculas().add(pelicula2_16);
 //			cliente1.getHistorialDePeliculas().add(pelicula2_4);
 //			cliente1.getHistorialDePeliculas().add(pelicula1_1);
 ////			cliente1.getHistorialDePeliculas().add(pelicula2_15);
@@ -273,6 +273,7 @@ public class Administrador {
 		
 		//Método de avanzar días
 		
+		
 		//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
 		avanzarTiempo();
 		
@@ -316,13 +317,17 @@ public class Administrador {
 	
 	/**
 	 * Description : Este método se encarga de ejecutar la lógica de aranque del programa, deserializa toda la información
-	 * primero deserializa los atributos de instancia y luego deserializa los atributos estáticos, y avanza el tiempo 
-	 * ejecutando toda la lógica que este implica.
+	 * primero deserializa los atributos de instancia y luego deserializa los atributos estáticos, y corrige la referencia
+	 * a la que apuntan los objetos deserializados, para que las funcionalidades que realizan validaciones a partir de 
+	 * referencias puedan realizarlas de forma segura.
 	 * */
 	static void inicioDelSistema() {
 		
+		//Deserializa
 		Deserializador.deserializar();
 		Deserializador.deserializarEstaticos();
+		//Renueva referencias a los objetos deserializados
+		Deserializador.asignarReferenciasDeserializador();
 		
 	}
 	

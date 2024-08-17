@@ -59,17 +59,19 @@ public class Ticket implements IBuyable, Serializable{
 	}
 
 	/**
-	 * @Override
 	 * Description: Este método se encarga de generar el último paso del proceso de pago y será ejecutado por un ticket luego de ser verificado el pago: 
-	 * 1. Se vuelven a settear los metodos de pago que el cliente tendrá disponibles.
-	 * 2. Se pasa la referencia del ticket al array de tickets del usuario.
-	 * 3. Se pasa la referencia del cliente al atributo dueño del ticket.
-	 * 4. Se aumenta la cantidad de tickets genereados en uno.
-	 * 5. Se crea una referencia de este ticket en el arraylist de los tickets creados en el cine.
-	 * 6. Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.
-	 * 7. Creamos el id del ticket y aumentamos la cantidad de tickets creados (Lógica id).
+	 * <ol>
+	 * <li>Se vuelven a settear los metodos de pago que el cliente tendrá disponibles.</li>
+	 * <li>Se pasa la referencia del ticket al array de tickets del usuario.</li>
+	 * <li>Se pasa la referencia del cliente al atributo dueño del ticket.</li>
+	 * <li>Se aumenta la cantidad de tickets genereados en uno.</li>
+	 * <li>Se crea una referencia de este ticket en el arraylist de los tickets creados en el cine.</li>
+	 * <li>Se crea el código de descuento para los juegos y se asocian al cliente y a los códigos de descuentos generados en la clase Arkade.</li>
+	 * <li>Creamos el id del ticket y aumentamos la cantidad de tickets creados (Lógica id).</li>
+	 * </ol>
 	 * @param cliente : Se pide como parámetro el cliente (De tipo Cliente) que realizó exitosamente el pago.
 	 */
+	@Override
 	public void procesarPagoRealizado(Cliente cliente) {
 		//Se reestablecen los métodos de pago disponibles del cliente
 		MetodoPago.asignarMetodosDePago(cliente);
