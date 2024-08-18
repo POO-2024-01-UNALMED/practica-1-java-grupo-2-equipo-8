@@ -298,7 +298,7 @@ public class Administrador {
 			case 2: compras(clienteProceso); inicio(clienteProceso); break;
 			case 3: ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
 			case 4: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
-			case 5: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
+			case 5: calificacion(clienteProceso);inicio(clienteProceso); break;
 			case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
 			case 7: salirDelSistema(); break;
 			default: System.out.println("Opción invalida"); inicio(clienteProceso);
@@ -2695,7 +2695,7 @@ public class Administrador {
 	//| |    | |_| | | |\  | | \____  | | | |__| | | |\  |  / ______ \  | |___  | | | |__| | / ______ \  | |__| |      __\	  \        
 	//|_|     \___/  |_| \_|  \_____| |_|  \____/  |_| \_| /_/      \_\ |_____| |_| |_____/ /_/      \_\ |_____/ 	  |_______|
 	
-	static void calificacion(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
+	static void calificacion(Cliente clienteProceso) {
 		
 		
 			
@@ -2792,7 +2792,9 @@ public class Administrador {
 									System.out.println("De esta comida todavia hay unidades en inventario");
 								}
 								
-								/**Description: En esta 
+								/**Description: En esta parte del codigo, en modo de agradecimiento con el cliente por haber hecho la respectiva calificacion de 
+								 * comida o de peliculas le ofrecemos un combo a un precio muy especial, y ya, esta a opcion del cliente si quiere adquirir este
+								 * combo especial o no
 								 */
 									System.out.print("\nComo calificaste un producto te queremos hacer la oferta de un combo especial, deseas verlo?\n1.Si\n2.No : ");
 									eleccion1 = Integer.parseInt(sc.nextLine());
@@ -2802,6 +2804,10 @@ public class Administrador {
 										String numAsientoProceso= peliculaCombo.seleccionarAsientoAleatorio(opcionHorarioPelicula);
 										Producto productoCombo1=clienteProceso.getCineActual().mejorProducto();
 										String codigoBono=productoCombo1.generarCodigoAleatorio(7);
+										/**Description: En esta parte del codigo, se le ofrece al cliente el combo especial, este combo especial en este caso, tiene la 
+										 * mejor pelicula con el peor producto, esto lo hacemos con el fin de logica de negocio, y podamos tener mejores resultados con 
+										 * los productos y peliculas.
+										 */
 										System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula" +
 										peliculaCombo.getNombre() + "y el producto " + productoCombo1.getNombre() + productoCombo1.getTamaño()) ;
 										
@@ -2997,6 +3003,10 @@ public class Administrador {
 								else {
 									System.out.println("Esta pelicula todavia tiene horarios");
 								}
+								/**Description: En esta parte del codigo, en modo de agradecimiento con el cliente por haber hecho la respectiva calificacion de 
+								 * comida o de peliculas le ofrecemos un combo a un precio muy especial, y ya, esta a opcion del cliente si quiere adquirir este
+								 * combo especial o no
+								 */
 								System.out.print("\nComo calificaste una pelicula te queremos hacer la oferta de un combo especial, deseas verlo?\n1.Si\n2.No : ");
 								eleccion1 = Integer.parseInt(sc.nextLine());
 								if (eleccion1==1) {
@@ -3006,6 +3016,10 @@ public class Administrador {
 									String numAsientoProceso= peliculaCombo.seleccionarAsientoAleatorio(opcionHorarioPelicula);
 									Producto productoCombo1=clienteProceso.getCineActual().peorProducto();
 									String codigoBono=productoCombo1.generarCodigoAleatorio(5);
+									/**Description: En esta parte del codigo, se le ofrece al cliente el combo especial, este combo especial en este caso, tiene la 
+									 * mejor pelicula con el peor producto, esto lo hacemos con el fin de logica de negocio, y podamos tener mejores resultados con 
+									 * los productos y peliculas.
+									 */
 									System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula" +
 									peliculaCombo.getNombre() + "y el producto " + productoCombo1.getNombre() + productoCombo1.getTamaño()) ;
 									
@@ -3156,7 +3170,7 @@ public class Administrador {
 						
 			     }
 				else {
-					Funcionalidad3.calificacion(clienteProceso);
+					calificacion(clienteProceso);
 				}
 				
 
