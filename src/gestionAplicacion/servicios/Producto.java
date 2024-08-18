@@ -47,14 +47,6 @@ public class Producto implements Serializable {
 	//Constructores
 	public Producto() {}
 	
-	//Constructor para crear los productos de los bonos
-	public Producto(String nombre,String tamaño,int cantidad,double precio) {
-		this.nombre = nombre;
-		this.tamaño = tamaño;
-		this.cantidad = cantidad;
-		this.precio = precio;
-	}
-	
 	//Constructor para los pedidos de la orden
 	public Producto(String nombre,String tamaño,int cantidad) {
 		this.nombre = nombre;
@@ -77,7 +69,7 @@ public class Producto implements Serializable {
 		this.strikeCambio = false;
 	}
 	
-	//Constructor para objetos de Membresia.
+	//Constructor para objetos de Membresia y productos de bonos.
 	public Producto(String tipoProducto, String nombre, double precio, int cantidad) {
 		this.tipoProducto = tipoProducto;
 		this.nombre = nombre;

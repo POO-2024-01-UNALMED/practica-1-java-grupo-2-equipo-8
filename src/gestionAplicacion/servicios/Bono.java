@@ -54,7 +54,7 @@ public class Bono implements Serializable{
 	    
 	    int numeroAleatorio = random.nextInt(productosComida.size());
 	    String code = generarCodigoAleatorio(7);
-	    Producto productoBono = new Producto(productosComida.get(numeroAleatorio).getNombre(), productosComida.get(numeroAleatorio).getTamaño(),1, productosComida.get(numeroAleatorio).getPrecio()); 
+	    Producto productoBono = new Producto(productosComida.get(numeroAleatorio).getNombre(), productosComida.get(numeroAleatorio).getTamaño(), productosComida.get(numeroAleatorio).getPrecio(), 1); 
 	    Bono bono = new Bono(code,productoBono,productosComida.get(numeroAleatorio).getTipoProducto(),cliente);
 	    productosComida.get(numeroAleatorio).setCantidad(productosComida.get(numeroAleatorio).getCantidad()-1);
 	    
@@ -90,7 +90,7 @@ public class Bono implements Serializable{
 	    
 	    int numeroAleatorio = random.nextInt(productosSouvenirs.size());
 	    String code = generarCodigoAleatorio(7);
-	    Producto productoBono = new Producto(productosSouvenirs.get(numeroAleatorio).getNombre(), productosSouvenirs.get(numeroAleatorio).getTamaño(), 1, productosSouvenirs.get(numeroAleatorio).getPrecio()); 
+	    Producto productoBono = new Producto(productosSouvenirs.get(numeroAleatorio).getNombre(), productosSouvenirs.get(numeroAleatorio).getTamaño(), productosSouvenirs.get(numeroAleatorio).getPrecio(), 1); 
 	    Bono bono = new Bono(code,productoBono,productosSouvenirs.get(numeroAleatorio).getTipoProducto(), cliente);
 	    productosSouvenirs.get(numeroAleatorio).setCantidad(productosSouvenirs.get(numeroAleatorio).getCantidad()-1);
 	    
