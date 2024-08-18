@@ -248,7 +248,9 @@ public class Funcionalidad2 {
 				if (eleccion == 0) {
 					break;
 				}
-				Producto productoBono1 = serviciProceso.validarBono(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo(),clienteProceso.getCineActual().getServicios().get(servicio));
+				System.out.println(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo());
+				
+				Producto productoBono1 = serviciProceso.validarBono(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo(),serviciProceso);
 				
 				if(productoBono1.comprobarBonoEnOrden(serviciProceso)) {
 					verificacion = true;

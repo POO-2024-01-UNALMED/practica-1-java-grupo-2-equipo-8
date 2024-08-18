@@ -68,18 +68,18 @@ public class Administrador {
 //	static Producto producto5SM = new Producto("Peluche","Deku","souvenir",30000,200,"Comedia",sucursalCine3);
 //	
 //	//Clientes prueba
-//	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
+//	static Cliente cliente1 = new Cliente("Rusbel", 18, 13434, TipoDeDocumento.CC);
 //	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 //	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 //	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
 //	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
 //	
-//	//Bonos de prueba
+////	//Bonos de prueba
 //	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
+//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente1);
 //	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
 //	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
-//	
+	
 //	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 //	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
 //	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");

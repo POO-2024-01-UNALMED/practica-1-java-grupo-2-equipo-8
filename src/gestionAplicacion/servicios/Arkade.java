@@ -183,6 +183,7 @@ public class Arkade implements Serializable{
 
 	    
 	    int numeroAleatorio = random.nextInt(productosSouvenirs.size());
+//	    int numeroAleatorio = 1;
 	    String code = generarCodigoAleatorio(7);
 	    Producto productoBono = new Producto(productosSouvenirs.get(numeroAleatorio).getNombre(), productosSouvenirs.get(numeroAleatorio).getTamaño(),1); 
 	    Bono bono = new Bono(code,productoBono,productosSouvenirs.get(numeroAleatorio).getTipoProducto(), cliente);
