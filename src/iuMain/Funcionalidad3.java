@@ -218,7 +218,7 @@ public class Funcionalidad3 {
 
 												System.out.println("-----------------------Factura--------------------------");
 												System.out.println("------------------Este es tu combo!!---------------------");
-												System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre());
+												System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre()+ productoCombo1.getTamaño()) ;;
 												System.out.println("------Felicidades, gracias por confiar en nosotros----");
 												System.out.println("");
 												pagoRealizado = true;
@@ -422,7 +422,7 @@ public class Funcionalidad3 {
 											
 											System.out.println("-----------------------Factura--------------------------");
 											System.out.println("------------------Este es tu combo!!---------------------");
-											System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre());
+											System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre()+ productoCombo1.getTamaño());
 											System.out.println("------Felicidades, gracias por confiar en nosotros----");
 											System.out.println("");
 											pagoRealizado = true;
