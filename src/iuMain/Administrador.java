@@ -7,6 +7,7 @@ import java.util.Scanner;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
+import gestionAplicacion.servicios.herencia.Servicio;
 import gestionAplicacion.usuario.*;
 import baseDatos.Deserializador;
 import baseDatos.Serializador;
@@ -2129,7 +2130,7 @@ public class Administrador {
 	
 	public static void compras(Cliente clienteProceso){
 		// Seleccion del servicio que se desea acceder
-		Scanner sc = new Scanner(System.in);
+		
 		Servicio serviciProceso;
 		boolean verificacion = true;
 		int servicio = 0;
@@ -2368,7 +2369,7 @@ public class Administrador {
 				}
 				System.out.println(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo());
 				
-				Producto productoBono1 = serviciProceso.validarBono(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo(),serviciProceso);
+				Producto productoBono1 = Servicio.validarBono(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo(),serviciProceso);
 				
 				if(productoBono1.comprobarBonoEnOrden(serviciProceso)) {
 					verificacion = true;
@@ -2466,7 +2467,7 @@ public class Administrador {
 					System.out.println("\nError, debes ingresar un dato numérico\n");
 					continue;
 				}
-				productoBono = serviciProceso.validarBono(codigoBono,clienteProceso.getCineActual().getServicios().get(servicio));
+				productoBono = Servicio.validarBono(codigoBono,clienteProceso.getCineActual().getServicios().get(servicio));
 				if (productoBono == null) {
 					System.out.println("\n Codigo invalido, verificar el codigo (╥_╥)(╥_╥)(╥_╥)");
 					
@@ -3253,7 +3254,6 @@ public static void espera(int time) {
 public static String juego(String[] PALABRAS) {
     String match = null;
 
-    Scanner scanner = new Scanner(System.in);
     String palabraSecreta = PALABRAS[(int) (Math.random() * PALABRAS.length)];
     char[] palabraAdivinada = new char[palabraSecreta.length()];
     String letrasUsadas = ""; // Para rastrear letras ya usadas
@@ -3272,7 +3272,7 @@ public static String juego(String[] PALABRAS) {
         System.out.println();
 
         System.out.print("Ingresa una letra: ");
-        String input = scanner.nextLine().toUpperCase();
+        String input = sc.nextLine().toUpperCase();
         if (input.length() != 1 || !esLetraValida(input.charAt(0))) {
             System.out.println("Carácter inválido. Intenta otra vez.");
             intentosRestantes--;
