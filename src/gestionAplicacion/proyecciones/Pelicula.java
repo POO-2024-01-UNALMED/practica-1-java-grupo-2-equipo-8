@@ -276,7 +276,7 @@ public class Pelicula implements Serializable{
 	}
 	
 	/**
-	 * Description : Este método se encarga revisar la desponibilidad de un asiento de la sala de cine virtual.
+	 * Description : Este método se encarga revisar la desponibilidad de un asiento determinado de la sala de cine virtual.
 	 * @param fecha : Recibe el dato del horario (De tipo localDateTime) seleccionado por el cliente con la que se obtendrán sus asientos, 
 	 * correspondientes a la sala de cine virtual.
 	 * @param fila : Recibe el número de la fila seleccionada por el cliente (De tipo int).
@@ -293,12 +293,12 @@ public class Pelicula implements Serializable{
 	}
 	
 	/**
-	 * Description : Este método se encarga de evaluar si la película dado un horario tiene asientos disponibles para este.
+	 * Description : Este método se encarga de evaluar si la película dado un horario tiene algún asiento disponible.
 	 * @param horario : Este método recibe como parámetro un horario (De tipo LocalDateTime) del cuál accederá a su
 	 * matriz de asientos.
 	 * @return <b>boolean</b> : Este método retorna un boolean que representa si tiene asientos disponibles en ese horario.
 	 * */
-	public boolean hasDisponibilidadAsientos(LocalDateTime horario) {
+	public boolean isDisponibilidadAsientoSalaVirtual(LocalDateTime horario) {
 		for (int[] filaAsientos : this.asientosVirtuales.get(horarios.indexOf(horario))) {
 			for (int asiento : filaAsientos) {
 				if (asiento == 0) {
@@ -321,7 +321,7 @@ public class Pelicula implements Serializable{
 		
 		for (LocalDateTime horario : this.horarios) {
 			
-			isAsientosDisponibles = this.hasDisponibilidadAsientos(horario);
+			isAsientosDisponibles = this.isDisponibilidadAsientoSalaVirtual(horario);
 			
 			if (horario.isAfter(SucursalCine.getFechaActual()) && isAsientosDisponibles) {
 				horariosPelicula.add(horario);
@@ -345,7 +345,7 @@ public class Pelicula implements Serializable{
 		
 		for (LocalDateTime horario : this.horarios) {
 			
-			isAsientosDisponibles = this.hasDisponibilidadAsientos(horario);
+			isAsientosDisponibles = this.isDisponibilidadAsientoSalaVirtual(horario);
 			
 			if (horario.toLocalDate().isEqual(SucursalCine.getFechaActual().toLocalDate()) && isAsientosDisponibles) {
 				horariosPelicula.add(horario);
@@ -490,7 +490,7 @@ public class Pelicula implements Serializable{
 			
 			for (LocalDateTime horario : this.filtrarHorariosPelicula()) {
 
-				isAsientosDisponibles = this.hasDisponibilidadAsientos(horario);
+				isAsientosDisponibles = this.isDisponibilidadAsientoSalaVirtual(horario);
 
 				if  (isAsientosDisponibles) {
 					horariosPelicula=horario;
