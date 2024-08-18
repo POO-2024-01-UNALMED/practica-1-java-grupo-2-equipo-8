@@ -148,7 +148,8 @@ public class Arkade implements Serializable{
 	    
 	    int numeroAleatorio = random.nextInt(productosComida.size());
 	    String code = generarCodigoAleatorio(7);
-	    Bono bono = new Bono(code,productosComida.get(numeroAleatorio),productosComida.get(numeroAleatorio).getTipoProducto(),cliente);
+	    Producto productoBono = new Producto(productosComida.get(numeroAleatorio).getNombre(), productosComida.get(numeroAleatorio).getTamaño(),1); 
+	    Bono bono = new Bono(code,productoBono,productosComida.get(numeroAleatorio).getTipoProducto(),cliente);
 	    productosComida.get(numeroAleatorio).setCantidad(productosComida.get(numeroAleatorio).getCantidad()-1);
 	    
 	    String tipoProducto = "Comida";
@@ -183,7 +184,8 @@ public class Arkade implements Serializable{
 	    
 	    int numeroAleatorio = random.nextInt(productosSouvenirs.size());
 	    String code = generarCodigoAleatorio(7);
-	    Bono bono = new Bono(code,productosSouvenirs.get(numeroAleatorio),productosSouvenirs.get(numeroAleatorio).getTipoProducto(), cliente);
+	    Producto productoBono = new Producto(productosSouvenirs.get(numeroAleatorio).getNombre(), productosSouvenirs.get(numeroAleatorio).getTamaño(),1); 
+	    Bono bono = new Bono(code,productoBono,productosSouvenirs.get(numeroAleatorio).getTipoProducto(), cliente);
 	    productosSouvenirs.get(numeroAleatorio).setCantidad(productosSouvenirs.get(numeroAleatorio).getCantidad()-1);
 	    
 	    String tipoProducto = "Souvenir";
