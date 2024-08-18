@@ -2732,15 +2732,15 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 	
 	//Se muestra el menu de opciones que el usurio desea realizar 
 	try {
-		System.out.println("\n☺Recuerde que para entrar a los juegos es necesario tener la tarjeta cinemar☺\nDesea:\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
+		System.out.println("\n😁-😁-😁-Recuerde que para entrar a los juegos es necesario tener la tarjeta cinemar-😁-😁-😁\nDesea:\n1.Ingresar\n2.Volver al menú principal\n3.Salir y Guardar");
 		int opcion = (int)Administrador.readLong();
 		if (opcion==2) {barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual);}//volver
 		else if (opcion==1) {barraCarga("Ingresando");}//ingresar
 		else if (opcion==3) {barraCarga("Saliendo");Administrador.salirDelSistema();}//salir
-		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual);}	
+		else {System.out.println("\n👎Opcion Invalida👎");ingresoZonaJuegos(ClienteActual);}	
 	
 	}catch(InputMismatchException e) {
-		System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+		System.out.println("❌-Error, debe ingresar un único dato numérico entre los disponibles-❌");
 		Administrador.sc.nextLine(); 
 		ingresoZonaJuegos(ClienteActual);
 	}
@@ -2750,36 +2750,36 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 	do {
 		if (!ClienteActual.verificarCuenta()) {
 			try {
-				System.out.println("\n•No tienes una Tarjeta Cinemar asociada, ¿Deseas Adquirirla?\n1. SI\n2. NO");
+				System.out.println("\n•No tienes una Tarjeta Cinemar asociada, ¿Deseas Adquirirla?  🤔 -> 💳❔\n1. SI\n2. NO");
 				espera(1000);
 				int option = (int)Administrador.readLong();
 				if (option==1) {
 					if (Arkade.verificarTarjetasEnInventario(ClienteActual.getCineActual())) { // se verifica si hay tarjetas disponibles por vender en el array
 						barraCarga("Adquiriendo tarjeta");
-						System.out.println("\n•El precio de la tarjeta Cinemar es de $5000\n•Este valor sera descontado al saldo de su tarjeta");
+						System.out.println("\n•💸💸💸El precio de la tarjeta Cinemar es de $5000💸💸💸\n•Este valor sera descontado al saldo de su tarjeta");
 						espera(2000);
 						//
 						//Aca se asocia la primera tarjeta en el array de disponibles al cliente, se le descuenta el valor de la tarjeta y se imprime por pantalla
 						Arkade.asociarTarjetaCliente(ClienteActual);
 						ClienteActual.getCuenta().hacerPago(5000);
-						System.out.println("\n•Su tarjeta:");
+						System.out.println("\n•Su tarjeta 💳 :");
 						espera(1000);
 						imprimirTarjeta(ClienteActual.getCuenta().getDueno().getNombre(),ClienteActual.getCuenta().getSaldo());
 						casoValido = false;
 						//
 					}
-					else {System.out.println("\n•Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde");Administrador.sc.nextLine(); Administrador.inicio(ClienteActual);}
+					else {System.out.println("\n•😞😞Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde😞😞");Administrador.sc.nextLine(); Administrador.inicio(ClienteActual);}
 				
 				}
 				else if (option ==2) {ingresoZonaJuegos(ClienteActual);}
-				else {System.out.println("\n•Opcion Invalida");}
+				else {System.out.println("\n👎•Opcion Invalida👎");}
 			}catch(InputMismatchException e) {
-				System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+				System.out.println("❌-Error, debe ingresar un único dato numérico entre los disponibles-❌");
 				Administrador.sc.nextLine();
 			}
 		}
 		else {
-			System.out.println("\n•Su tarjeta:");
+			System.out.println("\n•Su tarjeta 💳 :");
 			espera(1000);
 			imprimirTarjeta(ClienteActual.getCuenta().getDueno().getNombre(),ClienteActual.getCuenta().getSaldo());
 			casoValido = false;
@@ -2796,18 +2796,18 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			
 			try {
 				System.out.println("•¿Deseas recargar la tarjeta?");
-				System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir");
+				System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir y Guardadr");
 				eleccion1 = (int)Administrador.readLong();
 				if (eleccion1==1 || eleccion1==2 || eleccion1==3 || eleccion1==4) {
 					casoValido = false;
 				}
 				else {
-					System.out.println("•Opcion invalida");
+					System.out.println("👎•Opcion Invalida👎");
 					casoValido = true;
 				}
 
 			}catch(InputMismatchException e) {
-				System.out.println("\nError en el proceso, debe ingresar un dato numerico, vuelva a realizar el proceso");
+				System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 				Administrador.sc.nextLine();
 				casoValido = true;
 			}
@@ -2832,16 +2832,16 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 						valorRecarga = 0;
 						
 						System.out.println("•El valor maximo a recargar por proceso es: $"+recargaMaxima+" intente no superar este valor");
-						System.out.print("•Digite el valor a recargar: ");
+						System.out.print("•Digite el valor a recargar 💰💰💰: ");
 						valorRecarga = Administrador.readLong();
 						
 						if (!(valorRecarga<= recargaMaxima & valorRecarga>0)) {
-							System.out.println("\n•El valor ingresado supera el limite maximo de recarga ");
+							System.out.println("\n•El valor ingresado supera el limite maximo de recarga 😠😠");
 						}
 						
 					
 				}catch(InputMismatchException e) {
-					System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+					System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 					Administrador.sc.nextLine();
 					casoValido = true;
 				}
@@ -2860,10 +2860,10 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 						opcionPago = (int)Administrador.readLong();
 						
 						if(!(opcionPago > 0 & opcionPago <= ClienteActual.getMetodosDePago().size() )) {
-							System.out.println("•Opcion Invalida");
+							System.out.println("👎•Opcion Invalida👎");
 						}
 					}catch(InputMismatchException e) {
-						System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+						System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 						Administrador.sc.nextLine();
 						casoValido = true;
 						opcionPago = 0;
@@ -2888,17 +2888,17 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 				if( precioRecargaProceso == 0) {
 					
 					barraCarga("Procesando pago");
-					System.out.println("Pago exitoso, se han recargado "+ valorRecarga+" y usted ha pagado "+ totalPagado+" equivalente a un descuento de "+ String.format("%.2f",(100-((totalPagado*100)/valorRecarga)))+ "%");
+					System.out.println("Pago exitoso 💯💯💯, se han recargado "+ valorRecarga+" y usted ha pagado "+ totalPagado+" equivalente a un descuento de "+ String.format("%.2f",(100-((totalPagado*100)/valorRecarga)))+ "%");
 					MetodoPago.asignarMetodosDePago(ClienteActual);
 					ClienteActual.getCuenta().ingresarSaldo(valorRecarga);
-					System.out.println("\n•Su tarjeta:");
+					System.out.println("\n•Su tarjeta 💳 :");
 					imprimirTarjeta(ClienteActual.getNombre(), ClienteActual.getCuenta().getSaldo());
 					totalPagado =0;
 					int eleccionUser = 0;
 					do {
 						try {
 							eleccionUser = 0;
-							System.out.println("\nDesea: \n1. Ingresar a los juegos\n2. Volver a recargar tarjeta\n3. Volver al inicio\n4. Salir");
+							System.out.println("\nDesea: \n1. Ingresar a los juegos\n2. Volver a recargar tarjeta\n3. Volver al inicio\n4. Salir y Guardar");
 							eleccionUser = (int)Administrador.readLong();
 							switch(eleccionUser) {
 							case 1: barraCarga("Ingresando");casoValido = false; Vcase = false; break;
@@ -2907,7 +2907,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 							case 4: barraCarga("Saliendo"); Administrador.salirDelSistema(); break;
 							}
 						}catch(InputMismatchException e) {
-							System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+							System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 							Administrador.sc.nextLine();
 							eleccionUser = 0;
 						}
@@ -2918,8 +2918,8 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					espera(1000);
 					barraCarga("Procesando Pago");
 					
-					System.out.println("•Proceso exitoso, sin embargo, tiene un saldo pendiente por recargar de : " + precioRecargaProceso);
-					System.out.println("•Nota: si no culmina con el pago completo, no se recargara nada a la tarjeta");
+					System.out.println("•Proceso exitoso 👍👍👍, sin embargo, tiene un saldo pendiente por recargar de : " + precioRecargaProceso);
+					System.out.println("⚠️•Nota: si no culmina con el pago completo, no se recargara nada a la tarjeta⚠️");
 					casoValido = true;
 				}
 			}while(casoValido);
@@ -2929,16 +2929,16 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 
 		else if (eleccion1==2) {
 			System.out.println("\n-----------------------------------------------------------------------------");
-	        System.out.println("•Recuerde que debe tener saldo para acceder a los diferentes juegos•");
+	        System.out.println("😇•Recuerde que debe tener saldo para acceder a los diferentes juegos•😇");
 	        System.out.println("-----------------------------------------------------------------------------");
-	        System.out.println("\n•Su tarjeta:");
+	        System.out.println("\n•Su tarjeta 💳 :");
 	        espera(2000);
 			imprimirTarjeta(ClienteActual.getNombre(),ClienteActual.getCuenta().getSaldo());
 			finCiclo = true;
 			while(finCiclo) {
 				try {
 					System.out.println("\nDesea: ");
-					System.out.println("1. Ingresar a los juegos\n2. Recargar tarjeta cinemar\n3. Volver al menu principal\n4. Salir");
+					System.out.println("1. Ingresar a los juegos\n2. Recargar tarjeta cinemar\n3. Volver al menu principal\n4. Salir y Guardar");
 					int eleccion4 = (int)Administrador.readLong();
 					switch (eleccion4) {
 					case 1: barraCarga("Ingresando");Vcase= false;finCiclo= false; break;
@@ -2949,7 +2949,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					}
 					
 				}catch(InputMismatchException e) {
-					System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+					System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 					Administrador.sc.nextLine();
 				}
 			}
@@ -2986,11 +2986,11 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			generoCodigoPelicula = null;
 			Arkade.reestablecerPrecioJuegos();
 			if (ClienteActual.getCodigosDescuento().size()==0){
-				System.out.println("\n•No tienes codigos de descuento asociados\n");
+				System.out.println("\n😞😞😞•No tienes codigos de descuento asociados😞😞😞\n");
 				caso = false;
 				break;
 			}
-			System.out.println("\n•Estos son los codigos de descuento que tienes por la compra de tiquetes en nuestro cine\n¿Cual deseas redimir?\n");
+			System.out.println("\n🥳🥳🥳•Estos son los codigos de descuento que tienes por la compra de tiquetes en nuestro cine🥳🥳🥳\n¿Cual deseas redimir?\n");
 			System.out.println(ClienteActual.mostrarCodigosDescuento());
 			int eleccion6 = (int)Administrador.readLong();
 			
@@ -2998,7 +2998,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			if (eleccion6 > 0 && eleccion6 <= ClienteActual.getCodigosDescuento().size()) {
 				generoCodigoPelicula = Ticket.encontrarGeneroCodigoPelicula(ClienteActual.getCodigosDescuento().get(eleccion6-1));
 				ClienteActual.getCodigosDescuento().remove(eleccion6-1);
-				System.out.println("•Perfeto, se le asignará un descuento del 20% al precio de los juegos con categoria "+ generoCodigoPelicula);
+				System.out.println("•Perfeto 😁, se le asignará un descuento del 20% al precio de los juegos con categoria "+ generoCodigoPelicula);
 				espera(2500);
 				barraCarga("Aplicando descuento");
 				Arkade.AplicarDescuentoJuegos(generoCodigoPelicula);
@@ -3018,7 +3018,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 				System.out.println("Opcion invalida");
 			}
 		}catch(InputMismatchException e) {
-			System.out.println("\nError en el proceso, debe ingresar un dato numerico, vuelva a realizar el proceso");
+			System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 			Administrador.sc.nextLine();
 		}
 
@@ -3039,7 +3039,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			
 
 		}catch(InputMismatchException e) {
-			System.out.println("\nError en el proceso, debe ingresar un dato numerico, vuelva a realizar el proceso");
+			System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 			Administrador.sc.nextLine();
 		}
 		
@@ -3047,18 +3047,18 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			if (ClienteActual.getCuenta().getSaldo()>=SucursalCine.getJuegos().get(eleccion7-1).getValorServicio()) {
 				
 				ClienteActual.getCuenta().hacerPago(SucursalCine.getJuegos().get(eleccion7-1).getValorServicio());
-				System.out.println("•El juego esta por comenzar, el nuevo saldo de tu tarjeta cinemar es : " + ClienteActual.getCuenta().getSaldo());
+				System.out.println("•🎮🎮El juego esta por comenzar🎮🎮, el nuevo saldo de tu tarjeta cinemar es : $" + ClienteActual.getCuenta().getSaldo());
 				espera(2000);
 				barraCarga("Iniciando");
 				generoJuego = SucursalCine.getJuegos().get(eleccion7-1).getGeneroServicio();
 				System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+generoJuego);
 				switch(generoJuego) {
 				
-				case "Acción": game = juego(new String[]{"BUM"}); break;
-				case "Terror": game = juego(new String[]{"BOO"}); break;
-				case "Tecnología" : game = juego(new String[]{"POO"}); break;
-				case "Comedia": game = juego(new String[]{"JAJA"}); break;
-				case "Drama": game = juego(new String[]{"CRY"}); break;
+				case "Acción": game = juego(new String[]{"BAM","ZAP","GUN"}); break;
+				case "Terror": game = juego(new String[]{"BOO","FEAR","EVIL"}); break;
+				case "Tecnología" : game = juego(new String[]{"POO","JAVA","5.0"}); break;
+				case "Comedia": game = juego(new String[]{"JAJA", "FUN", "LOL"}); break;
+				case "Drama": game = juego(new String[]{"CRY","GIRL", "LOVE"}); break;
 					
 				}
 				
@@ -3097,7 +3097,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 							}
 						}
 				}catch(InputMismatchException e) {
-					System.out.println("\nError en el proceso, debe ingresar un dato numerico, vuelva a realizar el proceso");
+					System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 					Administrador.sc.nextLine();
 				}
 				
@@ -3137,7 +3137,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 	if (puntuacion==10.0) {
 		if (redimioCodigo) {
 			if (generoJuego.equals(generoCodigoPelicula)) {
-				System.out.println("\nGanas un bono de comida por obtener la puntuacion maxima en un juego de tipo "+generoJuego+" y redimir un codigo de pelicula del mismo genero");
+				System.out.println("\n🥇🥇🥇Ganas un bono de comida por obtener la puntuacion maxima en un juego de tipo "+generoJuego+" y redimir un codigo de pelicula del mismo genero🥇🥇🥇");
 				barraCarga("Generando bono");
 				espera(3000);
 				bonoCliente = Bono.generarBonoComidaJuegos(ClienteActual.getCineActual(), ClienteActual);
@@ -3149,15 +3149,15 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					ClienteActual.getCodigosBonos().add(codigoBono);
 					
 					
-					System.out.println("•Reclama el bono con el codigo en nuestro servicio de comida");
+					System.out.println("•Reclama el bono con el codigo en nuestro 🍕servicio de comida🍔");
 				}
 				
 				else {
-					System.out.println("•Error al asignar bono debido a que no hay productos de comida disponibles");
+					System.out.println("•😭Error al asignar bono debido a que no hay productos de comida disponibles😭");
 				}
 			}
 			else {
-				System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡");
+				System.out.println("\n🥇🥇🥇Ganas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡🥇🥇🥇");
 				barraCarga("Generando bono");
 				espera(3000);
 				bonoCliente = Bono.generarBonoSouvenirJuegos(ClienteActual.getCineActual(), ClienteActual);
@@ -3168,17 +3168,17 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					ClienteActual.getCodigosBonos().add(codigoBono);
 					
 					
-					System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
+					System.out.println("•Reclama el bono con el codigo en nuestro servicio de 🎁souvenirs🎁");
 				}
 				
 				else {
-					System.out.println("•Error al asignar bono debido a que no hay productos de souvenir disponibles");
+					System.out.println("•😭Error al asignar bono debido a que no hay productos de souvenir disponibles😭");
 				}
 
 			}
 		}
 		else {
-			System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡");
+			System.out.println("\\n🥇🥇🥇Ganas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡🥇🥇🥇");
 			barraCarga("Generando bono");
 			espera(3000);
 			bonoCliente = Bono.generarBonoSouvenirJuegos(ClienteActual.getCineActual(),ClienteActual);
@@ -3190,11 +3190,11 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 
 				
 				
-				System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
+				System.out.println("•Reclama el bono con el codigo en nuestro servicio de 🎁souvenirs🎁");
 			}
 			
 			else {
-				System.out.println("•Error al asignar bono debido a que no hay productos de souvenir disponibles");
+				System.out.println("•😭Error al asignar bono debido a que no hay productos de souvenir disponibles😭");
 			}
 		}
 	}
