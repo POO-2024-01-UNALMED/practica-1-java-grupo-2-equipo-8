@@ -25,7 +25,6 @@ public class Bono implements Serializable{
 		this.producto = producto;
 		this.tipoServicio = tipoServicio;
 		this.cliente = cliente;
-		cliente.getBonos().add(this);
 		cliente.getCineActual().getBonosCreados().add(this);
 	}
 	

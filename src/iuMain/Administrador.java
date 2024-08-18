@@ -70,18 +70,18 @@ public class Administrador {
 //	static Producto producto5SM = new Producto("Peluche","Deku","souvenir",30000,200,"Comedia",sucursalCine3);
 //	
 //	//Clientes prueba
-//	static Cliente cliente1 = new Cliente("Andy", 18, 13434, TipoDeDocumento.CC);
+//	static Cliente cliente1 = new Cliente("Rusbel", 18, 13434, TipoDeDocumento.CC);
 //	static Cliente cliente2 = new Cliente("Isa", 15, 4254543, TipoDeDocumento.TI);
 //	static Cliente cliente3 = new Cliente("Samu", 18, 646453523, TipoDeDocumento.CC);
 //	static Cliente cliente5= new Cliente("Santiago",18,1125274009,TipoDeDocumento.CC);
 //	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
 //	
-//	//Bonos de prueba
+////	//Bonos de prueba
 //	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente2);
+//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente1);
 //	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
 //	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
-//	
+	
 //	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 //	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
 //	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");
@@ -750,17 +750,17 @@ public class Administrador {
 	 * Para llevar su cometido, se muestran las películas en cartelera de la franquicia a la que accedió previamente, 
 	 * el cliente selecciona una de estas, luego se busca si la película seleccionada se encuentra en presentación en alguna de las salas de cine 
 	 * de la sucursal y no lleve más de 15 minutos en presentación:
-	 * 
-	 * 1. En caso de que sí, se le pregunta al cliente si quiere comprar la película en ese horario, dada una respuesta positiva, con la sala de cine
+	 * <ol>
+	 * <li>En caso de que sí, se le pregunta al cliente si quiere comprar la película en ese horario, dada una respuesta positiva, con la sala de cine
 	 * previamente encontrada realizamos el proceso de reserva del ticket (Mostramos los asientos de la sala de cine, 
 	 * le pedimos al cliente que seleccione el asiento, se valida su disponibilidad, se realiza el proceso de pago y se asigna el ticket al cliente)
-	 * (Para este proceso cuenta con un tiempo límite de 20 minutos).
+	 * (Para este proceso cuenta con un tiempo límite de 20 minutos).</li>
 	 * 
-	 * 2. En caso de que haya decidido no comprar en ese horario o directamente la película no estaba en presentación, mostramos los horarios 
+	 * <li>En caso de que haya decidido no comprar en ese horario o directamente la película no estaba en presentación, mostramos los horarios 
 	 * de la película, el usuario selecciona uno de ellos y realizamos el proceso de reserva del ticket (Mostramos los asientos de la sala de 
 	 * cine virtual asociada al horario previamente seleccionado, el cliente selecciona el asiento deseado, se valida su disponibilidad, 
-	 * se realiza el proceso de pago y se asigna el ticket al cliente).
-	 * 
+	 * se realiza el proceso de pago y se asigna el ticket al cliente).</li>
+	 * </ol>
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo cliente) que desea realizar la reserva de un ticket.
 	 * */
 	static void reservarTicket(Cliente clienteProceso) {
@@ -1676,15 +1676,15 @@ public class Administrador {
 	}
 	
 	/**
-	 * Description: Este método se encarga de realizar el proceso para que un usario pueda ingresar a una de las salas de cine,
+	 * Description: <p>Este método se encarga de realizar el proceso para que un usario pueda ingresar a una de las salas de cine,
 	 * para esto debemos cumplir un requisito fundamental, el cual es que el cliente tenga al menos un ticket asociado correspondiente a la
 	 * sucursal desde la cual está intentando acceder, dado el caso de que no, el cliente será redirigido al menú del sistema de proyecciones,
-	 * en caso de que sí podemos continuar con el proceso.
-	 * Mostramos en pantalla las salas de cine disponibles con información relevante de estas (Número de sala, película en presentación y horario),
+	 * en caso de que sí podemos continuar con el proceso.</p>
+	 * <p>Mostramos en pantalla las salas de cine disponibles con información relevante de estas (Número de sala, película en presentación y horario),
 	 * el cliente selecciona una de estas, verificamos que alguno de los tickets del cliente, cumpla con los requisitos necesarios para 
 	 * poder ingresar a la sala de cine, en caso de que sí, se muestra en pantalla una representación de la sala de cine y una vez termina 
 	 * la película se redirecciona al cliente al menú del sistema de proyecciones, en caso de que no, se vuelve a mostrar por pantalla las 
-	 * salas de cine disponibles.
+	 * salas de cine disponibles.</p>
 	 * @param clienteProceso : Este método recibe como parámetro al cliente (De tipo Cliente), que ingresó desde el menú
 	 * del sistema de proyecciones.
 	 * */
@@ -2048,9 +2048,11 @@ public class Administrador {
 	/**
 	 * Description : Este método se encarda de verificar si el proceso de reserva del ticket, desde una película en presentación, ha sido afectado 
 	 * por el avance del tiempo, para esto revisamos dos cosas: 
-	 * 1. El horario de la película en presentación de la sala de cine más 20 minutos (15 minutos de la posibilidad de compra y 5 minutos 
-	 * para realizar el proceso) es anterior a la fecha actual.
-	 * 2. La película seleccionada por el usuario durante el proceso corresponde a la película que se encuentra en presentación.
+	 * <ol>
+	 * <li>El horario de la película en presentación de la sala de cine más 20 minutos (15 minutos de la posibilidad de compra y 5 minutos 
+	 * para realizar el proceso) es anterior a la fecha actual.</li>
+	 * <li>La película seleccionada por el usuario durante el proceso corresponde a la película que se encuentra en presentación.</li>
+	 * </ol>
 	 * @param salaDeCineProceso : Este método recibe como parámetro la sala de cine (De tipo SalaCine) donde está siendo presentada la película 
 	 * seleccionada por el cliente.
 	 * @param peliculaProceso : Este método recibe como parámetro la pelicula (De tipo Pelicula) seleccionada por el usuario durante el proceso
@@ -2117,10 +2119,6 @@ public class Administrador {
         System.out.println("╚══════════════════════════════╝");
         System.out.println();
 	}
-	
-	//4. Serializar (Hecho)
-	//5. Hacer test de correcta serialización de la funcionalidad 1.
-	//6. Empezar el Google Document con el manual de usuario y la documentación
 	
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 	

@@ -53,9 +53,10 @@ public abstract class Servicio implements IBuyable, Serializable{
 	*los distintos tipos de bonos y solo mostrando los requeridos para este servicio
 	*/
 	public void actualizarBonos() {
-		for(int i = 0;i < cliente.getBonos().size();i++) {
-			if (cliente.getBonos().get(i).getTipoServicio().equalsIgnoreCase(nombre)) {
-				bonosCliente.add(cliente.getBonos().get(i));
+		bonosCliente = new ArrayList<>();
+		for(int i = 0;i < cliente.getCineActual().getBonosCreados().size();i++) {
+			if (cliente.getCineActual().getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(nombre) && cliente.getCineActual().getBonosCreados().get(i).getCliente().equals(cliente)) {
+				bonosCliente.add(cliente.getCineActual().getBonosCreados().get(i));
 			}
 		}
 	}
@@ -130,15 +131,21 @@ public abstract class Servicio implements IBuyable, Serializable{
 	
 	public static Producto validarBono(String codigo , Servicio servicio){
 		Producto producto;
-		for (int i=0; i < cliente.getCineActual().getBonosCreados().size();i++) {
-			if (cliente.getCineActual().getBonosCreados().get(i).getCodigo().equalsIgnoreCase(codigo) && cliente.getCineActual().getBonosCreados().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
-				producto = cliente.getCineActual().getBonosCreados().get(i).getProducto();
-				for (int j =0; j < cliente.getCineActual().getBonosCreados().get(i).getCliente().getBonos().size(); j++) {
-					if (cliente.getCineActual().getBonosCreados().get(i).getCliente().getBonos().get(j).getCodigo().equalsIgnoreCase(codigo)) {
-						cliente.getCineActual().getBonosCreados().get(i).getCliente().getBonos().remove(j);
+		for (int i=0; i < servicio.getBonosCliente().size();i++) {
+			System.out.println(servicio.getBonosCliente().get(i).getProducto().getNombre());
+			if (servicio.getBonosCliente().get(i).getCodigo().equals(codigo) && servicio.getBonosCliente().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
+				System.out.print("paso");
+				producto = servicio.getBonosCliente().get(i).getProducto();
+				for (int j=0; j < servicio.getCliente().getCineActual().getBonosCreados().size();j++) {
+					if (servicio.getCliente().getCineActual().getBonosCreados().get(j).getProducto().equals(producto) && servicio.getCliente().getCineActual().getBonosCreados().get(j).getCliente().equals(cliente)) {
+						servicio.getCliente().getCineActual().getBonosCreados().remove(j);
 					}
 				}
-				cliente.getCineActual().getBonosCreados().remove(i);
+				for (int j=0; j < servicio.getCliente().getBonos().size();j++) {
+					if (servicio.getCliente().getBonos().get(j).getProducto().equals(producto)) {
+						servicio.getCliente().getBonos().remove(j);
+					}
+				}
 				return producto;
 			}
 		}
