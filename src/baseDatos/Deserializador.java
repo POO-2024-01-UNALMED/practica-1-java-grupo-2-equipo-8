@@ -301,20 +301,6 @@ public class Deserializador {
 					fis = new FileInputStream(file);
 					ois = new ObjectInputStream(fis);
 					SucursalCine.setTiposDeMembresia((ArrayList<Membresia>) ois.readObject());
-					
-					//Se itera sobre las membresias para actualizar los apuntadores a los clientes que han adquirido la membresia.
-					for (Membresia membresia : SucursalCine.getTiposDeMembresia()) {
-						ArrayList<Cliente> clienteTemp = new ArrayList<>();
-						//Se obtiene los nuevos apuntadores para el arreglo de clientes en Membresia
-						for (Cliente cliente : membresia.getClientes()) {
-							clienteTemp.add(Cliente.revisarDatosCliente(cliente.getDocumento()));
-						} membresia.setClientes(clienteTemp);
-						//Una vez actualizado el arreglo de clientes, se actualizan los apuntadores de Membresia que tiene cada cliente.
-						for (Cliente cliente : membresia.getClientes()) {
-							cliente.setMembresia(membresia);
-						}
-
-					}
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -342,6 +328,7 @@ public class Deserializador {
 	 *	<li>Corrige las referencias en los tickets a la sala de cine, película, cliente (También lo añade
 	 * a su array de tickets) y sucursal, para hacer las validaciones de ingreso correctamente.</li>
 	 * 	<li>Asigna a cada sucursal los tickets que pueden recibir algún descuento durante la fecha del programa.</li>
+	 *  <li>Corrige las referencias en las membresias para que los clientes se les vuelvan a asignar con los nuevos espacios en memoria</li>
 	 * </ol>
 	 * 
 	 * Motivo de corrección de referencias: Al deserializar cambia la referencia (espacio en memoria) del objeto deserializado
@@ -391,6 +378,20 @@ public class Deserializador {
 		for (Cliente cliente : SucursalCine.getClientes()) {
 			//Limpia los tickets que tienen, estos serán recuperados luego de verificar si caducaron o no
 			cliente.getTickets().clear();
+		}
+		
+		//Se itera sobre las membresias para actualizar los apuntadores a los clientes que han adquirido la membresia.
+		for (Membresia membresia : SucursalCine.getTiposDeMembresia()) {
+			ArrayList<Cliente> clienteTemp = new ArrayList<>();
+			//Se obtiene los nuevos apuntadores para el arreglo de clientes en Membresia
+			for (Cliente cliente : membresia.getClientes()) {
+				clienteTemp.add(Cliente.revisarDatosCliente(cliente.getDocumento()));
+			} membresia.setClientes(clienteTemp);
+			//Una vez actualizado el arreglo de clientes, se actualizan los apuntadores de Membresia que tiene cada cliente.
+			for (Cliente cliente : membresia.getClientes()) {
+				cliente.setMembresia(membresia);
+			}
+
 		}
 		
 		for (Ticket ticket : SucursalCine.getTicketsDisponibles()) {

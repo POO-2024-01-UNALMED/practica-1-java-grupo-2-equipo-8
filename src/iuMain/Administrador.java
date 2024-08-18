@@ -1,6 +1,7 @@
 package iuMain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -8,6 +9,8 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.servicios.herencia.Servicio;
+import gestionAplicacion.servicios.herencia.ServicioComida;
+import gestionAplicacion.servicios.herencia.ServicioSouvenirs;
 import gestionAplicacion.usuario.*;
 import baseDatos.Deserializador;
 import baseDatos.Serializador;
@@ -75,11 +78,11 @@ public class Administrador {
 //	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
 //	
 ////	//Bonos de prueba
-//	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente1);
-//	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
-	
+////	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+////	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente1);
+////	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+////	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
+//	
 //	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 //	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
 //	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");
@@ -184,17 +187,6 @@ public class Administrador {
 //			SucursalCine.logicaInicioSistemaReservarTicket();
 //			
 ////			Prueba películas recomendadas
-////			cliente1.getHistorialDePeliculas().add(pelicula3_10);
-////			cliente1.getHistorialDePeliculas().add(pelicula3_11);
-////			cliente1.getHistorialDePeliculas().add(pelicula3_12);
-////			cliente1.getHistorialDePeliculas().add(pelicula2_16);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_4);
-//			cliente1.getHistorialDePeliculas().add(pelicula1_1);
-////			cliente1.getHistorialDePeliculas().add(pelicula2_15);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_1);
-//			cliente1.getHistorialDePeliculas().add(pelicula1_2);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_1);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_4);
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_1);
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_2);
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
@@ -239,25 +231,25 @@ public class Administrador {
 //			
 //			cliente1.setOrigenMembresia(sucursalCine1.getIdSucursal());
 			
+			
+			
 		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Print tests
 		System.out.println();
-		
-		
 		
 		//MAIN
 		inicioDelSistema();
 		
 		System.out.println("Iniciar sesión");
 		Cliente clienteProceso = iniciarSesion();
-		
+
 		System.out.println("\nIngresar a una de nuestras sedes");
 		clienteProceso.setCineActual(ingresarASucursal());
 		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
 		inicio(clienteProceso);
-		
+
 		salirDelSistema();
 		
 	}
@@ -271,7 +263,7 @@ public class Administrador {
 		int opcion = 0;
 		
 		//Método de avanzar días
-		
+		avanzarDia(clienteProceso);
 		
 		//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
 		avanzarTiempo();
@@ -409,6 +401,45 @@ public class Administrador {
 	 */
 	private static void logicaMembresia(Cliente clienteProceso) {
 		System.out.println(SucursalCine.notificarFechaLimiteMembresia(clienteProceso));
+	}
+	
+	/**
+	 * Description : Este método se encarga de avanzar de día en el programa cuando no hayan horarios.
+	 * En caso de que falte un día para cumplir la semana laboral, se avanzará de día automáticamente.
+	 * @param clienteProceso : Se pide un cliente para poder acceder a la sucursal de Cine
+	 * y poder evaluar los horarios de sus salas de Cine.
+	 */
+	static void avanzarDia(Cliente clienteProceso) {
+		
+		//Se crean variables para obtener la sucursal actual y una booleano que indica si hay horarios.
+		SucursalCine sucursalActual = clienteProceso.getCineActual();
+		Boolean hayHorarios = true;
+		
+		//Se revisa todas las salas de cine para ver si tienes horarios. De no ser el caso, se cambia el booleano a false.
+		for (SalaCine salaCine : sucursalActual.getSalasDeCine()) {
+			if (salaCine.isHorariosPresentacionDia() == false) {
+				hayHorarios = false;
+				break;
+			}
+		}
+		//El avance de dia se realiza automáticamente en caso de que no hayan horarios y falte 1 día para cumplir la semana de trabajo.
+		if (!hayHorarios && SucursalCine.getFechaRevisionLogicaDeNegocio().minusDays(1).equals(SucursalCine.getFechaActual().toLocalDate())) {
+			System.out.println("Debido al proceso de negocios, se pasará al dia siguiente. Gracias por su compresión\n");
+			SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()));
+			
+		//El avance de día se preguntará al usuario cuando ya no haya más peliculas por presentar.	
+		} else if (!hayHorarios) {
+			int opcionMenu = 0;
+			try {
+			System.out.println("Ya no hay más horarios. ¿Desea pasar al siguiente dia?\n1. Si.\n2. No.");
+			opcionMenu = Integer.parseInt(sc.nextLine());
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} switch (opcionMenu) {
+				case 1: SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()));break;
+				case 2: break;
+			}
+		}
 	}
 
 	/**
@@ -600,6 +631,11 @@ public class Administrador {
 		
 	}
 	
+	/**
+	 * Description: Este metodo se encarga de convertir las primeras letras de las palabras de un String en mayuscula
+	 * @param input : Es el string que el usuario proporciona
+	 * @return String : retorna el String convertido.
+	 */
 	public static String stringMayuscula(String input) {
         StringBuilder result = new StringBuilder();
         String[] words = input.split("\\s+");
@@ -2796,7 +2832,6 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 						valorRecarga = 0;
 						
 						System.out.println("•El valor maximo a recargar por proceso es: $"+recargaMaxima+" intente no superar este valor");
-						//System.out.println("•Ademas Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago para completar la recarga");
 						System.out.print("•Digite el valor a recargar: ");
 						valorRecarga = Administrador.readLong();
 						
@@ -2844,11 +2879,14 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 				+ " ( Precio anterior: " + precioRecargaProceso+ " -> Precio actual: " + precioRecargaProceso * (1 - metodoPagoProceso.getDescuentoAsociado()) + " )");
 	
 				espera(2000);
-	
-	
-				if(metodoPagoProceso.realizarPago(precioRecargaProceso, ClienteActual) == 0) {
+				
+				//Realizamos lógica de pago 
+				//En caso de que el método de pago seleccionado cumpla con el pago, le sumamos al total pagado el precio de recarga actual luego de aplicarle el descuento, en caso de que no le sumamos el pago realizado
+				totalPagado += (precioRecargaProceso * (1 - metodoPagoProceso.getDescuentoAsociado()) - metodoPagoProceso.getLimiteMaximoPago() <= 0) ? precioRecargaProceso * (1 - metodoPagoProceso.getDescuentoAsociado()) : metodoPagoProceso.getLimiteMaximoPago(); 
+				precioRecargaProceso = metodoPagoProceso.realizarPago(precioRecargaProceso, ClienteActual); //Realizamos el proceso de pago a partir del método de pago
+				
+				if( precioRecargaProceso == 0) {
 					
-					totalPagado+=precioRecargaProceso * (1 - metodoPagoProceso.getDescuentoAsociado());
 					barraCarga("Procesando pago");
 					System.out.println("Pago exitoso, se han recargado "+ valorRecarga+" y usted ha pagado "+ totalPagado+" equivalente a un descuento de "+ String.format("%.2f",(100-((totalPagado*100)/valorRecarga)))+ "%");
 					MetodoPago.asignarMetodosDePago(ClienteActual);
@@ -2877,8 +2915,6 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					
 				}
 				else {
-					totalPagado+= metodoPagoProceso.getLimiteMaximoPago();
-					precioRecargaProceso = metodoPagoProceso.realizarPago(precioRecargaProceso, ClienteActual);
 					espera(1000);
 					barraCarga("Procesando Pago");
 					
@@ -3151,7 +3187,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 				bonoCliente.setCliente(ClienteActual);
 				codigoBono = bonoCliente.getCodigo();
 				ClienteActual.getCodigosBonos().add(codigoBono);
-				//ClienteActual.getBonos().add(bonoCliente);
+
 				
 				
 				System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
@@ -3254,6 +3290,7 @@ public static void espera(int time) {
 public static String juego(String[] PALABRAS) {
     String match = null;
 
+    Scanner scanner = new Scanner(System.in);
     String palabraSecreta = PALABRAS[(int) (Math.random() * PALABRAS.length)];
     char[] palabraAdivinada = new char[palabraSecreta.length()];
     String letrasUsadas = ""; // Para rastrear letras ya usadas
@@ -3272,7 +3309,7 @@ public static String juego(String[] PALABRAS) {
         System.out.println();
 
         System.out.print("Ingresa una letra: ");
-        String input = sc.nextLine().toUpperCase();
+        String input = scanner.nextLine().toUpperCase();
         if (input.length() != 1 || !esLetraValida(input.charAt(0))) {
             System.out.println("Carácter inválido. Intenta otra vez.");
             intentosRestantes--;
@@ -3424,6 +3461,11 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 			opcionMenu = Integer.parseInt(sc.nextLine());
 			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
+				//Se revisa si el cliente esta intentando seleccionar la misma categoria pero aún no es tiempo de renovarla.
+				if (opcionMenu == clienteProceso.getMembresia().getCategoria() && clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())) {
+					System.out.println("Por favor seleccione una opción habilitada");
+					continue;
+				}
 				//Se verifica si se cumple con los requisitos para adquirir la membresia.
 				boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(clienteProceso, opcionMenu, clienteProceso.getCineActual());
 				System.out.print("\nCargando...\n");
