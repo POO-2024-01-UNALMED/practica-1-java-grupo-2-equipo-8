@@ -271,7 +271,7 @@ public class Administrador {
 		int opcion = 0;
 		
 		//Método de avanzar días
-		
+		avanzarDia(clienteProceso);
 		
 		//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
 		avanzarTiempo();
@@ -409,6 +409,45 @@ public class Administrador {
 	 */
 	private static void logicaMembresia(Cliente clienteProceso) {
 		System.out.println(SucursalCine.notificarFechaLimiteMembresia(clienteProceso));
+	}
+	
+	/**
+	 * Description : Este método se encarga de avanzar de día en el programa cuando no hayan horarios.
+	 * En caso de que falte un día para cumplir la semana laboral, se avanzará de día automáticamente.
+	 * @param clienteProceso : Se pide un cliente para poder acceder a la sucursal de Cine
+	 * y poder evaluar los horarios de sus salas de Cine.
+	 */
+	static void avanzarDia(Cliente clienteProceso) {
+		
+		//Se crean variables para obtener la sucursal actual y una booleano que indica si hay horarios.
+		SucursalCine sucursalActual = clienteProceso.getCineActual();
+		Boolean hayHorarios = true;
+		
+		//Se revisa todas las salas de cine para ver si tienes horarios. De no ser el caso, se cambia el booleano a false.
+		for (SalaCine salaCine : sucursalActual.getSalasDeCine()) {
+			if (salaCine.isHorariosPresentacionDia() == false) {
+				hayHorarios = false;
+				break;
+			}
+		}
+		//El avance de dia se realiza automáticamente en caso de que no hayan horarios y falte 1 día para cumplir la semana de trabajo.
+		if (!hayHorarios && SucursalCine.getFechaRevisionLogicaDeNegocio().minusDays(1).equals(SucursalCine.getFechaActual().toLocalDate())) {
+			System.out.println("Debido al proceso de negocios, se pasará al dia siguiente. Gracias por su compresión\n");
+			SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()));
+			
+		//El avance de día se preguntará al usuario cuando ya no haya más peliculas por presentar.	
+		} else if (!hayHorarios) {
+			int opcionMenu = 0;
+			try {
+			System.out.println("Ya no hay más horarios. ¿Desea pasar al siguiente dia?\n1. Si.\n2. No.");
+			opcionMenu = Integer.parseInt(sc.nextLine());
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} switch (opcionMenu) {
+				case 1: SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()));break;
+				case 2: break;
+			}
+		}
 	}
 
 	/**
@@ -3426,6 +3465,11 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 			opcionMenu = Integer.parseInt(sc.nextLine());
 			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
+				//Se revisa si el cliente esta intentando seleccionar la misma categoria pero aún no es tiempo de renovarla.
+				if (opcionMenu == clienteProceso.getMembresia().getCategoria() && clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())) {
+					System.out.println("Por favor seleccione una opción habilitada");
+					continue;
+				}
 				//Se verifica si se cumple con los requisitos para adquirir la membresia.
 				boolean requisitosMembresia = Membresia.verificarRestriccionMembresia(clienteProceso, opcionMenu, clienteProceso.getCineActual());
 				System.out.print("\nCargando...\n");
