@@ -93,7 +93,7 @@ public class Funcionalidad3 {
 						prueba.setTotalEncuestasDeValoracionRealizadasComida(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
 						prueba.setValoracionComida(calificacionGlobalPedidos);
 						
-						if (prueba.verificarInventarioProducto(clienteProceso.getCineActual())== true ) {
+						if (!prueba.verificarInventarioProducto(clienteProceso.getCineActual())== true ) {
 							continue;
 						}
 						else {
@@ -200,7 +200,7 @@ public class Funcionalidad3 {
 											
 											//Creamos nuevas instancias
 											Ticket ticketProceso=new Ticket(peliculaCombo,opcionHorarioPelicula,numAsientoProceso,clienteProceso.getCineActual());
-											Bono bonoProceso=new Bono(codigoBono,productoCombo1,productoCombo1.getTipoProducto());
+											Bono bonoProceso=new Bono(codigoBono,new Producto(productoCombo1.getNombre(), productoCombo1.getTamaño(), 1),productoCombo1.getTipoProducto(),clienteProceso);
 											//Realizamos el proceso correspondiente luego de ser verificado
 											ticketProceso.procesarPagoRealizado(clienteProceso);
 											clienteProceso.getBonos().add(bonoProceso);
@@ -288,7 +288,7 @@ public class Funcionalidad3 {
 						prueba1.verificarHorariosPeliculas();
 						prueba1.setValoracion(calificacionGlobalPeliculas);
 						
-						if ( prueba1.verificarHorariosPeliculas()== true ) {
+						if ( !prueba1.verificarHorariosPeliculas()== true ) {
 							continue;
 						}
 						else {
@@ -396,7 +396,7 @@ public class Funcionalidad3 {
 											
 											//Setteamos el precio del ticket
 											Ticket ticketProceso=new Ticket(opcionPelicula,opcionHorarioPelicula,numAsientoProceso,clienteProceso.getCineActual());
-											Bono bonoProceso=new Bono(codigoBono,productoCombo1,productoCombo1.getTipoProducto());
+											Bono bonoProceso=new Bono(codigoBono,new Producto(productoCombo1.getNombre(), productoCombo1.getTamaño(), 1),productoCombo1.getTipoProducto(), clienteProceso);
 											//Realizamos el proceso correspondiente luego de ser verificado
 											ticketProceso.procesarPagoRealizado(clienteProceso);
 											clienteProceso.getBonos().add(bonoProceso);
@@ -456,7 +456,15 @@ public class Funcionalidad3 {
 
 	}
 	
-	
+	/*
+	  Correcciones:
+	   1. Crear validación para la selección de mejor película, producto y peor película, producto (Como ninguna supera 4.5 o está por debajo de 3 retornan null).
+	   2. Corregir saltos de línea (Estás llamando / y debe ser \n).
+	   3. Corregí lo de que no te avanzaba de cierto punto, no pude testear más pq se toteaba.
+	   4. Hay un método que llamas en película creo que hay un error en esa lógica, necesito hablar.
+	   5. Recuerda documentar los métodos compartidos en la clase sucursal.
+	  
+	 */
 	
 	
 
