@@ -1,11 +1,8 @@
 package gestionAplicacion.servicios;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Random;
-
 import gestionAplicacion.SucursalCine;
-import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.herencia.Servicio;
 
 public class Producto implements Serializable {

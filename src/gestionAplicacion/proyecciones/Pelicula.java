@@ -3,7 +3,6 @@ package gestionAplicacion.proyecciones;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.Duration;
-
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
 import java.io.Serializable;

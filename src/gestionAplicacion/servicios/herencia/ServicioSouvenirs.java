@@ -1,8 +1,6 @@
 package gestionAplicacion.servicios.herencia;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;

@@ -2,9 +2,7 @@ package gestionAplicacion.usuario;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import gestionAplicacion.SucursalCine;
-import gestionAplicacion.servicios.Bono;
 
 public class MetodoPago implements Serializable{
 	

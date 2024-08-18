@@ -1,16 +1,9 @@
 package gestionAplicacion.usuario;
 import java.util.ArrayList;
 import java.io.Serializable;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.LinkedHashMap;
-
 import gestionAplicacion.SucursalCine;
-import gestionAplicacion.proyecciones.Pelicula;
-import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
-import iuMain.Administrador;
-import gestionAplicacion.proyecciones.SalaCine;
+
 
 public class Membresia implements IBuyable, Serializable{
 	

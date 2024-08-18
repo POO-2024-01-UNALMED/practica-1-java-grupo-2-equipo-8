@@ -1,12 +1,9 @@
 package gestionAplicacion.servicios.herencia;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.io.Serializable;
-
 import gestionAplicacion.SucursalCine;
-import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.usuario.Cliente;

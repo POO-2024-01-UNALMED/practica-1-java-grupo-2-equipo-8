@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.Ticket;

@@ -1,15 +1,12 @@
 package iuMain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
-import gestionAplicacion.servicios.herencia.ServicioComida;
-import gestionAplicacion.servicios.herencia.ServicioSouvenirs;
 import gestionAplicacion.usuario.*;
 import baseDatos.Deserializador;
 import baseDatos.Serializador;
@@ -244,7 +241,6 @@ public class Administrador {
 		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Print tests
-		System.out.println();
 		System.out.println();
 		
 		
@@ -2373,7 +2369,6 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			}while(casoValido);
 		}
 
-///////////////////////////////////////////////////////////////////////////////////////////////
 		
 
 		else if (eleccion1==2) {
@@ -2615,7 +2610,6 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					bonoCliente.setCliente(ClienteActual);
 					codigoBono = bonoCliente.getCodigo();
 					ClienteActual.getCodigosBonos().add(codigoBono);
-					//ClienteActual.getBonos().add(bonoCliente);
 					
 					
 					System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
