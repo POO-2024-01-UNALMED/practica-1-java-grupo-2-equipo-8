@@ -504,7 +504,13 @@ public class Pelicula implements Serializable{
 		 
 		return horariosPelicula;
 	}
-
+	
+	/**
+	 * Description:Este metodo se encarga de seleccionar un asiento aleatoriamente en la sala de cine, esto se hace
+	 * con el fin de dar un combo o un regalo al cliente que haya calificado un producto o una pelicula y en modo de
+	 * obsequio le ofrecemos este bono,el metodo retorna un numAsiento de forma aleatoria y ese asiento es al que se 
+	 * le va a dar al cliente.
+	 * */
 	 public String seleccionarAsientoAleatorio(LocalDateTime horarioProceso) {
 		 boolean validacion=true;
 		 String numAsiento=null;
