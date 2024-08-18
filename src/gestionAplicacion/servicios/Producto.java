@@ -1,4 +1,4 @@
-package gestionAplicacion.servicios;
+ package gestionAplicacion.servicios;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -77,7 +77,7 @@ public class Producto implements Serializable {
 		this.cantidad = cantidad;
 		this.valoracionComida= 4.0;
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
-	}
+	} 
 	
 	
 	/**
@@ -86,7 +86,7 @@ public class Producto implements Serializable {
 	* */
 	public boolean verificarInventarioProducto(SucursalCine sucursalCine) {
 		
-		if (sucursalCine.getInventarioCine().size() ==0) {
+		if (sucursalCine.getInventarioCine().size()<=sucursalCine.getTiposDeMembresia().size()) {
 			return false;
 		}
 		else {

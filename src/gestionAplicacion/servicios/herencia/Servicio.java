@@ -129,9 +129,7 @@ public abstract class Servicio implements IBuyable, Serializable{
 	public static Producto validarBono(String codigo , Servicio servicio){
 		Producto producto;
 		for (int i=0; i < servicio.getBonosCliente().size();i++) {
-			System.out.println(servicio.getBonosCliente().get(i).getProducto().getNombre());
 			if (servicio.getBonosCliente().get(i).getCodigo().equals(codigo) && servicio.getBonosCliente().get(i).getTipoServicio().equalsIgnoreCase(servicio.nombre)) {
-				System.out.print("paso");
 				producto = servicio.getBonosCliente().get(i).getProducto();
 				for (int j=0; j < servicio.getCliente().getCineActual().getBonosCreados().size();j++) {
 					if (servicio.getCliente().getCineActual().getBonosCreados().get(j).getProducto().equals(producto) && servicio.getCliente().getCineActual().getBonosCreados().get(j).getCliente().equals(cliente)) {

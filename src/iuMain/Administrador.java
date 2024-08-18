@@ -298,7 +298,7 @@ public class Administrador {
 			case 2: compras(clienteProceso); inicio(clienteProceso); break;
 			case 3: ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
 			case 4: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
-			case 5: Funcionalidad3.calificacion(clienteProceso);inicio(clienteProceso); break;
+			case 5: calificacion(clienteProceso);inicio(clienteProceso); break;
 			case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
 			case 7: salirDelSistema(); break;
 			default: System.out.println("Opción invalida"); inicio(clienteProceso);
@@ -631,6 +631,11 @@ public class Administrador {
 		
 	}
 	
+	/**
+	 * Description: Este metodo se encarga de convertir las primeras letras de las palabras de un String en mayuscula
+	 * @param input : Es el string que el usuario proporciona
+	 * @return String : retorna el String convertido.
+	 */
 	public static String stringMayuscula(String input) {
         StringBuilder result = new StringBuilder();
         String[] words = input.split("\\s+");
@@ -2398,7 +2403,6 @@ public class Administrador {
 				if (eleccion == 0) {
 					break;
 				}
-				System.out.println(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo());
 				
 				Producto productoBono1 = Servicio.validarBono(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo(),serviciProceso);
 				
@@ -2691,9 +2695,490 @@ public class Administrador {
 	//| |    | |_| | | |\  | | \____  | | | |__| | | |\  |  / ______ \  | |___  | | | |__| | / ______ \  | |__| |      __\	  \        
 	//|_|     \___/  |_| \_|  \_____| |_|  \____/  |_| \_| /_/      \_\ |_____| |_| |_____/ /_/      \_\ |_____/ 	  |_______|
 	
-	static void calificacion(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
+	static void calificacion(Cliente clienteProceso) {
 		
-	}
+		
+			
+				boolean verificar = true;
+				int eleccion = 0;
+				int eleccion1=0;
+				int eleccion2=0;
+				
+				/** Description: Esta funcionalidad 3 se va a encargar de hacer la respectiva calificacion de peliculas y productos dependiendo
+				 * de los gustos del cliente, ya que con estas calificaciones vamos a hacer un proceso interno de logica de negocio 
+				 * dentro del cine, para poder saber que peliculas o productos estan funcionando bien o por consecuencia, cuales 
+				 * estan funcionando mal
+				*/
+				Scanner sc = new Scanner(System.in);
+				//Le damos la bienvenida al cliente
+				System.out.println("********Bienvenido a la calificacion de productos*********");
+				
+				/** Description: Este ciclo es para preguntarle al cliente que es lo que desea hacer dentro de la funcionalidad, si calificar
+				 * una pelicula, un producto o volver al menu principal
+				 */
+				do {
+					try {
+						System.out.print("\n1.Calificar Comida.\n2.Calificar Pelicula\n3.Volver al menu.\nSeleccione una opcion: ");
+						eleccion = Integer.parseInt(sc.nextLine());
+					}catch(NumberFormatException e) {
+						System.out.println("\nError, debes ingresar un dato numérico\n");
+						continue;
+					}
+					if (eleccion == 3) {
+						Administrador.inicio(clienteProceso);
+						break;
+					}
+					else if (eleccion == 1 || eleccion == 2) {
+						verificar = false;
+					}
+				}while(verificar);
+				/**Description: En esta parte hacemos un condicional dependiendo dla opcion que el cliente escoja, si el cliente escoje
+				 * la eleccion uno se le da la bienvenida para la calificacion de comidas y por el contrario si la eleccion es dos,
+				 * se le da la bienvenida al apartado de calificacion de peliculas.
+				 * Metodo mostrarHsitorialDePedidos: Este metodo le muestra a los usuarios los pedidos que han hecho, y por ende tambien verifica
+				 * si el cliente si ha hecho almenos una compra, esto es para evitar que un cliente pueda calificar un producto que no ha 
+				 * consumido. Cuando se verifica que el cliente ha consumido un producto se le da a escojer que producto desea calificar,
+				 * y el cliente le da una valoracion del 1 al 5 dependiendo de los gustos del usuario.
+				 *  
+				 */
+				if (eleccion==1) {
+					System.out.println("\n********Bienvenido al apartado de calificacion de comida********");
+					if(clienteProceso.getHistorialDePedidos().size() > 0) {
+						System.out.println("\n********Estos son los pedidos que has adquirido**********" + "\n" + clienteProceso.mostrarHistorialDePedidos());
+						Producto opcionPedido=null;
+						int calificacion1=0;
+						do {
+							try {
+								System.out.print("\n*********Seleccione el producto que deseas calificar********");
+								eleccion = Integer.parseInt(sc.nextLine());
+								if (eleccion == 0) {
+									break;
+								}
+								if (eleccion > clienteProceso.getHistorialDePedidos().size() || eleccion < 1) {
+									System.out.print("\n******Error en la seleccion del producto******");
+									continue;
+								}
+								opcionPedido = clienteProceso.getHistorialDePedidos().get(eleccion-1);
+								System.out.print("\nIngrese la calificacion del 1 al 5 que le vas a dar a este producto: ");
+								calificacion1 = Integer.parseInt(sc.nextLine());
+								if (calificacion1>=3) {
+									System.out.println("\n*********Escogiste: " + opcionPedido.getNombre() + " " + opcionPedido.getTamaño() + "  y le diste una valoracion de " + calificacion1 + " por lo tanto esta comida esta catalogada como bien calificada" + "***********");
+									
+								}
+								
+								else if(calificacion1<=2.99) {
+									System.out.println("\n*********Escogiste: " + opcionPedido.getNombre() + " " + opcionPedido.getTamaño() + "  y le diste una valoracion de " + calificacion1 + " por lo tanto esta comida esta catalogada como mal calificada" + "***********");
+									
+									}
+								else {
+									System.out.println("Error al calificar la comida, recuerda que es del 1 al 5");
+								}
+								
+								
+								
+								Producto prueba = opcionPedido;
+								//En este apartado setteamos las nuevas valoraciones hechas por el cliente y tambien aumentamos el numero de valoraciones realizadas
+								
+								double calificacionGlobalPedidos;
+								calificacionGlobalPedidos= (prueba.getValoracionComida() * prueba.getTotalEncuestasDeValoracionRealizadasComida()+calificacion1)/(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
+								prueba.setTotalEncuestasDeValoracionRealizadasComida(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
+								prueba.setValoracionComida(calificacionGlobalPedidos);
+								
+								if (!prueba.verificarInventarioProducto(clienteProceso.getCineActual())== true ) {
+									continue;
+								}
+								
+								else {
+									System.out.println("De esta comida todavia hay unidades en inventario");
+								}
+								
+								/**Description: En esta parte del codigo, en modo de agradecimiento con el cliente por haber hecho la respectiva calificacion de 
+								 * comida o de peliculas le ofrecemos un combo a un precio muy especial, y ya, esta a opcion del cliente si quiere adquirir este
+								 * combo especial o no
+								 */
+									System.out.print("\nComo calificaste un producto te queremos hacer la oferta de un combo especial, deseas verlo?\n1.Si\n2.No : ");
+									eleccion1 = Integer.parseInt(sc.nextLine());
+									if (eleccion1==1) {
+										Pelicula peliculaCombo=clienteProceso.getCineActual().peorPelicula();
+										LocalDateTime opcionHorarioPelicula=peliculaCombo.seleccionarHorarioMasLejano();
+										String numAsientoProceso= peliculaCombo.seleccionarAsientoAleatorio(opcionHorarioPelicula);
+										Producto productoCombo1=clienteProceso.getCineActual().mejorProducto();
+										String codigoBono=productoCombo1.generarCodigoAleatorio(7);
+										/**Description: En esta parte del codigo, se le ofrece al cliente el combo especial, este combo especial en este caso, tiene la 
+										 * mejor pelicula con el peor producto, esto lo hacemos con el fin de logica de negocio, y podamos tener mejores resultados con 
+										 * los productos y peliculas.
+										 */
+										System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula" +
+										peliculaCombo.getNombre() + "y el producto " + productoCombo1.getNombre() + productoCombo1.getTamaño()) ;
+										
+										double precioTotal=0;
+										precioTotal=peliculaCombo.getPrecio()+productoCombo1.getPrecio();
+										System.out.println("Este combo tiene un precio de: " + precioTotal + ",deseas adquirirlo? \n1.Si\n2.No:  ");
+										eleccion2 = Integer.parseInt(sc.nextLine());
+										if(eleccion2==1) {
+											//Iniciamos el proceso de pago
+											System.out.println("\n		Proceso de pago");
+											System.out.println("=====================================================");
+											
+											boolean pagoRealizado = false;
+											boolean casoValido = false;
+											boolean casoValidoConfirmacion = false;
+											
+											MetodoPago metodoPagoProceso = null;
+											double precioComboProceso = productoCombo1.getPrecio()+peliculaCombo.getPrecio();
+											double precioAcumuladoComboProceso = 0;
+											int opcionMenu=0;
+											//Selccionar el método de pago para realizar el pago y realizar el pago
+											do {
+												do {
+													opcionMenu = 0;
+													try {
+														System.out.println("\nEl valor a pagar por el combo es: " + precioComboProceso
+														+ "\nEste es el listado de los métodos de pago disponibles:\n" 
+														+ MetodoPago.mostrarMetodosDePago(clienteProceso));
+														System.out.print("\nElige una de las opciones disponibles para realizar el pago: " );
+														opcionMenu = Integer.parseInt(sc.nextLine());
+													}catch(NumberFormatException e) {
+														System.out.println("\nError, debe ingresar un único dato númerico entre los disponibles");
+													}
+													
+													if (opcionMenu > 0 & opcionMenu <= clienteProceso.getMetodosDePago().size()) {
+														//Se selecciona el método de pago
+														metodoPagoProceso = clienteProceso.getMetodosDePago().get(opcionMenu - 1);
+														casoValido = true;
+														
+													}else {
+														
+														System.out.println("\nSeleccione un método de pago entre los disponibles");
+														
+													}
+												}while( !casoValido );
+												
+												do {
+													opcionMenu = 0;
+													try {
+														System.out.println("\nEl método de pago escogido es: " + metodoPagoProceso.getNombre() 
+														+ " ( Precio anterior: " + precioComboProceso + " -> Precio actual: " + precioComboProceso * (1 - metodoPagoProceso.getDescuentoAsociado()) + " )"
+														+ "\n1. Correcto\n2. Cambiar Método de pago");
+														opcionMenu = Integer.parseInt(sc.nextLine());
+													}catch(NumberFormatException e) {
+														System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+													}
+													
+													switch(opcionMenu) {
+													case 1: casoValidoConfirmacion = true; break;
+													case 2: casoValidoConfirmacion = true; break;
+													default: System.out.println("Opcion Invalida"); casoValidoConfirmacion = false;
+													}
+													
+												}while(!casoValidoConfirmacion);
+												
+												if (opcionMenu == 2 || opcionMenu == 0) {
+													continue;
+												}
+												
+												
+												
+												//Realizamos el pago y sumamos el precio acumulado para mostrar el valor real del ticket
+												precioAcumuladoComboProceso = precioAcumuladoComboProceso + precioComboProceso * (1 - metodoPagoProceso.getDescuentoAsociado());
+												precioComboProceso = metodoPagoProceso.realizarPago(precioComboProceso, clienteProceso);
+												
+												//Ponemos un delay en pantalla
+												System.out.println("\nEstamos procesando su pago, por favor espere...\n");
+												try {
+													Thread.sleep(3000);
+												}catch(InterruptedException e) {
+													e.printStackTrace();
+												}
+											
+												//Realizamos el pago, según si el cliente decidió comprar un asiento de una película en presentación o en otro horario distinto
+												
+													
+													//Verificamos si el pago fue cubierto en su totalidad
+													if (precioComboProceso == 0) {
+														
+														System.out.println("Pago realizado, La compra de su ticket fue exitosa\n");
+														
+														//Creamos nuevas instancias
+														Ticket ticketProceso=new Ticket(peliculaCombo,opcionHorarioPelicula,numAsientoProceso,clienteProceso.getCineActual());
+														Bono bonoProceso=new Bono(codigoBono,new Producto(productoCombo1.getNombre(),productoCombo1.getTamaño(),1),productoCombo1.getTipoProducto(),clienteProceso);
+														//Realizamos el proceso correspondiente luego de ser verificado
+														ticketProceso.procesarPagoRealizado(clienteProceso);
+														int filaProceso = Character.getNumericValue(numAsientoProceso.charAt(0));
+														int columnaProceso = Character.getNumericValue(numAsientoProceso.charAt(2));
+														peliculaCombo.modificarSalaVirtual(opcionHorarioPelicula, filaProceso-1, columnaProceso-1);
+														clienteProceso.getBonos().add(bonoProceso);
+														clienteProceso.getCineActual().getBonosCreados().add(bonoProceso);
+
+														System.out.println("-----------------------Factura--------------------------");
+														System.out.println("------------------Este es tu combo!!---------------------");
+														System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre()+ productoCombo1.getTamaño()) ;;
+														System.out.println("------Felicidades, gracias por confiar en nosotros----");
+														System.out.println("");
+														pagoRealizado = true;
+														
+													}else {
+														
+														//Repetimos el proceso hasta validar el pago
+														System.out.println("Tiene un saldo pendiente de : " + precioComboProceso);
+														
+													}
+													
+												
+											
+											}while(!pagoRealizado);
+										}
+									}
+									else {
+										System.out.println("Gracias por tu tiempo... Adios ");
+									}
+									
+								
+								
+								
+								
+							}catch(NumberFormatException e) {
+								System.out.println("\nError, debes ingresar un dato numérico\n");
+								continue;
+							}
+							
+						}while(verificar);
+					}
+						
+					
+					else {
+						System.out.println("\n******Lastimosamente no has hecho compra de ningun alimento, por lo tanto no puedes calificar ninguno*******");
+					}
+				}  
+				
+				/**Description: En esta parte hacemos un condicional dependiendo dla opcion que el cliente escoja, si el cliente escoje
+				 * la eleccion uno se le da la bienvenida para la calificacion de comidas y por el contrario si la eleccion es dos,
+				 * se le da la bienvenida al apartado de calificacion de peliculas.
+				 * Metodo mostrarHistorialDePeliculas: Este metodo le muestra a los usuarios los pedidos que han hecho, y por ende tambien verifica
+				 * si el cliente si ha hecho almenos una compra, esto es para evitar que un cliente pueda calificar una pelicula que no ha 
+				 * visto. Cuando se verifica que el cliente ha visto una pelicula se le da a escojer que pelicula desea calificar,
+				 * y el cliente le da una valoracion del 1 al 5 dependiendo de los gustos del usuario.
+				 */
+				else if (eleccion==2) {
+					System.out.println("\n********Bienvenido al apartado de calificacion de peliculas********");
+					if(clienteProceso.getPeliculasDisponiblesParaCalificar().size() > 0) {
+						System.out.println("\n********Estas son las peliculas que has visto**********" + "\n" + clienteProceso.mostrarHistorialDePelicula());
+						Pelicula opcionPelicula=null;
+						int calificacion=0;
+						do {
+							try {
+								System.out.print("\n*********Seleccione la pelicula que deseas calificar********");
+								eleccion = Integer.parseInt(sc.nextLine());
+								if (eleccion == 0) {
+									break;
+								}
+								if (eleccion > clienteProceso.getPeliculasDisponiblesParaCalificar().size() || eleccion < 1) {
+									System.out.print("\n******Error en la seleccion de la pelicula******");
+									continue;
+								}
+								opcionPelicula = clienteProceso.getPeliculasDisponiblesParaCalificar().get(eleccion-1);
+								System.out.print("\nIngrese la calificacion del 1 al 5 que le vas a dar a esta pelicula: ");
+								calificacion = Integer.parseInt(sc.nextLine());
+								if (calificacion>=3) {
+									System.out.println("\n*********Escogiste la pelicula: " + opcionPelicula.getNombre()+ " " + opcionPelicula.getTipoDeFormato()+ "  y le diste una valoracion de " + calificacion + ", por lo tanto esta pelicula esta catalogada como bien calificada" +"***********");
+								}
+								else if	(calificacion<=2.99) {
+								System.out.println("\n*********Escogiste la pelicula: " + opcionPelicula.getNombre()+ " " + opcionPelicula.getTipoDeFormato()+ "  y le diste una valoracion de " + calificacion +", por lo tanto esta pelicula esta catalogada como mal calificada" + "***********");
+								}
+								else {
+									System.out.println("Error al calificar la pelicula, recuerda que es del 1 al 5");
+								}
+								//En este apartado setteamos las nuevas valoraciones hechas por el cliente y tambien aumentamos el numero de valoraciones realizadas
+								
+								Pelicula prueba1 = opcionPelicula;
+								double calificacionGlobalPeliculas;
+								calificacionGlobalPeliculas= (prueba1.getValoracion() * prueba1.getTotalEncuestasDeValoracionRealizadas()+calificacion)/(prueba1.getTotalEncuestasDeValoracionRealizadas()+1);
+								prueba1.setTotalEncuestasDeValoracionRealizadas(prueba1.getTotalEncuestasDeValoracionRealizadas()+1);
+								prueba1.verificarHorariosPeliculas();
+								prueba1.setValoracion(calificacionGlobalPeliculas);
+								
+								if ( !prueba1.verificarHorariosPeliculas()== true ) {
+									continue;
+								}
+								else {
+									System.out.println("Esta pelicula todavia tiene horarios");
+								}
+								/**Description: En esta parte del codigo, en modo de agradecimiento con el cliente por haber hecho la respectiva calificacion de 
+								 * comida o de peliculas le ofrecemos un combo a un precio muy especial, y ya, esta a opcion del cliente si quiere adquirir este
+								 * combo especial o no
+								 */
+								System.out.print("\nComo calificaste una pelicula te queremos hacer la oferta de un combo especial, deseas verlo?\n1.Si\n2.No : ");
+								eleccion1 = Integer.parseInt(sc.nextLine());
+								if (eleccion1==1) {
+									
+									Pelicula peliculaCombo=clienteProceso.getCineActual().mejorPelicula();
+									LocalDateTime opcionHorarioPelicula=peliculaCombo.seleccionarHorarioMasLejano();
+									String numAsientoProceso= peliculaCombo.seleccionarAsientoAleatorio(opcionHorarioPelicula);
+									Producto productoCombo1=clienteProceso.getCineActual().peorProducto();
+									String codigoBono=productoCombo1.generarCodigoAleatorio(5);
+									/**Description: En esta parte del codigo, se le ofrece al cliente el combo especial, este combo especial en este caso, tiene la 
+									 * mejor pelicula con el peor producto, esto lo hacemos con el fin de logica de negocio, y podamos tener mejores resultados con 
+									 * los productos y peliculas.
+									 */
+									System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula" +
+									peliculaCombo.getNombre() + "y el producto " + productoCombo1.getNombre() + productoCombo1.getTamaño()) ;
+									
+									double precioTotal=0;
+									precioTotal=peliculaCombo.getPrecio()+productoCombo1.getPrecio();
+									System.out.println("Este combo tiene un precio de: " + precioTotal + ",deseas adquirirlo? \n1.Si\n2.No:  ");
+									eleccion2 = Integer.parseInt(sc.nextLine());
+									if(eleccion2==1) {
+										//Iniciamos el proceso de pago
+										System.out.println("\n		Proceso de pago");
+										System.out.println("=====================================================");
+										
+										boolean pagoRealizado = false;
+										boolean casoValido = false;
+										boolean casoValidoConfirmacion = false;
+										
+										MetodoPago metodoPagoProceso = null;
+										double precioComboProceso = productoCombo1.getPrecio()+peliculaCombo.getPrecio();
+										double precioAcumuladoComboProceso = 0;
+										int opcionMenu=0;
+										//Selccionar el método de pago para realizar el pago y realizar el pago
+										do {
+											do {
+												opcionMenu = 0;
+												try {
+													System.out.println("\nEl valor a pagar por el combo es: " + precioComboProceso
+													+ "\nEste es el listado de los métodos de pago disponibles:\n" 
+													+ MetodoPago.mostrarMetodosDePago(clienteProceso));
+													System.out.print("\nElige una de las opciones disponibles para realizar el pago: " );
+													opcionMenu = Integer.parseInt(sc.nextLine());
+												}catch(NumberFormatException e) {
+													System.out.println("\nError, debe ingresar un único dato númerico entre los disponibles");
+												}
+												
+												if (opcionMenu > 0 & opcionMenu <= clienteProceso.getMetodosDePago().size()) {
+													//Se selecciona el método de pago
+													metodoPagoProceso = clienteProceso.getMetodosDePago().get(opcionMenu - 1);
+													casoValido = true;
+													
+												}else {
+													
+													System.out.println("\nSeleccione un método de pago entre los disponibles");
+													
+												}
+											}while( !casoValido );
+											
+											do {
+												opcionMenu = 0;
+												try {
+													System.out.println("\nEl método de pago escogido es: " + metodoPagoProceso.getNombre() 
+													+ " ( Precio anterior: " + precioComboProceso + " -> Precio actual: " + precioComboProceso * (1 - metodoPagoProceso.getDescuentoAsociado()) + " )"
+													+ "\n1. Correcto\n2. Cambiar Método de pago");
+													opcionMenu = Integer.parseInt(sc.nextLine());
+												}catch(NumberFormatException e) {
+													System.out.println("Error, debes ingresar un único dato numérico entre los disponibles");
+												}
+												
+												switch(opcionMenu) {
+												case 1: casoValidoConfirmacion = true; break;
+												case 2: casoValidoConfirmacion = true; break;
+												default: System.out.println("Opcion Invalida"); casoValidoConfirmacion = false;
+												}
+												
+											}while(!casoValidoConfirmacion);
+											
+											if (opcionMenu == 2 || opcionMenu == 0) {
+												continue;
+											}
+											
+											
+											
+											//Realizamos el pago y sumamos el precio acumulado para mostrar el valor real del ticket
+											precioAcumuladoComboProceso = precioAcumuladoComboProceso + precioComboProceso * (1 - metodoPagoProceso.getDescuentoAsociado());
+											precioComboProceso = metodoPagoProceso.realizarPago(precioComboProceso, clienteProceso);
+											
+											//Ponemos un delay en pantalla
+											System.out.println("\nEstamos procesando su pago, por favor espere...\n");
+											try {
+												Thread.sleep(3000);
+											}catch(InterruptedException e) {
+												e.printStackTrace();
+											}
+										
+											//Realizamos el pago, según si el cliente decidió comprar un asiento de una película en presentación o en otro horario distinto
+											
+												
+												//Verificamos si el pago fue cubierto en su totalidad
+												if (precioComboProceso == 0) {
+													
+													System.out.println("Pago realizado, La compra de su ticket fue exitosa\n");
+													
+													//Setteamos el precio del ticket
+													Ticket ticketProceso=new Ticket(peliculaCombo,opcionHorarioPelicula,numAsientoProceso,clienteProceso.getCineActual());
+													Bono bonoProceso=new Bono(codigoBono,new Producto(productoCombo1.getNombre(),productoCombo1.getTamaño(),1),productoCombo1.getTipoProducto(),clienteProceso);
+													//Realizamos el proceso correspondiente luego de ser verificado
+													ticketProceso.procesarPagoRealizado(clienteProceso);
+													int filaProceso = Character.getNumericValue(numAsientoProceso.charAt(0));
+													int columnaProceso = Character.getNumericValue(numAsientoProceso.charAt(2));
+													peliculaCombo.modificarSalaVirtual(opcionHorarioPelicula, filaProceso, columnaProceso);
+													clienteProceso.getBonos().add(bonoProceso);
+													clienteProceso.getCineActual().getBonosCreados().add(bonoProceso);
+												
+													
+													System.out.println("-----------------------Factura--------------------------");
+													System.out.println("------------------Este es tu combo!!---------------------");
+													System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre()+ productoCombo1.getTamaño());
+													System.out.println("------Felicidades, gracias por confiar en nosotros----");
+													System.out.println("");
+													pagoRealizado = true;
+												}else {
+													
+													//Repetimos el proceso hasta validar el pago
+													System.out.println("Tiene un saldo pendiente de : " + precioComboProceso);
+													
+												}
+												
+											
+										
+										}while(!pagoRealizado);
+									}
+											
+								
+								else {
+									System.out.println("Gracias por tu tiempo... Adios ");
+									Administrador.inicio(clienteProceso);
+								}
+							}
+							
+							}catch(NumberFormatException e) {
+								System.out.println("\nError, debes ingresar un dato numérico\n");
+								continue;
+							}
+							
+							
+						}while(verificar);
+						}
+					else {
+						System.out.println("******Lastimosamente no has visto ninguna pelicula, por lo tanto no puedes calificar ninguna*******");
+					}
+						
+				}
+				
+		        //Si la eleccion es 3, se devuelve al menu principal
+				
+				else if (eleccion==3) {
+					Administrador.inicio(clienteProceso);
+					verificar=true;
+						
+			     }
+				else {
+					calificacion(clienteProceso);
+				}
+				
+
+					}
+				
+
+		
+	
 	 
 		
 		
@@ -2727,15 +3212,15 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 	
 	//Se muestra el menu de opciones que el usurio desea realizar 
 	try {
-		System.out.println("\n☺Recuerde que para entrar a los juegos es necesario tener la tarjeta cinemar☺\nDesea:\n1.Ingresar\n2.Volver al menú principal\n3.Salir");
+		System.out.println("\n😁-😁-😁-Recuerde que para entrar a los juegos es necesario tener la tarjeta cinemar-😁-😁-😁\nDesea:\n1.Ingresar\n2.Volver al menú principal\n3.Salir y Guardar");
 		int opcion = (int)Administrador.readLong();
 		if (opcion==2) {barraCarga("Volviendo");Administrador.sc.nextLine();Administrador.inicio(ClienteActual);}//volver
 		else if (opcion==1) {barraCarga("Ingresando");}//ingresar
 		else if (opcion==3) {barraCarga("Saliendo");Administrador.salirDelSistema();}//salir
-		else {System.out.println("\nOpcion Invalida");ingresoZonaJuegos(ClienteActual);}	
+		else {System.out.println("\n👎Opcion Invalida👎");ingresoZonaJuegos(ClienteActual);}	
 	
 	}catch(InputMismatchException e) {
-		System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+		System.out.println("❌-Error, debe ingresar un único dato numérico entre los disponibles-❌");
 		Administrador.sc.nextLine(); 
 		ingresoZonaJuegos(ClienteActual);
 	}
@@ -2745,36 +3230,36 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 	do {
 		if (!ClienteActual.verificarCuenta()) {
 			try {
-				System.out.println("\n•No tienes una Tarjeta Cinemar asociada, ¿Deseas Adquirirla?\n1. SI\n2. NO");
+				System.out.println("\n•No tienes una Tarjeta Cinemar asociada, ¿Deseas Adquirirla?  🤔 -> 💳❔\n1. SI\n2. NO");
 				espera(1000);
 				int option = (int)Administrador.readLong();
 				if (option==1) {
 					if (Arkade.verificarTarjetasEnInventario(ClienteActual.getCineActual())) { // se verifica si hay tarjetas disponibles por vender en el array
 						barraCarga("Adquiriendo tarjeta");
-						System.out.println("\n•El precio de la tarjeta Cinemar es de $5000\n•Este valor sera descontado al saldo de su tarjeta");
+						System.out.println("\n•💸💸💸El precio de la tarjeta Cinemar es de $5000💸💸💸\n•Este valor sera descontado al saldo de su tarjeta");
 						espera(2000);
 						//
 						//Aca se asocia la primera tarjeta en el array de disponibles al cliente, se le descuenta el valor de la tarjeta y se imprime por pantalla
 						Arkade.asociarTarjetaCliente(ClienteActual);
 						ClienteActual.getCuenta().hacerPago(5000);
-						System.out.println("\n•Su tarjeta:");
+						System.out.println("\n•Su tarjeta 💳 :");
 						espera(1000);
 						imprimirTarjeta(ClienteActual.getCuenta().getDueno().getNombre(),ClienteActual.getCuenta().getSaldo());
 						casoValido = false;
 						//
 					}
-					else {System.out.println("\n•Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde");Administrador.sc.nextLine(); Administrador.inicio(ClienteActual);}
+					else {System.out.println("\n•😞😞Lo sentimos, en este momento no hay tarjetas disponibles, vuelva mas tarde😞😞");Administrador.sc.nextLine(); Administrador.inicio(ClienteActual);}
 				
 				}
 				else if (option ==2) {ingresoZonaJuegos(ClienteActual);}
-				else {System.out.println("\n•Opcion Invalida");}
+				else {System.out.println("\n👎•Opcion Invalida👎");}
 			}catch(InputMismatchException e) {
-				System.out.println("Error, debe ingresar un único dato numérico entre los disponibles");
+				System.out.println("❌-Error, debe ingresar un único dato numérico entre los disponibles-❌");
 				Administrador.sc.nextLine();
 			}
 		}
 		else {
-			System.out.println("\n•Su tarjeta:");
+			System.out.println("\n•Su tarjeta 💳 :");
 			espera(1000);
 			imprimirTarjeta(ClienteActual.getCuenta().getDueno().getNombre(),ClienteActual.getCuenta().getSaldo());
 			casoValido = false;
@@ -2791,18 +3276,18 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			
 			try {
 				System.out.println("•¿Deseas recargar la tarjeta?");
-				System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir");
+				System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir y Guardar");
 				eleccion1 = (int)Administrador.readLong();
 				if (eleccion1==1 || eleccion1==2 || eleccion1==3 || eleccion1==4) {
 					casoValido = false;
 				}
 				else {
-					System.out.println("•Opcion invalida");
+					System.out.println("👎•Opcion Invalida👎");
 					casoValido = true;
 				}
 
 			}catch(InputMismatchException e) {
-				System.out.println("\nError en el proceso, debe ingresar un dato numerico, vuelva a realizar el proceso");
+				System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 				Administrador.sc.nextLine();
 				casoValido = true;
 			}
@@ -2827,17 +3312,16 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 						valorRecarga = 0;
 						
 						System.out.println("•El valor maximo a recargar por proceso es: $"+recargaMaxima+" intente no superar este valor");
-						//System.out.println("•Ademas Cada metodo de pago tiene un monto maximo para recargar, en caso de superar este monto debera elegir otro metodo de pago para completar la recarga");
-						System.out.print("•Digite el valor a recargar: ");
+						System.out.print("•Digite el valor a recargar 💰💰💰: ");
 						valorRecarga = Administrador.readLong();
 						
 						if (!(valorRecarga<= recargaMaxima & valorRecarga>0)) {
-							System.out.println("\n•El valor ingresado supera el limite maximo de recarga ");
+							System.out.println("\n•El valor ingresado supera el limite maximo de recarga 😠😠");
 						}
 						
 					
 				}catch(InputMismatchException e) {
-					System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+					System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 					Administrador.sc.nextLine();
 					casoValido = true;
 				}
@@ -2856,10 +3340,10 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 						opcionPago = (int)Administrador.readLong();
 						
 						if(!(opcionPago > 0 & opcionPago <= ClienteActual.getMetodosDePago().size() )) {
-							System.out.println("•Opcion Invalida");
+							System.out.println("👎•Opcion Invalida👎");
 						}
 					}catch(InputMismatchException e) {
-						System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+						System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 						Administrador.sc.nextLine();
 						casoValido = true;
 						opcionPago = 0;
@@ -2884,17 +3368,17 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 				if( precioRecargaProceso == 0) {
 					
 					barraCarga("Procesando pago");
-					System.out.println("Pago exitoso, se han recargado "+ valorRecarga+" y usted ha pagado "+ totalPagado+" equivalente a un descuento de "+ String.format("%.2f",(100-((totalPagado*100)/valorRecarga)))+ "%");
+					System.out.println("Pago exitoso 💯💯💯, se han recargado "+ valorRecarga+" y usted ha pagado "+ totalPagado+" equivalente a un descuento de "+ String.format("%.2f",(100-((totalPagado*100)/valorRecarga)))+ "%");
 					MetodoPago.asignarMetodosDePago(ClienteActual);
 					ClienteActual.getCuenta().ingresarSaldo(valorRecarga);
-					System.out.println("\n•Su tarjeta:");
+					System.out.println("\n•Su tarjeta 💳 :");
 					imprimirTarjeta(ClienteActual.getNombre(), ClienteActual.getCuenta().getSaldo());
 					totalPagado =0;
 					int eleccionUser = 0;
 					do {
 						try {
 							eleccionUser = 0;
-							System.out.println("\nDesea: \n1. Ingresar a los juegos\n2. Volver a recargar tarjeta\n3. Volver al inicio\n4. Salir");
+							System.out.println("\nDesea: \n1. Ingresar a los juegos\n2. Volver a recargar tarjeta\n3. Volver al inicio\n4. Salir y Guardar");
 							eleccionUser = (int)Administrador.readLong();
 							switch(eleccionUser) {
 							case 1: barraCarga("Ingresando");casoValido = false; Vcase = false; break;
@@ -2903,7 +3387,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 							case 4: barraCarga("Saliendo"); Administrador.salirDelSistema(); break;
 							}
 						}catch(InputMismatchException e) {
-							System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+							System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 							Administrador.sc.nextLine();
 							eleccionUser = 0;
 						}
@@ -2914,8 +3398,8 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					espera(1000);
 					barraCarga("Procesando Pago");
 					
-					System.out.println("•Proceso exitoso, sin embargo, tiene un saldo pendiente por recargar de : " + precioRecargaProceso);
-					System.out.println("•Nota: si no culmina con el pago completo, no se recargara nada a la tarjeta");
+					System.out.println("•Proceso exitoso 👍👍👍, sin embargo, tiene un saldo pendiente por recargar de : " + precioRecargaProceso);
+					System.out.println("⚠️•Nota: si no culmina con el pago completo, no se recargara nada a la tarjeta⚠️");
 					casoValido = true;
 				}
 			}while(casoValido);
@@ -2925,16 +3409,16 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 
 		else if (eleccion1==2) {
 			System.out.println("\n-----------------------------------------------------------------------------");
-	        System.out.println("•Recuerde que debe tener saldo para acceder a los diferentes juegos•");
+	        System.out.println("😇•Recuerde que debe tener saldo para acceder a los diferentes juegos•😇");
 	        System.out.println("-----------------------------------------------------------------------------");
-	        System.out.println("\n•Su tarjeta:");
+	        System.out.println("\n•Su tarjeta 💳 :");
 	        espera(2000);
 			imprimirTarjeta(ClienteActual.getNombre(),ClienteActual.getCuenta().getSaldo());
 			finCiclo = true;
 			while(finCiclo) {
 				try {
 					System.out.println("\nDesea: ");
-					System.out.println("1. Ingresar a los juegos\n2. Recargar tarjeta cinemar\n3. Volver al menu principal\n4. Salir");
+					System.out.println("1. Ingresar a los juegos\n2. Recargar tarjeta cinemar\n3. Volver al menu principal\n4. Salir y Guardar");
 					int eleccion4 = (int)Administrador.readLong();
 					switch (eleccion4) {
 					case 1: barraCarga("Ingresando");Vcase= false;finCiclo= false; break;
@@ -2945,7 +3429,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					}
 					
 				}catch(InputMismatchException e) {
-					System.out.println("\nError en el proceso de recarga, debe ingresar un dato numerico, vuelva a realizar el proceso");
+					System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 					Administrador.sc.nextLine();
 				}
 			}
@@ -2982,11 +3466,11 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			generoCodigoPelicula = null;
 			Arkade.reestablecerPrecioJuegos();
 			if (ClienteActual.getCodigosDescuento().size()==0){
-				System.out.println("\n•No tienes codigos de descuento asociados\n");
+				System.out.println("\n😞😞😞•No tienes codigos de descuento asociados😞😞😞\n");
 				caso = false;
 				break;
 			}
-			System.out.println("\n•Estos son los codigos de descuento que tienes por la compra de tiquetes en nuestro cine\n¿Cual deseas redimir?\n");
+			System.out.println("\n🥳🥳🥳•Estos son los codigos de descuento que tienes por la compra de tiquetes en nuestro cine🥳🥳🥳\n¿Cual deseas redimir?\n");
 			System.out.println(ClienteActual.mostrarCodigosDescuento());
 			int eleccion6 = (int)Administrador.readLong();
 			
@@ -2994,7 +3478,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			if (eleccion6 > 0 && eleccion6 <= ClienteActual.getCodigosDescuento().size()) {
 				generoCodigoPelicula = Ticket.encontrarGeneroCodigoPelicula(ClienteActual.getCodigosDescuento().get(eleccion6-1));
 				ClienteActual.getCodigosDescuento().remove(eleccion6-1);
-				System.out.println("•Perfeto, se le asignará un descuento del 20% al precio de los juegos con categoria "+ generoCodigoPelicula);
+				System.out.println("•Perfeto 😁, se le asignará un descuento del 20% al precio de los juegos con categoria "+ generoCodigoPelicula);
 				espera(2500);
 				barraCarga("Aplicando descuento");
 				Arkade.AplicarDescuentoJuegos(generoCodigoPelicula);
@@ -3014,7 +3498,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 				System.out.println("Opcion invalida");
 			}
 		}catch(InputMismatchException e) {
-			System.out.println("\nError en el proceso, debe ingresar un dato numerico, vuelva a realizar el proceso");
+			System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 			Administrador.sc.nextLine();
 		}
 
@@ -3035,7 +3519,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			
 
 		}catch(InputMismatchException e) {
-			System.out.println("\nError en el proceso, debe ingresar un dato numerico, vuelva a realizar el proceso");
+			System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 			Administrador.sc.nextLine();
 		}
 		
@@ -3043,18 +3527,18 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			if (ClienteActual.getCuenta().getSaldo()>=SucursalCine.getJuegos().get(eleccion7-1).getValorServicio()) {
 				
 				ClienteActual.getCuenta().hacerPago(SucursalCine.getJuegos().get(eleccion7-1).getValorServicio());
-				System.out.println("•El juego esta por comenzar, el nuevo saldo de tu tarjeta cinemar es : " + ClienteActual.getCuenta().getSaldo());
+				System.out.println("•🎮🎮El juego esta por comenzar🎮🎮, el nuevo saldo de tu tarjeta cinemar es : $" + ClienteActual.getCuenta().getSaldo());
 				espera(2000);
 				barraCarga("Iniciando");
 				generoJuego = SucursalCine.getJuegos().get(eleccion7-1).getGeneroServicio();
 				System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+generoJuego);
 				switch(generoJuego) {
 				
-				case "Acción": game = juego(new String[]{"BUM"}); break;
-				case "Terror": game = juego(new String[]{"BOO"}); break;
-				case "Tecnología" : game = juego(new String[]{"POO"}); break;
-				case "Comedia": game = juego(new String[]{"JAJA"}); break;
-				case "Drama": game = juego(new String[]{"CRY"}); break;
+				case "Acción": game = juego(new String[]{"BAM","ZAP","GUN"}); break;
+				case "Terror": game = juego(new String[]{"BOO","FEAR","EVIL"}); break;
+				case "Tecnología" : game = juego(new String[]{"POO","JAVA","5.0"}); break;
+				case "Comedia": game = juego(new String[]{"JAJA", "FUN", "LOL"}); break;
+				case "Drama": game = juego(new String[]{"CRY","GIRL", "LOVE"}); break;
 					
 				}
 				
@@ -3093,7 +3577,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 							}
 						}
 				}catch(InputMismatchException e) {
-					System.out.println("\nError en el proceso, debe ingresar un dato numerico, vuelva a realizar el proceso");
+					System.out.println("\n❌-Error, debe ingresar un único dato numérico entre los disponibles-❌, vuelva a realizar el proceso");
 					Administrador.sc.nextLine();
 				}
 				
@@ -3133,7 +3617,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 	if (puntuacion==10.0) {
 		if (redimioCodigo) {
 			if (generoJuego.equals(generoCodigoPelicula)) {
-				System.out.println("\nGanas un bono de comida por obtener la puntuacion maxima en un juego de tipo "+generoJuego+" y redimir un codigo de pelicula del mismo genero");
+				System.out.println("\n🥇🥇🥇Ganas un bono de comida por obtener la puntuacion maxima en un juego de tipo "+generoJuego+" y redimir un codigo de pelicula del mismo genero🥇🥇🥇");
 				barraCarga("Generando bono");
 				espera(3000);
 				bonoCliente = Bono.generarBonoComidaJuegos(ClienteActual.getCineActual(), ClienteActual);
@@ -3145,15 +3629,15 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					ClienteActual.getCodigosBonos().add(codigoBono);
 					
 					
-					System.out.println("•Reclama el bono con el codigo en nuestro servicio de comida");
+					System.out.println("•Reclama el bono con el codigo en nuestro 🍕servicio de comida🍔");
 				}
 				
 				else {
-					System.out.println("•Error al asignar bono debido a que no hay productos de comida disponibles");
+					System.out.println("•😭Error al asignar bono debido a que no hay productos de comida disponibles😭");
 				}
 			}
 			else {
-				System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡");
+				System.out.println("\n🥇🥇🥇Ganas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡🥇🥇🥇");
 				barraCarga("Generando bono");
 				espera(3000);
 				bonoCliente = Bono.generarBonoSouvenirJuegos(ClienteActual.getCineActual(), ClienteActual);
@@ -3164,17 +3648,17 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					ClienteActual.getCodigosBonos().add(codigoBono);
 					
 					
-					System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
+					System.out.println("•Reclama el bono con el codigo en nuestro servicio de 🎁souvenirs🎁");
 				}
 				
 				else {
-					System.out.println("•Error al asignar bono debido a que no hay productos de souvenir disponibles");
+					System.out.println("•😭Error al asignar bono debido a que no hay productos de souvenir disponibles😭");
 				}
 
 			}
 		}
 		else {
-			System.out.println("\nGanas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡");
+			System.out.println("\\n🥇🥇🥇Ganas un bono de souvenirs por obtener la puntuacion maxima, !Felicidades¡🥇🥇🥇");
 			barraCarga("Generando bono");
 			espera(3000);
 			bonoCliente = Bono.generarBonoSouvenirJuegos(ClienteActual.getCineActual(),ClienteActual);
@@ -3183,14 +3667,14 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 				bonoCliente.setCliente(ClienteActual);
 				codigoBono = bonoCliente.getCodigo();
 				ClienteActual.getCodigosBonos().add(codigoBono);
-				//ClienteActual.getBonos().add(bonoCliente);
+
 				
 				
-				System.out.println("•Reclama el bono con el codigo en nuestro servicio de souvenirs");
+				System.out.println("•Reclama el bono con el codigo en nuestro servicio de 🎁souvenirs🎁");
 			}
 			
 			else {
-				System.out.println("•Error al asignar bono debido a que no hay productos de souvenir disponibles");
+				System.out.println("•😭Error al asignar bono debido a que no hay productos de souvenir disponibles😭");
 			}
 		}
 	}
@@ -3286,6 +3770,7 @@ public static void espera(int time) {
 public static String juego(String[] PALABRAS) {
     String match = null;
 
+    Scanner scanner = new Scanner(System.in);
     String palabraSecreta = PALABRAS[(int) (Math.random() * PALABRAS.length)];
     char[] palabraAdivinada = new char[palabraSecreta.length()];
     String letrasUsadas = ""; // Para rastrear letras ya usadas
@@ -3304,7 +3789,7 @@ public static String juego(String[] PALABRAS) {
         System.out.println();
 
         System.out.print("Ingresa una letra: ");
-        String input = sc.nextLine().toUpperCase();
+        String input = scanner.nextLine().toUpperCase();
         if (input.length() != 1 || !esLetraValida(input.charAt(0))) {
             System.out.println("Carácter inválido. Intenta otra vez.");
             intentosRestantes--;

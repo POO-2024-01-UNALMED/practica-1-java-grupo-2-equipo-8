@@ -483,7 +483,7 @@ public class Pelicula implements Serializable{
 	 * el fin de efectuar la actualización y solicitud de actualización de las salas de cine.
 	 * 
 	 * */
-	public LocalDateTime filtrarHorariosPeliculas() {
+	public LocalDateTime seleccionarHorarioMasLejano() {
 	    LocalDateTime horariosPelicula = null;
 		boolean isAsientosDisponibles = false;
 		if(this.filtrarHorariosPelicula().size()>0) {
@@ -504,15 +504,22 @@ public class Pelicula implements Serializable{
 		 
 		return horariosPelicula;
 	}
-
+	
+	/**
+	 * Description:Este metodo se encarga de seleccionar un asiento aleatoriamente en la sala de cine, esto se hace
+	 * con el fin de dar un combo o un regalo al cliente que haya calificado un producto o una pelicula y en modo de
+	 * obsequio le ofrecemos este bono,el metodo retorna un numAsiento de forma aleatoria y ese asiento es al que se 
+	 * le va a dar al cliente.
+	 * */
 	 public String seleccionarAsientoAleatorio(LocalDateTime horarioProceso) {
 		 boolean validacion=true;
 		 String numAsiento=null;
 		 while (validacion) {
-			int fila=((int)Math.random()*10)%8;
-			int columna=((int)Math.random()*10)%8;
-			validacion=!this.isDisponibilidadAsientoSalaVirtual(horarioProceso, fila, columna);
+			int fila=(int)((Math.random()*10)%8)+(1);
+			int columna=(int)((Math.random()*10)%8)+(1);
+			validacion=!this.isDisponibilidadAsientoSalaVirtual(horarioProceso, fila-1, columna-1);
 			numAsiento=fila+"-"+columna;
+			
 		 }
 		 return numAsiento;
 	 }
@@ -639,4 +646,3 @@ public class Pelicula implements Serializable{
 	}
 
 }
-
