@@ -2403,7 +2403,6 @@ public class Administrador {
 				if (eleccion == 0) {
 					break;
 				}
-				System.out.println(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo());
 				
 				Producto productoBono1 = Servicio.validarBono(serviciProceso.getBonosCliente().get(eleccion-1).getCodigo(),serviciProceso);
 				
@@ -2796,7 +2795,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 			
 			try {
 				System.out.println("•¿Deseas recargar la tarjeta?");
-				System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir y Guardadr");
+				System.out.println("1. SI\n2. NO\n3. Volver al menú principal\n4. Salir y Guardar");
 				eleccion1 = (int)Administrador.readLong();
 				if (eleccion1==1 || eleccion1==2 || eleccion1==3 || eleccion1==4) {
 					casoValido = false;
