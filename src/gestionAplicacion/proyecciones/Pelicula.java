@@ -483,7 +483,7 @@ public class Pelicula implements Serializable{
 	 * el fin de efectuar la actualización y solicitud de actualización de las salas de cine.
 	 * 
 	 * */
-	public LocalDateTime filtrarHorariosPeliculas() {
+	public LocalDateTime seleccionarHorarioMasLejano() {
 	    LocalDateTime horariosPelicula = null;
 		boolean isAsientosDisponibles = false;
 		if(this.filtrarHorariosPelicula().size()>0) {
@@ -509,10 +509,11 @@ public class Pelicula implements Serializable{
 		 boolean validacion=true;
 		 String numAsiento=null;
 		 while (validacion) {
-			int fila=((int)Math.random()*10)%8;
-			int columna=((int)Math.random()*10)%8;
-			validacion=!this.isDisponibilidadAsientoSalaVirtual(horarioProceso, fila, columna);
+			int fila=(int)((Math.random()*10)%8)+(1);
+			int columna=(int)((Math.random()*10)%8)+(1);
+			validacion=!this.isDisponibilidadAsientoSalaVirtual(horarioProceso, fila-1, columna-1);
 			numAsiento=fila+"-"+columna;
+			
 		 }
 		 return numAsiento;
 	 }
@@ -639,4 +640,3 @@ public class Pelicula implements Serializable{
 	}
 
 }
-

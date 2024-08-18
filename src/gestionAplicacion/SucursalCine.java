@@ -119,7 +119,7 @@ public class SucursalCine implements Serializable {
 	public static void dropHorariosVencidos() {
 		
 		//Iteramos sobre las sucursales
-		for (SucursalCine sede : sucursalesCine) {
+		for (SucursalCine sede : sucursalesCine) { 
 
 			//Iteramos sobre las películas en cartelera
 			for (Pelicula pelicula : sede.cartelera) {
@@ -620,7 +620,7 @@ public class SucursalCine implements Serializable {
 		boolean primeraComparacion=true;
 		
 		for(Pelicula peliculas : this.cartelera) {
-			if(peliculas.filtrarHorariosPeliculas()!=null) {
+			if(peliculas.seleccionarHorarioMasLejano()==null) {
 				continue;
 			}
 			if(primeraComparacion) {
@@ -643,7 +643,7 @@ public class SucursalCine implements Serializable {
 		Pelicula peliculaMejorCalificada=null;
 		boolean primeraComparacion=true;
 		for(Pelicula peliculas : this.cartelera) {
-			if(peliculas.filtrarHorariosPeliculas()!=null) {
+			if(peliculas.seleccionarHorarioMasLejano()==null) {
 				continue;
 			}
 			if(primeraComparacion) {
@@ -667,12 +667,14 @@ public class SucursalCine implements Serializable {
 		Producto productoPeorCalificado=null;
 		boolean primeraComparacion=true;
 		for(Producto producto : inventarioCine) {
-			if(primeraComparacion) {
-				productoPeorCalificado=producto;
-				
-			}
-			if(producto.getValoracionComida()<productoPeorCalificado.getValoracionComida()) {
-				productoPeorCalificado=producto;
+			if(producto.getTipoProducto().equalsIgnoreCase("comida")||producto.getTipoProducto().equalsIgnoreCase("souvenir")) {
+				if(primeraComparacion) {
+					productoPeorCalificado=producto;
+					
+				}
+				if(producto.getValoracionComida()<productoPeorCalificado.getValoracionComida()) {
+					productoPeorCalificado=producto;
+				}
 			}
 			
 		}
@@ -687,14 +689,15 @@ public class SucursalCine implements Serializable {
 		Producto productoMejorCalificado=null;
 		boolean primeraComparacion=true;
 		for(Producto producto : inventarioCine) {
-			if(primeraComparacion) {
-				productoMejorCalificado=producto;
-				
-			}
-			if(producto.getValoracionComida()>productoMejorCalificado.getValoracionComida()) {
-				productoMejorCalificado=producto;
-			}
-			
+			if(producto.getTipoProducto().equalsIgnoreCase("comida")||producto.getTipoProducto().equalsIgnoreCase("souvenir")) {
+				if(primeraComparacion) {
+					productoMejorCalificado=producto;
+					
+				}
+				if(producto.getValoracionComida()>productoMejorCalificado.getValoracionComida()) {
+					productoMejorCalificado=producto;
+				}
+		    }
 		}
 		return productoMejorCalificado;
 

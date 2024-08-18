@@ -1,4 +1,4 @@
-package gestionAplicacion.servicios;
+ package gestionAplicacion.servicios;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -54,15 +54,6 @@ public class Producto implements Serializable {
 		this.cantidad = cantidad;
 	}
 	
-	//Constructor de productos de bonos.
-	public Producto(String nombre,String tamaño,int cantidad, double precio, String tipo) {
-		this.nombre = nombre;
-		this.tamaño = tamaño;
-		this.cantidad = cantidad;
-		this.precio = precio;
-		this.tipoProducto = tipo;
-	}
-	
 	//Constructor para el inventario
 	public Producto(String nombre,String tamaño,String tipoProducto,double precio,int cantidad,String genero,SucursalCine sucursalCine) {
 		this.genero= genero;
@@ -78,7 +69,7 @@ public class Producto implements Serializable {
 		this.strikeCambio = false;
 	}
 	
-	//Constructor para objetos de Membresia 
+	//Constructor para objetos de Membresia y productos de bonos.
 	public Producto(String tipoProducto, String nombre, double precio, int cantidad) {
 		this.tipoProducto = tipoProducto;
 		this.nombre = nombre;
@@ -86,7 +77,7 @@ public class Producto implements Serializable {
 		this.cantidad = cantidad;
 		this.valoracionComida= 4.0;
 		this.totalEncuestasDeValoracionRealizadasComida = 25;
-	}
+	} 
 	
 	
 	/**
@@ -95,7 +86,7 @@ public class Producto implements Serializable {
 	* */
 	public boolean verificarInventarioProducto(SucursalCine sucursalCine) {
 		
-		if (sucursalCine.getInventarioCine().size() ==0) {
+		if (sucursalCine.getInventarioCine().size()<=sucursalCine.getTiposDeMembresia().size()) {
 			return false;
 		}
 		else {

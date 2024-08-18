@@ -77,12 +77,12 @@ public class Funcionalidad3 {
 						calificacion1 = Integer.parseInt(sc.nextLine());
 						if (calificacion1>=3) {
 							System.out.println("\n*********Escogiste: " + opcionPedido.getNombre() + " " + opcionPedido.getTamaño() + "  y le diste una valoracion de " + calificacion1 + " por lo tanto esta comida esta catalogada como bien calificada" + "***********");
-							continue;
+							
 						}
 						
 						else if(calificacion1<=2.99) {
 							System.out.println("\n*********Escogiste: " + opcionPedido.getNombre() + " " + opcionPedido.getTamaño() + "  y le diste una valoracion de " + calificacion1 + " por lo tanto esta comida esta catalogada como mal calificada" + "***********");
-							continue;
+							
 							}
 						else {
 							System.out.println("Error al calificar la comida, recuerda que es del 1 al 5");
@@ -97,12 +97,20 @@ public class Funcionalidad3 {
 						prueba.setTotalEncuestasDeValoracionRealizadasComida(prueba.getTotalEncuestasDeValoracionRealizadasComida()+1);
 						prueba.setValoracionComida(calificacionGlobalPedidos);
 						
-						if (prueba.verificarInventarioProducto(clienteProceso.getCineActual())== true ) {
-							System.out.print("\nComo calificaste un producto te queremos hacer la oferta de un combo especial, deseas verlo?/1.Si/2.No : ");
+						if (!prueba.verificarInventarioProducto(clienteProceso.getCineActual())== true ) {
+							continue;
+						}
+						
+						else {
+							System.out.println("De esta comida todavia hay unidades en inventario");
+						}
+						
+						
+							System.out.print("\nComo calificaste un producto te queremos hacer la oferta de un combo especial, deseas verlo?\n1.Si\n2.No : ");
 							eleccion1 = Integer.parseInt(sc.nextLine());
 							if (eleccion1==1) {
 								Pelicula peliculaCombo=clienteProceso.getCineActual().peorPelicula();
-								LocalDateTime opcionHorarioPelicula=peliculaCombo.filtrarHorariosPeliculas();
+								LocalDateTime opcionHorarioPelicula=peliculaCombo.seleccionarHorarioMasLejano();
 								String numAsientoProceso= peliculaCombo.seleccionarAsientoAleatorio(opcionHorarioPelicula);
 								Producto productoCombo1=clienteProceso.getCineActual().mejorProducto();
 								String codigoBono=productoCombo1.generarCodigoAleatorio(7);
@@ -111,7 +119,7 @@ public class Funcionalidad3 {
 								
 								double precioTotal=0;
 								precioTotal=peliculaCombo.getPrecio()+productoCombo1.getPrecio();
-								System.out.println("Este combo tiene un precio de: " + precioTotal + ",deseas adquirirlo? /1.Si/2.No:  ");
+								System.out.println("Este combo tiene un precio de: " + precioTotal + ",deseas adquirirlo? \n1.Si\n2.No:  ");
 								eleccion2 = Integer.parseInt(sc.nextLine());
 								if(eleccion2==1) {
 									//Iniciamos el proceso de pago
@@ -199,15 +207,18 @@ public class Funcionalidad3 {
 												
 												//Creamos nuevas instancias
 												Ticket ticketProceso=new Ticket(peliculaCombo,opcionHorarioPelicula,numAsientoProceso,clienteProceso.getCineActual());
-												Bono bonoProceso=new Bono(codigoBono,productoCombo1,productoCombo1.getTipoProducto(),clienteProceso);
+												Bono bonoProceso=new Bono(codigoBono,new Producto(productoCombo1.getNombre(),productoCombo1.getTamaño(),1),productoCombo1.getTipoProducto(),clienteProceso);
 												//Realizamos el proceso correspondiente luego de ser verificado
 												ticketProceso.procesarPagoRealizado(clienteProceso);
+												int filaProceso = Character.getNumericValue(numAsientoProceso.charAt(0));
+												int columnaProceso = Character.getNumericValue(numAsientoProceso.charAt(2));
+												peliculaCombo.modificarSalaVirtual(opcionHorarioPelicula, filaProceso-1, columnaProceso-1);
 												clienteProceso.getBonos().add(bonoProceso);
 												clienteProceso.getCineActual().getBonosCreados().add(bonoProceso);
 
-												System.out.println("-------Factura--------");
-												System.out.println("--Este es tu combo!---");
-												System.out.println(peliculaCombo.getNombre()+ "y" + productoCombo1.getNombre());
+												System.out.println("-----------------------Factura--------------------------");
+												System.out.println("------------------Este es tu combo!!---------------------");
+												System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre());
 												System.out.println("------Felicidades, gracias por confiar en nosotros----");
 												System.out.println("");
 												pagoRealizado = true;
@@ -228,10 +239,8 @@ public class Funcionalidad3 {
 								System.out.println("Gracias por tu tiempo... Adios ");
 							}
 							
-						}
-						else {
-							System.out.println("De esta comida todavia hay unidades en inventario");
-						}
+						
+						
 						
 						
 					}catch(NumberFormatException e) {
@@ -299,12 +308,12 @@ public class Funcionalidad3 {
 						else {
 							System.out.println("Esta pelicula todavia tiene horarios");
 						}
-						System.out.print("\nComo calificaste una pelicula te queremos hacer la oferta de un combo especial, deseas verlo?/1.Si/2.No : ");
+						System.out.print("\nComo calificaste una pelicula te queremos hacer la oferta de un combo especial, deseas verlo?\n1.Si\n2.No : ");
 						eleccion1 = Integer.parseInt(sc.nextLine());
 						if (eleccion1==1) {
 							
 							Pelicula peliculaCombo=clienteProceso.getCineActual().mejorPelicula();
-							LocalDateTime opcionHorarioPelicula=peliculaCombo.filtrarHorariosPeliculas();
+							LocalDateTime opcionHorarioPelicula=peliculaCombo.seleccionarHorarioMasLejano();
 							String numAsientoProceso= peliculaCombo.seleccionarAsientoAleatorio(opcionHorarioPelicula);
 							Producto productoCombo1=clienteProceso.getCineActual().peorProducto();
 							String codigoBono=productoCombo1.generarCodigoAleatorio(5);
@@ -313,7 +322,7 @@ public class Funcionalidad3 {
 							
 							double precioTotal=0;
 							precioTotal=peliculaCombo.getPrecio()+productoCombo1.getPrecio();
-							System.out.println("Este combo tiene un precio de: " + precioTotal + ",deseas adquirirlo? /1.Si/2.No:  ");
+							System.out.println("Este combo tiene un precio de: " + precioTotal + ",deseas adquirirlo? \n1.Si\n2.No:  ");
 							eleccion2 = Integer.parseInt(sc.nextLine());
 							if(eleccion2==1) {
 								//Iniciamos el proceso de pago
@@ -401,19 +410,22 @@ public class Funcionalidad3 {
 											
 											//Setteamos el precio del ticket
 											Ticket ticketProceso=new Ticket(peliculaCombo,opcionHorarioPelicula,numAsientoProceso,clienteProceso.getCineActual());
-											Bono bonoProceso=new Bono(codigoBono,productoCombo1,productoCombo1.getTipoProducto(),clienteProceso);
+											Bono bonoProceso=new Bono(codigoBono,new Producto(productoCombo1.getNombre(),productoCombo1.getTamaño(),1),productoCombo1.getTipoProducto(),clienteProceso);
 											//Realizamos el proceso correspondiente luego de ser verificado
 											ticketProceso.procesarPagoRealizado(clienteProceso);
+											int filaProceso = Character.getNumericValue(numAsientoProceso.charAt(0));
+											int columnaProceso = Character.getNumericValue(numAsientoProceso.charAt(2));
+											peliculaCombo.modificarSalaVirtual(opcionHorarioPelicula, filaProceso, columnaProceso);
 											clienteProceso.getBonos().add(bonoProceso);
 											clienteProceso.getCineActual().getBonosCreados().add(bonoProceso);
 										
 											
-											System.out.println("-------Factura--------");
-											System.out.println("--Este es tu combo!---");
-											System.out.println(peliculaCombo.getNombre()+ "y" + productoCombo1.getNombre());
+											System.out.println("-----------------------Factura--------------------------");
+											System.out.println("------------------Este es tu combo!!---------------------");
+											System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre());
 											System.out.println("------Felicidades, gracias por confiar en nosotros----");
+											System.out.println("");
 											pagoRealizado = true;
-											
 										}else {
 											
 											//Repetimos el proceso hasta validar el pago
@@ -461,7 +473,6 @@ public class Funcionalidad3 {
 
 			}
 		}
-	
 
 	
 	
