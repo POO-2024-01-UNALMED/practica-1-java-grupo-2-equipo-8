@@ -1,6 +1,7 @@
 package iuMain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -8,6 +9,8 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.servicios.herencia.Servicio;
+import gestionAplicacion.servicios.herencia.ServicioComida;
+import gestionAplicacion.servicios.herencia.ServicioSouvenirs;
 import gestionAplicacion.usuario.*;
 import baseDatos.Deserializador;
 import baseDatos.Serializador;
@@ -75,11 +78,11 @@ public class Administrador {
 //	static Cliente cliente4 = new Cliente("Juanjo", 18 ,987, TipoDeDocumento.CC);
 //	
 ////	//Bonos de prueba
-//	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente1);
-//	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
-//	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
-	
+////	static Producto productoBono = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+////	static Bono bono1 = new Bono("1234",productoBono,"comida", cliente1);
+////	static Producto productoBono2 = new Producto("Hamburguesa","Cangreburger","comida",30000,1,"Comedia");
+////	static Bono bono2 = new Bono("4321",productoBono,"comida", cliente1);
+//	
 //	static Arkade game1= new Arkade("Hang Man", 15000, "Acción");
 //	static Arkade game2= new Arkade("Hang Man", 20000, "Terror");
 //	static Arkade game3= new Arkade("Hang Man", 10000, "Tecnología");
@@ -184,17 +187,6 @@ public class Administrador {
 //			SucursalCine.logicaInicioSistemaReservarTicket();
 //			
 ////			Prueba películas recomendadas
-////			cliente1.getHistorialDePeliculas().add(pelicula3_10);
-////			cliente1.getHistorialDePeliculas().add(pelicula3_11);
-////			cliente1.getHistorialDePeliculas().add(pelicula3_12);
-////			cliente1.getHistorialDePeliculas().add(pelicula2_16);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_4);
-//			cliente1.getHistorialDePeliculas().add(pelicula1_1);
-////			cliente1.getHistorialDePeliculas().add(pelicula2_15);
-//			cliente1.getHistorialDePeliculas().add(pelicula2_1);
-//			cliente1.getHistorialDePeliculas().add(pelicula1_2);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_1);
-//			cliente1.getHistorialDePeliculas().add(pelicula3_4);
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_1);
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula3_2);
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
@@ -239,25 +231,25 @@ public class Administrador {
 //			
 //			cliente1.setOrigenMembresia(sucursalCine1.getIdSucursal());
 			
+			
+			
 		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Print tests
 		System.out.println();
-		
-		
 		
 		//MAIN
 		inicioDelSistema();
 		
 		System.out.println("Iniciar sesión");
 		Cliente clienteProceso = iniciarSesion();
-		
+
 		System.out.println("\nIngresar a una de nuestras sedes");
 		clienteProceso.setCineActual(ingresarASucursal());
 		
 		System.out.println("\nHola " + clienteProceso.getNombre() + " Bienvenido a Cinemar");
 		inicio(clienteProceso);
-		
+
 		salirDelSistema();
 		
 	}
@@ -271,7 +263,6 @@ public class Administrador {
 		int opcion = 0;
 		
 		//Método de avanzar días
-		
 		
 		//Avance de tiempo, se ejecuta cada vez que regresamos al menú inicial
 		avanzarTiempo();
@@ -2846,12 +2837,12 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 				espera(2000);
 				
 				//Realizamos lógica de pago 
-				totalPagado = precioRecargaProceso;
+				//En caso de que el método de pago seleccionado cumpla con el pago, le sumamos al total pagado el precio de recarga actual luego de aplicarle el descuento, en caso de que no le sumamos el pago realizado
+				totalPagado += (precioRecargaProceso * (1 - metodoPagoProceso.getDescuentoAsociado()) - metodoPagoProceso.getLimiteMaximoPago() <= 0) ? precioRecargaProceso * (1 - metodoPagoProceso.getDescuentoAsociado()) : metodoPagoProceso.getLimiteMaximoPago(); 
 				precioRecargaProceso = metodoPagoProceso.realizarPago(precioRecargaProceso, ClienteActual); //Realizamos el proceso de pago a partir del método de pago
 				
 				if( precioRecargaProceso == 0) {
 					
-					totalPagado = totalPagado * (1 - metodoPagoProceso.getDescuentoAsociado());
 					barraCarga("Procesando pago");
 					System.out.println("Pago exitoso, se han recargado "+ valorRecarga+" y usted ha pagado "+ totalPagado+" equivalente a un descuento de "+ String.format("%.2f",(100-((totalPagado*100)/valorRecarga)))+ "%");
 					MetodoPago.asignarMetodosDePago(ClienteActual);
@@ -2880,7 +2871,6 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					
 				}
 				else {
-					totalPagado+= metodoPagoProceso.getLimiteMaximoPago(); //Aumentamos el total pagado para mostrar al final del proceso de compra
 					espera(1000);
 					barraCarga("Procesando Pago");
 					
