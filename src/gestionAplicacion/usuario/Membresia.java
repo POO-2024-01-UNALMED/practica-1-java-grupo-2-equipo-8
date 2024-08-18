@@ -192,7 +192,7 @@ public class Membresia implements IBuyable, Serializable{
 		case 2: esValido = (membresiaStock > 0 && puntos >= 5000) ? true : false; break;
 		case 3: esValido = (membresiaStock > 0 && puntos >= 10000) ? true : false; break;
 		case 4: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 15000) ? true : false; break;
-		case 5: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 20000) ? true : false; break;
+		case 5: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 15 && puntos >= 20000) ? true : false; break;
 		}
 		
 		return esValido;
@@ -325,14 +325,31 @@ public class Membresia implements IBuyable, Serializable{
 		//Se asigna la referencia de la membresia adquirida en el cliente y se actualizan sus métodos de pago.
 		boolean isPrimerMembresia = true;
 		//Si el cliente no tiene membresia al momento de la compra, se le asigna y se cambia el boolean.
-		if (cliente.getMembresia()==null || !cliente.getMembresia().getNombre().equals(this.getNombre())) {
+		if (cliente.getMembresia()==null) {
 			cliente.setMembresia(this);
 			cliente.setOrigenMembresia(cliente.getCineActual().getIdSucursal());
 			cliente.setFechaLimiteMembresia(SucursalCine.getFechaActual().toLocalDate().plusDays(this.duracionMembresiaDias));
 			isPrimerMembresia = false;
 			
+		//Si el cliente va a cambiar a otra membresia, se vuelve el stock a la sucursal original y luego se asigna la sucursal donde realizó el pago.
+		} else if (!cliente.getMembresia().getNombre().equals(this.getNombre())) {
+			for (SucursalCine sucursal : SucursalCine.getSucursalesCine()) {
+				if (sucursal.getIdSucursal() == cliente.getOrigenMembresia()) {
+					for (Producto productoMembresia : sucursal.getInventarioCine()) {
+						if (productoMembresia.getNombre().equals(cliente.getMembresia().getNombre())) {
+							productoMembresia.setCantidad(productoMembresia.getCantidad()+1);
+							break;
+						}
+					} break;
+				}
+			}
+			cliente.setMembresia(this);
+			cliente.setOrigenMembresia(cliente.getCineActual().getIdSucursal());
+			cliente.setFechaLimiteMembresia(cliente.getFechaLimiteMembresia().plusDays(this.duracionMembresiaDias));
+			isPrimerMembresia = false;
+		
 		//En caso de tener una membresia se puede renovar y no se resta el stock de su inventario por lo que ya esta asignada.
-		} else {
+		}else {
 			cliente.setFechaLimiteMembresia(cliente.getFechaLimiteMembresia().plusDays(this.duracionMembresiaDias));
 			cliente.getMembresia().getClientes().remove(cliente);
 		}
