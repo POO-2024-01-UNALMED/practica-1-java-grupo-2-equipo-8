@@ -1,9 +1,6 @@
 package gestionAplicacion.usuario;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import gestionAplicacion.servicios.Arkade;
 
 public class TarjetaCinemar implements IBuyable, Serializable {
 	

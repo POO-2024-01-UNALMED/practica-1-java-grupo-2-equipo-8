@@ -2,9 +2,7 @@ package gestionAplicacion.usuario;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import gestionAplicacion.SucursalCine;
-import gestionAplicacion.servicios.Bono;
 
 public class MetodoPago implements Serializable{
 	
@@ -235,11 +233,23 @@ public class MetodoPago implements Serializable{
 					puntos = metodoPago;
 					break;
 				}
-			}	
-			switch (tipoMembresia) {
+			}
 			
-			case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.05));break;
-			case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.10));break;
+			//Partimos de 1 para contar el método de pago puntos
+			int totalMetodosDePagoPortipo = 1;
+			//Se realiza un ciclo para contar los métodos de pago por el tipoMembresia del cliente
+			for (MetodoPago metodoPago : SucursalCine.getMetodosDePagoDisponibles()) {
+				if (tipoMembresia == metodoPago.getTipo()) {
+					totalMetodosDePagoPortipo++;	
+				}
+			}
+			
+			if (cliente.getMetodosDePago().size() == totalMetodosDePagoPortipo) {
+				switch (tipoMembresia) {
+				
+				case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.05));break;
+				case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.10));break;
+				}
 			}
 			
 		}

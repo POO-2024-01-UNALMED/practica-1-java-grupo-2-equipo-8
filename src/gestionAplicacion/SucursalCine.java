@@ -8,7 +8,6 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 import gestionAplicacion.servicios.Arkade;
@@ -231,7 +230,7 @@ public class SucursalCine implements Serializable {
 	}
 		
 	/**
-	 * Descripition: Este método se encarga de distribuir las películas en cartelera en las distintas salas de cine 
+	 * Description: Este método se encarga de distribuir las películas en cartelera en las distintas salas de cine 
 	 * de la sucursal de cine que ejecuta este método, para esta distribución se tienen encuenta 3 casos posibles:
 	 * <ol>
 	 * <li>Hay menos películas que salas de cine o igual cantidad de ambas.</li>
@@ -983,8 +982,6 @@ public class SucursalCine implements Serializable {
 	
 	/*ToDo Andy's list
 	0. Optimizar código en serializador y deserializador (Hecho).
-	0.1. Hablar con santi sobre métodos en Película y documentación de métodos compartidos en sucursal.
-	0.2. Corregir documentación métodos en Administrador en formato HTML.
 	1. Realizar testeos.
 	2. Crear método que avance el día cuando estemos fuera de la jornada laboral.
 	6. Estudiar y crear el ejecutable.

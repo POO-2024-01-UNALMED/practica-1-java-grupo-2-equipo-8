@@ -2,11 +2,6 @@ package gestionAplicacion.servicios;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Random;
-import java.util.Scanner;
-import iuMain.Administrador;
-import iuMain.Funcionalidad_4;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.*;
 
@@ -123,94 +118,7 @@ public class Arkade implements Serializable{
 		SucursalCine.getJuegos().get(4).setValorServicio(7500);
 	}
 	
-	
-	/**
-	*Description: Este metodo se encarga primeramente de seleccionar los productos de tipo comida del inventario de la sucursal, luego genera un codigo aleatorio de 7 digitos para el bono
-	*y ademas escoge de esos productos seleccionados uno de manera aleatoria para ser asociado al bono y lo descuenta de la cantidad de disponibles, finalmente imprime por pantalla el bono al usuario
-	*@param sucursal :  se pasa el como parametro la sucursal a la cual se le solicita el inventario
-	*@return <b>Bono</b> :  Se retorna el bono creado
-	*/
-	public static Bono generarBonoComidaJuegos(SucursalCine sucursal, Cliente cliente) {
-	    ArrayList<Producto> productosComida = new ArrayList<>();
-	    for (Producto producto : sucursal.getInventarioCine()) {
-	        if (producto.getTipoProducto().equals("comida")) {
-	            productosComida.add(producto);
-	        }
-	    }
-	    
-	    if (productosComida.isEmpty()) {
 
-	        return null;
-	    }
-
-	    Random random = new Random();
-
-	    
-	    int numeroAleatorio = random.nextInt(productosComida.size());
-	    String code = generarCodigoAleatorio(7);
-	    Bono bono = new Bono(code,productosComida.get(numeroAleatorio),productosComida.get(numeroAleatorio).getTipoProducto(),cliente);
-	    productosComida.get(numeroAleatorio).setCantidad(productosComida.get(numeroAleatorio).getCantidad()-1);
-	    
-	    String tipoProducto = "Comida";
-	    
-	    Funcionalidad_4.mostrarBono(productosComida, numeroAleatorio, tipoProducto, code);
-	    
-	    return bono;
-	}
-	
-	
-	/**
-	*Description: Este metodo se encarga primeramente de seleccionar los productos de tipo souvenir del inventario de la sucursal, luego genera un codigo aleatorio de 7 digitos para el bono
-	*y ademas escoge de esos productos seleccionados uno de manera aleatoria para ser asociado al bono y lo descuenta de la cantidad de disponibles, finalmente imprime por pantalla el bono al usuario
-	*@param sucursal :  se pasa el como parametro la sucursal a la cual se le solicita el inventario
-	*@return <b>Bono</b> :  Se retorna el bono creado
-	*/
-	public static Bono generarBonoSouvenirJuegos(SucursalCine sucursal, Cliente cliente) {
-		ArrayList<Producto> productosSouvenirs = new ArrayList<>();
-	    for (Producto producto : sucursal.getInventarioCine()) {
-	        if (producto.getTipoProducto().equals("souvenir")) {
-	        	productosSouvenirs.add(producto);
-	        }
-	    }
-	    
-	    if (productosSouvenirs.isEmpty()) {
-	    	return null;
-	    }
-	        
-
-	    Random random = new Random();
-
-	    
-	    int numeroAleatorio = random.nextInt(productosSouvenirs.size());
-	    String code = generarCodigoAleatorio(7);
-	    Bono bono = new Bono(code,productosSouvenirs.get(numeroAleatorio),productosSouvenirs.get(numeroAleatorio).getTipoProducto(), cliente);
-	    productosSouvenirs.get(numeroAleatorio).setCantidad(productosSouvenirs.get(numeroAleatorio).getCantidad()-1);
-	    
-	    String tipoProducto = "Souvenir";
-	    
-	    Funcionalidad_4.mostrarBono(productosSouvenirs, numeroAleatorio, tipoProducto, code);
-	    
-	    return bono;
-	}
-	
-	
-	/**
-	*Description: Este metodo se encarga de generar un codigo aleatorio para los bonos creados.
-	*@param longitud :  se pasa el como parametro la longitud que se desea el codigo
-	*@return <b>Bono</b> :  Se retorna el bono creado
-	*/
-	public static String generarCodigoAleatorio(int longitud) {
-        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-        StringBuilder codigo = new StringBuilder(longitud);
-
-        for (int i = 0; i < longitud; i++) {
-            int index = random.nextInt(caracteres.length());
-            codigo.append(caracteres.charAt(index));
-        }
-
-        return codigo.toString();
-    }
 	
 	
 	

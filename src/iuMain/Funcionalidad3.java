@@ -293,7 +293,7 @@ public class Funcionalidad3 {
 						prueba1.verificarHorariosPeliculas();
 						prueba1.setValoracion(calificacionGlobalPeliculas);
 						
-						if ( prueba1.verificarHorariosPeliculas()== true ) {
+						if ( !prueba1.verificarHorariosPeliculas()== true ) {
 							continue;
 						}
 						else {

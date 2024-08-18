@@ -1,11 +1,8 @@
 package gestionAplicacion.servicios;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Random;
-
 import gestionAplicacion.SucursalCine;
-import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.servicios.herencia.Servicio;
 
 public class Producto implements Serializable {
@@ -25,20 +22,6 @@ public class Producto implements Serializable {
 	private boolean strikeCambio;
 	private SucursalCine sucursalSede;
 	public void descontarPrecioDeBono() {
-		
-	}
-	
-	//Ligadura Estatica
-	
-	public boolean comprobarBonoEnOrden(Servicio servicio) {
-		boolean verificacion = false;
-		for(int i = 0; i < servicio.getOrden().size();i++) {
-			if(servicio.getOrden().get(i).getNombre() == this.getNombre() && servicio.getOrden().get(i).getTamaño() == this.getTamaño()) {
-				verificacion = true;
-				break;
-			}
-		}
-		return verificacion;
 		
 	}
 	
@@ -64,23 +47,14 @@ public class Producto implements Serializable {
 	//Constructores
 	public Producto() {}
 	
-	//Constructor para crear los productos de los bonos
+	//Constructor para los pedidos de la orden
 	public Producto(String nombre,String tamaño,int cantidad) {
 		this.nombre = nombre;
 		this.tamaño = tamaño;
 		this.cantidad = cantidad;
 	}
 	
-	//Constructor para los productos de bono pruebas 
-	public Producto(String nombre,String tamaño,String tipoProducto,double precio,int cantidad,String genero) {
-		this.genero= genero;
-		this.nombre = nombre;
-		this.precio = precio;
-		this.tamaño = tamaño;
-		this.tipoProducto = tipoProducto;
-		this.cantidad = cantidad;
-	}
-	
+	//Constructor para el inventario
 	public Producto(String nombre,String tamaño,String tipoProducto,double precio,int cantidad,String genero,SucursalCine sucursalCine) {
 		this.genero= genero;
 		this.nombre = nombre;
@@ -95,7 +69,7 @@ public class Producto implements Serializable {
 		this.strikeCambio = false;
 	}
 	
-	//Constructor para objetos de Membresia.
+	//Constructor para objetos de Membresia y productos de bonos.
 	public Producto(String tipoProducto, String nombre, double precio, int cantidad) {
 		this.tipoProducto = tipoProducto;
 		this.nombre = nombre;

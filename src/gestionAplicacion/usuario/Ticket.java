@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
-//import gestionAplicacion.servicios.Arkade;
+
 
 public class Ticket implements IBuyable, Serializable{
 	
