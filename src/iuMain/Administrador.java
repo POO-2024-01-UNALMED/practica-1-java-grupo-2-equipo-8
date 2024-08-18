@@ -2844,11 +2844,14 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 				+ " ( Precio anterior: " + precioRecargaProceso+ " -> Precio actual: " + precioRecargaProceso * (1 - metodoPagoProceso.getDescuentoAsociado()) + " )");
 	
 				espera(2000);
-	
-	
-				if(metodoPagoProceso.realizarPago(precioRecargaProceso, ClienteActual) == 0) {
+				
+				//Realizamos lógica de pago 
+				totalPagado = precioRecargaProceso;
+				precioRecargaProceso = metodoPagoProceso.realizarPago(precioRecargaProceso, ClienteActual); //Realizamos el proceso de pago a partir del método de pago
+				
+				if( precioRecargaProceso == 0) {
 					
-					totalPagado+=precioRecargaProceso * (1 - metodoPagoProceso.getDescuentoAsociado());
+					totalPagado = totalPagado * (1 - metodoPagoProceso.getDescuentoAsociado());
 					barraCarga("Procesando pago");
 					System.out.println("Pago exitoso, se han recargado "+ valorRecarga+" y usted ha pagado "+ totalPagado+" equivalente a un descuento de "+ String.format("%.2f",(100-((totalPagado*100)/valorRecarga)))+ "%");
 					MetodoPago.asignarMetodosDePago(ClienteActual);
@@ -2877,8 +2880,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
 					
 				}
 				else {
-					totalPagado+= metodoPagoProceso.getLimiteMaximoPago();
-					precioRecargaProceso = metodoPagoProceso.realizarPago(precioRecargaProceso, ClienteActual);
+					totalPagado+= metodoPagoProceso.getLimiteMaximoPago(); //Aumentamos el total pagado para mostrar al final del proceso de compra
 					espera(1000);
 					barraCarga("Procesando Pago");
 					
