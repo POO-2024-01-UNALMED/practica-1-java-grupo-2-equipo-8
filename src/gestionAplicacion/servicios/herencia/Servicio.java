@@ -184,7 +184,7 @@ public abstract class Servicio implements IBuyable, Serializable{
 		for(int i=0;i<inventario.size();i++) {
 			r = i + 1;
 			if (inventario.get(i).getCantidad()==0) {
-				productos = productos + "\n" + r +". "+ inventario.get(i).getNombre() + " " + inventario.get(i).getTamaño() + " $" + inventario.get(i).getPrecio() + "NO HAY EN EL MOMENTO DE ESTE PRODUCTO";
+				productos = productos + "\n" + r +". "+ inventario.get(i).getNombre() + " " + inventario.get(i).getTamaño() + " $" + inventario.get(i).getPrecio() + " --> NO HAY EN EL MOMENTO DE ESTE PRODUCTO";
 			}
 			else {
 				productos = productos + "\n" + r +". "+ inventario.get(i).getNombre() + " " + inventario.get(i).getTamaño() + " $" + inventario.get(i).getPrecio();
