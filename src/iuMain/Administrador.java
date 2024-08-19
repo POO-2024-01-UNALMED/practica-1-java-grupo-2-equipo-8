@@ -9,8 +9,6 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.servicios.herencia.Servicio;
-import gestionAplicacion.servicios.herencia.ServicioComida;
-import gestionAplicacion.servicios.herencia.ServicioSouvenirs;
 import gestionAplicacion.usuario.*;
 import baseDatos.Deserializador;
 import baseDatos.Serializador;
@@ -259,7 +257,7 @@ public class Administrador {
 	 * un menú.
 	 * @param clienteProceso : Se usa a un objeto de tipo Cliente para que pueda ser usado en las funcionalidades
 	 */
-	public static void inicio(Cliente clienteProceso) {
+	private static void inicio(Cliente clienteProceso) {
 		int opcion = 0;
 		
 		//Método de avanzar días
@@ -312,7 +310,7 @@ public class Administrador {
 	 * a la que apuntan los objetos deserializados, para que las funcionalidades que realizan validaciones a partir de 
 	 * referencias puedan realizarlas de forma segura.
 	 * */
-	static void inicioDelSistema() {
+	private static void inicioDelSistema() {
 		
 		//Deserializa
 		Deserializador.deserializar();
@@ -325,7 +323,7 @@ public class Administrador {
 	/**
 	 * Description: Este método se encarga de serializar toda la información del programa y salir del sistema.
 	 * */
-	static void salirDelSistema() {
+	private static void salirDelSistema() {
 		//Serialización
 		
 		//Atributos estáticos
@@ -357,7 +355,7 @@ public class Administrador {
 	 * semanal).
 	 * 
 	 * */
-	public static void avanzarTiempo() {
+	private static void avanzarTiempo() {
 		
 		//Avanza lo hora 20 segundos
 		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusSeconds(20)); 
@@ -373,7 +371,7 @@ public class Administrador {
 			
 			
 			//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
-			SucursalCine.logicaSemanalReservarTicket();
+			SucursalCine.logicaSemanalSistemaNegocio();
 			
 		}
 			
@@ -409,7 +407,7 @@ public class Administrador {
 	 * @param clienteProceso : Se pide un cliente para poder acceder a la sucursal de Cine
 	 * y poder evaluar los horarios de sus salas de Cine.
 	 */
-	static void avanzarDia(Cliente clienteProceso) {
+	private static void avanzarDia(Cliente clienteProceso) {
 		
 		//Se crean variables para obtener la sucursal actual y una booleano que indica si hay horarios.
 		SucursalCine sucursalActual = clienteProceso.getCineActual();
@@ -450,7 +448,7 @@ public class Administrador {
 	 * su nombre y edad, luego se asignan sus métodos de pago y se retorna este nuevo cliente.
 	 * @return <b>Cliente</b> : Este método retorna el cliente que realizó este proceso de forma exitosa.
 	 * */
-	public static Cliente iniciarSesion() {
+	private static Cliente iniciarSesion() {
 		//Pedimos el tipo de documento al usuario
 		TipoDeDocumento documentoCliente = null;
 		boolean casoValidoConfirmacion = false;
@@ -638,7 +636,7 @@ public class Administrador {
 	 * @param input : Es el string que el usuario proporciona
 	 * @return String : retorna el String convertido.
 	 */
-	public static String stringMayuscula(String input) {
+	private static String stringMayuscula(String input) {
         StringBuilder result = new StringBuilder();
         String[] words = input.split("\\s+");
         
@@ -660,7 +658,7 @@ public class Administrador {
 	 * @return <b>SucursalCine</b> : Este método se encarga de retornar la sucursal de nuestro cine (De tipo SucursalCine) a la cuál el cliente
 	 * intenta acceder, con el fin de que el proceso de las funcionalidades ocurra en el contexto de alguna de nuestras sucursales.
 	 * */
-	static SucursalCine ingresarASucursal() {
+	private static SucursalCine ingresarASucursal() {
 		
 		boolean casoValido = false;
 		int opcionMenu = 0;
@@ -703,7 +701,7 @@ public class Administrador {
 	 * Description : Este método se encarga de cambiar la sucursal en la cual se encuentra el cliente
 	 * @param clienteProceso : Este método recibe al cliente (De tipo cliente) que desea cambiar de sucursal
 	 * */
-	static void cambiarSucursalCine(Cliente clienteProceso) {
+	private static void cambiarSucursalCine(Cliente clienteProceso) {
 		
 		System.out.println("\n==============================");
 		System.out.println("Sistema de cambio de sucursal");
@@ -747,7 +745,7 @@ public class Administrador {
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo cliente) que realizará algún proceso
 	 * del sistema de proyeciones.
 	 * */
-	static void ingresarASistemaDeProyecciones(Cliente clienteProceso) {
+	private static void ingresarASistemaDeProyecciones(Cliente clienteProceso) {
 		
 		int opcionMenu;
 		boolean opcionValida = false;
@@ -798,7 +796,7 @@ public class Administrador {
 	 * </ol>
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo cliente) que desea realizar la reserva de un ticket.
 	 * */
-	static void reservarTicket(Cliente clienteProceso) {
+	private static void reservarTicket(Cliente clienteProceso) {
 		
 		boolean finalizarProcesoReservaTicket = false;
 		do {
@@ -1383,7 +1381,7 @@ public class Administrador {
 	 * obtenido durante el proceso de la reserva de ticket.
 	 * @return <b>LocalDateTime</b> : Este método retorna el horario seleccionado por el cliente, para continuar con el proceso de la reserva de ticket.
 	 * */
-	static LocalDateTime seleccionarHorarioPelicula(Cliente clienteProceso, Pelicula peliculaProceso, ArrayList<LocalDateTime> horariosPeliculaProceso) {
+	private static LocalDateTime seleccionarHorarioPelicula(Cliente clienteProceso, Pelicula peliculaProceso, ArrayList<LocalDateTime> horariosPeliculaProceso) {
 		
 		boolean casoValido = false;
 		boolean casoValidoEleccionHorario = false;
@@ -1461,7 +1459,7 @@ public class Administrador {
 	 * @param horarioProceso : Este método recibe como parámetro la película (De tipo Pelicula) seleccionada durante el proceso de reserva de ticket.
 	 * @return <b>String</b> : Este método retorna un String que corresponde al número de asiento seleccionado por el cliente.
 	 * */
-	static String seleccionarAsiento(Cliente clienteProceso, LocalDateTime horarioProceso, Pelicula peliculaProceso) {
+	private static String seleccionarAsiento(Cliente clienteProceso, LocalDateTime horarioProceso, Pelicula peliculaProceso) {
 		
 		boolean casoSeleccionExpirada = false;
 		boolean casoValido = false;
@@ -1607,7 +1605,7 @@ public class Administrador {
 	 * con el fin de validar si esta aún se encuentra en presentación.
 	 * @return <b>String</b> : Este método retorna un String que corresponde al número de asiento seleccionado por el cliente.
 	 * */
-	static String seleccionarAsiento(SalaCine salaDeCinePresentacionProceso, Pelicula peliculaProceso) {
+	private static String seleccionarAsiento(SalaCine salaDeCinePresentacionProceso, Pelicula peliculaProceso) {
 		
 		boolean casoValidoConfirmacion = false;
 		boolean casoValido = false;
@@ -1723,7 +1721,7 @@ public class Administrador {
 	 * @param clienteProceso : Este método recibe como parámetro al cliente (De tipo Cliente), que ingresó desde el menú
 	 * del sistema de proyecciones.
 	 * */
-	static void ingresarSalaCine(Cliente clienteProceso) {
+	private static void ingresarSalaCine(Cliente clienteProceso) {
 		
 		boolean finalizarLogicaIngresarSalaCine = false;
 		do {
@@ -1920,7 +1918,7 @@ public class Administrador {
 	 * no puede ingresar a esta sala, además antes de verficar eso, eliminamos los tickets que ya han caducado).
 	 * @param clienteProceso : Este método recibe como parámetro el cliente (De tipo Cliente) que realizó el proceso de login.
 	 * */
-	static void ingresarSalaDeEspera(Cliente clienteProceso) {
+	private static void ingresarSalaDeEspera(Cliente clienteProceso) {
 		boolean finalizarLogicaSalaDeEspera = false;
 		do {
 			
@@ -2069,7 +2067,7 @@ public class Administrador {
 	 * @return <b>String</b> : Este método retorna, en caso de tener horarios disponibles, la opción de comprar en otro horario o volver al menú
 	 * principal, sino, la opcion de volver al menú principal.
 	 * */
-	static String disponibilidadHorariaFuncionalidad1(ArrayList<LocalDateTime> horariosPeliculaProceso) {
+	private static String disponibilidadHorariaFuncionalidad1(ArrayList<LocalDateTime> horariosPeliculaProceso) {
 		String resultado = null;
 		if (horariosPeliculaProceso.size() > 0) {
 			resultado = "\n2. Comprar en otro horario\n3. Volver al menú del sistema de proyecciones";
@@ -2094,7 +2092,7 @@ public class Administrador {
 	 * de reserva de ticket.
 	 * @return <b>boolean</b> : Este método retorna el estado de la validación para tomar determinadas acciones respecto a esta.
 	 * */
-	static boolean verificarIntegridadHorarioSeleccionado(SalaCine salaDeCineProceso, Pelicula peliculaProceso) {
+	private static boolean verificarIntegridadHorarioSeleccionado(SalaCine salaDeCineProceso, Pelicula peliculaProceso) {
 		
 		//Avance de tiempo
 		avanzarTiempo();
@@ -2117,7 +2115,7 @@ public class Administrador {
 	 * de reserva de ticket.
 	 * @return <b>boolean</b> : Este método retorna el estado de la validación para tomar determinadas acciones respecto a esta.
 	 * */
-	static boolean verificarIntegridadHorarioSeleccionado(Pelicula peliculaProceso, LocalDateTime horarioProceso) {
+	private static boolean verificarIntegridadHorarioSeleccionado(Pelicula peliculaProceso, LocalDateTime horarioProceso) {
 		
 		//Avance de tiempo
 		avanzarTiempo();
@@ -2134,7 +2132,7 @@ public class Administrador {
 	* Description: Este metodo se encarga de mostrar por pantalla la hora actual de una manera mas organzida y estética.
 	* @params date: Se pasa un localDateTime para ejecutar la logica del método.
 	* */
-	public static void relojDigital(LocalDateTime date) {
+	private static void relojDigital(LocalDateTime date) {
 		
 		// Formatear la hora en formato hh:mm:ss a AM/PM
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
@@ -2166,7 +2164,7 @@ public class Administrador {
 	//| |    | |_| | | |\  | | \____  | | | |__| | | |\  |  / ______ \  | |___  | | | |__| | / ______ \  | |__| |	    /	/_
 	//|_|     \___/  |_| \_|  \_____| |_|  \____/  |_| \_| /_/      \_\ |_____| |_| |_____/ /_/      \_\ |_____/ 	   |_______|
 	
-	public static void compras(Cliente clienteProceso){
+	private static void compras(Cliente clienteProceso){
 		// Seleccion del servicio que se desea acceder
 		
 		Servicio serviciProceso;
@@ -2628,6 +2626,7 @@ public class Administrador {
 				if (condicion) {
 					condicion = false;
 					valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
+				//Aqui se hace la ligadura dinamica
 					if (serviciProceso.descuentarPorCompra(metodoDePago)) {
 						System.out.print("        ------------------------------------------------------------------- \n");
 						System.out.print("       |  🎉🎉Felicidades obtuviste un descuento sorpresa en tu compra🎉🎉 |\n");
@@ -2697,7 +2696,7 @@ public class Administrador {
 	//| |    | |_| | | |\  | | \____  | | | |__| | | |\  |  / ______ \  | |___  | | | |__| | / ______ \  | |__| |      __\	  \        
 	//|_|     \___/  |_| \_|  \_____| |_|  \____/  |_| \_| /_/      \_\ |_____| |_| |_____/ /_/      \_\ |_____/ 	  |_______|
 	
-	static void calificacion(Cliente clienteProceso) {
+	private static void calificacion(Cliente clienteProceso) {
 		
 		
 			
@@ -3208,7 +3207,7 @@ public class Administrador {
  * (De tipo SucursalCine)
  * @return <b>void</b> : No hay retorno
  * */
-static void ingresoZonaJuegos(Cliente ClienteActual) {
+private static void ingresoZonaJuegos(Cliente ClienteActual) {
 	
 	//ClienteActual.getCineActual().getBonosCreados().clear();
 	
@@ -3702,7 +3701,7 @@ static void ingresoZonaJuegos(Cliente ClienteActual) {
  * (De tipo String)
  * @return <b>void</b> : No hay retorno
  * */
-public static void barraCarga(String word) {
+private static void barraCarga(String word) {
 	System.out.println("               "+word+"....");
     
     for (int i=0;i<42 ;i++ ) {
@@ -3725,7 +3724,7 @@ public static void barraCarga(String word) {
  * (De tipo double)
  * @return <b>void</b> : No hay retorno
  * */
-public static void imprimirTarjeta(String nombre, double saldo) {
+private static void imprimirTarjeta(String nombre, double saldo) {
 	System.out.println("\n        ╔══════════════════════════╗");
     System.out.println("        ║      Tarjeta Cinemar     ║");
     System.out.println("        ╠══════════════════════════╣");
@@ -3755,7 +3754,7 @@ public static void imprimirTarjeta(String nombre, double saldo) {
  * (De tipo int)
  * @return <b>void</b> : No hay retorno
  * */
-public static void espera(int time) {
+private static void espera(int time) {
 	try {
         Thread.sleep(time);
     } catch (InterruptedException e) {
@@ -3769,7 +3768,7 @@ public static void espera(int time) {
  * (De tipo String)
  * @return <b>boolean</b> : Este método retorna un boolean true or false dependiendo de si el usuario acertó palabra o no
  * */
-public static String juego(String[] PALABRAS) {
+private static String juego(String[] PALABRAS) {
     String match = null;
 
     Scanner scanner = new Scanner(System.in);
@@ -3854,7 +3853,7 @@ private static boolean adivinado(char[] palabraAdivinada) {
  * (De tipo char)
  * @return <b>boolean</b> : Este método retorna un boolean true or false dependiendo de si cumple la condicion de ser una letra del alfabeto
  * */
-public static boolean esLetraValida(char caracter) {
+private static boolean esLetraValida(char caracter) {
    
     return (caracter >= 'A' && caracter <= 'Z') || caracter == 'Ñ';
 }
@@ -3913,7 +3912,7 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 
 	
 
-	static void adquirirMembresia(Cliente clienteProceso) {
+	private static void adquirirMembresia(Cliente clienteProceso) {
 		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla, " + clienteProceso.getNombre() + ".");
 		boolean casoValido = false;
 		int opcionMenu = 0;

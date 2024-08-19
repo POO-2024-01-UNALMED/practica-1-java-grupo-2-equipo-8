@@ -116,7 +116,7 @@ public class SucursalCine implements Serializable {
 	 * o luego de la deserialización de todas las películas de cada sucursal (Elimina los horarios anteriores al día 
 	 * de la fecha actual). 
 	 * */
-	public static void dropHorariosVencidos() {
+	private static void dropHorariosVencidos() {
 		
 		//Iteramos sobre las sucursales
 		for (SucursalCine sede : sucursalesCine) { 
@@ -153,7 +153,7 @@ public class SucursalCine implements Serializable {
 	 * <li>Si varias películas serán presentadas en una sala se presentarán de forma intercalada evitando colisiones.</li>
 	 * </ol>
 	 * */
-	public void crearHorariosPeliculasPorSala() {
+	private void crearHorariosPeliculasPorSala() {
 		
 		ArrayList<Pelicula> peliculasDeSalaDeCine = new ArrayList<>();
 		
@@ -239,7 +239,7 @@ public class SucursalCine implements Serializable {
 	 * las otras (Principio de Dirichlet o del palomar).</li>
 	 * </ol>
 	 * */
-	public void distribuirPeliculasPorSala() {
+	private void distribuirPeliculasPorSala() {
 		
 		String[] formatos = {"2D", "3D", "4D"};
 		
@@ -322,7 +322,7 @@ public class SucursalCine implements Serializable {
 	 * <li>Eliminar los tickets comprados de películas de la semana anterior.</li>
 	 * </ol>
 	 * */
-	public static void logicaSemanalReservarTicket() {
+	public static void logicaSemanalSistemaNegocio() {
 		ticketsDisponibles.clear();
 		for (SucursalCine sede : sucursalesCine) {
 			for(Pelicula pelicula:sede.cartelera) {
@@ -330,10 +330,13 @@ public class SucursalCine implements Serializable {
 					sede.logicaCalificacionPeliculas(pelicula);
 				}
 			}
+			
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();
 			
 		}
+		
+		logicaSemanalProducto();
 		
 	}
 	
@@ -350,7 +353,11 @@ public class SucursalCine implements Serializable {
 	public static void logicaInicioSistemaReservarTicket() {
 		
 		fechaActual = LocalDateTime.now();
-		logicaSemanalReservarTicket();
+		for (SucursalCine sucursal: sucursalesCine) {
+			
+			sucursal.distribuirPeliculasPorSala();
+			sucursal.crearHorariosPeliculasPorSala();
+		}
 		actualizarPeliculasSalasDeCine();
 		fechaValidacionNuevoDiaDeTrabajo = fechaActual.toLocalDate().plusDays(1);
 		fechaRevisionLogicaDeNegocio = fechaActual.toLocalDate().plusWeeks(1);
@@ -469,7 +476,7 @@ public class SucursalCine implements Serializable {
 	 * pelicula a otra
 	 * */	 
 		 
-	public static SucursalCine seleccionarSucursalAleatoriamente(SucursalCine sucursalCine) {
+	private static SucursalCine seleccionarSucursalAleatoriamente(SucursalCine sucursalCine) {
 		while(true) {
 			int numeroAleatorio= (int)(Math.random()*10)%(sucursalesCine.size());
 			SucursalCine sucursalSeleccionada=sucursalesCine.get(numeroAleatorio);
@@ -494,7 +501,7 @@ public class SucursalCine implements Serializable {
 	 *
 	 * */
 	
-	public void eliminarPeliculas(ArrayList<Pelicula> PeliculasEliminar) {
+	private void eliminarPeliculas(ArrayList<Pelicula> PeliculasEliminar) {
 		
 	   for(Pelicula pelicula:PeliculasEliminar) {
 		   this.cartelera.remove(pelicula);
@@ -516,7 +523,7 @@ public class SucursalCine implements Serializable {
 	 * */
 	
 		
-	public void logicaCalificacionPeliculas(Pelicula pelicula){	
+	private void logicaCalificacionPeliculas(Pelicula pelicula){	
 		
 		ArrayList <Pelicula> peliculasCalificadas = Pelicula.filtrarPorNombreDePelicula(pelicula.getNombre(), this.cartelera);
 		double promedio =0;
@@ -707,7 +714,7 @@ public class SucursalCine implements Serializable {
 	 * ccada semana
 	 *  luego de haber efectuado el cambio de producto de sucursal propio de la funcionalidad 3. 
 	 * */
-	public static void logicaSemanalProducto() {
+	private static void logicaSemanalProducto() {
 		for (SucursalCine sede : sucursalesCine) {
 			for(Producto producto:sede.getInventarioCine()) {
 				if(producto.getTipoProducto().equals("comida")){
@@ -732,7 +739,7 @@ public class SucursalCine implements Serializable {
 	 * bien o mal recibidos por los clientes, y cambiandolos de sede, esperamos que su calificacion mejore, si esto
 	 * no se da, el producto es eliminado del inventario, ya que se considera como malo
 	 * */
-	public  void logicaCalificacionProductos(Producto producto){	
+	private  void logicaCalificacionProductos(Producto producto){	
 		
 		ArrayList <Producto> productosCalificados = filtrarPorNombreDeProducto(producto.getNombre(), this.inventarioCine);
 		
@@ -782,7 +789,7 @@ public class SucursalCine implements Serializable {
 	 * de la cartelera principal de peliculas.
 	 *
 	 * */
-	public void eliminarProducto(ArrayList<Producto> productosEliminar) {
+	private void eliminarProducto(ArrayList<Producto> productosEliminar) {
 		for(Producto producto:productosEliminar) {
 			this.inventarioCine.remove(producto);
 		}
@@ -797,7 +804,7 @@ public class SucursalCine implements Serializable {
 	 * @return <b>ArrayList<Producto></b> : Este método retorna un ArrayList de los productos cuyo nombre coinciden con el nombre seleccionado 
 	 * por el cliente.
 	 * */	 
-	public static ArrayList<Producto> filtrarPorNombreDeProducto(String nombreProducto, ArrayList<Producto> Inventario){
+	private static ArrayList<Producto> filtrarPorNombreDeProducto(String nombreProducto, ArrayList<Producto> Inventario){
 		ArrayList<Producto> productosEncontrados = new ArrayList<>();
 		
 		for (Producto producto : Inventario) {
