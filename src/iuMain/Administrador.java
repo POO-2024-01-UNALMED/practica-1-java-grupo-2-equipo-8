@@ -3030,8 +3030,9 @@ public class Administrador {
 									 * mejor pelicula con el peor producto, esto lo hacemos con el fin de logica de negocio, y podamos tener mejores resultados con 
 									 * los productos y peliculas.
 									 */
-									System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula" +
-									peliculaCombo.getNombre() + "y el producto " + productoCombo1.getNombre() + productoCombo1.getTamaño()) ;
+									System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula " +
+											peliculaCombo.getNombre() + " en formato " + peliculaCombo.getTipoDeFormato() + "\nen el horario " + opcionHorarioPelicula + " en el asiento " + numAsientoProceso 
+											+"\ny el producto " + productoCombo1.getNombre() + " " + productoCombo1.getTamaño());
 									
 									double precioTotal=0;
 									precioTotal=peliculaCombo.getPrecio()+productoCombo1.getPrecio();
