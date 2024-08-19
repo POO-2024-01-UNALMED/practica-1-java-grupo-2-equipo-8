@@ -163,7 +163,11 @@ public class Administrador {
 //	static TarjetaCinemar tarjeta7 = new TarjetaCinemar();static TarjetaCinemar tarjeta8 = new TarjetaCinemar();static TarjetaCinemar tarjeta9 = new TarjetaCinemar();
 //	static TarjetaCinemar tarjeta10 = new TarjetaCinemar();static TarjetaCinemar tarjeta11 = new TarjetaCinemar();static TarjetaCinemar tarjeta12 = new TarjetaCinemar();
 //	static TarjetaCinemar tarjeta13 = new TarjetaCinemar();static TarjetaCinemar tarjeta14 = new TarjetaCinemar();static TarjetaCinemar tarjeta15 = new TarjetaCinemar();	
-	
+//	static TarjetaCinemar tarjeta16 = new TarjetaCinemar();static TarjetaCinemar tarjeta17 = new TarjetaCinemar();static TarjetaCinemar tarjeta18 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta19 = new TarjetaCinemar();static TarjetaCinemar tarjeta20 = new TarjetaCinemar();static TarjetaCinemar tarjeta21 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta22 = new TarjetaCinemar();static TarjetaCinemar tarjeta23 = new TarjetaCinemar();static TarjetaCinemar tarjeta24 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta25 = new TarjetaCinemar();static TarjetaCinemar tarjeta26 = new TarjetaCinemar();static TarjetaCinemar tarjeta27 = new TarjetaCinemar();
+//	static TarjetaCinemar tarjeta28 = new TarjetaCinemar();static TarjetaCinemar tarjeta29 = new TarjetaCinemar();static TarjetaCinemar tarjeta30 = new TarjetaCinemar();
 	
 	public static void main(String[] args) {
 		
@@ -221,9 +225,9 @@ public class Administrador {
 //			MetodoPago.asignarMetodosDePago(cliente4);
 //			MetodoPago.asignarMetodosDePago(cliente5);
 //			
-//			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5));
-//			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10));
-//			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15));
+//			sucursalCine1.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta1, tarjeta2,tarjeta3,tarjeta4,tarjeta5,tarjeta16,tarjeta17,tarjeta18,tarjeta19,tarjeta20));
+//			sucursalCine2.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta6, tarjeta7,tarjeta8,tarjeta9,tarjeta10,tarjeta21,tarjeta22,tarjeta23,tarjeta24,tarjeta25));
+//			sucursalCine3.getInventarioTarjetasCinemar().addAll(Arrays.asList(tarjeta11, tarjeta12,tarjeta13,tarjeta14,tarjeta15,tarjeta26,tarjeta27,tarjeta28,tarjeta29,tarjeta30));
 //			
 //			cliente1.setOrigenMembresia(sucursalCine1.getIdSucursal());
 			
