@@ -2627,7 +2627,7 @@ public class Administrador {
 					condicion = false;
 					valor = serviciProceso.getValorPedido() * (1 - metodoDePago.getDescuentoAsociado());
 				//Aqui se hace la ligadura dinamica
-					if (serviciProceso.descuentarPorCompra(metodoDePago)) {
+					if (serviciProceso.descontarPorCompra(metodoDePago)) {
 						System.out.print("        ------------------------------------------------------------------- \n");
 						System.out.print("       |  🎉🎉Felicidades obtuviste un descuento sorpresa en tu compra🎉🎉 |\n");
 						System.out.print("        ------------------------------------------------------------------- \n");
