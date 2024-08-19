@@ -108,7 +108,7 @@ public class Bono implements Serializable{
 	*@param longitud :  se pasa el como parametro la longitud que se desea el codigo
 	*@return <b>Bono</b> :  Se retorna el bono creado
 	*/
-	public static String generarCodigoAleatorio(int longitud) {
+	private static String generarCodigoAleatorio(int longitud) {
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
         StringBuilder codigo = new StringBuilder(longitud);

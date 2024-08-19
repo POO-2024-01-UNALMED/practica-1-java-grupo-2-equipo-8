@@ -95,9 +95,6 @@ public class Membresia implements IBuyable, Serializable{
 		}	
  	}	
 	
-	public boolean actualizarSuscripcion() {
-		
-		return true;}
 	
 	/**
 	*<b>Description</b>: Este método se encarga de mostrar las categorias de membresias disponibles

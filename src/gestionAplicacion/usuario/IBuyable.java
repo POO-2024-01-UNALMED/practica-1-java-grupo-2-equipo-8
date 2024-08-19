@@ -11,7 +11,7 @@ package gestionAplicacion.usuario;
 */
 public interface IBuyable {
 	
-	public abstract void procesarPagoRealizado(Cliente cliente);
-	public abstract String factura();
+	void procesarPagoRealizado(Cliente cliente);
+	String factura();
 
 }
