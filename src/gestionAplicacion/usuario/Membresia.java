@@ -107,7 +107,7 @@ public class Membresia implements IBuyable, Serializable{
 	*@return <b>string</b> : Se retorna un texto mostrando el nombre de las categorias disponibles en la sucursal de la compra.
 	*/
 	public static String mostrarCategoria(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
-		String resultado = null;
+		String resultado = "\n";
 		int i = 1;
 		Membresia membresiaActual = clienteProceso.getMembresia();
 		String nombreMembresiaActual = null; 
@@ -124,7 +124,7 @@ public class Membresia implements IBuyable, Serializable{
 				continue;
 			}
 				if (resultado == null) {
-					if (membresia.getCantidad() == 0) {
+					if (membresia.getCantidad() == 0 && !nombreMembresiaActual.equals(membresia.getNombre())) {
 						resultado = "Categoria " + i + ". " + membresia.getNombre() + " (AGOTADA)\n";
 						i++;
 						continue;
@@ -138,7 +138,7 @@ public class Membresia implements IBuyable, Serializable{
 					} else {
 				resultado = "Categoria " + i + ". "+ membresia.getNombre() + ". Requisitos: " + (int) membresia.getPrecio() + " puntos."+"\n";}
 			}else {
-				if (membresia.getCantidad() == 0) {
+				if (membresia.getCantidad() == 0 && !nombreMembresiaActual.equals(membresia.getNombre())) {
 					resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + " (AGOTADA)\n";
 					i++;
 					continue;
@@ -149,7 +149,13 @@ public class Membresia implements IBuyable, Serializable{
 						&& clienteProceso.getFechaLimiteMembresia().isAfter(SucursalCine.getFechaActual().toLocalDate()))) {
 					i++;
 					continue;
-				} else {
+				} else if (membresia.getNombre().equals("Challenger") || membresia.getNombre().equals("Radiante")) {
+					if (membresia.getNombre().equals("Challenger")) {
+					resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + ". Requisitos: " + (int) membresia.getPrecio() + " puntos y peliculas vistas: 10"+"\n";}
+					else {
+						resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + ". Requisitos: " + (int) membresia.getPrecio() + " puntos y peliculas vistas: 15"+"\n";
+					}
+				}else {
 			resultado = resultado + "Categoria " + i + ". " + membresia.getNombre() + ". Requisitos: " + (int) membresia.getPrecio() + " puntos." +"\n";}
 			}
 			i++;
@@ -177,6 +183,8 @@ public class Membresia implements IBuyable, Serializable{
 			if (metodoPago.getNombre().equals("Puntos")) {
 				puntos = metodoPago.getLimiteMaximoPago();
 				break;
+			} else {
+				puntos = clienteProceso.getPuntos();
 			}
 		}
 		//Se obtiene la cantidad de la membresia que hayan en el cine.
@@ -187,14 +195,31 @@ public class Membresia implements IBuyable, Serializable{
 				break;
 			}
 		}
+		//Se realizan diferentes validaciones dependiendo si el cliente va a realizar una renovación o nueva subscripción.
+		if (clienteProceso.getMembresia() == null || clienteProceso.getMembresia().getCategoria() != categoriaSeleccionada) {
 		//Si la categoria es 4 o 5, se revisa si se cumple los requisitos.
-		switch (categoriaSeleccionada) {
+			//En caso de no tener membresía.
+			switch (categoriaSeleccionada) {
 		
-		case 1: esValido = (membresiaStock > 0) ? true : false; break;
-		case 2: esValido = (membresiaStock > 0 && puntos >= 5000) ? true : false; break;
-		case 3: esValido = (membresiaStock > 0 && puntos >= 10000) ? true : false; break;
-		case 4: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 15000) ? true : false; break;
-		case 5: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 15 && puntos >= 20000) ? true : false; break;
+			case 1: esValido = (membresiaStock > 0) ? true : false; break;
+			case 2: esValido = (membresiaStock > 0 && puntos >= 5000) ? true : false; break;
+			case 3: esValido = (membresiaStock > 0 && puntos >= 10000) ? true : false; break;
+			case 4: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 15000) ? true : false; break;
+			case 5: esValido = (membresiaStock > 0 && clienteProceso.getHistorialDePeliculas().size() >= 15 && puntos >= 20000) ? true : false; break;
+			}
+		//En caso de realizar la renovación de la misma membresia.
+		} else if (clienteProceso.getMembresia() != null
+				&& clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())
+				&& clienteProceso.getMembresia().getCategoria() == categoriaSeleccionada) {
+			switch (categoriaSeleccionada) {
+			
+			case 1: esValido = true; break;
+			case 2: esValido = (puntos >= 5000) ? true : false; break;
+			case 3: esValido = (puntos >= 10000) ? true : false; break;
+			case 4: esValido = (clienteProceso.getHistorialDePeliculas().size() >= 10 && puntos >= 15000) ? true : false; break;
+			case 5: esValido = (clienteProceso.getHistorialDePeliculas().size() >= 15 && puntos >= 20000) ? true : false; break;
+			}
+			
 		}
 		
 		return esValido;
@@ -399,8 +424,7 @@ public class Membresia implements IBuyable, Serializable{
 		return  "Membresia: " + this.getNombre()+ "\n" +
 				"Categoria: " + this.getCategoria() + "\n" +
 				"Tipo: " + this.getTipoMembresia() + "\n" +
-				"Duración: " + this.getDuracionMembresiaDias()+ " dias.\n" +
-				"Precio de compra: " + this.getValorSuscripcionMensual() + "\n";
+				"Precio de compra: " + this.getValorSuscripcionMensual() + "\n================================";
 	}
 	
 	

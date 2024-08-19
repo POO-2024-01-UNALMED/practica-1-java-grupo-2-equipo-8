@@ -218,7 +218,7 @@ public class MetodoPago implements Serializable{
 				switch (tipoMembresia) {
 				case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + ((precio * (1 - this.getDescuentoAsociado())) * 0.05));break;
 				case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + ((precio * (1 - this.getDescuentoAsociado())) * 0.10));break;
-				}
+				} cliente.setPuntos((int)puntos.getLimiteMaximoPago());
 			}
 			
 		}
