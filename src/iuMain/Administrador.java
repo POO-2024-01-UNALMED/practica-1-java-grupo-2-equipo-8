@@ -2211,7 +2211,7 @@ public class Administrador {
 		serviciProceso = clienteProceso.getCineActual().getServicios().get(servicio);
 		System.out.print("\n Bienvenido al servicio "+ serviciProceso.getNombre()+" 📽️📽️📽️");
 		serviciProceso.setCliente(clienteProceso);
-		serviciProceso.setInventario(clienteProceso.getCineActual().getServicios().get(servicio).actualizarInventario());
+		serviciProceso.setInventario(serviciProceso.actualizarInventario());
 		
 		/////////////////////////////////  Busqueda inteligente de los productos disponibles segun el pedido   ///////////////////////////////////////////
 		
