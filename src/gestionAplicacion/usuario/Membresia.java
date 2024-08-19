@@ -71,7 +71,7 @@ public class Membresia implements IBuyable, Serializable{
 		
 	/**
 	*<b>Description</b>: Este método se encarga de asignar los descuentos dependiendo de la
-	* categoria de la membresia.
+	*categoria de la membresia.
 	*@param none : No se necesitan parametros.
 	*@return <b>void</b> : No realiza retorno. El sistema asigna el correspondiente descuento
 	*dependiendo de la categoria recorrida en el array.
@@ -97,9 +97,14 @@ public class Membresia implements IBuyable, Serializable{
 	
 	
 	/**
-	*<b>Description</b>: Este método se encarga de mostrar las categorias de membresias disponibles
-	*@param none : No se pide parametros
-	*@return <b>string</b> : Se retorna un texto mostrando el nombre de las categorias.
+	*<b>Description</b>: Este método se encarga de mostrar las categorias de membresias disponibles que hayan en la sucursal actual.
+	*Se realiza una búsqueda de los objetos de tipo Producto que sean de Membresia en el inventario de la sucursal. En caso
+	*de que la cantidad de alguno de estos productos este en 0, se indica al cliente que la opción esta agotada.
+	*Otra notación es que si el cliente ya posse una membresía y aún no esta en plazo de renovación, se omite su selección para tener
+	*mejor control sobre nuestras unidades limitadas en el inventario de la sucursal de la compra.
+	*@param clienteProceso : Se pide al cliente para verificar si posee membresía, lo cual modifica el resultado del método.
+	*@param sucursalCineProceso : Se pide la sucursal actual para poder realizar la búsqueda de objetos de tipo Producto pertenecientes a Membresía.
+	*@return <b>string</b> : Se retorna un texto mostrando el nombre de las categorias disponibles en la sucursal de la compra.
 	*/
 	public static String mostrarCategoria(Cliente clienteProceso, SucursalCine sucursalCineProceso) {
 		String resultado = null;
@@ -155,7 +160,7 @@ public class Membresia implements IBuyable, Serializable{
 	/**
 	*<b>Description</b>: Este método verifica a que categorias puede acceder el cliente. Se revisa
 	*si hay membresias disponibles y si el cliente tiene la cantidad de puntos e historial de peliculas como requisitos.
-	*@param cliente : Se pide al cliente para revisar su historial de peliculas para la 
+	*@param clienteProceso : Se pide al cliente para revisar su historial de peliculas para la 
 	*verificación. Si tiene X peliculas vistas en el cine, tiene acceso a ciertas categorias.
 	*@param categoriaSeleccionada : Se pide el número de la categoria que quiera adquirir.
 	*@param sucursalCineProceso : Se pide la sucursal de cine para revisar la cantidad de membresias.
@@ -238,7 +243,8 @@ public class Membresia implements IBuyable, Serializable{
 	*los productos de tipo Membresia que se usarán para limitar las membresias que se puede adquirir en cada sucursal.
 	*Por cada sucursal de cine en el lista, se crean los productos que corresponden a cada membresia con una cantidad limitada.
 	*Esto se usa para tener un control sobre el número de membresia que se pueden adquirir en cada cine.
-	*@param sucursalesCine : Se pide la lista que contiene las sucursales de cine creadas para acceder a su inventario
+	*@param sucursalesCine : Se pide la lista que contiene las sucursales de cine creadas para acceder a su inventario y añadir los objetos
+	*de tipo Producto pertenecientes a Membresía.
 	*/
 	public static void stockMembresia(ArrayList<SucursalCine> sucursalesCine) {
 		int i = 50;
@@ -252,7 +258,7 @@ public class Membresia implements IBuyable, Serializable{
 					puntos+=5000;
 					i-=10;
 			}
-			//Se reinicia el contador de cantidad cada vez que se itere a una nueva sucursal de la lista.	
+			//Se reinicia el contador de cantidad y puntos cada vez que se itere a una nueva sucursal de la lista.	
 			i = 50;
 			puntos = 0;
 		}
@@ -317,6 +323,19 @@ public class Membresia implements IBuyable, Serializable{
 	
 	
 	//Métodos implementados por la interfaz.
+	
+	/**
+	 * Description: Este método se encarga de realizar el proceso de asignación de membresía una vez completado el pago. Para ello, se realizan distintos pasos dependiendo del caso:
+	 * <ol>
+	 * <li>Se verifica si el cliente ya tiene una membresía asociada</li>
+	 * <li>En caso de que no tuviera una membresía ya asociada, se asigna su atributo de membresía, el lugar donde fue comprada para restar la cantidad del producto en el inventario de la sucursal y la fecha de caducidad.</li>
+	 * <li>En caso de que se vaya a actualizar la membresía, primero se devuelve la membresía a reemplazar al stock de inventario donde fue adquirida,
+	 * luego se realiza los pasos de paso anterior pero la fecha de caducidad será mayor ya se basa en la fecha limite de la membresía anterior</li>
+	 * <li>Por ultimo, si se va a renovar la misma membresía, solo se añaden más dias a la fecha de caducidad y se actualiza en el arreglo de tipo Cliente en Membresía</li>
+	 * </ol>
+	 * Una vez se realiza algunos de los procesos anteriores, se procede a actualizar los métodos de pago del cliente y se añade su referencia al arreglo de tipo Cliente en Membresía.
+	 * @param cliente : Se pide como parámetro el cliente (De tipo Cliente) que realizó exitosamente el pago.
+	 */
 	@Override
 	public void procesarPagoRealizado(Cliente cliente) {
 		//Se asigna la referencia de la membresia adquirida en el cliente y se actualizan sus métodos de pago.
@@ -370,6 +389,11 @@ public class Membresia implements IBuyable, Serializable{
 
 
 
+	/**
+	 * Description: Este método se encarga de crear una factura personalizada con la información de compra del cliente.
+	 * Este método es ejecutado por la membresía que fue comprada exitosamente.
+	 * @return String : Se retorna un String que contiene los datos de la compra.
+	 */
 	@Override
 	public String factura() {
 		return  "Membresia: " + this.getNombre()+ "\n" +

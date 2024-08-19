@@ -419,7 +419,7 @@ public class Administrador {
 		//El avance de dia se realiza automáticamente en caso de que no hayan horarios y falte 1 día para cumplir la semana de trabajo.
 		if (!hayHorarios && SucursalCine.getFechaRevisionLogicaDeNegocio().minusDays(1).equals(SucursalCine.getFechaActual().toLocalDate())) {
 			System.out.println("Hemos detectado que han concluido todas las presentaciones semanales, por lo tanto,\n"
-					+ "Se ejecutará la lógcia semanal del sistema de negocio y se pasará al dia siguiente de forma automática.\n"
+					+ "Se ejecutará la lógica semanal del sistema de negocio y se pasará al dia siguiente de forma automática.\n"
 					+ "Gracias por su compresión\n");
 			SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()).withMinute(SucursalCine.getInicioHorarioLaboral().getMinute()).withSecond(0).withNano(0));
 			
@@ -3915,7 +3915,16 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 //|_|     \___/  |_| \_|  \_____| |_|  \____/  |_| \_| /_/      \_\ |_____| |_| |_____/ /_/      \_\ |_____/ 	  |______|    
 
 	
-
+	/**
+	 * Description : Este método se encarga de gestionar la funcionalidad 5: Sistema de membresías.
+	 * El cliente accede a nuestro menú donde se muestran las distintas opciones disponibles a escoger en la sucursal actual. Cada
+	 * opción tiene consigo sus respectivos beneficios y requisitos. Una vez se ha seleccionado, se realiza el pago de esta
+	 * y se asigna un apuntador de tipo Membresia en el atributo del cliente. Al realizar este proceso, los métodos de pago se ven
+	 * modificados, se activa la acumulación de puntos y se obtiene una cartelera personalizada.
+	 * @param clienteProceso : Se pide al cliente para realizar la búsqueda de membresías disponibles en el inventario de la sucursal actual.
+	 * Además, en base al tipo de membresía seleccionada, se modifican atributos del cliente como membresia, fechaLimiteMembresia, la lista de
+	 * métodos de pago, etc.
+	 */
 	private static void adquirirMembresia(Cliente clienteProceso) {
 		System.out.println("Bienvenido a nuestro plan de membresias en el cine de Marinilla, " + clienteProceso.getNombre() + ".");
 		boolean casoValido = false;
@@ -3980,10 +3989,12 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 			+ MetodoPago.mostrarMetodosDePago(clienteProceso) + "\n6. Volver al inicio \nIngrese la opción: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
 			if (opcionMenu == 6) {Administrador.inicio(clienteProceso);}
+			//En caso de que el cliente intente escoger la opción de puntos pero no tenga membresía, se advierte y se vuelve a la selección de pagos.
 			else if (clienteProceso.getMembresia()==null && opcionMenu==5) {
 				System.out.println("\nPor favor, seleccione una de las opciones habilitadas.");
 				continue;
 			}
+			//Se obtiene le método de pago seleccionado en el menú anterior y se valida el nuevo precio en caso de tener descuento.
 			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(clienteProceso, opcionMenu);
 			try {
 				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {
@@ -4009,6 +4020,7 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 			}
 		}while (valorAPagar != 0); 
 		
+		//Una vez confirmada la totalidad del pago, se procede realizar la asignación de membresía con sus beneficios.
 		System.out.print("\nEstamos procesando su pago...\n");
 		try {
 			Thread.sleep(3000);
@@ -4020,7 +4032,10 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 				"=== Factura de compra ===\n" +
 				"Nombre dueño: " + clienteProceso.getNombre() + "\n" +
 				"Documento: " + clienteProceso.getDocumento() + "\n" +
+				"Duración" + clienteProceso.getFechaLimiteMembresia() + "\n" +
 				membresiaNueva.factura());
+		
+		//Cada vez que se adquiera/renueva una membresía, se dará una asignación/recarga a la tarjeta Cinemar que es usada en la funcionalidad 4.
 		TarjetaCinemar tarjetaCinemarActual = clienteProceso.getCuenta();
 		int tipoMembresia = 0;
 		if (tarjetaCinemarActual != null) {

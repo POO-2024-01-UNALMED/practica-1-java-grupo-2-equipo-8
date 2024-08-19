@@ -36,7 +36,7 @@ public class MetodoPago implements Serializable{
 		this.limiteMaximoPago = limiteMaximoPago;
 		this.tipo = tipo;
 	}
-	
+	//Se sobrecarga el constructor para cuando se crea el método de pago Puntos ya que este no se añade al arreglo estático en SucursalCine.
 	public MetodoPago(double descuentoAsociado, String nombre, double limiteMaximoPago, int tipo) {
 		this.nombre = nombre;
 		this.descuentoAsociado = descuentoAsociado;
@@ -97,7 +97,7 @@ public class MetodoPago implements Serializable{
 		cliente.getMetodosDePago().clear();
 		
 		//Se revisa si el cliente posee una membresia y de ser el caso, se asigna el canje de puntos.
-		//como método de pago. Luego de eso, se eliminar 
+		//como método de pago.
 		Membresia tipoMembresia = cliente.getMembresia();
 		int tipoMembresiaInt= 0;
 		if (tipoMembresia != null) {
@@ -116,8 +116,7 @@ public class MetodoPago implements Serializable{
 				
 			}
 		}
-		//Se elimina la referencia del canje de puntos en la lista de métodos de pago estatica.
-//		SucursalCine.getMetodosDePagoDisponibles().remove(puntos);
+		//Una vez se actualizan el arreglo de tipo MetodoPago en cliente, se añaden los puntos a este arreglo.
 		if (puntos != null) {
 			cliente.getMetodosDePago().add(puntos);
 		}
@@ -145,7 +144,7 @@ public class MetodoPago implements Serializable{
 	
 	/**
 	*<b>Description</b>: Este método de asignar el método de pago para ser usado.
-	*@param int : Se usa el número de la selección para poder escoger el método de pago.
+	*@param metodoPagoAUsar : Se usa el número de la selección para poder escoger el método de pago.
 	*@param cliente : Se usa el objeto de cliente para acceder a los métodos de pago.
 	*@return <b>MetodoPago</b> : Se retorna el método de pago que coincide con la opción seleccionada.
 	*/
@@ -162,13 +161,13 @@ public class MetodoPago implements Serializable{
 	}
 	
 	/**
-	 * @Override
 	 * Description : Este método se encarga de tomar el valor a pagar, aplicar el descuento del método de pago elegido por el cliente
 	 * y restarle el monto máximo que se puede pagar con ese método de pago, si el método de pago cubre el valor a pagar, éste se cambia se cambia a 0.
 	 * Además, este método se encarga de pasar la referencia del método de pago a los métodos de pago usados y quita la referencia de métodos de pago 
 	 * disponibles asociados al cliente.
+	 * En caso de que el cliente tenga una membresía, se realiza la acumulación de puntos en base al valor pagado.
 	 * @param precio : Se pide el valor a pagar, este se obtuvo anteriormente como variable durante el proceso de la funcionalidad
-	 * @param cliente : Se pide al cliente que va a efectuar el proceso de realizar pago  
+	 * @param cliente : Se pide al cliente que va a efectuar el proceso de realizar pago. Se revisa si tiene asignado una membresía.
 	 * @return <b>double</b> : En caso de que el método de pago cubra el valor a pagar retorna 0, en caso de que no
 	 * retorna el valor restante a pagar.
 	 * */
@@ -213,7 +212,8 @@ public class MetodoPago implements Serializable{
 					totalMetodosDePagoPortipo++;	
 				}
 			}
-			
+			//En caso de que el cliente no pudo cubrir la totalidad del pago y se haya llegado al limite de ese método de pago,
+			//la acumulación de puntos solo se hara sobre el primer precio calculado luego del descuento. Los siguientes pagos ya estan cubiertos.
 			if (cliente.getMetodosDePago().size() == totalMetodosDePagoPortipo) {
 				switch (tipoMembresia) {
 				case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + ((precio * (1 - this.getDescuentoAsociado())) * 0.05));break;
@@ -222,12 +222,6 @@ public class MetodoPago implements Serializable{
 			}
 			
 		}
-
-		//Pasamos el metodoDePago a metodosDePagoUsados
-		//MetodoPago.getMetodosDePagoUsados().add(this);
-//		//Pasamos el metodoDePago a metodosDePagoUsados
-//		MetodoPago.getMetodosDePagoUsados().add(this);
-		
 		//Eliminamos su referencia de los metodos de pago asociados al cliente
 		cliente.getMetodosDePago().remove(this);
 				
@@ -273,16 +267,6 @@ public class MetodoPago implements Serializable{
 	public void setLimiteMaximoPago(double limiteMaximoPago) {
 		this.limiteMaximoPago = limiteMaximoPago;
 	}
-
-
-//	public static ArrayList<MetodoPago> getMetodosDePagoUsados() {
-//		return metodosDePagoUsados;
-//	}
-//
-//
-//	public static void setMetodosDePagoUsados(ArrayList<MetodoPago> metodosDePagoUsados) {
-//		MetodoPago.metodosDePagoUsados = metodosDePagoUsados;
-//	}
 }
 
 	

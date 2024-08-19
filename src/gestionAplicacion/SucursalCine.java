@@ -601,6 +601,7 @@ public class SucursalCine implements Serializable {
 						} break;
 					}
 				}
+			//En caso de que falten 5 días o menos para que la membresía expire, se actualiza el mensaje con una advertencia.	
 			} else if (fechaActual.toLocalDate().isAfter(cliente.getFechaLimiteMembresia().minusDays(6))
 					&& fechaActual.toLocalDate().isBefore(cliente.getFechaLimiteMembresia())) {
 				mensaje = "Estimado cliente, recuerde que le quedan " + 
