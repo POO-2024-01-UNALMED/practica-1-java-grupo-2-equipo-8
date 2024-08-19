@@ -11,9 +11,9 @@ import gestionAplicacion.proyecciones.SalaCine;
 public class Ticket implements IBuyable, Serializable{
 	
 	private static final long serialVersionUID = 1L;
+	private static int cantidadTicketsCreados;
 	
 	private int idTicket;
-	private static int cantidadTicketsCreados;
 	private Cliente dueno;
 	private SalaCine salaDeCine;
 	private Pelicula pelicula;
@@ -126,7 +126,7 @@ public class Ticket implements IBuyable, Serializable{
 	 * Description : Este método se encarga de asignar el ticket a su respectivo dueño luego de la deserialización con el fin de asegurar
 	 * la integridad de la persistencia de datos.
 	 * */
-	public void agregarTIcketClienteSerializado() {
+	public void agregarTicketClienteSerializado() {
 		Cliente cliente = Cliente.revisarDatosCliente(this.dueno.getDocumento());
 		cliente.getTickets().add(this);
 		this.dueno = cliente;

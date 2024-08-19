@@ -2,7 +2,7 @@ package gestionAplicacion.usuario;
 
 import java.io.Serializable;
 
-public class TarjetaCinemar implements IBuyable, Serializable {
+public class TarjetaCinemar implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -23,8 +23,6 @@ public class TarjetaCinemar implements IBuyable, Serializable {
 	
 	//metodos
 	
-
-	
 	/**
 	 * Description : Este método se encarga de ingresar el saldo dado a la tarjeta cinemar
 	 * @param saldo : Este método recibe como parámetro el saldo a ingresar
@@ -43,7 +41,6 @@ public class TarjetaCinemar implements IBuyable, Serializable {
 	public void hacerPago(double saldo) {
 		this.saldo-=saldo;
 	}
-	//private static TarjetaCinemar crearTarjeta() {return new TarjetaCinemar();}
 
 	//getters y setters
 	public double getSaldo() {
@@ -62,21 +59,7 @@ public class TarjetaCinemar implements IBuyable, Serializable {
 
 	public void setDueno(Cliente dueno) {
 		this.dueno = dueno;
-	}
-
-	@Override
-	public void procesarPagoRealizado(Cliente cliente) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String factura() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
+	}	
 	
 	
 }
