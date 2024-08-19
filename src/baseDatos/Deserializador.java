@@ -323,6 +323,7 @@ public class Deserializador {
 	 *	<li>Corrige las referencias en las películas a la sala de cine y sucursal donde será presentado.</li>
 	 *	<li>Corrige la referencia en las salas de cine a la sucursal a la que pertenece.</li>
 	 *	<li>Corrige la referencia de los prodcutos en inventario a la sucursal a la que pertenecen.</li>
+	 *	<li>Corrige la referencia de los bonos en bonos creados al cliente al que pertenecen.</li>
 	 *	<li>Limpia los tickets que tiene el cliente para luego asignarlos tras validar que no ha caducado
 	 *y corregir sus referencias.</li>
 	 *	<li>Corrige las referencias en los tickets a la sala de cine, película, cliente (También lo añade
@@ -369,6 +370,12 @@ public class Deserializador {
 				//Reasigna la referencia de la sucursal a la que pertenece (Debido a que acabamos de construir su nueva sucursal).
 				producto.setSucursalSede(sede);
 			
+			}
+			
+			//Asigna correctamente a los bonos sus dueños
+			for (Bono bono : sede.getBonosCreados()) {
+				//Reasigna al bono el cliente de quién es dueño
+				bono.setCliente(Cliente.revisarDatosCliente(bono.getCliente().getDocumento()));
 			}
 				
 		}

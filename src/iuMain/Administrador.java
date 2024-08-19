@@ -2273,6 +2273,12 @@ public class Administrador {
 						}
 						else {
 							if (cantidad == serviciProceso.getOrden().get(eleccion2-1).getCantidad()) {
+								Producto producto = serviciProceso.getOrden().get(eleccion2-1);
+								for (Producto producto2 : serviciProceso.getInventario()) {
+									if (producto2.getNombre() == producto.getNombre() && producto2.getTamaño() == producto.getTamaño()) {
+										producto2.setCantidad(producto2.getCantidad() + cantidad);
+									}
+								}
 								serviciProceso.getOrden().remove(eleccion2-1);
 								verificacion = false;
 							}
@@ -2502,15 +2508,10 @@ public class Administrador {
 		if(eleccion == 1) {
 			Producto productoBono = new Producto();
 			do {
-				try {
 					System.out.println("\n🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁 REGALOS CON BONOS 🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁\n");
 					System.out.print("Ingrese el codigo del bono: ");
-					codigoBono = sc.nextLine();
-				}catch(NumberFormatException e) {
-					System.out.println("\nError, debes ingresar un dato numérico\n");
-					continue;
-				}
-				productoBono = Servicio.validarBono(codigoBono,clienteProceso.getCineActual().getServicios().get(servicio));
+					codigoBono = sc.next();
+					productoBono = Servicio.validarBono(codigoBono,clienteProceso.getCineActual().getServicios().get(servicio));
 				if (productoBono == null) {
 					System.out.println("\n Codigo invalido, verificar el codigo (╥_╥)(╥_╥)(╥_╥)");
 					
