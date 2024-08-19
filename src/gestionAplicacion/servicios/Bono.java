@@ -39,7 +39,7 @@ public class Bono implements Serializable{
 	public static Bono generarBonoComidaJuegos(SucursalCine sucursal, Cliente cliente) {
 	    ArrayList<Producto> productosComida = new ArrayList<>();
 	    for (Producto producto : sucursal.getInventarioCine()) {
-	        if (producto.getTipoProducto().equals("comida")) {
+	        if (producto.getTipoProducto().equals("comida") & producto.getCantidad()>0) {
 	            productosComida.add(producto);
 	        }
 	    }
@@ -75,7 +75,7 @@ public class Bono implements Serializable{
 	public static Bono generarBonoSouvenirJuegos(SucursalCine sucursal, Cliente cliente) {
 		ArrayList<Producto> productosSouvenirs = new ArrayList<>();
 	    for (Producto producto : sucursal.getInventarioCine()) {
-	        if (producto.getTipoProducto().equals("souvenir")) {
+	        if (producto.getTipoProducto().equals("souvenir")& producto.getCantidad()>0) {
 	        	productosSouvenirs.add(producto);
 	        }
 	    }
