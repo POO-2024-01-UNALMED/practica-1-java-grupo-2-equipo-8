@@ -3945,7 +3945,7 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
 				//Se revisa si el cliente esta intentando seleccionar la misma categoria pero aún no es tiempo de renovarla.
-				if (opcionMenu == clienteProceso.getMembresia().getCategoria() && clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())) {
+				if (clienteProceso.getMembresia()!=null && opcionMenu == clienteProceso.getMembresia().getCategoria() && clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())) {
 					System.out.println("Por favor seleccione una opción habilitada");
 					continue;
 				}
@@ -3978,6 +3978,10 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 			+ MetodoPago.mostrarMetodosDePago(clienteProceso) + "\n6. Volver al inicio \nIngrese la opción: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
 			if (opcionMenu == 6) {Administrador.inicio(clienteProceso);}
+			else if (clienteProceso.getMembresia()==null && opcionMenu==5) {
+				System.out.println("\nPor favor, seleccione una de las opciones habilitadas.");
+				continue;
+			}
 			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(clienteProceso, opcionMenu);
 			try {
 				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {

@@ -216,9 +216,8 @@ public class MetodoPago implements Serializable{
 			
 			if (cliente.getMetodosDePago().size() == totalMetodosDePagoPortipo) {
 				switch (tipoMembresia) {
-				
-				case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.05));break;
-				case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + (precio * 0.10));break;
+				case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + ((precio * (1 - this.getDescuentoAsociado())) * 0.05));break;
+				case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + ((precio * (1 - this.getDescuentoAsociado())) * 0.10));break;
 				}
 			}
 			
