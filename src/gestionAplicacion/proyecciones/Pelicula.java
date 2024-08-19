@@ -34,7 +34,7 @@ public class Pelicula implements Serializable{
 		this.idPelicula = cantidadPeliculasGeneradas;
 		this.valoracion = 4.0;
 		this.totalEncuestasDeValoracionRealizadas = 25;
-		this.strikeCambio = false;
+		this.strikeCambio = true;
 	}
 
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,
@@ -517,7 +517,7 @@ public class Pelicula implements Serializable{
 		 while (validacion) {
 			int fila=(int)((Math.random()*10)%8)+(1);
 			int columna=(int)((Math.random()*10)%8)+(1);
-			validacion=!this.isDisponibilidadAsientoSalaVirtual(horarioProceso, fila-1, columna-1);
+			validacion=!this.isDisponibilidadAsientoSalaVirtual(horarioProceso, fila, columna);
 			numAsiento=fila+"-"+columna;
 			
 		 }

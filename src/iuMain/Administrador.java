@@ -9,6 +9,8 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.*;
 import gestionAplicacion.servicios.*;
 import gestionAplicacion.servicios.herencia.Servicio;
+import gestionAplicacion.servicios.herencia.ServicioComida;
+import gestionAplicacion.servicios.herencia.ServicioSouvenirs;
 import gestionAplicacion.usuario.*;
 import baseDatos.Deserializador;
 import baseDatos.Serializador;
@@ -87,16 +89,12 @@ public class Administrador {
 //	static Arkade game4= new Arkade("Hang Man", 30000, "Comedia");
 //	static Arkade game5= new Arkade("Hang Man", 7500, "Drama");
 //	
-//	
 //	static SalaCine salaDeCine1_1 = new SalaCine(1, "2D", sucursalCine1);
 //	static SalaCine salaDeCine1_2 = new SalaCine(2, "3D", sucursalCine1);
 //	static SalaCine salaDeCine1_3 = new SalaCine(3, "4D", sucursalCine1);
 //	static SalaCine salaDeCine1_4 = new SalaCine(4, "2D", sucursalCine1);
 //	static SalaCine salaDeCine1_5 = new SalaCine(5, "3D", sucursalCine1);
 //	static SalaCine salaDeCine1_6 = new SalaCine(6, "4D", sucursalCine1);
-//	static SalaCine salaDeCine1_7 = new SalaCine(7, "2D", sucursalCine1);
-//	static SalaCine salaDeCine1_8 = new SalaCine(8, "3D", sucursalCine1);
-//	static SalaCine salaDeCine1_9 = new SalaCine(9, "4D", sucursalCine1);
 //
 //	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+18", "2D", sucursalCine1);
 //	
@@ -136,7 +134,7 @@ public class Administrador {
 //	static SalaCine salaDeCine3_5 = new SalaCine(5, "3D", sucursalCine3);
 //	static SalaCine salaDeCine3_6 = new SalaCine(6, "4D", sucursalCine3);
 //
-//	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 1500000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
+//	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 15000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
 //	
 //	static Pelicula pelicula3_2 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
 //	
@@ -190,7 +188,7 @@ public class Administrador {
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
 //			cliente5.getHistorialDePedidos().add(producto1);
 //			cliente5.getHistorialDePedidos().add(producto2);
-//			cliente5.getValoracionesPeliculas().add(pelicula1_3);
+////			cliente5.getValoracionesPeliculas().add(pelicula1_3);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //			
 //			//cliente4.setCuenta(tarjeta1);
@@ -367,10 +365,7 @@ public class Administrador {
 			
 			SucursalCine.setFechaRevisionLogicaDeNegocio(SucursalCine.getFechaActual().toLocalDate().plusWeeks(1)); 
 			
-			//Implementar método de cambio de película entre sucursales según su valoración
-			
-			
-			//Distribuir películas por salas, crear horarios para las nuevas presentaciones semanales
+			//Ejecutamos la lógica semanal
 			SucursalCine.logicaSemanalSistemaNegocio();
 			
 		}
@@ -415,14 +410,15 @@ public class Administrador {
 		
 		//Se revisa todas las salas de cine para ver si tienes horarios. De no ser el caso, se cambia el booleano a false.
 		for (SalaCine salaCine : sucursalActual.getSalasDeCine()) {
-			if (salaCine.isHorariosPresentacionDia() == true) {
+			
+			if (salaCine.tieneHorariosPresentacionHoy()) {
 				hayHorarios = true;
 				break;
 			}
 		}
 		//El avance de dia se realiza automáticamente en caso de que no hayan horarios y falte 1 día para cumplir la semana de trabajo.
 		if (!hayHorarios && SucursalCine.getFechaRevisionLogicaDeNegocio().minusDays(1).equals(SucursalCine.getFechaActual().toLocalDate())) {
-			System.out.println("Hemos detectado que han concluido todas las presentaciones semanales, por lo tanto,\n "
+			System.out.println("Hemos detectado que han concluido todas las presentaciones semanales, por lo tanto,\n"
 					+ "Se ejecutará la lógcia semanal del sistema de negocio y se pasará al dia siguiente de forma automática.\n"
 					+ "Gracias por su compresión\n");
 			SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()).withMinute(SucursalCine.getInicioHorarioLaboral().getMinute()).withSecond(0).withNano(0));
@@ -838,7 +834,9 @@ public class Administrador {
 			
 			//Verificamos si el cliente tiene acceso para al menos una película
 			if (carteleraPersonalizadaProceso.size() == 0) {
-				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)");
+				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)\n"
+				+ "Avanzaremos la hora hasta el fin del horario laboral 11:00 P.M. Para reiniciar este servicio");
+				SucursalCine.setFechaActual(SucursalCine.getFechaActual().withHour(SucursalCine.getFinHorarioLaboral().getHour()).withMinute(0));
 				break;
 			}
 			
@@ -2280,6 +2278,12 @@ public class Administrador {
 								serviciProceso.getOrden().get(eleccion2-1).setCantidad(serviciProceso.getOrden().get(eleccion2-1).getCantidad() - cantidad);
 								serviciProceso.getOrden().get(eleccion2-1).setPrecio(total * serviciProceso.getOrden().get(eleccion2-1).getCantidad());
 								verificacion = false;
+								Producto producto = serviciProceso.getOrden().get(eleccion2-1);
+								for (Producto producto2 : serviciProceso.getInventario()) {
+									if (producto2.getNombre() == producto.getNombre() && producto2.getTamaño() == producto.getTamaño()) {
+										producto2.setCantidad(producto2.getCantidad() + cantidad);
+									}
+								}
 							}
 						}
 						
@@ -2602,11 +2606,11 @@ public class Administrador {
 			double descuento = 0;
 			verificacion = true;
 			boolean condicion = true;
-			System.out.print("\n------EL PEDDIDO ESTA LISTO SOLO FALTA PAGAR: $"+serviciProceso.getValorPedido()+" ------\n");
+			System.out.print("\n------EL PEDIDO ESTA LISTO SOLO FALTA PAGAR: $"+serviciProceso.getValorPedido()+" ------\n");
 			do {
 				try {
 					
-					System.out.println("\nMETODOS DE PEGO DISPONIBLES:\n");
+					System.out.println("\nMETODOS DE PAGO DISPONIBLES:\n");
 					System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso));
 					System.out.print("Seleccione una opcion: ");
 					eleccion = Integer.parseInt(sc.nextLine());
@@ -2643,7 +2647,7 @@ public class Administrador {
 				if (serviciProceso.getValorPedido() == 0) {
 					valor1 = valor1 - descuento;
 					serviciProceso.setValorPedido(valor1);
-					System.out.println("LA CUOTA FUE CUBIARTA EN SU TOTALIDAD 🎉🎉🎉🎉");
+					System.out.println("LA CUOTA FUE CUBIERTA EN SU TOTALIDAD 🎉🎉🎉🎉");
 					System.out.println("\nEstamos generando su factura, por favor espere...\n");
 					try {
 						Thread.sleep(3000);
@@ -2710,7 +2714,6 @@ public class Administrador {
 				 * dentro del cine, para poder saber que peliculas o productos estan funcionando bien o por consecuencia, cuales 
 				 * estan funcionando mal
 				*/
-				Scanner sc = new Scanner(System.in);
 				//Le damos la bienvenida al cliente
 				System.out.println("********Bienvenido a la calificacion de productos*********");
 				
@@ -2797,7 +2800,7 @@ public class Administrador {
 								 * comida o de peliculas le ofrecemos un combo a un precio muy especial, y ya, esta a opcion del cliente si quiere adquirir este
 								 * combo especial o no
 								 */
-									System.out.print("\nComo calificaste un producto te queremos hacer la oferta de un combo especial, deseas verlo?\n1.Si\n2.No : ");
+									System.out.println("\nComo calificaste un producto te queremos hacer la oferta de un combo especial, deseas verlo?\n1.Si\n2.No");
 									eleccion1 = Integer.parseInt(sc.nextLine());
 									if (eleccion1==1) {
 										Pelicula peliculaCombo=clienteProceso.getCineActual().peorPelicula();
@@ -2809,12 +2812,13 @@ public class Administrador {
 										 * mejor pelicula con el peor producto, esto lo hacemos con el fin de logica de negocio, y podamos tener mejores resultados con 
 										 * los productos y peliculas.
 										 */
-										System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula" +
-										peliculaCombo.getNombre() + "y el producto " + productoCombo1.getNombre() + productoCombo1.getTamaño()) ;
+										System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula " +
+										peliculaCombo.getNombre() + " en formato " + peliculaCombo.getTipoDeFormato() + "\nen el horario " + opcionHorarioPelicula + " en el asiento " + numAsientoProceso 
+										+"\ny el producto " + productoCombo1.getNombre() + " " + productoCombo1.getTamaño());
 										
 										double precioTotal=0;
 										precioTotal=peliculaCombo.getPrecio()+productoCombo1.getPrecio();
-										System.out.println("Este combo tiene un precio de: " + precioTotal + ",deseas adquirirlo? \n1.Si\n2.No:  ");
+										System.out.println("Este combo tiene un precio de: " + precioTotal + ",deseas adquirirlo? \n1.Si\n2.No");
 										eleccion2 = Integer.parseInt(sc.nextLine());
 										if(eleccion2==1) {
 											//Iniciamos el proceso de pago
@@ -2913,7 +2917,7 @@ public class Administrador {
 
 														System.out.println("-----------------------Factura--------------------------");
 														System.out.println("------------------Este es tu combo!!---------------------");
-														System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre()+ productoCombo1.getTamaño()) ;;
+														System.out.println(peliculaCombo.getNombre()+ " y " + productoCombo1.getNombre()+ " " + productoCombo1.getTamaño()) ;;
 														System.out.println("------Felicidades, gracias por confiar en nosotros----");
 														System.out.println("");
 														pagoRealizado = true;
@@ -3479,7 +3483,7 @@ private static void ingresoZonaJuegos(Cliente ClienteActual) {
 			if (eleccion6 > 0 && eleccion6 <= ClienteActual.getCodigosDescuento().size()) {
 				generoCodigoPelicula = Ticket.encontrarGeneroCodigoPelicula(ClienteActual.getCodigosDescuento().get(eleccion6-1));
 				ClienteActual.getCodigosDescuento().remove(eleccion6-1);
-				System.out.println("•Perfeto 😁, se le asignará un descuento del 20% al precio de los juegos con categoria "+ generoCodigoPelicula);
+				System.out.println("•Perfecto 😁, se le asignará un descuento del 20% al precio de los juegos con categoría "+ generoCodigoPelicula);
 				espera(2500);
 				barraCarga("Aplicando descuento");
 				Arkade.AplicarDescuentoJuegos(generoCodigoPelicula);
@@ -3771,7 +3775,7 @@ private static void espera(int time) {
 private static String juego(String[] PALABRAS) {
     String match = null;
 
-    Scanner scanner = new Scanner(System.in);
+    sc.nextLine();
     String palabraSecreta = PALABRAS[(int) (Math.random() * PALABRAS.length)];
     char[] palabraAdivinada = new char[palabraSecreta.length()];
     String letrasUsadas = ""; // Para rastrear letras ya usadas
@@ -3790,7 +3794,7 @@ private static String juego(String[] PALABRAS) {
         System.out.println();
 
         System.out.print("Ingresa una letra: ");
-        String input = scanner.nextLine().toUpperCase();
+        String input = sc.nextLine().toUpperCase();
         if (input.length() != 1 || !esLetraValida(input.charAt(0))) {
             System.out.println("Carácter inválido. Intenta otra vez.");
             intentosRestantes--;
@@ -3943,7 +3947,7 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
 				//Se revisa si el cliente esta intentando seleccionar la misma categoria pero aún no es tiempo de renovarla.
-				if (opcionMenu == clienteProceso.getMembresia().getCategoria() && clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())) {
+				if (clienteProceso.getMembresia()!=null && opcionMenu == clienteProceso.getMembresia().getCategoria() && clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())) {
 					System.out.println("Por favor seleccione una opción habilitada");
 					continue;
 				}
@@ -3976,6 +3980,10 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 			+ MetodoPago.mostrarMetodosDePago(clienteProceso) + "\n6. Volver al inicio \nIngrese la opción: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
 			if (opcionMenu == 6) {Administrador.inicio(clienteProceso);}
+			else if (clienteProceso.getMembresia()==null && opcionMenu==5) {
+				System.out.println("\nPor favor, seleccione una de las opciones habilitadas.");
+				continue;
+			}
 			MetodoPago metodoPagoSeleccionado = MetodoPago.usarMetodopago(clienteProceso, opcionMenu);
 			try {
 				if (metodoPagoSeleccionado.getDescuentoAsociado() != 0 && valorAPagar == membresiaNueva.getValorSuscripcionMensual()) {

@@ -79,33 +79,24 @@ public class SucursalCine implements Serializable {
 	
 	/**
 	 * Description : Este método se encarga de actualizar las salas de todas las sedes, para esto, iteramos sobre el ArrayList de las sedes,
-	 * luego iteramos sobre el ArrayList de las salas de cine de cada sede y en caso de que tenga que presentar películas ese día,
-	 * actualizamos la sala de cine.
+	 * luego iteramos sobre el ArrayList de las salas de cine de cada sede.
 	 * */
 	public static void actualizarPeliculasSalasDeCine() {
 		
 		for (SucursalCine sede : sucursalesCine) {
 			//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
 			for (SalaCine salaDeCine : sede.salasDeCine) {
-				if (salaDeCine.isHorariosPresentacionDia()) {
-					//try en caso de que sea la primera vez que se realiza este proceso y el horarioPeliculaEnPresentacion sea nulo
-					try {
-						//Solo actualizamos las salas de cine que estrictamente deban ser actualizadas
-						if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion().plus(LIMPIEZA_SALA_DE_CINE)).isAfter(fechaActual) ) ) {
-							
-							salaDeCine.actualizarPeliculasEnPresentacion();
-							//Revisamos si la sala de cine tiene más presentaciones durante este día
-							salaDeCine.tieneMasHorariosPresentacionHoy();
-							
-						}
-					}catch(NullPointerException e) {
-						//Revisamos si la sala de cine tiene más presentaciones durante este día
-						salaDeCine.tieneMasHorariosPresentacionHoy();
-						//Llegamos acá en caso de desearialización o primer inicio de programa
+				//try en caso de que sea la primera vez que se realiza este proceso y el horarioPeliculaEnPresentacion sea nulo
+				try {
+					//Solo actualizamos las salas de cine que estrictamente deban ser actualizadas
+					if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion().plus(LIMPIEZA_SALA_DE_CINE)).isAfter(fechaActual) ) ) {
 						salaDeCine.actualizarPeliculasEnPresentacion();
-						
-						
 					}
+				}catch(NullPointerException e) {
+					//Llegamos acá en caso de desearialización o primer inicio de programa
+					salaDeCine.actualizarPeliculasEnPresentacion();
+					
+					
 				}
 			}
 		}
@@ -324,17 +315,25 @@ public class SucursalCine implements Serializable {
 	 * */
 	public static void logicaSemanalSistemaNegocio() {
 		ticketsDisponibles.clear();
+		
+		ArrayList<Pelicula> peliculas2D = new ArrayList<Pelicula>();
 		for (SucursalCine sede : sucursalesCine) {
 			for(Pelicula pelicula:sede.cartelera) {
 				if(pelicula.getTipoDeFormato().equals("2D")){
-					sede.logicaCalificacionPeliculas(pelicula);
+					peliculas2D.add(pelicula);
 				}
+			}
+			
+			for (Pelicula pelicula : peliculas2D) {
+				sede.logicaCalificacionPeliculas(pelicula);
 			}
 			
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();
 			
 		}
+		
+		
 		
 		logicaSemanalProducto();
 		
@@ -366,7 +365,6 @@ public class SucursalCine implements Serializable {
 	/**
 	 * Description : Este método se encarga de evaluar la lógica diaria de la reserva de tickets, para esto evalua los siguientes criterios:
 	 * <ol>
-	 * <li>Revisa la posibilidad de que una sala de cine pueda ser actualizada durante ese día.</li>
 	 * <li>Añade los tickets de películas que serán presentadas el día de hoy al array de tickets para descuento y elimina los tickets
 	 * caducados de los clientes y del array de tickets disponibles.</li>
 	 * <li>Elimina los horarios de películas que ya no serán presentados.</li>
@@ -377,12 +375,6 @@ public class SucursalCine implements Serializable {
 		ArrayList<Ticket> ticketsAEliminar = new ArrayList<Ticket>();
 		
 		for (SucursalCine sede : sucursalesCine) {
-			
-			//Revisamos si las salas de cine presentarán películas el día de hoy
-			for (SalaCine salaDeCine : sede.salasDeCine) {
-				salaDeCine.tieneMasHorariosPresentacionHoy();
-			}
-			
 			//Añadimos los tickets que podrán recibir descuentos a su array de tickets para descuento de su respectiva sucursal
 			sede.ticketsParaDescuento.clear();
 			for (Ticket ticket : ticketsDisponibles) {
@@ -531,11 +523,11 @@ public class SucursalCine implements Serializable {
 		boolean verificacionCambio=true;
 		for(Pelicula peliculas : peliculasCalificadas) {
 			promedio = promedio + peliculas.getValoracion();
-			calificacionReal = promedio/peliculasCalificadas.size();
 			verificacionCambio=peliculas.isStrikeCambio();
-			
-			
 		}
+		
+		calificacionReal = promedio/peliculasCalificadas.size();
+		
 		if (calificacionReal<3) {
 			if(verificacionCambio) {
 				SucursalCine sucursal=seleccionarSucursalAleatoriamente(this);
@@ -543,7 +535,6 @@ public class SucursalCine implements Serializable {
 					this.getCartelera().remove(pelicula1);
 					if (pelicula1.getTipoDeFormato().equals("2D")){
 						new Pelicula(pelicula1.getNombre(),(int)(pelicula1.getPrecio()*0.9),pelicula1.getGenero(),pelicula1.getDuracion(),pelicula1.getClasificacion(),pelicula1.getTipoDeFormato(),sucursal);
-						
 					}
 				}
 				
