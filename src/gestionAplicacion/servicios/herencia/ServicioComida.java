@@ -20,27 +20,9 @@ public class ServicioComida extends Servicio {
 		super(nombre);
 	}
 	
-	
-	
-	public void organizarMesas() {
-		for (int i=0;i<5;i++) {
-			int indiceCambio = ((int) (Math.random()*10))%10;
-			if (asignacionDeMesas[indiceCambio]) {
-				continue;
-			}
-			else {
-				asignacionDeMesas[indiceCambio]=false;
-			}
-		}
-	}
-	
-
 	/**
-	 * Description: Este metodo filtra y actualiza los productos que hay en el
-	 * inventerio dependiendo de la sucursal de cine y del tipo del producto
-	 * 
-	 * @return <b>inventarii</b> : Genera un inventario con los productos
-	 *         disponibles del servicio segun su localidad para tener una carta mas
+	 * Description: Este metodo filtra y actualiza los productos que hay en el inventerio dependiendo de la sucursal de cine y del tipo del producto
+	 * @return <b>inventarii</b> : Genera un inventario con los productos disponibles del servicio segun su localidad para tener una carta mas
 	 *         eficiente a la hora de mostrarla al cliente
 	 */
 
@@ -93,6 +75,18 @@ public class ServicioComida extends Servicio {
 				"===========================================================\n";
 		return factura;
 
+	}
+	
+	public void organizarMesas() {
+		for (int i=0;i<5;i++) {
+			int indiceCambio = ((int) (Math.random()*10))%10;
+			if (asignacionDeMesas[indiceCambio]) {
+				continue;
+			}
+			else {
+				asignacionDeMesas[indiceCambio]=false;
+			}
+		}
 	}
 
 }
