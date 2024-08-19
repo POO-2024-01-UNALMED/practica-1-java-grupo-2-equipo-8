@@ -28,12 +28,6 @@ public abstract class Servicio implements IBuyable, Serializable{
 		this.nombre = nombre;
 	}
 	
-	// Metodos abstractos y ligadura Dinamica
-	
-	public abstract boolean descontarPorCompra (MetodoPago metodo);
-	
-	public abstract ArrayList<Producto> actualizarInventario();
-	
 	//ligadura estatica
 	/**
 	*Description: Me muestra los bonos que tengo disponible para decidir si reclamo uno de esos
@@ -88,6 +82,11 @@ public abstract class Servicio implements IBuyable, Serializable{
 		return null;
 	}
 	
+	// Metodos abstractos y ligadura Dinamica
+	
+	public abstract boolean descuentarPorCompra (MetodoPago metodo);
+	
+	public abstract ArrayList<Producto> actualizarInventario();
 	
 	public double calcularTotal() {
 		double total = 0;

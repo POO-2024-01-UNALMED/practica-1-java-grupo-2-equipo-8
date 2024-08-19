@@ -57,7 +57,7 @@ public class ServicioComida extends Servicio {
 	}
 
 	@Override
-	public boolean descontarPorCompra(MetodoPago metodo) {
+	public boolean descuentarPorCompra(MetodoPago metodo) {
 		if (!metodo.getNombre().equalsIgnoreCase("Efectivo")) {
 			for (int i = 0; i < orden.size(); i++) {
 				if (orden.get(i).getTamaño().equalsIgnoreCase("Cangreburger") && (orden.get(i).getPrecio() > 100000)) {

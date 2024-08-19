@@ -22,7 +22,7 @@ public class ServicioSouvenirs extends Servicio{
 	*nos sirve para saber si tiene descuento o no
 	*@return <b>boolean</b> :Retorna un boolean para informarle al usuario que si se hizo el descuento
 	*/
-	public boolean descontarPorCompra(MetodoPago metodo) {
+	public boolean descuentarPorCompra(MetodoPago metodo) {
 		if (!metodo.getNombre().equalsIgnoreCase("Efectivo")) {
 			for(int i = 0; i < orden.size(); i++) {
 				if (orden.get(i).getTamaño().equalsIgnoreCase("Katana") && (orden.get(i).getPrecio() > 120000)) {
