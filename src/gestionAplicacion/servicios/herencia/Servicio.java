@@ -28,7 +28,6 @@ public abstract class Servicio implements IBuyable, Serializable{
 		this.nombre = nombre;
 	}
 	
-	//ligadura estatica
 	/**
 	*Description: Me muestra los bonos que tengo disponible para decidir si reclamo uno de esos
 	*@param servicio : Recibe un parametro de tipo servicio para poder ver los 
@@ -88,6 +87,11 @@ public abstract class Servicio implements IBuyable, Serializable{
 	
 	public abstract ArrayList<Producto> actualizarInventario();
 	
+	/**
+	*Description: Hace una suma de todos los precios que tiene la orden para poder efectuar su pago
+	*@return <b>total</b> :Retorna el total que tiene que pagar el cliente despues de sumar todos los productos
+	*/
+	
 	public double calcularTotal() {
 		double total = 0;
 		for(int i = 0; i < orden.size();i++) {
@@ -95,6 +99,13 @@ public abstract class Servicio implements IBuyable, Serializable{
 		}
 		return total;
 	}
+	
+	/**
+	*Description: Agrega el producto que recive por parametro si en la orden no hay uno igual, 
+	*llegando el caso de que halla uno igual aumenta su cantidad y precio
+	*@param producto : Recibe un parametro de tipo producto para poder compararlo si ya hay uno igual,
+	* o en caso contrario agregarlo
+	*/
 	
 	public void agregarOrden (Producto producto) {
 		if(0 < orden.size()) {
@@ -115,6 +126,12 @@ public abstract class Servicio implements IBuyable, Serializable{
 		}
 	}
 	
+	/**
+	*Description: Me busca el producto en la orden, para asi disminuir su precio
+	*@param producto : Recibe un parametro de tipo producto para poder compararlo
+	* con los productos de la orden y asi modificar el producto adecuado
+	*/
+	
 	public void descontarProducto (Producto producto) {
 		for(int i=0; i< orden.size(); i++) {
 			if(orden.get(i).getNombre() == producto.getNombre() && orden.get(i).getTamaño() == producto.getTamaño()) {
@@ -124,7 +141,14 @@ public abstract class Servicio implements IBuyable, Serializable{
 		}
 	}
 
-	//Ligadura Estatica
+	/**
+	*Description: Me verifica si existe un bono asociado con el codigo para asi elminarme la referencia del cliente y 
+	*generarme el producto del bono ademas de modificarme el inventario para asi reservar su producto
+	*@param codigo : Recibe un parametro de tipo String el cual es el codigo que 
+	*tiene asociado un bono si esta correctamente escrito
+	*@param servicio : Recibe un parametro de tipo Servicio para poder ver los bonos existentes del cliente
+	*@return <b>producto</b> :Retorna el primer producto del bono que tiene asociado
+	*/
 	
 	public static Producto validarBono(String codigo , Servicio servicio){
 		Producto producto;

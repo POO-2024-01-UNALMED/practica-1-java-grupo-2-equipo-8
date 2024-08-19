@@ -35,7 +35,14 @@ public class ServicioSouvenirs extends Servicio{
 		return false;
 	}
 	
-	@Override
+	/**	@Override
+	 * Description: Este metodo filtra y actualiza los productos que hay en el
+	 * inventerio dependiendo de la sucursal de cine y del tipo del producto
+	 * 
+	 * @return <b>inventario</b> : Genera un inventario con los productos
+	 *         disponibles del servicio segun su localidad para tener una carta mas
+	 *         eficiente a la hora de mostrarla al cliente
+	 */
 	public ArrayList<Producto> actualizarInventario(){
 		ArrayList<Producto> inventarioGeneral = getCliente().getCineActual().getInventarioCine();
 		ArrayList<Producto> inventario = new ArrayList<Producto>();
@@ -47,7 +54,11 @@ public class ServicioSouvenirs extends Servicio{
 		return inventario;
 	}
 
-	@Override
+	/**	@Override
+	 * Description: Este metodo me restablece los metodos de pago del cliente,
+	 *  ademas de restablecerme la orden y el valor del pedido
+	 * @param cliente : se resive un cliente para poder restablecerte los metodos de pago
+	 */
 	public void procesarPagoRealizado(Cliente cliente) {
 		
 		MetodoPago.asignarMetodosDePago(cliente);
@@ -57,7 +68,12 @@ public class ServicioSouvenirs extends Servicio{
 		valorPedido = 0.0;
 	}
 
-	@Override
+	/**	@Override
+	 * Description: Me genera una factura la cual me muestra toda la orden y con su informacion
+	 *  y fecha de compra
+	 * @return <b>fartura</b> : Genera un String con la fecha actual, el nombre del cliente,
+	 * y el total menos sus descuentos
+	 */
 	public String factura() {
 		String factura;
 		factura="                          CINEMAR \n"+
