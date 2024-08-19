@@ -413,30 +413,32 @@ public class Administrador {
 		
 		//Se crean variables para obtener la sucursal actual y una booleano que indica si hay horarios.
 		SucursalCine sucursalActual = clienteProceso.getCineActual();
-		Boolean hayHorarios = true;
+		Boolean hayHorarios = false;
 		
 		//Se revisa todas las salas de cine para ver si tienes horarios. De no ser el caso, se cambia el booleano a false.
 		for (SalaCine salaCine : sucursalActual.getSalasDeCine()) {
-			if (salaCine.isHorariosPresentacionDia() == false) {
-				hayHorarios = false;
+			if (salaCine.isHorariosPresentacionDia() == true) {
+				hayHorarios = true;
 				break;
 			}
 		}
 		//El avance de dia se realiza automáticamente en caso de que no hayan horarios y falte 1 día para cumplir la semana de trabajo.
 		if (!hayHorarios && SucursalCine.getFechaRevisionLogicaDeNegocio().minusDays(1).equals(SucursalCine.getFechaActual().toLocalDate())) {
-			System.out.println("Debido al proceso de negocios, se pasará al dia siguiente. Gracias por su compresión\n");
-			SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()));
+			System.out.println("Hemos detectado que han concluido todas las presentaciones semanales, por lo tanto,\n "
+					+ "Se ejecutará la lógcia semanal del sistema de negocio y se pasará al dia siguiente de forma automática.\n"
+					+ "Gracias por su compresión\n");
+			SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()).withMinute(SucursalCine.getInicioHorarioLaboral().getMinute()).withSecond(0).withNano(0));
 			
 		//El avance de día se preguntará al usuario cuando ya no haya más peliculas por presentar.	
 		} else if (!hayHorarios) {
 			int opcionMenu = 0;
 			try {
-			System.out.println("Ya no hay más horarios. ¿Desea pasar al siguiente dia?\n1. Si.\n2. No.");
+			System.out.println("Ya no hay más presentaciones de películas el día de hoy. ¿Desea avanzar al siguiente dia?\n1. Si.\n2. No.");
 			opcionMenu = Integer.parseInt(sc.nextLine());
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} switch (opcionMenu) {
-				case 1: SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()));break;
+				case 1: SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1).withHour(SucursalCine.getInicioHorarioLaboral().getHour()).withMinute(SucursalCine.getInicioHorarioLaboral().getMinute()).withSecond(0).withNano(0)); break;
 				case 2: break;
 			}
 		}

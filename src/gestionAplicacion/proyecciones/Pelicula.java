@@ -431,7 +431,7 @@ public class Pelicula implements Serializable{
 	 * se añaden las películas creadas a la cartelera de la sucursal que se pasa como parámetro.
 	 * @param sucursalCine : Este método recibe como parámetro la sede (De tipo SucursalCine) en la que será presentada la película.
 	 * */
-	public void crearPelicula(SucursalCine sucursalCine) {
+	private void crearPelicula(SucursalCine sucursalCine) {
 		
 		ArrayList<String> generos4D = new ArrayList<>();
 		generos4D.add("Aventura");

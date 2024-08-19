@@ -44,7 +44,7 @@ public class SalaCine implements Serializable{
 	 * Description : Este método se encarga de generar asientos para la sala de cine, facilitando el proceso de crear una sala de cine.
 	 * @return Asiento[][] :  Este método retorna una matriz de asientos.
 	 * */
-	public Asiento[][] crearAsientosSalaDeCine() {
+	private Asiento[][] crearAsientosSalaDeCine() {
 		Asiento[][] DistribucionAsientosSalaDeCine = new Asiento[8][8];
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -112,7 +112,7 @@ public class SalaCine implements Serializable{
 	 * @param fila : Índice de la fila del asiento que queremos modificar (De tipo int).
 	 * @param columna : Índice de la columna del asiento que queremos modificar (De tipo int).
 	 * */
-	public void cambiarDisponibilidadAsientoLibreParaOcupado(int fila, int columna) {
+	private void cambiarDisponibilidadAsientoLibreParaOcupado(int fila, int columna) {
 		this.asientos[fila - 1][columna - 1].setDisponibilidad(false);	
 	}
 	
@@ -123,7 +123,7 @@ public class SalaCine implements Serializable{
 	 * @param fila : Índice de la fila del asiento que queremos modificar (De tipo int).
 	 * @param columna : Índice de la columna del asiento que queremos modificar(De tipo int).
 	 * */
-	public void cambiarDisponibilidadAsientoOcupadoParaLibre(int fila, int columna) {
+	private void cambiarDisponibilidadAsientoOcupadoParaLibre(int fila, int columna) {
 		if (!this.asientos[fila - 1][columna - 1].isDisponibilidad()) {
 			this.asientos[fila - 1][columna - 1].setDisponibilidad(true);
 		}
