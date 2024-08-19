@@ -34,7 +34,7 @@ public class Pelicula implements Serializable{
 		this.idPelicula = cantidadPeliculasGeneradas;
 		this.valoracion = 4.0;
 		this.totalEncuestasDeValoracionRealizadas = 25;
-		this.strikeCambio = false;
+		this.strikeCambio = true;
 	}
 
 	public Pelicula(String nombre, int precio, String genero, Duration duracion, String clasificacion,

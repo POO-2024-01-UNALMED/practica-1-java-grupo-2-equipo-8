@@ -188,7 +188,7 @@ public class Administrador {
 //			cliente5.getPeliculasDisponiblesParaCalificar().add(pelicula1_2);
 //			cliente5.getHistorialDePedidos().add(producto1);
 //			cliente5.getHistorialDePedidos().add(producto2);
-//			cliente5.getValoracionesPeliculas().add(pelicula1_3);
+////			cliente5.getValoracionesPeliculas().add(pelicula1_3);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //			
 //			//cliente4.setCuenta(tarjeta1);
@@ -834,7 +834,9 @@ public class Administrador {
 			
 			//Verificamos si el cliente tiene acceso para al menos una película
 			if (carteleraPersonalizadaProceso.size() == 0) {
-				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)");
+				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)\n"
+				+ "Avanzaremos la hora hasta el fin del horario laboral 11:00 P.M. Para reiniciar este servicio");
+				SucursalCine.setFechaActual(SucursalCine.getFechaActual().withHour(SucursalCine.getFinHorarioLaboral().getHour()).withMinute(0));
 				break;
 			}
 			

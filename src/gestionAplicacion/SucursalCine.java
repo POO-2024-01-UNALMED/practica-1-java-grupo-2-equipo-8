@@ -315,17 +315,25 @@ public class SucursalCine implements Serializable {
 	 * */
 	public static void logicaSemanalSistemaNegocio() {
 		ticketsDisponibles.clear();
+		
+		ArrayList<Pelicula> peliculas2D = new ArrayList<Pelicula>();
 		for (SucursalCine sede : sucursalesCine) {
 			for(Pelicula pelicula:sede.cartelera) {
 				if(pelicula.getTipoDeFormato().equals("2D")){
-					sede.logicaCalificacionPeliculas(pelicula);
+					peliculas2D.add(pelicula);
 				}
+			}
+			
+			for (Pelicula pelicula : peliculas2D) {
+				sede.logicaCalificacionPeliculas(pelicula);
 			}
 			
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();
 			
 		}
+		
+		
 		
 		logicaSemanalProducto();
 		
@@ -515,11 +523,11 @@ public class SucursalCine implements Serializable {
 		boolean verificacionCambio=true;
 		for(Pelicula peliculas : peliculasCalificadas) {
 			promedio = promedio + peliculas.getValoracion();
-			calificacionReal = promedio/peliculasCalificadas.size();
 			verificacionCambio=peliculas.isStrikeCambio();
-			
-			
 		}
+		
+		calificacionReal = promedio/peliculasCalificadas.size();
+		
 		if (calificacionReal<3) {
 			if(verificacionCambio) {
 				SucursalCine sucursal=seleccionarSucursalAleatoriamente(this);
@@ -527,7 +535,6 @@ public class SucursalCine implements Serializable {
 					this.getCartelera().remove(pelicula1);
 					if (pelicula1.getTipoDeFormato().equals("2D")){
 						new Pelicula(pelicula1.getNombre(),(int)(pelicula1.getPrecio()*0.9),pelicula1.getGenero(),pelicula1.getDuracion(),pelicula1.getClasificacion(),pelicula1.getTipoDeFormato(),sucursal);
-						
 					}
 				}
 				
