@@ -42,8 +42,7 @@ public class Cliente implements Serializable{
 	private int origenMembresia;
 	private ArrayList<MetodoPago> metodosDePago = new ArrayList<>();
 	
-	//Posiblemente eliminar los siguientes atributos:
-	private ArrayList<Pelicula> valoracionesPeliculas=new ArrayList<>();
+
 	
 	//Constructores
 	public Cliente(){
@@ -453,13 +452,6 @@ public class Cliente implements Serializable{
 		this.peliculasDisponiblesParaCalificar = peliculasDisponiblesParaCalificiar;
 	}
 	
-	public ArrayList<Pelicula> getValoracionesPeliculas() {
-		return valoracionesPeliculas;
-	}
-
-	public void setValoracionesPeliculas(ArrayList<Pelicula> valoracionesPeliculas) {
-		this.valoracionesPeliculas = valoracionesPeliculas;
-	}
 
 	public int getPuntos() {
 		return puntos;

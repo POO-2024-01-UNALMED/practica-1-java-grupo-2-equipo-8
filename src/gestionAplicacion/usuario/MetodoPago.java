@@ -12,7 +12,6 @@ public class MetodoPago implements Serializable{
 	private String nombre;
 	private double descuentoAsociado;
 	private double limiteMaximoPago;
-	//private static ArrayList<MetodoPago> metodosDePagoUsados = new ArrayList<>();
 	private int tipo;
 	
 	

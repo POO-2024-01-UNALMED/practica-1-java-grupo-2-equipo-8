@@ -400,7 +400,7 @@ public class Deserializador {
 				ticketsAEliminar.add(ticket);
 			} else {
 				//Reasigna los atributos cliente, sucursal, película y sala de cine para realizar validaciones de uso correctamente.
-				ticket.agregarTIcketClienteSerializado();
+				ticket.agregarTicketClienteSerializado();
 				ticket.setSucursalCompra( SucursalCine.obtenerSucursalPorId(ticket.getPelicula().getSucursalCartelera().getIdSucursal()) );
 				ticket.setPelicula( ticket.getSucursalCompra().obtenerPeliculaPorId( ticket.getPelicula().getIdPelicula() ));
 				ticket.setSalaDeCine( ticket.getPelicula().getSalaPresentacion() );
