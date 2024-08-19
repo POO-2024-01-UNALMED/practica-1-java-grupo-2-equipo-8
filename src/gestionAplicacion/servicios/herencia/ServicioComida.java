@@ -10,9 +10,6 @@ import gestionAplicacion.usuario.MetodoPago;
 
 public class ServicioComida extends Servicio {
 	
-	public static final Duration TIEMPO_DE_ESPERA = Duration.ofMinutes(15);
-	private boolean[] asignacionDeMesas = new boolean[10];
-	
 	public ServicioComida() {
 	}
 
@@ -25,8 +22,6 @@ public class ServicioComida extends Servicio {
 	 * @return <b>inventarii</b> : Genera un inventario con los productos disponibles del servicio segun su localidad para tener una carta mas
 	 *         eficiente a la hora de mostrarla al cliente
 	 */
-
-	@Override
 	public ArrayList<Producto> actualizarInventario() {
 		ArrayList<Producto> inventarioGeneral = getCliente().getCineActual().getInventarioCine();
 		ArrayList<Producto> inventario = new ArrayList<Producto>();
@@ -38,8 +33,15 @@ public class ServicioComida extends Servicio {
 		return inventario;
 	}
 
-	@Override
-	public boolean descontarPorCompra(MetodoPago metodo) {
+	/**
+	* @Override
+	*Description: Me verifica si el metodo de pago tiene un descuento asociado y si 
+	*cumple la condicion para generar su descuento
+	*@param metodo : Recibe un parametro de tipo metodo de pago el cual 
+	*nos sirve para saber si tiene descuento o no
+	*@return <b>boolean</b> :Retorna un boolean para informarle al usuario que si se hizo el descuento
+	*/
+	public boolean descuentarPorCompra(MetodoPago metodo) {
 		if (!metodo.getNombre().equalsIgnoreCase("Efectivo")) {
 			for (int i = 0; i < orden.size(); i++) {
 				if (orden.get(i).getTamaño().equalsIgnoreCase("Cangreburger") && (orden.get(i).getPrecio() > 100000)) {
@@ -52,7 +54,11 @@ public class ServicioComida extends Servicio {
 		return false;
 	}
 
-	@Override
+	/**	@Override
+	 * Description: Este metodo me restablece los metodos de pago del cliente,
+	 *  ademas de restablecerme la orden y el valor del pedido
+	 * @param cliente : se resive un cliente para poder restablecerte los metodos de pago
+	 */
 	public void procesarPagoRealizado(Cliente cliente) {
 		
 		MetodoPago.asignarMetodosDePago(cliente);
@@ -63,7 +69,12 @@ public class ServicioComida extends Servicio {
 		
 	}
 
-	@Override
+	/**	@Override
+	 * Description: Me genera una factura la cual me muestra toda la orden y con su informacion
+	 *  y fecha de compra
+	 * @return <b>fartura</b> : Genera un String con la fecha actual, el nombre del cliente,
+	 * y el total menos sus descuentos
+	 */
 	public String factura() {
 		String factura;
 		factura="                          CINEMAR \n"+
