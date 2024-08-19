@@ -79,33 +79,24 @@ public class SucursalCine implements Serializable {
 	
 	/**
 	 * Description : Este método se encarga de actualizar las salas de todas las sedes, para esto, iteramos sobre el ArrayList de las sedes,
-	 * luego iteramos sobre el ArrayList de las salas de cine de cada sede y en caso de que tenga que presentar películas ese día,
-	 * actualizamos la sala de cine.
+	 * luego iteramos sobre el ArrayList de las salas de cine de cada sede.
 	 * */
 	public static void actualizarPeliculasSalasDeCine() {
 		
 		for (SucursalCine sede : sucursalesCine) {
 			//Evaluamos si la sala de cine en cuestion necesita un cambio de película en presentación
 			for (SalaCine salaDeCine : sede.salasDeCine) {
-				if (salaDeCine.isHorariosPresentacionDia()) {
-					//try en caso de que sea la primera vez que se realiza este proceso y el horarioPeliculaEnPresentacion sea nulo
-					try {
-						//Solo actualizamos las salas de cine que estrictamente deban ser actualizadas
-						if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion().plus(LIMPIEZA_SALA_DE_CINE)).isAfter(fechaActual) ) ) {
-							
-							salaDeCine.actualizarPeliculasEnPresentacion();
-							//Revisamos si la sala de cine tiene más presentaciones durante este día
-							salaDeCine.tieneMasHorariosPresentacionHoy();
-							
-						}
-					}catch(NullPointerException e) {
-						//Revisamos si la sala de cine tiene más presentaciones durante este día
-						salaDeCine.tieneMasHorariosPresentacionHoy();
-						//Llegamos acá en caso de desearialización o primer inicio de programa
+				//try en caso de que sea la primera vez que se realiza este proceso y el horarioPeliculaEnPresentacion sea nulo
+				try {
+					//Solo actualizamos las salas de cine que estrictamente deban ser actualizadas
+					if ( !(salaDeCine.getHorarioPeliculaEnPresentacion().plus(salaDeCine.getPeliculaEnPresentacion().getDuracion().plus(LIMPIEZA_SALA_DE_CINE)).isAfter(fechaActual) ) ) {
 						salaDeCine.actualizarPeliculasEnPresentacion();
-						
-						
 					}
+				}catch(NullPointerException e) {
+					//Llegamos acá en caso de desearialización o primer inicio de programa
+					salaDeCine.actualizarPeliculasEnPresentacion();
+					
+					
 				}
 			}
 		}
@@ -366,7 +357,6 @@ public class SucursalCine implements Serializable {
 	/**
 	 * Description : Este método se encarga de evaluar la lógica diaria de la reserva de tickets, para esto evalua los siguientes criterios:
 	 * <ol>
-	 * <li>Revisa la posibilidad de que una sala de cine pueda ser actualizada durante ese día.</li>
 	 * <li>Añade los tickets de películas que serán presentadas el día de hoy al array de tickets para descuento y elimina los tickets
 	 * caducados de los clientes y del array de tickets disponibles.</li>
 	 * <li>Elimina los horarios de películas que ya no serán presentados.</li>
@@ -377,12 +367,6 @@ public class SucursalCine implements Serializable {
 		ArrayList<Ticket> ticketsAEliminar = new ArrayList<Ticket>();
 		
 		for (SucursalCine sede : sucursalesCine) {
-			
-			//Revisamos si las salas de cine presentarán películas el día de hoy
-			for (SalaCine salaDeCine : sede.salasDeCine) {
-				salaDeCine.tieneMasHorariosPresentacionHoy();
-			}
-			
 			//Añadimos los tickets que podrán recibir descuentos a su array de tickets para descuento de su respectiva sucursal
 			sede.ticketsParaDescuento.clear();
 			for (Ticket ticket : ticketsDisponibles) {

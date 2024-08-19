@@ -1,7 +1,6 @@
 package gestionAplicacion.proyecciones;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import gestionAplicacion.SucursalCine;
@@ -20,7 +19,6 @@ public class SalaCine implements Serializable{
 	private Asiento[][] asientos;
 	private Pelicula peliculaEnPresentacion;
 	private SucursalCine ubicacionSede;
-	private boolean horariosPresentacionDia;
 	
 	//Constructors
 	public SalaCine() {
@@ -35,7 +33,6 @@ public class SalaCine implements Serializable{
 		this.ubicacionSede = ubicacionSede;
 		ubicacionSede.getSalasDeCine().add(this);
 		this.asientos = this.crearAsientosSalaDeCine();
-		this.horariosPresentacionDia = true;
 
 	}
 
@@ -396,20 +393,18 @@ public class SalaCine implements Serializable{
 	}
 	
 	/**
-	 * Description : Este método se encarga de revisar si una sala de cine tendrá durante ese día más películas en presentación,
-	 * actualizando su atributo de horariosPresentacionDia, con el fin de reducir el número de peticiones de actualización provenientes 
-	 * de esta sala de cine optimizando el código.
+	 * Description : Este método se encarga de revisar si una sala de cine tendrá durante ese día más películas en presentación.
+	 * @return <b>boolean</b> : retorna el estado de la validación.
 	 * */
-	public void tieneMasHorariosPresentacionHoy() {
+	public boolean tieneHorariosPresentacionHoy() {
 		
-		LocalDate diaActual = SucursalCine.getFechaActual().toLocalDate();
 		boolean isHorarioEncontrado = false;		
 		
 		for (Pelicula pelicula : ubicacionSede.getCartelera()) {
 			if (pelicula.getSalaPresentacion().equals(this)) {
 				for (LocalDateTime horario : pelicula.filtrarHorariosPeliculaParaSalaCine()) {
 					
-					if (horario.toLocalDate().isEqual(diaActual)) {
+					if (horario.plus(pelicula.getDuracion()).isAfter(SucursalCine.getFechaActual())) {
 						isHorarioEncontrado = true;
 						break;
 					}
@@ -421,7 +416,7 @@ public class SalaCine implements Serializable{
 			}
 		}
 		
-		this.horariosPresentacionDia = isHorarioEncontrado;
+		return isHorarioEncontrado;
 		
 	}
 	
@@ -472,14 +467,6 @@ public class SalaCine implements Serializable{
 
 	public void setUbicacionSede(SucursalCine ubicacionSede) {
 		this.ubicacionSede = ubicacionSede;
-	}
-
-	public boolean isHorariosPresentacionDia() {
-		return horariosPresentacionDia;
-	}
-
-	public void setHorariosPresentacionDia(boolean horariosPresentacionDia) {
-		this.horariosPresentacionDia = horariosPresentacionDia;
 	}
 
 	public int getIdSalaCine() {
