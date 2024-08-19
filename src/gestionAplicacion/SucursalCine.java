@@ -317,6 +317,7 @@ public class SucursalCine implements Serializable {
 		ticketsDisponibles.clear();
 		
 		ArrayList<Pelicula> peliculas2D = new ArrayList<Pelicula>();
+		
 		for (SucursalCine sede : sucursalesCine) {
 			for(Pelicula pelicula:sede.cartelera) {
 				if(pelicula.getTipoDeFormato().equals("2D")){
@@ -330,6 +331,7 @@ public class SucursalCine implements Serializable {
 			
 			sede.distribuirPeliculasPorSala();
 			sede.crearHorariosPeliculasPorSala();
+			
 			
 		}
 		
