@@ -2273,6 +2273,12 @@ public class Administrador {
 						}
 						else {
 							if (cantidad == serviciProceso.getOrden().get(eleccion2-1).getCantidad()) {
+								Producto producto = serviciProceso.getOrden().get(eleccion2-1);
+								for (Producto producto2 : serviciProceso.getInventario()) {
+									if (producto2.getNombre() == producto.getNombre() && producto2.getTamaño() == producto.getTamaño()) {
+										producto2.setCantidad(producto2.getCantidad() + cantidad);
+									}
+								}
 								serviciProceso.getOrden().remove(eleccion2-1);
 								verificacion = false;
 							}
