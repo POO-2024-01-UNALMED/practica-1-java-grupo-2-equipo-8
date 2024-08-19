@@ -2508,15 +2508,10 @@ public class Administrador {
 		if(eleccion == 1) {
 			Producto productoBono = new Producto();
 			do {
-				try {
 					System.out.println("\n🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁 REGALOS CON BONOS 🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁\n");
 					System.out.print("Ingrese el codigo del bono: ");
-					codigoBono = sc.nextLine();
-				}catch(NumberFormatException e) {
-					System.out.println("\nError, debes ingresar un dato numérico\n");
-					continue;
-				}
-				productoBono = Servicio.validarBono(codigoBono,clienteProceso.getCineActual().getServicios().get(servicio));
+					codigoBono = sc.next();
+					productoBono = Servicio.validarBono(codigoBono,clienteProceso.getCineActual().getServicios().get(servicio));
 				if (productoBono == null) {
 					System.out.println("\n Codigo invalido, verificar el codigo (╥_╥)(╥_╥)(╥_╥)");
 					
