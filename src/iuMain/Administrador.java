@@ -3854,8 +3854,8 @@ private static boolean adivinado(char[] palabraAdivinada) {
  * @return <b>boolean</b> : Este método retorna un boolean true or false dependiendo de si cumple la condicion de ser una letra del alfabeto
  * */
 private static boolean esLetraValida(char caracter) {
-   
-    return (caracter >= 'A' && caracter <= 'Z') || caracter == 'Ñ';
+    return (caracter >= 'A' && caracter <= 'Z') || caracter == 'Ñ' ||
+           (caracter >= '0' && caracter <= '9') || caracter == '.';
 }
 
 
