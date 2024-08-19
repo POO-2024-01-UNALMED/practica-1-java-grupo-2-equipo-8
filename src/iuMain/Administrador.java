@@ -2276,6 +2276,12 @@ public class Administrador {
 								serviciProceso.getOrden().get(eleccion2-1).setCantidad(serviciProceso.getOrden().get(eleccion2-1).getCantidad() - cantidad);
 								serviciProceso.getOrden().get(eleccion2-1).setPrecio(total * serviciProceso.getOrden().get(eleccion2-1).getCantidad());
 								verificacion = false;
+								Producto producto = serviciProceso.getOrden().get(eleccion2-1);
+								for (Producto producto2 : serviciProceso.getInventario()) {
+									if (producto2.getNombre() == producto.getNombre() && producto2.getTamaño() == producto.getTamaño()) {
+										producto2.setCantidad(producto2.getCantidad() + cantidad);
+									}
+								}
 							}
 						}
 						
@@ -2598,11 +2604,11 @@ public class Administrador {
 			double descuento = 0;
 			verificacion = true;
 			boolean condicion = true;
-			System.out.print("\n------EL PEDDIDO ESTA LISTO SOLO FALTA PAGAR: $"+serviciProceso.getValorPedido()+" ------\n");
+			System.out.print("\n------EL PEDIDO ESTA LISTO SOLO FALTA PAGAR: $"+serviciProceso.getValorPedido()+" ------\n");
 			do {
 				try {
 					
-					System.out.println("\nMETODOS DE PEGO DISPONIBLES:\n");
+					System.out.println("\nMETODOS DE PAGO DISPONIBLES:\n");
 					System.out.println(MetodoPago.mostrarMetodosDePago(clienteProceso));
 					System.out.print("Seleccione una opcion: ");
 					eleccion = Integer.parseInt(sc.nextLine());
@@ -2639,7 +2645,7 @@ public class Administrador {
 				if (serviciProceso.getValorPedido() == 0) {
 					valor1 = valor1 - descuento;
 					serviciProceso.setValorPedido(valor1);
-					System.out.println("LA CUOTA FUE CUBIARTA EN SU TOTALIDAD 🎉🎉🎉🎉");
+					System.out.println("LA CUOTA FUE CUBIERTA EN SU TOTALIDAD 🎉🎉🎉🎉");
 					System.out.println("\nEstamos generando su factura, por favor espere...\n");
 					try {
 						Thread.sleep(3000);
