@@ -320,6 +320,7 @@ public class Administrador {
 		//Renueva referencias a los objetos deserializados
 		Deserializador.asignarReferenciasDeserializador();
 		
+		
 	}
 	
 	/**
@@ -360,7 +361,7 @@ public class Administrador {
 	private static void avanzarTiempo() {
 		
 		//Avanza lo hora 20 segundos
-		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusSeconds(20)); 
+		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1)); 
 		relojDigital(SucursalCine.getFechaActual());
 		
 		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
@@ -3956,13 +3957,13 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 		do {
 			opcionMenu = 0;
 			System.out.print(Membresia.verificarMembresiaActual(clienteProceso));
-			System.out.print(Membresia.mostrarCategoria(clienteProceso, clienteProceso.getCineActual()) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
+			System.out.print(Membresia.mostrarCategoria(clienteProceso, clienteProceso.getCineActual()) + "6. Volver al inicio.\n \nIngrese el número de la categoria deseada o volver al inicio: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
 			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
 				//Se revisa si el cliente esta intentando seleccionar la misma categoria pero aún no es tiempo de renovarla.
 				if (clienteProceso.getMembresia()!=null && opcionMenu == clienteProceso.getMembresia().getCategoria() && clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())) {
-					System.out.println("Por favor seleccione una opción habilitada");
+					System.out.println("Usted ya posee esta categoría.\nPor favor seleccionar otra opción habilitada o esperar hasta el periodo de renovación (5 días).\n");
 					continue;
 				}
 				//Se verifica si se cumple con los requisitos para adquirir la membresia.
@@ -3974,8 +3975,10 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 					e.printStackTrace();
 				}
 					if (requisitosMembresia == false) {
-						System.out.print("\nNo puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello o no hay unidades en el momento.\n"
-								+ "Redirigiendo al menú de membresias\n");
+						System.out.print("\n⚠️•No puedes adquirir esta membresía debido a que no cumples con \nlos criterios establecidos para ello o no hay unidades en el momento.️•⚠️\n" +
+								"Puntos actuales: " + clienteProceso.getPuntos() + "\n" +
+								"Peliculas vistas: " + clienteProceso.getHistorialDePeliculas().size() + "\n" +
+								"\nRedirigiendo al menú de membresias\n");
 						continue;
 					} else {
 						membresiaNueva = Membresia.asignarMembresiaNueva(opcionMenu);
@@ -4037,7 +4040,8 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 				"=== Factura de compra ===\n" +
 				"Nombre dueño: " + clienteProceso.getNombre() + "\n" +
 				"Documento: " + clienteProceso.getDocumento() + "\n" +
-				"Duración" + clienteProceso.getFechaLimiteMembresia() + "\n" +
+				"Duración: " + clienteProceso.getFechaLimiteMembresia() + "\n" +
+				"Lugar de compra: " + clienteProceso.getCineActual().getLugar()	 + "\n" +
 				membresiaNueva.factura());
 		
 		//Cada vez que se adquiera/renueva una membresía, se dará una asignación/recarga a la tarjeta Cinemar que es usada en la funcionalidad 4.
