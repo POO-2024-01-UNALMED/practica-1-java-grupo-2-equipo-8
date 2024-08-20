@@ -320,6 +320,7 @@ public class Administrador {
 		//Renueva referencias a los objetos deserializados
 		Deserializador.asignarReferenciasDeserializador();
 		
+		
 	}
 	
 	/**
@@ -360,7 +361,7 @@ public class Administrador {
 	private static void avanzarTiempo() {
 		
 		//Avanza lo hora 20 segundos
-		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusSeconds(20)); 
+		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1)); 
 		relojDigital(SucursalCine.getFechaActual());
 		
 		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
@@ -2211,7 +2212,7 @@ public class Administrador {
 		serviciProceso = clienteProceso.getCineActual().getServicios().get(servicio);
 		System.out.print("\n Bienvenido al servicio "+ serviciProceso.getNombre()+" 📽️📽️📽️");
 		serviciProceso.setCliente(clienteProceso);
-		serviciProceso.setInventario(serviciProceso.actualizarInventario());
+		serviciProceso.setInventario(serviciProceso.actualizarInventario()); //Ligadura dinamica
 		
 		/////////////////////////////////  Busqueda inteligente de los productos disponibles segun el pedido   ///////////////////////////////////////////
 		
@@ -2274,12 +2275,6 @@ public class Administrador {
 						}
 						else {
 							if (cantidad == serviciProceso.getOrden().get(eleccion2-1).getCantidad()) {
-								Producto producto = serviciProceso.getOrden().get(eleccion2-1);
-								for (Producto producto2 : serviciProceso.getInventario()) {
-									if (producto2.getNombre() == producto.getNombre() && producto2.getTamaño() == producto.getTamaño()) {
-										producto2.setCantidad(producto2.getCantidad() + cantidad);
-									}
-								}
 								serviciProceso.getOrden().remove(eleccion2-1);
 								verificacion = false;
 							}
@@ -2486,121 +2481,6 @@ public class Administrador {
 			}
 			
 		}while(verificacionR);
-		
-		verificacion = true;
-		do {
-			try {
-				System.out.print("\n\n    SISTEMA DE BONOS 🎁🎁🎁🎁🎁");
-				System.out.print("\n\n¿Tienes algun codigo para reclamar?\n1.SI\n2.NO\nSeleccione una opcion:");
-				eleccion = Integer.parseInt(sc.nextLine());
-				if (eleccion != 1 && eleccion != 2) {
-					System.out.println("Error, Debes de seleccionar una de las dos opciones");
-					continue;
-				}
-			}catch(NumberFormatException e) {
-				System.out.println("\nError, debes ingresar un dato numérico\n");
-				continue;
-			}
-			verificacion = false;
-		}while(verificacion);
-		
-		String codigoBono;
-		verificacion = true;
-		if(eleccion == 1) {
-			Producto productoBono = new Producto();
-			do {
-					System.out.println("\n🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁 REGALOS CON BONOS 🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁\n");
-					System.out.print("Ingrese el codigo del bono: ");
-					codigoBono = sc.next();
-					productoBono = Servicio.validarBono(codigoBono,clienteProceso.getCineActual().getServicios().get(servicio));
-				if (productoBono == null) {
-					System.out.println("\n Codigo invalido, verificar el codigo (╥_╥)(╥_╥)(╥_╥)");
-					
-					do {
-						try {
-							System.out.print("\n"+"¿Que deseas hacer?\n1.Salir\n2.Volver a intentar\nSeleccione una opcion: ");
-							eleccion = Integer.parseInt(sc.nextLine());
-						}catch(NumberFormatException e) {
-							System.out.println("\nError, debes ingresar un dato numérico\n");
-							continue;
-						}
-						if (eleccion == 1) {
-							verificacion = false;
-							break;
-						}
-						else if (eleccion != 2) {
-							System.out.print("\nSELECCIONE UNA OPCION VALIDA\n");
-						}
-					}while(eleccion != 1 && eleccion != 2);
-				}
-				else {
-					System.out.print("  ----------------------------------------- ");
-					System.out.println("\n | 🎉🎉🎉🎉Bono validado con exito🎉🎉🎉🎉 | ");
-					System.out.print("  ----------------------------------------- \n");
-					System.out.println("   El bono es de: "+productoBono.getNombre()+" "+productoBono.getTamaño());
-					
-					
-					if(productoBono.comprobarBonoEnOrden(serviciProceso)) {
-						verificacion = true;
-						do {
-							try {
-								System.out.print("\n"+"¿Que deseas hacer con el producto?\n1.Desea agregarlo al pedido"+
-										"\n2.Desea descontarlo del pedido\nSelecciona una opcion:");
-								eleccion = Integer.parseInt(sc.nextLine());
-							}catch(NumberFormatException e) {
-								System.out.println("\nError, debes ingresar un dato numérico\n");
-								continue;
-							}
-
-							if (eleccion == 1) {
-								productoBono.setPrecio(0);
-								productoBono.setNombre("Regalo de Bono "+productoBono.getNombre());
-								serviciProceso.getOrden().add(productoBono);
-								System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
-								System.out.print(serviciProceso.mostrarOrden());
-								verificacion = false;
-							}
-							else if (eleccion == 2){
-								serviciProceso.descontarProducto(productoBono);
-								System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
-								System.out.print(serviciProceso.mostrarOrden());
-								verificacion = false;
-							}
-							else {
-								System.out.print("\n\\nSELECCIONE UNA OPCION VALIDA\\n\n");
-							}
-						}while(verificacion);
-					}
-					else if (productoBono != null){
-						productoBono.setPrecio(0);
-						productoBono.setNombre("Regalo de bono "+productoBono.getNombre());
-						serviciProceso.getOrden().add(productoBono);
-						System.out.print("\n 🛒🛒🛒Los productos que llevas en el momento son:🛒🛒🛒 \n");
-						System.out.println(serviciProceso.mostrarOrden());
-					}
-					verificacion = true;
-					do {
-						try {
-							
-							System.out.print("\n\n¿Deseas reclamar otro Bono?\n1.SI\n2.NO\nSelecciona una opcion:");
-							eleccion = Integer.parseInt(sc.nextLine());
-						}catch(NumberFormatException e) {
-							System.out.println("\nError, debes ingresar un dato numérico\n");
-							continue;
-						}
-						if (eleccion == 1) {
-						}
-						else if (eleccion == 2) {
-							verificacion = false;
-						}
-						else if (eleccion != 2) {
-							System.out.print("\nSELECCIONE UNA OPCION VALIDA\n");
-						}
-					}while(eleccion != 1 && eleccion != 2);
-				}
-			}while(verificacion);
-		}
-		
 		//////////////////////////////////////   Proceso de pago y descuento por valor de compras   ///////////////////////////////////////////
 		
 		serviciProceso.setValorPedido(serviciProceso.calcularTotal());
@@ -3031,8 +2911,9 @@ public class Administrador {
 									 * mejor pelicula con el peor producto, esto lo hacemos con el fin de logica de negocio, y podamos tener mejores resultados con 
 									 * los productos y peliculas.
 									 */
-									System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula" +
-									peliculaCombo.getNombre() + "y el producto " + productoCombo1.getNombre() + productoCombo1.getTamaño()) ;
+									System.out.println("Estos son los productos escogidos para darte el combo especial: " + "La pelicula " +
+											peliculaCombo.getNombre() + " en formato " + peliculaCombo.getTipoDeFormato() + "\nen el horario " + opcionHorarioPelicula + " en el asiento " + numAsientoProceso 
+											+"\ny el producto " + productoCombo1.getNombre() + " " + productoCombo1.getTamaño());
 									
 									double precioTotal=0;
 									precioTotal=peliculaCombo.getPrecio()+productoCombo1.getPrecio();
@@ -3957,13 +3838,13 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 		do {
 			opcionMenu = 0;
 			System.out.print(Membresia.verificarMembresiaActual(clienteProceso));
-			System.out.print(Membresia.mostrarCategoria(clienteProceso, clienteProceso.getCineActual()) + "6. Volver al inicio. \nIngrese el número de la categoria deseada: ");
+			System.out.print(Membresia.mostrarCategoria(clienteProceso, clienteProceso.getCineActual()) + "6. Volver al inicio.\n \nIngrese el número de la categoria deseada o volver al inicio: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
 			if (opcionMenu == 6) {Administrador.inicio(clienteProceso); break;}
 			else if (opcionMenu >0 && opcionMenu <6) {
 				//Se revisa si el cliente esta intentando seleccionar la misma categoria pero aún no es tiempo de renovarla.
 				if (clienteProceso.getMembresia()!=null && opcionMenu == clienteProceso.getMembresia().getCategoria() && clienteProceso.getFechaLimiteMembresia().minusDays(6).isAfter(SucursalCine.getFechaActual().toLocalDate())) {
-					System.out.println("Por favor seleccione una opción habilitada");
+					System.out.println("Usted ya posee esta categoría.\nPor favor seleccionar otra opción habilitada o esperar hasta el periodo de renovación (5 días).\n");
 					continue;
 				}
 				//Se verifica si se cumple con los requisitos para adquirir la membresia.
@@ -3975,8 +3856,10 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 					e.printStackTrace();
 				}
 					if (requisitosMembresia == false) {
-						System.out.print("\nNo puedes adquirir esta membresía debido a que no cumples con los criterios establecidos para ello o no hay unidades en el momento.\n"
-								+ "Redirigiendo al menú de membresias\n");
+						System.out.print("\n⚠️•No puedes adquirir esta membresía debido a que no cumples con \nlos criterios establecidos para ello o no hay unidades en el momento.️•⚠️\n" +
+								"Puntos actuales: " + clienteProceso.getPuntos() + "\n" +
+								"Peliculas vistas: " + clienteProceso.getHistorialDePeliculas().size() + "\n" +
+								"\nRedirigiendo al menú de membresias\n");
 						continue;
 					} else {
 						membresiaNueva = Membresia.asignarMembresiaNueva(opcionMenu);
@@ -4038,7 +3921,8 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 				"=== Factura de compra ===\n" +
 				"Nombre dueño: " + clienteProceso.getNombre() + "\n" +
 				"Documento: " + clienteProceso.getDocumento() + "\n" +
-				"Duración" + clienteProceso.getFechaLimiteMembresia() + "\n" +
+				"Duración: " + clienteProceso.getFechaLimiteMembresia() + "\n" +
+				"Lugar de compra: " + clienteProceso.getCineActual().getLugar()	 + "\n" +
 				membresiaNueva.factura());
 		
 		//Cada vez que se adquiera/renueva una membresía, se dará una asignación/recarga a la tarjeta Cinemar que es usada en la funcionalidad 4.

@@ -8,11 +8,12 @@ import gestionAplicacion.usuario.*;
 
 public class Arkade implements Serializable{
 
-	private static final long serialVersionUID = 1L;
 	//Atributos
+	private static final long serialVersionUID = 1L;
+	private static final double puntuacionMaxima = 10.0;
+	
 	private String nombreServicio;
 	private double valorServicio;
-	private static final double puntuacionMaxima = 10.0;
 	private String generoServicio;
 	
 	//Constructores

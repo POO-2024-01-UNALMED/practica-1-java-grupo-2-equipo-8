@@ -24,7 +24,7 @@ public class ServicioSouvenirs extends Servicio{
 	public boolean descuentarPorCompra(MetodoPago metodo) {
 		if (!metodo.getNombre().equalsIgnoreCase("Efectivo")) {
 			for(int i = 0; i < orden.size(); i++) {
-				if (orden.get(i).getTamaño().equalsIgnoreCase("Katana") && (orden.get(i).getPrecio() > 120000)) {
+				if ((orden.get(i).getTamaño().equalsIgnoreCase("Katana") || orden.get(i).getTamaño().equalsIgnoreCase("Emociones")) && (orden.get(i).getPrecio() > 120000)) {
 					valorPedido = valorPedido - (valorPedido*0.1);
 					return true;
 				}

@@ -21,11 +21,16 @@ public class SalaCine implements Serializable{
 	private SucursalCine ubicacionSede;
 	
 	//Constructors
+	
+	//Este constructor se usa para ser llamado por el otro constructor para aumentar la cantidad de salas de
+	//cine creadas y ese valor asociarselo al ID de la sala
 	public SalaCine() {
 		cantidadSalasDeCineCreadas++;
 		this.idSalaCine = cantidadSalasDeCineCreadas;
 	}
 	
+	//Con este constructor se llama al constructor vacio  y se inicializan los objetos creados 
+	//de esta clase con sus atributos, ademas se agrega la instancia a las salas de cine de la sucursal pasada como parametro
 	public SalaCine(int nSala, String tipoDeSala, SucursalCine ubicacionSede){
 		this();
 		this.numeroSala = nSala;

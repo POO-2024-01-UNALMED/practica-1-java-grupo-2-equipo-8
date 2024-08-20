@@ -16,11 +16,14 @@ public class MetodoPago implements Serializable{
 	
 	
 	//Constructores
+	
+	
+	//Constructor para añadir el metodo de pago a el arrayList estatico de la clase SucursalCine
 	public MetodoPago(){
 		SucursalCine.getMetodosDePagoDisponibles().add(this);
 	}
 	
-	
+	//Constructor para crear las instancias en el main a ser serlializadas para el funcionamiento del programa
 	public MetodoPago(String nombre, double limiteMaximoPago, double descuentoAsociado) {
 		this();
 		this.nombre = nombre;
@@ -29,6 +32,9 @@ public class MetodoPago implements Serializable{
 		this.tipo = 0;
 	}
 	
+	
+	//Constructor usado para ser llamado en un metodo que se encarga de crear varias instancias de los métodos de
+	//pago con distinto tipo. Esto para usarse en la funcionalidad 5.
 	public MetodoPago(String nombre, double descuentoAsociado,	 double limiteMaximoPago, int tipo) {
 		this();
 		this.nombre = nombre;
@@ -36,6 +42,7 @@ public class MetodoPago implements Serializable{
 		this.limiteMaximoPago = limiteMaximoPago;
 		this.tipo = tipo;
 	}
+	
 	//Se sobrecarga el constructor para cuando se crea el método de pago Puntos ya que este no se añade al arreglo estático en SucursalCine.
 	public MetodoPago(double descuentoAsociado, String nombre, double limiteMaximoPago, int tipo) {
 		this.nombre = nombre;
@@ -218,7 +225,7 @@ public class MetodoPago implements Serializable{
 				switch (tipoMembresia) {
 				case 1: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + ((precio * (1 - this.getDescuentoAsociado())) * 0.05));break;
 				case 2: puntos.setLimiteMaximoPago(puntos.getLimiteMaximoPago() + ((precio * (1 - this.getDescuentoAsociado())) * 0.10));break;
-				}
+				} cliente.setPuntos((int)puntos.getLimiteMaximoPago());
 			}
 			
 		}

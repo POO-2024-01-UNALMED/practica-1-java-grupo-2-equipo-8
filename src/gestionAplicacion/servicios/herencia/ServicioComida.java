@@ -45,7 +45,7 @@ public class ServicioComida extends Servicio {
 	public boolean descuentarPorCompra(MetodoPago metodo) {
 		if (!metodo.getNombre().equalsIgnoreCase("Efectivo")) {
 			for (int i = 0; i < orden.size(); i++) {
-				if (orden.get(i).getTamaño().equalsIgnoreCase("Cangreburger") && (orden.get(i).getPrecio() > 100000)) {
+				if ((orden.get(i).getTamaño().equalsIgnoreCase("Cangreburger") || orden.get(i).getTamaño().equalsIgnoreCase("Deadpool")) && (orden.get(i).getPrecio() > 100000)) {
 					valorPedido = valorPedido - (valorPedido * 0.05);
 					return true;
 				}
