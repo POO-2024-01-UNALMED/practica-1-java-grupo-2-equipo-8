@@ -3600,7 +3600,7 @@ public static void mostrarBono(ArrayList<Producto> productos, int numeroAleatori
 		int opcionMenu = 0;
 		do {
 			try {
-				System.out.println("¿Desea ingresar o volver?" +"\n1.Ingresar" + "\n2.Volver al menú principal" + "\n3.Salir");
+				System.out.println("¿Desea ingresar o volver?" +"\n1.Ingresar" + "\n2.Volver al menú principal" + "\n3.Guardar y Salir");
 				opcionMenu = Integer.parseInt(sc.nextLine());
 			}catch(NumberFormatException e) {
 				System.out.println("Error, debes ingresar un dato numérico");
