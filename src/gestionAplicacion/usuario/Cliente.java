@@ -27,13 +27,14 @@ public class Cliente implements Serializable{
 	
 	//Atributos para funcionalidad 3
 	private ArrayList<Pelicula> peliculasDisponiblesParaCalificar = new ArrayList<>();
-	private ArrayList<Producto> historialDePedidos = new ArrayList<>();
+	private ArrayList<Producto> productosDisponiblesParaCalificar = new ArrayList<>();
 	
 	//Atributos para funcionalidad 4 y 2
 	private TarjetaCinemar cuenta;
 	private ArrayList<String> codigosDescuento = new ArrayList<>();
 	private ArrayList<String> codigosBonos = new ArrayList<>();
 	private ArrayList<Bono> bonos = new ArrayList<>();
+	private ArrayList<Producto> historialDePedidos = new ArrayList<>();
 	
 	//Atributos para funcionalidad 5
 	private Membresia membresia;
@@ -479,6 +480,16 @@ public class Cliente implements Serializable{
 
 	public void setOrigenMembresia(int origenMembresia) {
 		this.origenMembresia = origenMembresia;
+	}
+
+
+	public ArrayList<Producto> getProductosDisponiblesParaCalificar() {
+		return productosDisponiblesParaCalificar;
+	}
+
+
+	public void setProductosDisponiblesParaCalificar(ArrayList<Producto> productosDisponiblesParaCalificar) {
+		this.productosDisponiblesParaCalificar = productosDisponiblesParaCalificar;
 	}
 	
 	

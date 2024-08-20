@@ -98,15 +98,15 @@ public class Administrador {
 //
 //	static Pelicula pelicula1_1 = new Pelicula("Deadpool 3", 18000, "Comedia", Duration.ofMinutes(110), "+18", "2D", sucursalCine1);
 //	
-//	static Pelicula pelicula1_2 = new Pelicula("Misión Imposible 4", 13000, "Acción", Duration.ofMinutes(155), "+18", "2D", sucursalCine1);
+//	static Pelicula pelicula1_2 = new Pelicula("Misión Imposible 6", 13000, "Acción", Duration.ofMinutes(155), "+16", "2D", sucursalCine1);
 //	
-//	static Pelicula pelicula1_3 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+18", "2D", sucursalCine1);
+//	static Pelicula pelicula1_3 = new Pelicula("El conjuro 3", 18000, "Terror", Duration.ofMinutes(140), "+16", "2D", sucursalCine1);
 //	
 //	static Pelicula pelicula1_4 = new Pelicula("Your name", 18000, "Romance", Duration.ofMinutes(110), "+8", "2D", sucursalCine1);
 //	
-//	static Pelicula pelicula1_5 = new Pelicula("Furiosa: A Mad Max Saga", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+7", "2D", sucursalCine1);
+//	static Pelicula pelicula1_5 = new Pelicula("Mad-Max", 17000, "Ciencia ficción", Duration.ofMinutes(148), "+18", "2D", sucursalCine1);
 //	
-//	static Pelicula pelicula1_6 = new Pelicula("Spy x Familiy Código: Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", sucursalCine1);
+//	static Pelicula pelicula1_6 = new Pelicula("Spy x Familiy Código Blanco", 19000, "Infantil", Duration.ofMinutes(90), "+5", "2D", sucursalCine1);
 //	
 //	static SalaCine salaDeCine2_1 = new SalaCine(1, "2D", sucursalCine2);
 //	static SalaCine salaDeCine2_2 = new SalaCine(2, "3D", sucursalCine2);
@@ -123,7 +123,7 @@ public class Administrador {
 //	
 //	static Pelicula pelicula2_10 = new Pelicula("One Life", 19000, "Historia", Duration.ofMinutes(110), "+8", "2D", sucursalCine2);
 //	
-//	static Pelicula pelicula2_12 = new Pelicula("Challengers", 15000, "Drama", Duration.ofMinutes(132), "+12", "2D", sucursalCine2);
+//	static Pelicula pelicula2_12 = new Pelicula("IP Man", 16000, "Acción", Duration.ofMinutes(132), "+16", "2D", sucursalCine2);
 //
 //	static Pelicula pelicula2_14 = new Pelicula("Bad Boys: Hasta la muerte", 17000, "Comedia", Duration.ofMinutes(109), "+18", "2D", sucursalCine2);
 //	
@@ -136,7 +136,7 @@ public class Administrador {
 //
 //	static Pelicula pelicula3_1 = new Pelicula("El Paseo 9", 15000, "Comedia", Duration.ofMinutes(60), "+12", "2D", sucursalCine3); 
 //	
-//	static Pelicula pelicula3_2 = new Pelicula("Código Enigma", 17000, "Historia", Duration.ofMinutes(180), "+18", "2D", sucursalCine3);
+//	static Pelicula pelicula3_2 = new Pelicula("Scream 8", 18000, "Terror", Duration.ofMinutes(180), "+16", "2D", sucursalCine3);
 //	
 //	static Pelicula pelicula3_3 = new Pelicula("Oppenheimer", 15000, "Historia", Duration.ofMinutes(120), "+18", "2D", sucursalCine3);
 //	
@@ -144,7 +144,7 @@ public class Administrador {
 //	
 //	static Pelicula pelicula3_5 = new Pelicula("Intensamente 2", 15000, "Infantil", Duration.ofMinutes(105), "+5", "2D", sucursalCine3);
 //	
-//	static Pelicula pelicula3_6 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+18", "2D", sucursalCine3);
+//	static Pelicula pelicula3_6 = new Pelicula("BNHA temporada 7 movie", 12000, "Acción", Duration.ofMinutes(60), "+12", "2D", sucursalCine3);
 //
 //	static Membresia membresia1 = new Membresia("Básico", 1, 5000, 10);
 //	static Membresia membresia2 = new Membresia("Heróico", 2, 10000, 15);
@@ -841,6 +841,7 @@ public class Administrador {
 				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)\n"
 				+ "Avanzaremos la hora hasta el fin del horario laboral 11:00 P.M. Para reiniciar este servicio");
 				SucursalCine.setFechaActual(SucursalCine.getFechaActual().withHour(SucursalCine.getFinHorarioLaboral().getHour()).withMinute(0));
+				avanzarDia(clienteProceso);
 				break;
 			}
 			

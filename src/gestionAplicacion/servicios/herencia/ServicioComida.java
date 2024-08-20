@@ -64,6 +64,21 @@ public class ServicioComida extends Servicio {
 		
 		MetodoPago.asignarMetodosDePago(cliente);
 		
+		//Añade el producto a los productos disponibles a calificar y al historial en caso de ser la primera vez que lo compra
+		for (Producto productoOrden : orden) {
+			boolean validacionIngresoHistorial = true;
+			for (Producto productoHistorial : cliente.getHistorialDePedidos()) {
+				if (productoOrden.getNombre().equalsIgnoreCase(productoHistorial.getNombre()) && productoOrden.getTamaño().equalsIgnoreCase(productoHistorial.getTamaño())) {
+					validacionIngresoHistorial = false;
+				}
+			}
+			if (validacionIngresoHistorial) {
+				cliente.getProductosDisponiblesParaCalificar().add(productoOrden);
+				cliente.getHistorialDePedidos().add(productoOrden);
+			}
+			
+		}
+		
 		ArrayList<Producto> orden1 = new ArrayList<>();
 		orden = orden1;
 		valorPedido = 0.0;
