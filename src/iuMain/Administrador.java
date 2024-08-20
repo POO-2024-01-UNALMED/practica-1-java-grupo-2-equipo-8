@@ -1934,9 +1934,9 @@ public class Administrador {
      // Imprimir la hora en un estilo más decorativo
         System.out.println("\n╔══════════════════════════════╗");
         System.out.println("║       Current Date           ║");
-        System.out.println("    •" + formattedDate + "     ");
+        System.out.println("    " + formattedDate + "     ");
         System.out.println("║                              ║");
-        System.out.println("         •" + formattedTime +"        ");
+        System.out.println("         " + formattedTime +"        ");
         System.out.println("╚══════════════════════════════╝");
         System.out.println();
 	}
@@ -2159,7 +2159,7 @@ public class Administrador {
 				System.out.print("               |                Felicidades obtuviste un descuento                 |\n");
 				System.out.print("               |Por comprar un producto del mismo genero que el tiket que compraste|\n");
 				System.out.print("                ------------------------------------------------------------------- \n");
-				System.out.print("Todos los produtos de :"+ productoDescuento.getNombre() + productoDescuento.getTamaño() +" Obtuvieron un descuento del 10% en esta compra \n");
+				System.out.print("Todos los productos de :"+ productoDescuento.getNombre() + productoDescuento.getTamaño() +" Obtuvieron un descuento del 10% en esta compra \n");
 				System.out.print("Precio anterior --> $"+productoDescuento.getPrecio()+" Precio actual --> $");
 				productoDescuento.setPrecio(productoDescuento.getPrecio()*0.9);
 				System.out.println(productoDescuento.getPrecio());
@@ -2912,7 +2912,7 @@ private static void ingresoZonaJuegos(Cliente ClienteActual) {
 				if (option==1) {
 					if (Arkade.verificarTarjetasEnInventario(ClienteActual.getCineActual())) { // se verifica si hay tarjetas disponibles por vender en el array
 						barraCarga("Adquiriendo tarjeta");
-						System.out.println("\nEl precio de la tarjeta Cinemar es de $5000\n•Este valor sera descontado al saldo de su tarjeta");
+						System.out.println("\nEl precio de la tarjeta Cinemar es de $5000\nEste valor sera descontado al saldo de su tarjeta");
 						espera(2000);
 						//
 						//Aca se asocia la primera tarjeta en el array de disponibles al cliente, se le descuenta el valor de la tarjeta y se imprime por pantalla
@@ -2987,8 +2987,8 @@ private static void ingresoZonaJuegos(Cliente ClienteActual) {
 						
 						valorRecarga = 0;
 						
-						System.out.println("•El valor maximo a recargar por proceso es: $"+recargaMaxima+" intente no superar este valor");
-						System.out.print("•Digite el valor a recargar: ");
+						System.out.println("El valor maximo a recargar por proceso es: $"+recargaMaxima+" intente no superar este valor");
+						System.out.print("Digite el valor a recargar: ");
 						valorRecarga = Administrador.readLong();
 						
 						if (!(valorRecarga<= recargaMaxima & valorRecarga>0)) {
@@ -3010,8 +3010,8 @@ private static void ingresoZonaJuegos(Cliente ClienteActual) {
 			do {
 				do {
 					try {
-						System.out.println("\n•Escoja su metodo de pago");
-						System.out.println("•Cada metodo de pago tiene un monto maximo para recargar y un descuento asociado, en caso de superar este monto debera elegir otro metodo de pago para completar la recarga");
+						System.out.println("\nEscoja su metodo de pago");
+						System.out.println("Cada metodo de pago tiene un monto maximo para recargar y un descuento asociado, en caso de superar este monto debera elegir otro metodo de pago para completar la recarga");
 						System.out.println(MetodoPago.mostrarMetodosDePago(ClienteActual));
 						opcionPago = (int)Administrador.readLong();
 						
@@ -3047,7 +3047,7 @@ private static void ingresoZonaJuegos(Cliente ClienteActual) {
 					System.out.println("Pago exitoso, se han recargado "+ valorRecarga+" y usted ha pagado "+ totalPagado+" equivalente a un descuento de "+ String.format("%.2f",(100-((totalPagado*100)/valorRecarga)))+ "%");
 					MetodoPago.asignarMetodosDePago(ClienteActual);
 					ClienteActual.getCuenta().ingresarSaldo(valorRecarga);
-					System.out.println("\n•Su tarjeta :");
+					System.out.println("\nSu tarjeta :");
 					imprimirTarjeta(ClienteActual.getNombre(), ClienteActual.getCuenta().getSaldo());
 					totalPagado =0;
 					int eleccionUser = 0;
@@ -3074,8 +3074,8 @@ private static void ingresoZonaJuegos(Cliente ClienteActual) {
 					espera(1000);
 					barraCarga("Procesando Pago");
 					
-					System.out.println("•Proceso exitoso, sin embargo, tiene un saldo pendiente por recargar de : " + precioRecargaProceso);
-					System.out.println("Nota: si no culmina con el pago completo, no se recargara nada a la tarjeta⚠");
+					System.out.println("Proceso exitoso, sin embargo, tiene un saldo pendiente por recargar de : " + precioRecargaProceso);
+					System.out.println("Nota: si no culmina con el pago completo, no se recargara nada a la tarjeta.");
 					casoValido = true;
 				}
 			}while(casoValido);
@@ -3087,7 +3087,7 @@ private static void ingresoZonaJuegos(Cliente ClienteActual) {
 			System.out.println("\n-----------------------------------------------------------------");
 	        System.out.println("Recuerde que debe tener saldo para acceder a los diferentes juegos");
 	        System.out.println("-------------------------------------------------------------------");
-	        System.out.println("\n•Su tarjeta  :");
+	        System.out.println("\nSu tarjeta  :");
 	        espera(2000);
 			imprimirTarjeta(ClienteActual.getNombre(),ClienteActual.getCuenta().getSaldo());
 			finCiclo = true;
@@ -3207,7 +3207,7 @@ private static void ingresoZonaJuegos(Cliente ClienteActual) {
 				espera(2000);
 				barraCarga("Iniciando");
 				generoJuego = SucursalCine.getJuegos().get(eleccion7-1).getGeneroServicio();
-				System.out.println("¡☺ EL JUEGO HA EMPEZADO ☺!\nAdivina la palabra relacionada con la categoria: "+generoJuego);
+				System.out.println("¡EL JUEGO HA EMPEZADO!\nAdivina la palabra relacionada con la categoria: "+generoJuego);
 				switch(generoJuego) {
 				
 				case "Acción": game = juego(new String[]{"BAM","ZAP","GUN"}); break;
@@ -3356,7 +3356,7 @@ private static void ingresoZonaJuegos(Cliente ClienteActual) {
 	}
 	
 
-	System.out.println("\n☻☻☻Gracias por jugar con nosotros☻☻☻\n");
+	System.out.println("\n¡Gracias por jugar con nosotros!\n");
 	barraCarga("Redireccionando al menú principal");
 	Administrador.sc.nextLine();
 	Administrador.inicio(ClienteActual);
