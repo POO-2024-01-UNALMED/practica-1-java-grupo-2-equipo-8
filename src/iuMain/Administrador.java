@@ -71,11 +71,10 @@ public class Administrador {
 				System.out.println("\n¿Qué operacion desea realizar?");
 				System.out.println("1. Ingresar a sistema de proyecciones de películas");
 				System.out.println("2. Ingresar a los servicios de compra"); 
-				System.out.println("3. Ingresar a la zona de juegos");
-				System.out.println("4. Adquirir o actualizar membresia");
-				System.out.println("5. Hacer calificacion");
-				System.out.println("6. Cambiar de sucursal");
-				System.out.println("7. Guardar y Salir");
+				System.out.println("3. Hacer calificación");
+				System.out.println("4. Ingresar a la zona de juegos");
+				System.out.println("5. Adquirir o actualizar membresia");
+				System.out.println("6. Guardar y Salir");
 				opcion = Integer.parseInt(sc.nextLine());
 				
 			}catch(NumberFormatException e) {
@@ -88,11 +87,10 @@ public class Administrador {
 		switch (opcion) {
 			case 1: ingresarASistemaDeProyecciones(clienteProceso); break;
 			case 2: compras(clienteProceso); inicio(clienteProceso); break;
-			case 3: ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
-			case 4: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
-			case 5: calificacion(clienteProceso);inicio(clienteProceso); break;
-			case 6: cambiarSucursalCine(clienteProceso); inicio(clienteProceso); break;
-			case 7: salirDelSistema(); break;
+			case 3: calificacion(clienteProceso);inicio(clienteProceso); break;
+			case 4: ingresoZonaJuegos(clienteProceso); inicio(clienteProceso); break;
+			case 5: adquirirMembresia(clienteProceso); inicio(clienteProceso); break;
+			case 6: salirDelSistema(); break;
 			default: System.out.println("Opción invalida"); inicio(clienteProceso);
 		  }
 	
