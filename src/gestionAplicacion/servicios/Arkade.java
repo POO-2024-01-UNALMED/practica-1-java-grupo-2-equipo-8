@@ -92,7 +92,7 @@ public class Arkade implements Serializable{
 				i++;
 			}
 		}
-		juegos+= "6. Volver al inicio\n7. Salir\n";
+		juegos+= "6. Volver al inicio\n7. Salir y Guardar\n";
 		return "¿Cual juego desea jugar?\n"+juegos;
 	}
 	

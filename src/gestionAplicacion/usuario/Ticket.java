@@ -140,7 +140,11 @@ public class Ticket implements IBuyable, Serializable{
 	 * @return <b>codigoTicket</b> : Este método retorna un String que contiene la información del codigo mas el genero de la pelicula asociada.
 	 * */
 	private String generarCodigoTicket() {
-		String codigoTicket = this.getPelicula().getTipoDeFormato()+this.getDueno().getTipoDocumento()+this.getPelicula().getSalaPresentacion().getNumeroSala()+"-"+this.getPelicula().getGenero();
+		String codigoTicket = this.getPelicula().getTipoDeFormato()
+				+this.getDueno().getTipoDocumento()
+				+this.getPelicula().getSalaPresentacion().getNumeroSala()
+				+"-"
+				+this.getPelicula().getGenero();
 
 		return codigoTicket;
 	}
