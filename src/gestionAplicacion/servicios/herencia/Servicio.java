@@ -46,7 +46,7 @@ public abstract class Servicio implements IBuyable, Serializable{
 						"\n0. No reclamar ningun bono.";
 		for(int i = 0;i < servicio.getBonosCliente().size();i++) {
 				n = i + 1;
-				bono = bono + "\n" + n + ". " + servicio.getBonosCliente().get(i).getProducto().getNombre() + " " + servicio.getBonosCliente().get(i).getProducto().getTamaño();
+				bono = bono + "\n" + n + ". " + servicio.getBonosCliente().get(i).getProducto().getNombre() + " " + servicio.getBonosCliente().get(i).getProducto().getTamaño() + " codigo: " + servicio.getBonosCliente().get(i).getCodigo();
 		}
 		return bono;
 	}
@@ -113,7 +113,7 @@ public abstract class Servicio implements IBuyable, Serializable{
 	public void agregarOrden (Producto producto) {
 		if(0 < orden.size()) {
 			for (int i = 0; i < orden.size(); i++) {
-				if ((producto.getNombre() == orden.get(i).getNombre()) && (producto.getTamaño() == orden.get(i).getTamaño())) {
+				if ((producto.getNombre().equals(orden.get(i).getNombre())) && (producto.getTamaño().equals(orden.get(i).getTamaño()))) {
 					orden.get(i).setCantidad(orden.get(i).getCantidad() + producto.getCantidad());
 					orden.get(i).setPrecio(orden.get(i).getPrecio() + producto.getPrecio() );
 					break;
@@ -137,7 +137,7 @@ public abstract class Servicio implements IBuyable, Serializable{
 	
 	public void descontarProducto (Producto producto) {
 		for(int i=0; i< orden.size(); i++) {
-			if(orden.get(i).getNombre() == producto.getNombre() && orden.get(i).getTamaño() == producto.getTamaño()) {
+			if(orden.get(i).getNombre().equals(producto.getNombre()) && orden.get(i).getTamaño().equals(producto.getTamaño())) {
 				orden.get(i).setPrecio(orden.get(i).getPrecio()-producto.getPrecio());
 				break;
 			}

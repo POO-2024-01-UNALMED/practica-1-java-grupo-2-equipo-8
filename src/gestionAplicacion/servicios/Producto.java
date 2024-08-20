@@ -114,14 +114,12 @@ public class Producto implements Serializable {
 		*/
 		
 		public boolean comprobarBonoEnOrden(Servicio servicio) {
-			boolean verificacion = false;
 			for(int i = 0; i < servicio.getOrden().size();i++) {
-				if(servicio.getOrden().get(i).getNombre() == this.getNombre() && servicio.getOrden().get(i).getTamaño() == this.getTamaño() && servicio.getOrden().get(i).getPrecio() > 0) {
-					verificacion = true;
-					break;
+				if(servicio.getOrden().get(i).getNombre().equals(nombre) && servicio.getOrden().get(i).getTamaño().equals(tamaño) && servicio.getOrden().get(i).getPrecio() >0) {
+					return true;
 				}
 			}
-			return verificacion;
+			return false;
 			
 		}
 
