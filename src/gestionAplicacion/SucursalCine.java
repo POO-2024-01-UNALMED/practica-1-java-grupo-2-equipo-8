@@ -308,6 +308,7 @@ public class SucursalCine implements Serializable {
 	/**
 	 * Description: Este método se encarga de realizar los preparativos para ejecutar la lógica de la funcionalidad #3:
 	 * <ol>
+	 * <li>Renueva las cantidades disponibles de los productos en inventario</li>
 	 * <li>Eliminar los horarios de la semana anterior.</li>
 	 * <li>Distribución de películas en las salas de cine y la creación de sus horarios.</li>
 	 * <li>Eliminar los tickets comprados de películas de la semana anterior.</li>
@@ -319,6 +320,13 @@ public class SucursalCine implements Serializable {
 		ArrayList<Pelicula> peliculas2D = new ArrayList<Pelicula>();
 		
 		for (SucursalCine sede : sucursalesCine) {
+			
+			for (Producto producto : sede.inventarioCine) {
+				if(producto.getTipoProducto().equalsIgnoreCase("comida") || producto.getTipoProducto().equalsIgnoreCase("souvenir")) {
+					producto.setCantidad(200);
+				}
+			}
+			
 			for(Pelicula pelicula:sede.cartelera) {
 				if(pelicula.getTipoDeFormato().equals("2D")){
 					peliculas2D.add(pelicula);
