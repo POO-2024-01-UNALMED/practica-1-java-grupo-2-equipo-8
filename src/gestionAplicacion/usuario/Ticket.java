@@ -7,7 +7,9 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.proyecciones.Pelicula;
 import gestionAplicacion.proyecciones.SalaCine;
 
-
+/**
+ * @authors Edinson Andrés Ariza Mendoza, Santiago Castro Herrera
+ * */
 public class Ticket implements IBuyable, Serializable{
 	
 	private static final long serialVersionUID = 1L;

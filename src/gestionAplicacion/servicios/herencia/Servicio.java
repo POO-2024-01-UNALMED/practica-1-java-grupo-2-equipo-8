@@ -10,6 +10,9 @@ import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.IBuyable;
 import gestionAplicacion.usuario.MetodoPago;
 
+/**
+ * @author Rusbel Danilo Jaramillo Hincapie, Santiago Castro Herrera
+ * */
 public abstract class Servicio implements IBuyable, Serializable{
 
 	private static final long serialVersionUID = 1L;

@@ -2,6 +2,9 @@ package gestionAplicacion.proyecciones;
 
 import java.io.Serializable;
 
+/**
+ * @author Edinson Andrés Ariza Mendoza
+ * */
 public class Asiento implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

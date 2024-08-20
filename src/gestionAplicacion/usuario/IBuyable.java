@@ -2,6 +2,7 @@ package gestionAplicacion.usuario;
 
 
 /**
+ * @author Santiago Castro Herrera
 *<b>Description</b>: Esta es la interfaz en la cual se harán los pagos. Por el momento, se declaran
 *los siguientes métodos:
 *<ol>

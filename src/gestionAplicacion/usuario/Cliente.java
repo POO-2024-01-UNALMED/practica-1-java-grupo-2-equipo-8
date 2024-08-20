@@ -10,6 +10,9 @@ import gestionAplicacion.servicios.Bono;
 import gestionAplicacion.servicios.Producto;
 //import gestionAplicacion.servicios.Servicio;
 
+/**
+ * @author Todos los integrantes del equipo participaron en la construcción de esta clase
+ * */
 public class Cliente implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -285,7 +288,7 @@ public class Cliente implements Serializable{
 	 * una pelicula que no haya vist
 
 	* */
-	public String  mostrarHistorialDePelicula() {
+	public String  mostrarPeliculaParaCalificar() {
 		String peliculas = null;
 		int i = 1;
 		for ( Pelicula pelicula : peliculasDisponiblesParaCalificar ) {
@@ -308,10 +311,10 @@ public class Cliente implements Serializable{
 
 	* */
 	
-	public String  mostrarHistorialDePedidos() {
+	public String  mostrarProductosParaCalificar() {
 		String pedidos = null;
 		int i = 1;
-		for ( Producto producto : historialDePedidos  ) {
+		for ( Producto producto : productosDisponiblesParaCalificar ) {
 			
 			if (pedidos == null) {
 				pedidos =i + "." + producto.getNombre() + " " + producto.getTamaño();  

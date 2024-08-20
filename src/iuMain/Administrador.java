@@ -283,7 +283,7 @@ public class Administrador {
 				System.out.println("4. Adquirir o actualizar membresia");
 				System.out.println("5. Hacer calificacion");
 				System.out.println("6. Cambiar de sucursal");
-				System.out.println("7. Salir");
+				System.out.println("7. Guardar y Salir");
 				opcion = Integer.parseInt(sc.nextLine());
 				
 			}catch(NumberFormatException e) {
@@ -361,7 +361,7 @@ public class Administrador {
 	private static void avanzarTiempo() {
 		
 		//Avanza lo hora 20 segundos
-		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusDays(1)); 
+		SucursalCine.setFechaActual(SucursalCine.getFechaActual().plusSeconds(20)); 
 		relojDigital(SucursalCine.getFechaActual());
 		
 		//Esta como after o equal debido a que en caso de serializar y desearilizar un día o más después podamos ejecutar esta lógica
@@ -839,8 +839,7 @@ public class Administrador {
 			
 			//Verificamos si el cliente tiene acceso para al menos una película
 			if (carteleraPersonalizadaProceso.size() == 0) {
-				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)\n"
-				+ "Avanzaremos la hora hasta el fin del horario laboral 11:00 P.M. Para reiniciar este servicio");
+				System.out.println("No hay películas disponibles para reservar (Redireccionando al menú principal...)\n");
 				SucursalCine.setFechaActual(SucursalCine.getFechaActual().withHour(SucursalCine.getFinHorarioLaboral().getHour()).withMinute(0));
 				avanzarDia(clienteProceso);
 				break;
@@ -2633,8 +2632,8 @@ public class Administrador {
 				 */
 				if (eleccion==1) {
 					System.out.println("\n********Bienvenido al apartado de calificacion de comida********");
-					if(clienteProceso.getHistorialDePedidos().size() > 0) {
-						System.out.println("\n********Estos son los pedidos que has adquirido**********" + "\n" + clienteProceso.mostrarHistorialDePedidos());
+					if(clienteProceso.getProductosDisponiblesParaCalificar().size() > 0) {
+						System.out.println("\n********Estos son los pedidos que has adquirido**********" + "\n" + clienteProceso.mostrarProductosParaCalificar());
 						Producto opcionPedido=null;
 						int calificacion1=0;
 						do {
@@ -2644,11 +2643,11 @@ public class Administrador {
 								if (eleccion == 0) {
 									break;
 								}
-								if (eleccion > clienteProceso.getHistorialDePedidos().size() || eleccion < 1) {
+								if (eleccion > clienteProceso.getProductosDisponiblesParaCalificar().size() || eleccion < 1) {
 									System.out.print("\n******Error en la seleccion del producto******");
 									continue;
 								}
-								opcionPedido = clienteProceso.getHistorialDePedidos().get(eleccion-1);
+								opcionPedido = clienteProceso.getProductosDisponiblesParaCalificar().get(eleccion-1);
 								System.out.print("\nIngrese la calificacion del 1 al 5 que le vas a dar a este producto: ");
 								calificacion1 = Integer.parseInt(sc.nextLine());
 								if (calificacion1>=3) {
@@ -2664,7 +2663,8 @@ public class Administrador {
 									System.out.println("Error al calificar la comida, recuerda que es del 1 al 5");
 								}
 								
-								
+								//Eliminamos el producto de los productos disponibles para calificar
+								clienteProceso.getProductosDisponiblesParaCalificar().remove(opcionPedido);
 								
 								Producto prueba = opcionPedido;
 								//En este apartado setteamos las nuevas valoraciones hechas por el cliente y tambien aumentamos el numero de valoraciones realizadas
@@ -2798,8 +2798,6 @@ public class Administrador {
 														int filaProceso = Character.getNumericValue(numAsientoProceso.charAt(0));
 														int columnaProceso = Character.getNumericValue(numAsientoProceso.charAt(2));
 														peliculaCombo.modificarSalaVirtual(opcionHorarioPelicula, filaProceso-1, columnaProceso-1);
-														clienteProceso.getBonos().add(bonoProceso);
-														clienteProceso.getCineActual().getBonosCreados().add(bonoProceso);
 
 														System.out.println("-----------------------Factura--------------------------");
 														System.out.println("------------------Este es tu combo!!---------------------");
@@ -2853,7 +2851,7 @@ public class Administrador {
 				else if (eleccion==2) {
 					System.out.println("\n********Bienvenido al apartado de calificacion de peliculas********");
 					if(clienteProceso.getPeliculasDisponiblesParaCalificar().size() > 0) {
-						System.out.println("\n********Estas son las peliculas que has visto**********" + "\n" + clienteProceso.mostrarHistorialDePelicula());
+						System.out.println("\n********Estas son las peliculas que has visto**********" + "\n" + clienteProceso.mostrarPeliculaParaCalificar());
 						Pelicula opcionPelicula=null;
 						int calificacion=0;
 						do {
@@ -2879,6 +2877,10 @@ public class Administrador {
 								else {
 									System.out.println("Error al calificar la pelicula, recuerda que es del 1 al 5");
 								}
+								
+								//Eliminamos la película de las películas disponibles para calificar del cliente
+								clienteProceso.getPeliculasDisponiblesParaCalificar().remove(opcionPelicula);
+								
 								//En este apartado setteamos las nuevas valoraciones hechas por el cliente y tambien aumentamos el numero de valoraciones realizadas
 								
 								Pelicula prueba1 = opcionPelicula;
@@ -3011,9 +3013,6 @@ public class Administrador {
 													int filaProceso = Character.getNumericValue(numAsientoProceso.charAt(0));
 													int columnaProceso = Character.getNumericValue(numAsientoProceso.charAt(2));
 													peliculaCombo.modificarSalaVirtual(opcionHorarioPelicula, filaProceso, columnaProceso);
-													clienteProceso.getBonos().add(bonoProceso);
-													clienteProceso.getCineActual().getBonosCreados().add(bonoProceso);
-												
 													
 													System.out.println("-----------------------Factura--------------------------");
 													System.out.println("------------------Este es tu combo!!---------------------");

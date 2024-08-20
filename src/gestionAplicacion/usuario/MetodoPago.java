@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import gestionAplicacion.SucursalCine;
 
+/**
+ * @author Gerson Bedoya Hinestroza
+ * */
 public class MetodoPago implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

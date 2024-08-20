@@ -7,6 +7,9 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
 import java.io.Serializable;
 
+/**
+ * @author Edinson Andrés Ariza Mendoza, Santiago Castro Herrera
+ * */
 public class Pelicula implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

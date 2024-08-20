@@ -5,6 +5,9 @@ import java.util.Random;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.herencia.Servicio;
 
+/**
+ * @author Rusbel Danilo Jaramillo Hincapie, Santiago Castro Herrera
+ * */
 public class Producto implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

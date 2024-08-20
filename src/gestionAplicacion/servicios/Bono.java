@@ -6,6 +6,9 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
 import iuMain.Administrador;
 
+/**
+ * @author Juan José González Morales, Santiago Castro Herrera
+ * */
 public class Bono implements Serializable{
 	
 	// Atributos

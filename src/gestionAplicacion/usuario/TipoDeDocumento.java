@@ -1,5 +1,8 @@
 package gestionAplicacion.usuario;
 
+/**
+ * @author Santiago Castro Herrrera
+ * */
 public enum TipoDeDocumento {
 	
 	CC("Cedula de ciudadania"), TI("Tarjeta de identidad"), CE("Cedula de extranjeria");

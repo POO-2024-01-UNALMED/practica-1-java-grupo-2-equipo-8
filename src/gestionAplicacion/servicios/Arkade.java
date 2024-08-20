@@ -5,7 +5,9 @@ import java.util.Arrays;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.*;
 
-
+/**
+ * @author Juan José González Morales
+ * */
 public class Arkade implements Serializable{
 
 	//Atributos

@@ -7,6 +7,9 @@ import gestionAplicacion.SucursalCine;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.Ticket;
 
+/**
+ * @author Edinson Andrés Ariza Mendoza
+ * */
 public class SalaCine implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

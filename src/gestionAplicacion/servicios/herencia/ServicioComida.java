@@ -8,6 +8,9 @@ import gestionAplicacion.servicios.Producto;
 import gestionAplicacion.usuario.Cliente;
 import gestionAplicacion.usuario.MetodoPago;
 
+/**
+ * @author Rusbel Danilo Jaramillo Hincapie
+ * */
 public class ServicioComida extends Servicio {
 	
 	public ServicioComida() {

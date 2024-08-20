@@ -4,7 +4,9 @@ import java.io.Serializable;
 import gestionAplicacion.SucursalCine;
 import gestionAplicacion.servicios.Producto;
 
-
+/**
+ * @author Gerson Bedoya Hinestroza
+ * */
 public class Membresia implements IBuyable, Serializable{
 	
 

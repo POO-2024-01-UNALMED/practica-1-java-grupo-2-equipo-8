@@ -20,6 +20,9 @@ import gestionAplicacion.usuario.MetodoPago;
 import gestionAplicacion.usuario.TarjetaCinemar;
 import gestionAplicacion.usuario.Ticket;
 
+/**
+ * @author Todos los integrantes del equipo participaron en la construcción de esta clase
+ * */
 public class SucursalCine implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
